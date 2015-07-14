@@ -63,4 +63,28 @@ public interface ProjectManager {
      */
     void changeProjectDescription(Project project, ProjectDescription projectDescription);
 
+    /**
+     * Change the owner of the specified project
+     *
+     * @param project   Project instance
+     * @param userId    User identifier of new owner
+     */
+    void changeOwner(Project project, UserId userId);
+
+    /**
+     * Add an administrator user to the specified project
+     *
+     * @param project   Project instance
+     * @param userId    User identifier of administrator to be added
+     */
+    void addAdministrator(Project project, UserId userId);
+
+    /**
+     * Remove an administrator user from the specified project
+     *
+     * @param project   Project instance
+     * @param userId    User identifier of administrator to be removed
+     */
+    void removeAdministrator(Project project, UserId userId);
+
 }
