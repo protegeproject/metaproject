@@ -1,18 +1,17 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * A representation of salt data
+ * A representation of a role name
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Salt {
+public interface RoleName {
 
     /**
-     * Get salt data
-     *
-     * @return Byte array
+     * Get the name of the role
+     * @return  Role name
      */
-    byte[] getBytes();
+    String getName();
 
 }

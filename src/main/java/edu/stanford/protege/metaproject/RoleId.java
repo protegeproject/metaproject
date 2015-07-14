@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * A simple representation of a role identifier
+ * A representation of a unique role identifier
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research

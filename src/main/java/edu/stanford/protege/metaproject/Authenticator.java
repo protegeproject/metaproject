@@ -11,10 +11,10 @@ public interface Authenticator {
     /**
      * Check whether the given username and password combination is a valid one
      *
-     * @param username  Username
+     * @param userId  User unique identifier
      * @param password  User password
      * @return true if user-password combination is valid, false otherwise
      */
-    boolean isValidLogin(String username, String password);
+    boolean hasValidCredentials(UserId userId, String password);
 
 }

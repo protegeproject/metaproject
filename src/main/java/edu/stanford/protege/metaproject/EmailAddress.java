@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * Simple representation of an email address
+ * A representation of an email address belonging to a user
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research

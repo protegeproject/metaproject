@@ -3,12 +3,26 @@ package edu.stanford.protege.metaproject;
 import java.util.Set;
 
 /**
- * A manager for users and user details
+ * A manager for users and user details (except password, which is handled by {@link AuthenticationManager})
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
 public interface UserManager {
+
+    /**
+     * Add a user
+     *
+     * @param user  User instance
+     */
+    void addUser(User user);
+
+    /**
+     * Remove a user
+     *
+     * @param user User instance
+     */
+    void removeUser(User user);
 
     /**
      * Get all users
@@ -18,35 +32,51 @@ public interface UserManager {
     Set<User> getUsers();
 
     /**
-     * Get the user with the specified username
+     * Get the user with the specified identifier
      *
-     * @param userId  Username instance
+     * @param userId  User identifier
      * @return User instance
      */
     User getUser(UserId userId);
 
     /**
-     * Set the username of a given user
+     * Get the user(s) registered with the specified name
      *
-     * @param user  User instance
-     * @param userId  Username instance
+     * @param userName  User name
+     * @return Set of users
      */
-    void setUsername(User user, UserId userId);
+    Set<User> getUsers(UserName userName);
 
     /**
-     * Get the email of a user
+     * Get the user(s) registered with the specified email address
      *
-     * @param user  User instance
-     * @return Email address
+     * @param emailAddress  Email address
+     * @return Set of users
      */
-    EmailAddress getEmailAddress(User user);
+    Set<User> getUsers(EmailAddress emailAddress);
 
     /**
-     * Set the email address of a user
+     * Change the unique identifier of a given user
      *
      * @param user  User instance
-     * @param email Email address instance
+     * @param userId  New user identifier
      */
-    void setEmailAddress(User user, EmailAddress email);
+    void changeUserId(User user, UserId userId);
+
+    /**
+     * Change the display name of the given user
+     *
+     * @param user    User instance
+     * @param userName  New name
+     */
+    void changeUserName(User user, UserName userName);
+
+    /**
+     * Change the email address of a user
+     *
+     * @param user  User instance
+     * @param emailAddress New email address
+     */
+    void changeEmailAddress(User user, EmailAddress emailAddress);
 
 }

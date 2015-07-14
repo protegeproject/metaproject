@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject;
 import java.util.Set;
 
 /**
- * A project manager
+ * A manager for projects
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -25,6 +25,13 @@ public interface ProjectManager {
     void removeProject(Project project);
 
     /**
+     * Get the set of all projects
+     *
+     * @return Set of projects
+     */
+    Set<Project> getProjects();
+
+    /**
      * Get a project by its identifier
      *
      * @param projectId   Project identifier
@@ -33,10 +40,27 @@ public interface ProjectManager {
     Project getProject(ProjectId projectId);
 
     /**
-     * Get the set of all projects
+     * Get the set of projects with the specified project name
      *
+     * @param projectName   Project name
      * @return Set of projects
      */
-    Set<Project> getProjects();
+    Set<Project> getProjects(ProjectName projectName);
+
+    /**
+     * Change the name of the given project
+     *
+     * @param project   Project instance
+     * @param projectName   New project name
+     */
+    void changeProjectName(Project project, ProjectName projectName);
+
+    /**
+     * Change the description of the given project
+     *
+     * @param project   Project instance
+     * @param projectDescription    New project description
+     */
+    void changeProjectDescription(Project project, ProjectDescription projectDescription);
 
 }

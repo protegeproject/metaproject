@@ -1,18 +1,18 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * A representation of a unique project identifier
+ * A representation of a commit message
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ProjectId {
+public interface CommitMessage {
 
     /**
-     * Get project identifier
+     * Get commit message
      *
-     * @return Project identifier
+     * @return Commit message
      */
-    String getId();
+    String getMessage();
 
 }

@@ -39,15 +39,6 @@ public interface AuthenticationManager {
     void remindUserId(EmailAddress email);
 
     /**
-     * Check whether there exists a tuple consisting of the given username and password in the user registry
-     *
-     * @param user  User instance
-     * @param password  Password
-     * @return true if the credentials are valid, false otherwise
-     */
-    boolean hasValidCredentials(User user, String password);
-
-    /**
      * Set the authentication type
      *
      * @param authenticator    Authenticator

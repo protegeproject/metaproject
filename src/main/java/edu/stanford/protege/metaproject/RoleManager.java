@@ -32,36 +32,27 @@ public interface RoleManager {
     Set<Role> getRoles();
 
     /**
-     * Get the set of roles within a given project
+     * Get a role based on its identifier
      *
-     * @param project   Project
-     * @return Set of roles within a project
+     * @param roleId    Role identifier
+     * @return Role instance
      */
-    Set<Role> getRoles(Project project);
+    Role getRole(RoleId roleId);
 
     /**
-     * Get the set of roles played by a specified user within a given project
+     * Change the name of the given role to a new one
      *
-     * @param project   Project
-     * @param user  User
-     * @return Set of roles
+     * @param role  Role instance
+     * @param roleName  New role name
      */
-    Set<Role> getRoles(Project project, User user);
+    void changeRoleName(Role role, RoleName roleName);
 
     /**
-     * Get the set of roles played by the given user in all projects
+     * Change the description of the given role to a new one
      *
-     * @param user  User
-     * @return Set of roles
+     * @param role  Role instance
+     * @param roleDescription   New role description
      */
-    Set<Role> getRoles(User user);
-
-    /**
-     * Get the set of roles that contain a specified operation
-     *
-     * @param operation Operation
-     * @return Set of roles containing specified operation
-     */
-    Set<Role> getRolesContainingOperation(Operation operation);
+    void changeRoleDescription(Role role, RoleDescription roleDescription);
 
 }

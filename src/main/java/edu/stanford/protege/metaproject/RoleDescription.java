@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * A simple representation of a role description
+ * A representation of a natural language description of a role
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research

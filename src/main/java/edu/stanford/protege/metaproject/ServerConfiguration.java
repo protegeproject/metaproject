@@ -8,7 +8,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ServerConfigurationManager extends ConfigurationManager {
+public interface ServerConfiguration extends Configuration {
 
     /**
      * Get the hostname of the server

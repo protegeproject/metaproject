@@ -6,7 +6,7 @@ package edu.stanford.protege.metaproject;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ConfigurationManager {
+public interface Configuration {
 
     /**
      * Get the value of a string-type property

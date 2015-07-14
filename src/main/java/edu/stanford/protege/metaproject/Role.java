@@ -2,7 +2,6 @@ package edu.stanford.protege.metaproject;
 
 import java.util.Set;
 
-
 /**
  * A role defines a group of allowed operations within some project
  *
@@ -14,29 +13,35 @@ public interface Role {
     /**
      * Get the role identifier
      *
-     * @return Role identifier instance
+     * @return Role identifier
      */
     RoleId getId();
 
     /**
+     * Get the role name
+     * @return  Role name
+     */
+    RoleName getName();
+
+    /**
      * Get the role description
      *
-     * @return Role description instance
+     * @return Role description
      */
     RoleDescription getDescription();
 
     /**
      * Get all projects associated with this role
      *
-     * @return Set of projects
+     * @return Set of project identifiers
      */
-    Set<Project> getProjects();
+    Set<ProjectId> getProjects();
 
     /**
-     * Get the set of allowed operations
+     * Get the set of operations associated with this role
      *
-     * @return Set of operations
+     * @return Set of operations identifiers
      */
-    Set<Operation> getOperations();
+    Set<OperationId> getOperations();
 
 }

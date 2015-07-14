@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * A simple representation of a project description
+ * A representation of a natural language description of a project
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research

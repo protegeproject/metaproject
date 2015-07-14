@@ -1,18 +1,18 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * A representation of a unique project identifier
+ * A representation of the name of an operation
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ProjectId {
+public interface OperationName {
 
     /**
-     * Get project identifier
+     * Get the operation name
      *
-     * @return Project identifier
+     * @return Operation name
      */
-    String getId();
+    String getName();
 
 }

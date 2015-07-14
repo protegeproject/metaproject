@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ClientConfigurationManager extends ConfigurationManager {
+public interface ClientConfiguration extends Configuration {
 
     /**
      * Get the time (in seconds) between client-server synchronisation attempts
@@ -42,7 +42,7 @@ public interface ClientConfigurationManager extends ConfigurationManager {
     /**
      * Get the set of swing components that are disabled
      *
-     * @return Set of java swing component instances
+     * @return Set of java swing components
      */
     Set<JComponent> getDisabledUIElements();
 

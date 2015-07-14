@@ -10,6 +10,7 @@ public interface TermId {
 
     /**
      * Get the term identifier
+     *
      * @return Term identifier
      */
     String getId();

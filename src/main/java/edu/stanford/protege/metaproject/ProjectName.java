@@ -1,18 +1,18 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * A simple representation of a policy identifier
+ * A representation of a name of a project
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface PolicyId {
+public interface ProjectName {
 
     /**
-     * Get policy identifier
+     * Get the name of the project
      *
-     * @return Policy identifier
+     * @return Project name
      */
-    String getId();
+    String getName();
 
 }

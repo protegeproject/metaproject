@@ -11,9 +11,9 @@ public interface MD5Authenticator extends Authenticator {
     /**
      * Get the salt data used for the given user's password hashing
      *
-     * @param user  User instance
+     * @param userId  User unique identifier as used to login
      * @return Salt used in the given user's password hashing
      */
-    Salt getSalt(User user);
+    Salt getSalt(UserId userId);
 
 }

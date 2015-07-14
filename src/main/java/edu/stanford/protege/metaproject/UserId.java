@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject;
 
 /**
- * A simple representation of a user identifier
+ * A representation of a unique user identifier that is used for logging in to the server
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -9,7 +9,7 @@ package edu.stanford.protege.metaproject;
 public interface UserId {
 
     /**
-     * Get the user identifer
+     * Get the user identifier
      *
      * @return User identifier
      */
