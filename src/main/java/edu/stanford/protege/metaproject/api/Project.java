@@ -88,6 +88,21 @@ public final class Project implements Serializable, HasDetails {
         return administrators;
     }
 
+    /**
+     * Check whether the specified user is an administrator of the project
+     *
+     * @param userId  User identifier
+     * @return true if user is an administrator of this project, false otherwise
+     */
+    public boolean hasAdministrator(UserId userId) {
+        if(administrators.contains(userId)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

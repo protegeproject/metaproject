@@ -27,12 +27,10 @@ public class OWLEntityOperationPrerequisite implements OperationPrerequisite {
         this.modifier = checkNotNull(modifier);
     }
 
-    @Override
     public OWLEntity getPrerequisite() {
         return prerequisite;
     }
 
-    @Override
     public OperationPrerequisiteModifier getModifier() {
         return modifier;
     }

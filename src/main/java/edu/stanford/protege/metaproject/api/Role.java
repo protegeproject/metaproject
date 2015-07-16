@@ -85,4 +85,18 @@ public final class Role implements Serializable, HasDetails {
     public Set<OperationId> getOperations() {
         return operations;
     }
+
+    /**
+     * Check if there exists a role which contains the specified operation and project
+     *
+     * @param operationId   Operation identifier
+     * @param projectId Project identifier
+     * @return true if a role exists with the operation and project specified, false otherwise
+     */
+    public boolean contains(OperationId operationId, ProjectId projectId) {
+        if(projects.contains(projectId) && operations.contains(operationId)) {
+            return true;
+        }
+        return false;
+    }
 }
