@@ -13,7 +13,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class HostId implements Serializable, HasId {
+public final class HostId extends Identifier implements Serializable {
+    private static final long serialVersionUID = 2973283101789401093L;
     private final String hostId;
 
     /**

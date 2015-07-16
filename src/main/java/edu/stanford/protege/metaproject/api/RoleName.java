@@ -13,7 +13,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleName implements Serializable, HasName {
+public final class RoleName extends Name implements Serializable {
+    private static final long serialVersionUID = 8037040189909495509L;
     private final String roleName;
 
     /**
@@ -30,7 +31,6 @@ public class RoleName implements Serializable, HasName {
      *
      * @return  Role name
      */
-    @Override
     public String getName() {
         return roleName;
     }

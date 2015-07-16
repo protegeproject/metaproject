@@ -1,7 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import org.semanticweb.owlapi.model.OWLEntity;
-
 /**
  * A representation of an operation prerequisite (e.g., presence or absence of some OWL entity)
  *
@@ -11,11 +9,11 @@ import org.semanticweb.owlapi.model.OWLEntity;
 public interface OperationPrerequisite {
 
     /**
-     * Get the OWL entity
+     * Get the prerequisite
      *
-     * @return Operation prerequisites
+     * @return Operation prerequisite
      */
-    OWLEntity getEntity();
+    Object getPrerequisite();
 
     /**
      * Get the modifier pertaining to the OWL entity prerequisite that determines whether,

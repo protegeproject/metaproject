@@ -13,7 +13,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UserName implements Serializable, HasName {
+public final class UserName extends Name implements Serializable {
+    private static final long serialVersionUID = -7955283945737393106L;
     private final String userName;
 
     /**
@@ -25,7 +26,11 @@ public class UserName implements Serializable, HasName {
         this.userName = checkNotNull(userName);
     }
 
-    @Override
+    /**
+     * Get user's name
+     *
+     * @return User name
+     */
     public String getName() {
         return userName;
     }

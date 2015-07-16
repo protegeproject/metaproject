@@ -13,7 +13,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleId implements Serializable, HasId {
+public final class RoleId extends Identifier implements Serializable {
+    private static final long serialVersionUID = -8800121922258776369L;
     private final String roleId;
 
     /**

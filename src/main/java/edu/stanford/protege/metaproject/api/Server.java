@@ -16,23 +16,6 @@ public interface Server {
     UserId getOwner();
 
     /**
-     * Restart the server
-     */
-    void restart();
-
-    /**
-     * Shutdown the server
-     */
-    void shutdown();
-
-    /**
-     * Flush out the given commit to the server
-     *
-     * @param commit    Commit instance
-     */
-    void commit(Commit commit);
-
-    /**
      * Get the access control policy of the server
      *
      * @return Access control policy instance
