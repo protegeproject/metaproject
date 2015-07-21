@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class Project implements Serializable, HasDetails {
+public final class Project implements Serializable, HasDetails, HasDescription {
     private static final long serialVersionUID = -7194799156371898377L;
     private final ProjectId projectId;
     private final ProjectName projectName;

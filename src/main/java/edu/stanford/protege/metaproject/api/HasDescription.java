@@ -8,6 +8,6 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface HasDescription {
 
-    String getDescription();
+    Description getDescription();
 
 }

@@ -50,13 +50,13 @@ public interface ServerConfiguration extends Configuration {
      *
      * @return Term identifier generator instance
      */
-    TermIdentifierGenerator getTermIdentifierGenerator();
+    TermIdGenerator getTermIdentifierGenerator();
 
     /**
      * Set the unique term identifier generator
      *
      * @param idGenerator  Unique term identifier generator
      */
-    void setTermIdentifierGenerator(TermIdentifierGenerator idGenerator);
+    void setTermIdentifierGenerator(TermIdGenerator idGenerator);
 
 }

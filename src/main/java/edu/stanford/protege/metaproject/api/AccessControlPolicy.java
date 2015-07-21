@@ -17,14 +17,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class AccessControlPolicy {
     private Map<UserId, Set<RoleId>> userRoleMap = new HashMap<>();
     private RoleManager roleManager;
+    private OperationManager operationManager;
+    private UserManager userManager;
+    private ProjectManager projectManager;
 
     /**
      * Constructor
      *
      * @param roleManager   Role manager
      */
-    public AccessControlPolicy(RoleManager roleManager) {
+    public AccessControlPolicy(RoleManager roleManager, OperationManager operationManager, UserManager userManager, ProjectManager projectManager) {
         this.roleManager = checkNotNull(roleManager);
+        this.operationManager = checkNotNull(operationManager);
+        this.userManager = checkNotNull(userManager);
+        this.projectManager = checkNotNull(projectManager);
     }
 
     /**

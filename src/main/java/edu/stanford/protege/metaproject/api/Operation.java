@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class Operation implements Serializable, HasDetails {
+public final class Operation implements Serializable, HasDetails, HasDescription {
     private static final long serialVersionUID = -4469938653912135406L;
     private final OperationId operationId;
     private final OperationName operationName;

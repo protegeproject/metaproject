@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class EmailAddress implements Serializable {
+public final class EmailAddress extends Address implements Serializable {
     private static final long serialVersionUID = 3769602327370853748L;
     private final String emailAddress;
 
@@ -31,7 +31,7 @@ public final class EmailAddress implements Serializable {
      *
      * @return Email address
      */
-    public String getEmailAddress() {
+    public String getAddress() {
         return emailAddress;
     }
 

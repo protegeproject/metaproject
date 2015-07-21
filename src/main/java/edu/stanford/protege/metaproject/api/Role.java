@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableSet;
 
 import java.io.Serializable;
@@ -13,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class Role implements Serializable, HasDetails {
+public final class Role implements Serializable, HasDetails, HasDescription {
     private static final long serialVersionUID = 5181332634932631114L;
     private final RoleId roleId;
     private final RoleName roleName;
@@ -98,5 +100,33 @@ public final class Role implements Serializable, HasDetails {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equal(roleId, role.roleId) &&
+                Objects.equal(roleName, role.roleName) &&
+                Objects.equal(roleDescription, role.roleDescription) &&
+                Objects.equal(projects, role.projects) &&
+                Objects.equal(operations, role.operations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(roleId, roleName, roleDescription, projects, operations);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("roleId", roleId)
+                .add("roleName", roleName)
+                .add("roleDescription", roleDescription)
+                .add("projects", projects)
+                .add("operations", operations)
+                .toString();
     }
 }

@@ -15,10 +15,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class ProjectManager {
+public final class ProjectManager {
+    private static ProjectManager instance = null;
     private Set<Project> projects = new HashSet<>();
 
-    public ProjectManager() { }
+    private ProjectManager() { }
+
+    public static ProjectManager getInstance() {
+        if(instance == null) {
+            instance = new ProjectManager();
+        }
+        return instance;
+    }
 
     /**
      * Add a project to the project registry
@@ -27,6 +35,15 @@ public class ProjectManager {
      */
     public void addProject(Project project) {
         projects.add(checkNotNull(project));
+    }
+
+    /**
+     * Add a given set of projects
+     *
+     * @param projects  Set of projects
+     */
+    public void addProjects(Set<Project> projects) {
+        projects.forEach(this::addProject);
     }
 
     /**
@@ -40,6 +57,18 @@ public class ProjectManager {
             throw new ProjectNotFoundException("The specified project does not exist");
         }
         projects.remove(project);
+    }
+
+    /**
+     * Remove a given set of projects
+     *
+     * @param projects  Set of projects
+     * @throws ProjectNotFoundException
+     */
+    public void removeProjects(Set<Project> projects) throws ProjectNotFoundException {
+        for(Project project : projects) {
+            removeProject(project);
+        }
     }
 
     /**

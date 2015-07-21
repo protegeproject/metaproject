@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class User implements Serializable, HasUserDetails {
+public final class User implements Serializable, HasDetails, HasEmailAddress {
     private static final long serialVersionUID = 426611184351097983L;
     private final UserId userId;
     private final UserName userName;

@@ -14,10 +14,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class OperationManager {
+public final class OperationManager {
+    private static OperationManager instance = null;
     private Set<Operation> operations = new HashSet<>();
 
-    public OperationManager() { }
+    private OperationManager() { }
+
+    public static OperationManager getInstance() {
+        if(instance == null) {
+            instance = new OperationManager();
+        }
+        return instance;
+    }
 
     /**
      * Add an operation
@@ -26,6 +34,15 @@ public class OperationManager {
      */
     public void addOperation(Operation operation) {
         operations.add(checkNotNull(operation));
+    }
+
+    /**
+     * Add a set of operations
+     *
+     * @param operations    Set of operations
+     */
+    public void addOperations(Set<Operation> operations) {
+        operations.forEach(this::addOperation);
     }
 
     /**
@@ -39,6 +56,18 @@ public class OperationManager {
             throw new OperationNotFoundException("The specified operation does not exist");
         }
         operations.remove(operation);
+    }
+
+    /**
+     * Remove the given set of operations
+     *
+     * @param operations Set of operations
+     * @throws OperationNotFoundException   Operation not found
+     */
+    public void removeOperations(Set<Operation> operations) throws OperationNotFoundException {
+        for(Operation operation : operations) {
+            removeOperation(operation);
+        }
     }
 
     /**

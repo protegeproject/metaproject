@@ -15,10 +15,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleManager {
+public final class RoleManager {
+    private static RoleManager instance = null;
     private Set<Role> roles = new HashSet<>();
 
-    public RoleManager() { }
+    private RoleManager() { }
+
+    public static RoleManager getInstance() {
+        if(instance == null) {
+            instance = new RoleManager();
+        }
+        return instance;
+    }
 
     /**
      * Add the specified role
@@ -27,6 +35,15 @@ public class RoleManager {
      */
     public void addRole(Role role) {
         roles.add(checkNotNull(role));
+    }
+
+    /**
+     * Add a given set of roles
+     *
+     * @param roles Set of roles
+     */
+    public void addRoles(Set<Role> roles) {
+        roles.forEach(this::addRole);
     }
 
     /**
@@ -40,6 +57,18 @@ public class RoleManager {
             throw new RoleNotFoundException("The specified role does not exist");
         }
         roles.remove(role);
+    }
+
+    /**
+     * Remove a given set of roles
+     *
+     * @param roles Set of roles
+     * @throws RoleNotFoundException
+     */
+    public void removeRoles(Set<Role> roles) throws RoleNotFoundException {
+        for(Role role : roles) {
+            removeRole(role);
+        }
     }
 
     /**
@@ -128,7 +157,7 @@ public class RoleManager {
     }
 
     /**
-     * Add a set of projects to the working projects of this role
+     * Add a set of projects to the working projects of the given role
      *
      * @param roleId    Role identifier
      * @param projectIdSet  Set of projects
@@ -146,7 +175,7 @@ public class RoleManager {
     }
 
     /**
-     * Remove a project from the working projects of this role
+     * Remove a project from the working projects of the given role
      *
      * @param roleId    Role identifier
      * @param projectId Project identifier
@@ -159,7 +188,7 @@ public class RoleManager {
     }
 
     /**
-     * Remove a project from the working projects of this role
+     * Remove a project from the working projects of the given role
      *
      * @param roleId    Role identifier
      * @param projectIdSet  Set of project identifiers
@@ -177,7 +206,7 @@ public class RoleManager {
     }
 
     /**
-     * Add an operation to the permitted operations of this role
+     * Add an operation to the permitted operations of the given role
      *
      * @param roleId    Role identifier
      * @param operationId   Operation identifier
@@ -190,7 +219,7 @@ public class RoleManager {
     }
 
     /**
-     * Add a set of operations to the permitted operations of this role
+     * Add a set of operations to the permitted operations of the given role
      *
      * @param roleId    Role identifier
      * @param operationIdSet    Set of operation identifiers
@@ -208,7 +237,7 @@ public class RoleManager {
     }
 
     /**
-     * Remove an operation from the permitted operations of this role
+     * Remove an operation from the permitted operations of the given role
      *
      * @param roleId    Role identifier
      * @param operationId   Operation identifier
@@ -221,7 +250,7 @@ public class RoleManager {
     }
 
     /**
-     * Remove a set of operations from the permitted operations of this role
+     * Remove a set of operations from the permitted operations of the given role
      *
      * @param roleId    Role identifier
      * @param operationIdSet    Set of operation identifiers
