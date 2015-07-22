@@ -1,7 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
 /**
- * A strategy for automatically generating unique term (i.e., classes, properties, ...) identifiers
+ * A strategy for automatically generating unique term identifiers (i.e., classes,
+ * object properties, data properties, annotation properties, and individuals)
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -28,6 +29,13 @@ public interface TermIdGenerator {
      * @return Data property identifier
      */
     TermId getNextDataPropertyId();
+
+    /**
+     * Get the next annotation property identifier
+     *
+     * @return Annotation property identifier
+     */
+    TermId getNextAnnotationPropertyId();
 
     /**
      * Get the next individual identifier

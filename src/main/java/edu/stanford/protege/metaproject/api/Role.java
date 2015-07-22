@@ -99,7 +99,9 @@ public final class Role implements Serializable, HasDetails, HasDescription {
         if(projects.contains(projectId) && operations.contains(operationId)) {
             return true;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     @Override

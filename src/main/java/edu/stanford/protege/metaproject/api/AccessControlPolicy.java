@@ -5,8 +5,6 @@ import edu.stanford.protege.metaproject.api.exception.UserNotFoundException;
 
 import java.util.*;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * A manager for server access control where users are associated with roles that
  * have a defined set of operations the user is allowed to perform
@@ -14,23 +12,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class AccessControlPolicy {
+public final class AccessControlPolicy {
+    private static AccessControlPolicy instance = null;
     private Map<UserId, Set<RoleId>> userRoleMap = new HashMap<>();
-    private RoleManager roleManager;
-    private OperationManager operationManager;
-    private UserManager userManager;
-    private ProjectManager projectManager;
+    private RoleManager roleManager = RoleManager.getInstance();
+
+    private AccessControlPolicy() { }
 
     /**
-     * Constructor
+     * Get the instance of the access control policy
      *
-     * @param roleManager   Role manager
+     * @return AccessControlPolicy instance
      */
-    public AccessControlPolicy(RoleManager roleManager, OperationManager operationManager, UserManager userManager, ProjectManager projectManager) {
-        this.roleManager = checkNotNull(roleManager);
-        this.operationManager = checkNotNull(operationManager);
-        this.userManager = checkNotNull(userManager);
-        this.projectManager = checkNotNull(projectManager);
+    public static AccessControlPolicy getInstance() {
+        if(instance == null) {
+            instance = new AccessControlPolicy();
+        }
+        return instance;
     }
 
     /**
@@ -166,10 +164,5 @@ public class AccessControlPolicy {
      */
     public Map<UserId,Set<RoleId>> getUserRoleMappings() {
         return userRoleMap;
-    }
-
-
-    public void updatePolicy(UserId userId, UserId newUserId) {
-        // TODO
     }
 }
