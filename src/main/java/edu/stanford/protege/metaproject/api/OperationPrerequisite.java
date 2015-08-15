@@ -6,14 +6,14 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface OperationPrerequisite {
+public interface OperationPrerequisite<T> {
 
     /**
      * Get the prerequisite
      *
      * @return Operation prerequisite
      */
-    Object getPrerequisite();
+    T getPrerequisite();
 
     /**
      * Get the modifier pertaining to the OWL entity prerequisite that determines whether,

@@ -9,23 +9,9 @@ package edu.stanford.protege.metaproject.api;
 public interface Server {
 
     /**
-     * Get the owner (root user) of the server, who can do operations like delete projects and shutdown the server
-     *
-     * @return User identifier
-     */
-    UserId getOwner();
-
-    /**
-     * Get the access control policy of the server
-     *
-     * @return Access control policy instance
-     */
-    AccessControlPolicy getPolicy();
-
-    /**
      * Get the server configuration
      *
-     * @return Server configuraration
+     * @return Server configuration
      */
     ServerConfiguration getConfiguration();
 

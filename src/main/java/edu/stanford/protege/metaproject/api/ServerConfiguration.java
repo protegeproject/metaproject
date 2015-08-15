@@ -1,7 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import java.util.Set;
-
 /**
  * Manager for server-side configurations
  *
@@ -11,52 +9,31 @@ import java.util.Set;
 public interface ServerConfiguration extends Configuration {
 
     /**
-     * Get the hostname of the server
+     * Get the server host
      *
-     * @return Server hostname
+     * @return Server host
      */
-    HostId getHostId();
+    Host getHost();
 
     /**
-     * Set the hostname of the server
+     * Get the access control policy for the server
      *
-     * @param hostName  Server host name
+     * @return Access control policy
      */
-    void setHostId(HostId hostName);
+    Policy getPolicy();
 
     /**
-     * Get the set of all projects
+     * Get the ontology term identifier generator
      *
-     * @return Set of projects
+     * @return Ontology term identifier generator instance
      */
-    Set<Project> getProjects();
+    OntologyTermIdGenerator getOntologyTermIdGenerator();
 
     /**
-     * Get the set of all roles
+     * Get the access control object identifier generator
      *
-     * @return Set of roles
+     * @return Access control object identifier generator
      */
-    Set<Role> getRoles();
-
-    /**
-     * Get the set of all users
-     *
-     * @return Set of users
-     */
-    Set<User> getUsers();
-
-    /**
-     * Get the term identifier generator
-     *
-     * @return Term identifier generator instance
-     */
-    TermIdGenerator getTermIdentifierGenerator();
-
-    /**
-     * Set the unique term identifier generator
-     *
-     * @param idGenerator  Unique term identifier generator
-     */
-    void setTermIdentifierGenerator(TermIdGenerator idGenerator);
+    AccessControlObjectIdGenerator getAccessControlObjectIdGenerator();
 
 }

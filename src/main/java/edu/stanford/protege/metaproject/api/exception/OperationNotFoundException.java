@@ -4,7 +4,7 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class OperationNotFoundException extends Exception {
+public class OperationNotFoundException extends ElementNotFoundException {
 
     public OperationNotFoundException() {
         super();

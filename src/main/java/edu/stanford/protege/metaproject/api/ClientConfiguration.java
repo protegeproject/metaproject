@@ -19,31 +19,10 @@ public interface ClientConfiguration extends Configuration {
     int getSynchronisationDelay();
 
     /**
-     * Set the synchronisation delay time
-     *
-     * @param synchronisationDelay  Time in seconds
-     */
-    void setSynchronisationDelay(int synchronisationDelay);
-
-    /**
-     * Enable the specified UI element
-     *
-     * @param obj   Java swing component
-     */
-    void enableUIElement(JComponent obj);
-
-    /**
-     * Disable the specified UI element
-     *
-     * @param obj   Java swing component
-     */
-    void disableUIElement(JComponent obj);
-
-    /**
      * Get the set of swing components that are disabled
      *
      * @return Set of java swing components
      */
-    Set<JComponent> getDisabledUIElements();
+    Set<? extends JComponent> getDisabledUIElements();
 
 }

@@ -4,7 +4,7 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class ProjectNotFoundException extends Exception {
+public class ProjectNotFoundException extends ElementNotFoundException {
 
     public ProjectNotFoundException() {
         super();

@@ -1,0 +1,24 @@
+package edu.stanford.protege.metaproject.serialization;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import edu.stanford.protege.metaproject.api.OperationPrerequisite;
+
+import java.lang.reflect.Type;
+
+/**
+ * @author Rafael Gonçalves <br>
+ * Stanford Center for Biomedical Informatics Research
+ */
+public class OperationPrerequisiteSerializer<E> implements JsonSerializer<OperationPrerequisite<E>> {
+
+    @Override
+    public JsonElement serialize(OperationPrerequisite prerequisite, Type type, JsonSerializationContext context) {
+        JsonObject object = new JsonObject();
+        object.add("prerequisite", context.serialize(prerequisite.getPrerequisite()));
+        object.addProperty("modifier", prerequisite.getModifier().toString());
+        return object;
+    }
+}
