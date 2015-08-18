@@ -16,12 +16,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class OperationImpl<T> implements Serializable, Operation<T> {
-    private static final long serialVersionUID = -3660230416713349013L;
-    private final Id id;
+public final class OperationImpl implements Operation, Serializable {
+    private static final long serialVersionUID = 878905616314595481L;
+    private final OperationId id;
     private final Name name;
     private final Description description;
-    private final ImmutableSet<OperationPrerequisite<T>> prerequisites;
+    private final ImmutableSet<OperationPrerequisite> prerequisites;
 
     /**
      * Constructor
@@ -30,11 +30,11 @@ public final class OperationImpl<T> implements Serializable, Operation<T> {
      * @param description  Operation description
      * @param prerequisites Operation prerequisites
      */
-    public OperationImpl(Id id, Name operationName, Description description, Set<OperationPrerequisite<T>> prerequisites) {
+    public OperationImpl(OperationId id, Name operationName, Description description, Set<OperationPrerequisite> prerequisites) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(operationName);
         this.description = checkNotNull(description);
-        ImmutableSet<OperationPrerequisite<T>> prerequisitesCopy = new ImmutableSet.Builder<OperationPrerequisite<T>>().addAll(checkNotNull(prerequisites)).build();
+        ImmutableSet<OperationPrerequisite> prerequisitesCopy = new ImmutableSet.Builder<OperationPrerequisite>().addAll(checkNotNull(prerequisites)).build();
         this.prerequisites = checkNotNull(prerequisitesCopy);
     }
 
@@ -44,7 +44,7 @@ public final class OperationImpl<T> implements Serializable, Operation<T> {
      * @return Operation identifier
      */
     @Override
-    public Id getId() {
+    public OperationId getId() {
         return id;
     }
 
@@ -74,7 +74,7 @@ public final class OperationImpl<T> implements Serializable, Operation<T> {
      * @return Set of operation prerequisites
      */
     @Override
-    public Set<OperationPrerequisite<T>> getPrerequisites() {
+    public Set<OperationPrerequisite> getPrerequisites() {
         return prerequisites;
     }
 

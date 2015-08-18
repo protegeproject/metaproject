@@ -6,8 +6,10 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Operation<T> extends AccessControlObject, HasDescription {
+public interface Operation extends AccessControlObject, HasName, HasDescription {
 
-    Set<OperationPrerequisite<T>> getPrerequisites();
+    OperationId getId();
+
+    Set<OperationPrerequisite> getPrerequisites();
 
 }

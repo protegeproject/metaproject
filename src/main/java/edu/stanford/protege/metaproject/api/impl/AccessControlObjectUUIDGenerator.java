@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
-import edu.stanford.protege.metaproject.api.AccessControlObjectId;
-import edu.stanford.protege.metaproject.api.AccessControlObjectIdGenerator;
+import edu.stanford.protege.metaproject.api.*;
 
 import java.util.UUID;
 
@@ -30,11 +29,51 @@ public final class AccessControlObjectUUIDGenerator implements AccessControlObje
     }
 
     /**
-     * Get a new random UUID identifier
+     * Get a new random UUID user identifier
      *
-     * @return Random UUID identifier
+     * @return Random UUID user identifier
      */
-    public AccessControlObjectId getId() {
-        return new AccessControlObjectIdImpl(UUID.randomUUID().toString());
+    @Override
+    public UserId getUserId() {
+        return new UserIdImpl(newUUID());
+    }
+
+    /**
+     * Get a new random UUID role identifier
+     *
+     * @return Random UUID role identifier
+     */
+    @Override
+    public RoleId getRoleId() {
+        return new RoleIdImpl(newUUID());
+    }
+
+    /**
+     * Get a new random UUID project identifier
+     *
+     * @return Random UUID project identifier
+     */
+    @Override
+    public ProjectId getProjectId() {
+        return new ProjectIdImpl(newUUID());
+    }
+
+    /**
+     * Get a new random UUID operation identifier
+     *
+     * @return Random UUID operation identifier
+     */
+    @Override
+    public OperationId getOperationId() {
+        return new OperationIdImpl(newUUID());
+    }
+
+    /**
+     * Convenience method to generate a new random UUID
+     *
+     * @return The string representing the generated UUID
+     */
+    private String newUUID() {
+        return UUID.randomUUID().toString();
     }
 }

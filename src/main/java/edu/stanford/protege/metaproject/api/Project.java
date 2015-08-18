@@ -6,12 +6,14 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Project extends AccessControlObject, HasDescription, HasAddress {
+public interface Project extends AccessControlObject, HasName, HasDescription, HasAddress {
 
-    User getOwner();
+    ProjectId getId();
 
-    Set<User> getAdministrators();
+    UserId getOwner();
 
-    boolean hasAdministrator(User user);
+    Set<UserId> getAdministrators();
+
+    boolean hasAdministrator(UserId user);
 
 }

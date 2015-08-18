@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class RoleManager implements Manager, Serializable {
-    private static final long serialVersionUID = 2125913277743700602L;
+    private static final long serialVersionUID = -6811413456868519795L;
     private static RoleManager instance = null;
     private static Set<Role> roles;
 
@@ -173,15 +173,15 @@ public final class RoleManager implements Manager, Serializable {
     }
 
     /**
-     * Add a project to the working projects of this role
+     * Add a project to the working projects of the given role
      *
      * @param role    Role
-     * @param project Project
+     * @param projectId Project identifier
      * @throws RoleNotFoundException    Role not found
      */
-    public void addProject(Role role, Project project) throws RoleNotFoundException {
-        Set<Project> projects = new HashSet<>();
-        projects.add(project);
+    public void addProject(Role role, ProjectId projectId) throws RoleNotFoundException {
+        Set<ProjectId> projects = new HashSet<>();
+        projects.add(projectId);
         addProjects(role, projects);
     }
 
@@ -189,13 +189,13 @@ public final class RoleManager implements Manager, Serializable {
      * Add a set of projects to the working projects of the given role
      *
      * @param role    Role
-     * @param projectIdSet  Set of projects
+     * @param projectIdSet  Set of project identifiers
      * @throws RoleNotFoundException    Role not found
      */
-    public void addProjects(Role role, Set<Project> projectIdSet) throws RoleNotFoundException {
+    public void addProjects(Role role, Set<ProjectId> projectIdSet) throws RoleNotFoundException {
         removeRole(role);
 
-        Set<Project> projects = role.getProjects();
+        Set<ProjectId> projects = role.getProjects();
         projects.addAll(projectIdSet);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), projects, role.getOperations());
@@ -206,11 +206,11 @@ public final class RoleManager implements Manager, Serializable {
      * Remove a project from the working projects of the given role
      *
      * @param role    Role
-     * @param project Project
+     * @param project Project identifier
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeProject(Role role, Project project) throws RoleNotFoundException {
-        Set<Project> projects = new HashSet<>();
+    public void removeProject(Role role, ProjectId project) throws RoleNotFoundException {
+        Set<ProjectId> projects = new HashSet<>();
         projects.add(project);
         removeProjects(role, projects);
     }
@@ -219,14 +219,14 @@ public final class RoleManager implements Manager, Serializable {
      * Remove a project from the working projects of the given role
      *
      * @param role    Role
-     * @param projectSet  Set of projects
+     * @param projectIds  Set of project identifiers
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeProjects(Role role, Set<Project> projectSet) throws RoleNotFoundException {
+    public void removeProjects(Role role, Set<ProjectId> projectIds) throws RoleNotFoundException {
         removeRole(role);
 
-        Set<Project> projects = role.getProjects();
-        projects.removeAll(projectSet);
+        Set<ProjectId> projects = role.getProjects();
+        projects.removeAll(projectIds);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), projects, role.getOperations());
         addRole(newRole);
@@ -236,12 +236,12 @@ public final class RoleManager implements Manager, Serializable {
      * Add an operation to the permitted operations of the given role
      *
      * @param role    Role
-     * @param operation   Operation
+     * @param operationId   Operation identifier
      * @throws RoleNotFoundException    Role not found
      */
-    public void addOperation(Role role, Operation operation) throws RoleNotFoundException {
-        Set<Operation> operations = new HashSet<>();
-        operations.add(operation);
+    public void addOperation(Role role, OperationId operationId) throws RoleNotFoundException {
+        Set<OperationId> operations = new HashSet<>();
+        operations.add(operationId);
         addOperations(role, operations);
     }
 
@@ -249,14 +249,14 @@ public final class RoleManager implements Manager, Serializable {
      * Add a set of operations to the permitted operations of the given role
      *
      * @param role    Role
-     * @param operationSet    Set of operations
+     * @param operationIds    Set of operation identifiers
      * @throws RoleNotFoundException    Role not found
      */
-    public void addOperations(Role role, Set<Operation> operationSet) throws RoleNotFoundException {
+    public void addOperations(Role role, Set<OperationId> operationIds) throws RoleNotFoundException {
         removeRole(role);
 
-        Set<Operation> operations = role.getOperations();
-        operations.addAll(operationSet);
+        Set<OperationId> operations = role.getOperations();
+        operations.addAll(operationIds);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), role.getProjects(), operations);
         addRole(newRole);
@@ -266,12 +266,12 @@ public final class RoleManager implements Manager, Serializable {
      * Remove an operation from the permitted operations of the given role
      *
      * @param role    Role
-     * @param operation   Operation identifier
+     * @param operationId   Operation identifier
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeOperation(Role role, Operation operation) throws RoleNotFoundException {
-        Set<Operation> operations = new HashSet<>();
-        operations.add(operation);
+    public void removeOperation(Role role, OperationId operationId) throws RoleNotFoundException {
+        Set<OperationId> operations = new HashSet<>();
+        operations.add(operationId);
         removeOperations(role, operations);
     }
 
@@ -279,14 +279,14 @@ public final class RoleManager implements Manager, Serializable {
      * Remove a set of operations from the permitted operations of the given role
      *
      * @param role    Role
-     * @param operationSet    Set of operations
+     * @param operationIds    Set of operation identifiers
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeOperations(Role role, Set<Operation> operationSet) throws RoleNotFoundException {
+    public void removeOperations(Role role, Set<OperationId> operationIds) throws RoleNotFoundException {
         removeRole(role);
 
-        Set<Operation> operations = role.getOperations();
-        operations.removeAll(operationSet);
+        Set<OperationId> operations = role.getOperations();
+        operations.removeAll(operationIds);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), role.getProjects(), operations);
         addRole(newRole);

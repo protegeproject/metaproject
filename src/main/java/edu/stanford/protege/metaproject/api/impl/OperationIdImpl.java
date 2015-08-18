@@ -2,7 +2,8 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.Name;
+import edu.stanford.protege.metaproject.api.OperationId;
+import edu.stanford.protege.metaproject.api.ProjectId;
 
 import java.io.Serializable;
 
@@ -12,41 +13,41 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class AccessControlObjectName implements Name, Serializable {
-    private static final long serialVersionUID = 5289508220440645820L;
-    private final String name;
+public final class OperationIdImpl implements OperationId, Serializable {
+    private static final long serialVersionUID = -6583907578595840160L;
+    private final String id;
 
     /**
      * Constructor
      *
-     * @param name    Name
+     * @param id    Identifier
      */
-    public AccessControlObjectName(String name) {
-        this.name = checkNotNull(name);
+    public OperationIdImpl(String id) {
+        this.id = checkNotNull(id);
     }
 
     @Override
     public String get() {
-        return name;
+        return id;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AccessControlObjectName that = (AccessControlObjectName) o;
-        return Objects.equal(name, that.name);
+        OperationIdImpl that = (OperationIdImpl) o;
+        return Objects.equal(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hashCode(id);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("name", name)
+                .add("id", id)
                 .toString();
     }
 }

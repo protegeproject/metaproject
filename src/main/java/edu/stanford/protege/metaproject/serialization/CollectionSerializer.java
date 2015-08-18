@@ -10,7 +10,7 @@ import java.util.Collection;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class CollectionSerializer<E> implements JsonSerializer<Collection<E>> {
+public class CollectionSerializer<E> implements JsonSerializer<Collection<E>>, JsonDeserializer<Collection<E>> {
 
     @Override
     public JsonElement serialize(Collection<E> collection, Type type, JsonSerializationContext context) {
@@ -19,5 +19,26 @@ public class CollectionSerializer<E> implements JsonSerializer<Collection<E>> {
             result.add(context.serialize(item));
         }
         return new JsonPrimitive(result.toString());
+    }
+
+    @Override
+    public Collection<E> deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+        JsonArray items = (JsonArray) new JsonParser().parse(element.getAsString());
+        ParameterizedType deserializationCollection = ((ParameterizedType) type);
+        Type collectionItemType = deserializationCollection.getActualTypeArguments()[0];
+        Collection<E> list;
+
+        try {
+            list = (Collection<E>)((Class<?>) deserializationCollection.getRawType()).newInstance();
+            for(JsonElement e : items){
+                list.add((E)context.deserialize(e, collectionItemType));
+            }
+        } catch (InstantiationException e) {
+            throw new JsonParseException(e);
+        } catch (IllegalAccessException e) {
+            throw new JsonParseException(e);
+        }
+
+        return list;
     }
 }

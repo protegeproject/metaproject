@@ -3,6 +3,7 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.OperationPrerequisite;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import java.io.Serializable;
@@ -15,27 +16,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class OWLEntityOperationPrerequisite implements OperationPrerequisite<OWLEntity>, Serializable {
-    private static final long serialVersionUID = 2901374432754330453L;
-    private final OWLEntity prerequisite;
-    private final OperationPrerequisiteModifier modifier;
+public final class OWLEntityOperationPrerequisite implements OperationPrerequisite, Serializable {
+    private static final long serialVersionUID = 2951557764655420242L;
+    private final IRI prerequisite;
+    private final Modifier modifier;
 
     /**
      * Constructor
      *
-     * @param prerequisite  Operation prerequisite
+     * @param prerequisite  Prerequisite OWL entity IRI
      * @param modifier  Operation prerequisite modifier
      */
-    public OWLEntityOperationPrerequisite(OWLEntity prerequisite, OperationPrerequisiteModifier modifier) {
+    public OWLEntityOperationPrerequisite(IRI prerequisite, Modifier modifier) {
         this.prerequisite = checkNotNull(prerequisite);
         this.modifier = checkNotNull(modifier);
     }
 
-    public OWLEntity getPrerequisite() {
+    public IRI getPrerequisite() {
         return prerequisite;
     }
 
-    public OperationPrerequisiteModifier getModifier() {
+    public Modifier getModifier() {
         return modifier;
     }
 

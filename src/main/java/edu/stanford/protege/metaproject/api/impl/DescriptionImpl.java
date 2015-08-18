@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.Address;
+import edu.stanford.protege.metaproject.api.Description;
 
 import java.io.Serializable;
 
@@ -12,41 +12,41 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class AccessControlObjectAddress implements Address, Serializable {
-    private static final long serialVersionUID = -5851757448086319218L;
-    private final String address;
+public final class DescriptionImpl implements Description, Serializable {
+    private static final long serialVersionUID = 6883430166673686068L;
+    private final String description;
 
     /**
      * Constructor
      *
-     * @param address    Address
+     * @param description    Description
      */
-    public AccessControlObjectAddress(String address) {
-        this.address = checkNotNull(address);
+    public DescriptionImpl(String description) {
+        this.description = checkNotNull(description);
     }
 
     @Override
     public String get() {
-        return address;
+        return description;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AccessControlObjectAddress that = (AccessControlObjectAddress) o;
-        return Objects.equal(address, that.address);
+        DescriptionImpl that = (DescriptionImpl) o;
+        return Objects.equal(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(address);
+        return Objects.hashCode(description);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("address", address)
+                .add("description", description)
                 .toString();
     }
 }

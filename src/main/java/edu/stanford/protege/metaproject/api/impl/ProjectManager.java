@@ -184,12 +184,12 @@ public final class ProjectManager implements Manager {
      * Change the owner of the specified project
      *
      * @param project   Project
-     * @param user    New owner
+     * @param userId    New owner user identifier
      * @throws ProjectNotFoundException Project not found
      */
-    public void changeOwner(Project project, User user) throws ProjectNotFoundException {
+    public void changeOwner(Project project, UserId userId) throws ProjectNotFoundException {
         removeProject(project);
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), checkNotNull(user), project.getAdministrators());
+        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), checkNotNull(userId), project.getAdministrators());
         addProject(newProject);
     }
 
@@ -210,12 +210,12 @@ public final class ProjectManager implements Manager {
      * Add an administrator user to the specified project
      *
      * @param project   Project
-     * @param user    Administrator user to be added
+     * @param userId    Administrator user identifier user to be added
      * @throws ProjectNotFoundException Project not found
      */
-    public void addAdministrator(Project project, User user) throws ProjectNotFoundException {
-        Set<User> users = new HashSet<>();
-        users.add(checkNotNull(user));
+    public void addAdministrator(Project project, UserId userId) throws ProjectNotFoundException {
+        Set<UserId> users = new HashSet<>();
+        users.add(checkNotNull(userId));
         addAdministrators(checkNotNull(project), users);
     }
 
@@ -226,10 +226,10 @@ public final class ProjectManager implements Manager {
      * @param users    Set of user identifiers of administrators to be added
      * @throws ProjectNotFoundException Project not found
      */
-    public void addAdministrators(Project project, Set<User> users) throws ProjectNotFoundException {
+    public void addAdministrators(Project project, Set<UserId> users) throws ProjectNotFoundException {
         removeProject(project);
 
-        Set<User> administrators = project.getAdministrators();
+        Set<UserId> administrators = project.getAdministrators();
         administrators.addAll(checkNotNull(users));
 
         Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
@@ -240,12 +240,12 @@ public final class ProjectManager implements Manager {
      * Remove an administrator user from the specified project
      *
      * @param project   Project
-     * @param user    User identifier of administrator to be removed
+     * @param userId    User identifier of administrator to be removed
      * @throws ProjectNotFoundException Project not found
      */
-    public void removeAdministrator(Project project, User user) throws ProjectNotFoundException {
-        Set<User> users = new HashSet<>();
-        users.add(checkNotNull(user));
+    public void removeAdministrator(Project project, UserId userId) throws ProjectNotFoundException {
+        Set<UserId> users = new HashSet<>();
+        users.add(checkNotNull(userId));
         removeAdministrators(checkNotNull(project), users);
     }
 
@@ -256,10 +256,10 @@ public final class ProjectManager implements Manager {
      * @param users    Set of user identifiers of administrators to be removed
      * @throws ProjectNotFoundException Project not found
      */
-    public void removeAdministrators(Project project, Set<User> users) throws ProjectNotFoundException {
+    public void removeAdministrators(Project project, Set<UserId> users) throws ProjectNotFoundException {
         removeProject(project);
 
-        Set<User> administrators = project.getAdministrators();
+        Set<UserId> administrators = project.getAdministrators();
         administrators.removeAll(checkNotNull(users));
 
         Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);

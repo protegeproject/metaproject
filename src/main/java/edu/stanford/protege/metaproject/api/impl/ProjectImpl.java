@@ -17,14 +17,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class ProjectImpl implements Serializable, Project {
-    private static final long serialVersionUID = -4571770115586987291L;
-    private final Id id;
+public final class ProjectImpl implements Project, Serializable {
+    private static final long serialVersionUID = -2832186869913699658L;
+    private final ProjectId id;
     private final Name name;
     private final Description description;
     private final Address address;
-    private final User owner;
-    private final ImmutableSet<User> administrators;
+    private final UserId owner;
+    private final ImmutableSet<UserId> administrators;
 
     /**
      * Constructor
@@ -36,14 +36,14 @@ public final class ProjectImpl implements Serializable, Project {
      * @param owner Owner of the project
      * @param administrators    Administrators of the project
      */
-    public ProjectImpl(Id id, Name name, Description description, Address address, User owner, Set<User> administrators) {
+    public ProjectImpl(ProjectId id, Name name, Description description, Address address, UserId owner, Set<UserId> administrators) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
         this.address = checkNotNull(address);
         this.owner = checkNotNull(owner);
 
-        ImmutableSet<User> administratorsCopy = new ImmutableSet.Builder<User>().addAll(checkNotNull(administrators)).build();
+        ImmutableSet<UserId> administratorsCopy = new ImmutableSet.Builder<UserId>().addAll(checkNotNull(administrators)).build();
         this.administrators = checkNotNull(administratorsCopy);
     }
 
@@ -53,7 +53,7 @@ public final class ProjectImpl implements Serializable, Project {
      * @return Project identifier
      */
     @Override
-    public Id getId() {
+    public ProjectId getId() {
         return id;
     }
 
@@ -93,7 +93,7 @@ public final class ProjectImpl implements Serializable, Project {
      * @return Project owner user
      */
     @Override
-    public User getOwner() {
+    public UserId getOwner() {
         return owner;
     }
 
@@ -103,19 +103,19 @@ public final class ProjectImpl implements Serializable, Project {
      * @return Set of users that administrate the project
      */
     @Override
-    public Set<User> getAdministrators() {
+    public Set<UserId> getAdministrators() {
         return administrators;
     }
 
     /**
      * Check whether the specified user is an administrator of the project
      *
-     * @param user  User
+     * @param userId  User identifier
      * @return true if user is an administrator of this project, false otherwise
      */
     @Override
-    public boolean hasAdministrator(User user) {
-        return administrators.contains(user);
+    public boolean hasAdministrator(UserId userId) {
+        return administrators.contains(userId);
     }
 
     @Override

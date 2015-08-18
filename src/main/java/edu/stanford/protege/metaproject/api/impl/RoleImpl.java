@@ -17,12 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class RoleImpl implements Role, Serializable {
-    private static final long serialVersionUID = 352991724988559697L;
-    private final Id id;
+    private static final long serialVersionUID = -7184439550656107816L;
+    private final RoleId id;
     private final Name name;
     private final Description description;
-    private final ImmutableSet<Project> projects;
-    private final ImmutableSet<Operation> operations;
+    private final ImmutableSet<ProjectId> projects;
+    private final ImmutableSet<OperationId> operations;
 
     /**
      * Constructor
@@ -33,15 +33,15 @@ public final class RoleImpl implements Role, Serializable {
      * @param projects  Set of projects within which the specified operations can be performed
      * @param operations    Set of operations that can be performed on the given projects
      */
-    public RoleImpl(Id id, Name name, Description description, Set<Project> projects, Set<Operation> operations) {
+    public RoleImpl(RoleId id, Name name, Description description, Set<ProjectId> projects, Set<OperationId> operations) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
 
-        ImmutableSet<Project> projectsCopy = new ImmutableSet.Builder<Project>().addAll(checkNotNull(projects)).build();
+        ImmutableSet<ProjectId> projectsCopy = new ImmutableSet.Builder<ProjectId>().addAll(checkNotNull(projects)).build();
         this.projects = checkNotNull(projectsCopy);
 
-        ImmutableSet<Operation> operationsCopy = new ImmutableSet.Builder<Operation>().addAll(checkNotNull(operations)).build();
+        ImmutableSet<OperationId> operationsCopy = new ImmutableSet.Builder<OperationId>().addAll(checkNotNull(operations)).build();
         this.operations = checkNotNull(operationsCopy);
     }
 
@@ -51,7 +51,7 @@ public final class RoleImpl implements Role, Serializable {
      * @return Role identifier
      */
     @Override
-    public Id getId() {
+    public RoleId getId() {
         return id;
     }
 
@@ -80,7 +80,7 @@ public final class RoleImpl implements Role, Serializable {
      * @return Set of project identifiers
      */
     @Override
-    public Set<Project> getProjects() {
+    public Set<ProjectId> getProjects() {
         return projects;
     }
 
@@ -90,7 +90,7 @@ public final class RoleImpl implements Role, Serializable {
      * @return Set of operations identifiers
      */
     @Override
-    public Set<Operation> getOperations() {
+    public Set<OperationId> getOperations() {
         return operations;
     }
 

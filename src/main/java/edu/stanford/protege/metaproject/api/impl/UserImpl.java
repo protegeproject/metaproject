@@ -2,10 +2,7 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.Address;
-import edu.stanford.protege.metaproject.api.Id;
-import edu.stanford.protege.metaproject.api.Name;
-import edu.stanford.protege.metaproject.api.User;
+import edu.stanford.protege.metaproject.api.*;
 
 import java.io.Serializable;
 
@@ -18,8 +15,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class UserImpl implements User, Serializable {
-    private static final long serialVersionUID = -6290397990299147865L;
-    private final Id id;
+    private static final long serialVersionUID = 7145049739576315983L;
+    private final UserId id;
     private final Name name;
     private final Address emailAddress;
 
@@ -30,7 +27,7 @@ public final class UserImpl implements User, Serializable {
      * @param name  User display name
      * @param emailAddress  Email address
      */
-    public UserImpl(Id id, Name name, Address emailAddress) {
+    public UserImpl(UserId id, Name name, Address emailAddress) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.emailAddress = checkNotNull(emailAddress);
@@ -42,7 +39,7 @@ public final class UserImpl implements User, Serializable {
      * @return User identifier
      */
     @Override
-    public Id getId() {
+    public UserId getId() {
         return id;
     }
 

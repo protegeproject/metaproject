@@ -1,4 +1,4 @@
-package edu.stanford.protege.metaproject.deserialization;
+package edu.stanford.protege.metaproject.serialization;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.*;
@@ -12,7 +12,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class ImmutableSetDeserializer<E> implements JsonDeserializer<ImmutableSet<E>> {
+public class ImmutableSetSerializer<E> implements JsonDeserializer<ImmutableSet<E>> {
 
     @Override
     public ImmutableSet<E> deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {

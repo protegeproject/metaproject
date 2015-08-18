@@ -6,6 +6,12 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface AccessControlObjectIdGenerator extends IdGenerator {
 
-    AccessControlObjectId getId();
+    UserId getUserId();
+
+    RoleId getRoleId();
+
+    ProjectId getProjectId();
+
+    OperationId getOperationId();
 
 }

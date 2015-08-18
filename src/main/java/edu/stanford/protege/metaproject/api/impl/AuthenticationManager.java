@@ -63,14 +63,12 @@ public class AuthenticationManager implements Manager {
      * @param userId    User identifier
      * @param password  Password
      * @return true if user and password are valid w.r.t. the authentication details, false otherwise
+     * @throws UserNotRegisteredException   User is not registered
      */
-    public boolean hasValidCredentials(Id userId, Password password) {
-        for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
-            if(userDetails.getId().equals(userId)) {
-                if(userDetails.getPassword().equals(password)) {
-                    return true;
-                }
-            }
+    public boolean hasValidCredentials(Id userId, Password password) throws UserNotRegisteredException {
+        UserAuthenticationDetails userDetails = getUserDetails(userId);
+        if(userDetails.getPassword().equals(password)) {
+            return true;
         }
         return false;
     }
@@ -132,6 +130,28 @@ public class AuthenticationManager implements Manager {
         }
         userAuthenticationDetails.remove(toDelete);
         userAuthenticationDetails.add(getUserAuthenticationDetails(userId, password, toDelete.getSalt()));
+    }
+
+    /**
+     * Get the authentication details of the user with the given user identifier
+     *
+     * @param userId    User identifier
+     * @return Authentication details of user
+     * @throws UserNotRegisteredException   User is not registered
+     */
+    private UserAuthenticationDetails getUserDetails(Id userId) throws UserNotRegisteredException {
+        UserAuthenticationDetails details = null;
+        for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
+            if (userDetails.getId().equals(userId)) {
+                details = userDetails;
+                break;
+            }
+        }
+        if(details == null) {
+            throw new UserNotRegisteredException("The specified user identifier does not correspond" +
+                    "to a register user.");
+        }
+        return details;
     }
 
     /**

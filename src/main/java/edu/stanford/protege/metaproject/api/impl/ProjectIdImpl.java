@@ -2,8 +2,7 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.AccessControlObjectId;
-import edu.stanford.protege.metaproject.api.Id;
+import edu.stanford.protege.metaproject.api.ProjectId;
 
 import java.io.Serializable;
 
@@ -13,8 +12,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class AccessControlObjectIdImpl implements AccessControlObjectId, Serializable {
-    private static final long serialVersionUID = 5469392154934892558L;
+public final class ProjectIdImpl implements ProjectId, Serializable {
+    private static final long serialVersionUID = 18601776240449995L;
     private final String id;
 
     /**
@@ -22,7 +21,7 @@ public final class AccessControlObjectIdImpl implements AccessControlObjectId, S
      *
      * @param id    Identifier
      */
-    public AccessControlObjectIdImpl(String id) {
+    public ProjectIdImpl(String id) {
         this.id = checkNotNull(id);
     }
 
@@ -35,7 +34,7 @@ public final class AccessControlObjectIdImpl implements AccessControlObjectId, S
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AccessControlObjectIdImpl that = (AccessControlObjectIdImpl) o;
+        ProjectIdImpl that = (ProjectIdImpl) o;
         return Objects.equal(id, that.id);
     }
 
