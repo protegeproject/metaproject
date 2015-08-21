@@ -1,13 +1,17 @@
 package edu.stanford.protege.metaproject.api;
 
+import java.util.Optional;
+
 /**
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface UserAuthenticationDetails extends HasId {
+public interface UserAuthenticationDetails {
 
-    Password getPassword();
+    UserId getUserId();
 
-    Salt getSalt();
+    SaltedPassword getPassword();
+
+    Optional<Salt> getSalt();
 
 }

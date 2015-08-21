@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.OperationNotFoundException;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -18,45 +19,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class OperationManager implements Manager {
-    private static OperationManager instance = null;
-    private static Set<Operation> operations;
+public class OperationManager implements Manager, Serializable {
+    private static final long serialVersionUID = 4954396447342746105L;
+    private Set<Operation> operations;
 
     /**
-     * Private constructor
+     * Constructor
      *
      * @param operations    Set of operations
      */
-    private OperationManager(Set<Operation> operations) {
+    public OperationManager(Set<Operation> operations) {
         this.operations = checkNotNull(operations);
     }
 
     /**
-     * Get the singleton instance of the operation manager. If the instance has not been created, or the given set of operations is different
-     * than that in the existing instance, then a new operation manager instance is created with the given operation set
-     *
-     * @param operationSet   Set of operations
-     * @return Operation manager
+     * No-arguments constructor
      */
-    public static OperationManager getInstance(Set<Operation> operationSet) {
-        if(instance == null || !operations.equals(operationSet)) {
-            instance = new OperationManager(operationSet);
-        }
-        return instance;
-    }
-
-    /**
-     * Get the singleton instance of the operation manager. If the instance has not been created, then an operation manager instance is
-     * created with an empty set of operations
-     *
-     * @return Operation manager
-     */
-    public static OperationManager getInstance() {
-        if(instance == null) {
-            instance = new OperationManager(new HashSet<>());
-        }
-        return instance;
-    }
+    public OperationManager() { }
 
     /**
      * Add an operation

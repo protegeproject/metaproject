@@ -11,24 +11,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class AccessControlServerConfiguration implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = 370532534982206740L;
+    private static final long serialVersionUID = 3203353307534792442L;
     private final Host host;
     private final Policy policy;
-    private final OntologyTermIdGenerator ontologyTermIdGenerator;
-    private final AccessControlObjectIdGenerator accessControlObjectIdGenerator;
+    private final OntologyTermIdStatus ontologyTermIdStatus;
 
     /**
      * Package-private constructor; use builder
      *
      * @param host    Host
-     * @param ontologyTermIdGenerator
-     * @param accessControlObjectIdGenerator
+     * @param policy    Access control policy
+     * @param ontologyTermIdStatus  Ontology term identifier status
      */
-    AccessControlServerConfiguration(Host host, Policy policy, OntologyTermIdGenerator ontologyTermIdGenerator, AccessControlObjectIdGenerator accessControlObjectIdGenerator) {
+    AccessControlServerConfiguration(Host host, Policy policy, OntologyTermIdStatus ontologyTermIdStatus) {
         this.host = checkNotNull(host);
         this.policy = checkNotNull(policy);
-        this.ontologyTermIdGenerator = checkNotNull(ontologyTermIdGenerator);
-        this.accessControlObjectIdGenerator = checkNotNull(accessControlObjectIdGenerator);
+        this.ontologyTermIdStatus = checkNotNull(ontologyTermIdStatus);
     }
 
     @Override
@@ -42,48 +40,36 @@ public final class AccessControlServerConfiguration implements ServerConfigurati
     }
 
     @Override
-    public OntologyTermIdGenerator getOntologyTermIdGenerator() {
-        return ontologyTermIdGenerator;
-    }
-
-    @Override
-    public AccessControlObjectIdGenerator getAccessControlObjectIdGenerator() {
-        return accessControlObjectIdGenerator;
+    public OntologyTermIdStatus getOntologyTermIdStatus() {
+        return ontologyTermIdStatus;
     }
 
 
     /**
-     * @author Rafael Gonçalves <br>
-     * Stanford Center for Biomedical Informatics Research
+     * Access control server configuration builder
      */
-    public static class AccessControlServerConfigurationBuilder {
+    public static class Builder {
         private Host host;
         private Policy policy;
-        private OntologyTermIdGenerator ontologyTermIdGenerator;
-        private AccessControlObjectIdGenerator accessControlObjectIdGenerator;
+        private OntologyTermIdStatus ontologyTermIdStatus;
 
-        public AccessControlServerConfigurationBuilder setHost(Host host) {
+        public Builder setHost(Host host) {
             this.host = host;
             return this;
         }
 
-        public AccessControlServerConfigurationBuilder setPolicy(Policy policy) {
+        public Builder setPolicy(Policy policy) {
             this.policy = policy;
             return this;
         }
 
-        public AccessControlServerConfigurationBuilder setOntologyTermIdGenerator(OntologyTermIdGenerator ontologyTermIdGenerator) {
-            this.ontologyTermIdGenerator = ontologyTermIdGenerator;
-            return this;
-        }
-
-        public AccessControlServerConfigurationBuilder setAccessControlObjectIdGenerator(AccessControlObjectIdGenerator accessControlObjectIdGenerator) {
-            this.accessControlObjectIdGenerator = accessControlObjectIdGenerator;
+        public Builder setOntologyTermIdStatus(OntologyTermIdStatus ontologyTermIdStatus) {
+            this.ontologyTermIdStatus = ontologyTermIdStatus;
             return this;
         }
 
         public AccessControlServerConfiguration createAccessControlServerConfiguration() {
-            return new AccessControlServerConfiguration(host, policy, ontologyTermIdGenerator, accessControlObjectIdGenerator);
+            return new AccessControlServerConfiguration(host, policy, ontologyTermIdStatus);
         }
     }
 }

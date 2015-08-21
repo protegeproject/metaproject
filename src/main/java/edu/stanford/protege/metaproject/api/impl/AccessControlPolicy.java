@@ -21,48 +21,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class AccessControlPolicy implements Policy, Serializable {
-    private static final long serialVersionUID = -1697829350483129435L;
-    private static AccessControlPolicy instance = null;
-    private static Map<UserId,Set<RoleId>> userRoleMap = new HashMap<>();
+public class AccessControlPolicy implements Policy, Serializable {
+    private static final long serialVersionUID = 6660583481655821761L;
+    private Map<UserId,Set<RoleId>> userRoleMap = new HashMap<>();
 
-    private RoleManager roleManager = RoleManager.getInstance();
-    private OperationManager operationManager = OperationManager.getInstance();
-    private UserManager userManager = UserManager.getInstance();
-    private ProjectManager projectManager = ProjectManager.getInstance();
+    // access control objects managers
+    private RoleManager roleManager;
+    private OperationManager operationManager;
+    private UserManager userManager;
+    private ProjectManager projectManager;
 
     /**
-     * Private constructor
+     * Package-private constructor; use builder
      *
      * @param userRoleMap   Map of users to their roles
      */
-    private AccessControlPolicy(Map<UserId,Set<RoleId>> userRoleMap) {
+    AccessControlPolicy(Map<UserId,Set<RoleId>> userRoleMap, Set<Role> roles, Set<Operation> operations, Set<User> users, Set<Project> projects) {
         this.userRoleMap = checkNotNull(userRoleMap);
-    }
-
-    /**
-     * Get the singleton instance of the access control policy
-     *
-     * @param userRoles Map of users to their roles
-     * @return Access control policy
-     */
-    public static AccessControlPolicy getInstance(Map<UserId,Set<RoleId>> userRoles) {
-        if(instance == null || !userRoleMap.equals(userRoles)) {
-            instance = new AccessControlPolicy(userRoles);
-        }
-        return instance;
-    }
-
-    /**
-     * Get the singleton instance of the access control policy
-     *
-     * @return Access control policy
-     */
-    public static AccessControlPolicy getInstance() {
-        if(instance == null) {
-            instance = new AccessControlPolicy(new HashMap<>());
-        }
-        return instance;
+        this.roleManager = new RoleManager(checkNotNull(roles));
+        this.operationManager = new OperationManager(checkNotNull(operations));
+        this.userManager = new UserManager(checkNotNull(users));
+        this.projectManager = new ProjectManager(checkNotNull(projects));
     }
 
     /**
@@ -201,6 +180,42 @@ public final class AccessControlPolicy implements Policy, Serializable {
     }
 
     /**
+     * Get the policy role manager
+     *
+     * @return Role manager
+     */
+    public RoleManager getRoleManager() {
+        return roleManager;
+    }
+
+    /**
+     * Get the policy operation manager
+     *
+     * @return Operation manager
+     */
+    public OperationManager getOperationManager() {
+        return operationManager;
+    }
+
+    /**
+     * Get the policy user manager
+     *
+     * @return User manager
+     */
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    /**
+     * Get the policy project manager
+     *
+     * @return Project manager
+     */
+    public ProjectManager getProjectManager() {
+        return projectManager;
+    }
+
+    /**
      * Verify whether given user identifier(s) are registered in the access control policy, i.e., in the user-role map
      *
      * @param users   One or more user identifiers
@@ -256,5 +271,45 @@ public final class AccessControlPolicy implements Policy, Serializable {
                 .add("userManager", userManager)
                 .add("projectManager", projectManager)
                 .toString();
+    }
+
+    /**
+     * Builder for access control policies
+     */
+    public static class Builder {
+        private Map<UserId, Set<RoleId>> userRoleMap = new HashMap<>();
+        private Set<Role> roles = new HashSet<>();
+        private Set<Operation> operations = new HashSet<>();
+        private Set<User> users = new HashSet<>();
+        private Set<Project> projects = new HashSet<>();
+
+        public Builder setUserRoleMap(Map<UserId, Set<RoleId>> userRoleMap) {
+            this.userRoleMap = userRoleMap;
+            return this;
+        }
+
+        public Builder setRoles(Set<Role> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public Builder setOperations(Set<Operation> operations) {
+            this.operations = operations;
+            return this;
+        }
+
+        public Builder setUsers(Set<User> users) {
+            this.users = users;
+            return this;
+        }
+
+        public Builder setProjects(Set<Project> projects) {
+            this.projects = projects;
+            return this;
+        }
+
+        public AccessControlPolicy createAccessControlPolicy() {
+            return new AccessControlPolicy(userRoleMap, roles, operations, users, projects);
+        }
     }
 }

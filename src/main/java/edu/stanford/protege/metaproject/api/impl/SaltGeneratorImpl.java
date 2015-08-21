@@ -8,6 +8,8 @@ import edu.stanford.protege.metaproject.api.SaltGenerator;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * A generator of cryptographic salt
  *
@@ -16,22 +18,40 @@ import java.util.Random;
  */
 public final class SaltGeneratorImpl implements SaltGenerator {
     private static SaltGeneratorImpl instance = null;
+    private static final int DEFAULT_BYTE_LENGTH = 24;
     private final Random random = new SecureRandom();
-    private final int nrBytes = 16;
+    private final int nrBytes;
 
     /**
      * Constructor
+     *
+     * @param nrBytes   Salt byte length
      */
-    private SaltGeneratorImpl() { }
+    private SaltGeneratorImpl(int nrBytes) {
+        this.nrBytes = checkNotNull(nrBytes);
+    }
 
     /**
-     * Get the singleton instance of the salt generator
+     * Get the singleton instance of this salt generator that produces salts with the given byte length
      *
-     * @return Salt generator instance
+     * @param nrBytes   Number of bytes for the salt
+     * @return Instance of the salt generator
+     */
+    public static SaltGeneratorImpl getInstance(int nrBytes) {
+        if(instance == null) {
+            instance = new SaltGeneratorImpl(nrBytes);
+        }
+        return instance;
+    }
+
+    /**
+     * Get the singleton instance of this salt generator that produces salts with the default byte length (24 bytes)
+     *
+     * @return Instance of the salt generator
      */
     public static SaltGeneratorImpl getInstance() {
         if(instance == null) {
-            instance = new SaltGeneratorImpl();
+            instance = new SaltGeneratorImpl(DEFAULT_BYTE_LENGTH);
         }
         return instance;
     }

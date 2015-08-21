@@ -20,46 +20,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class RoleManager implements Manager, Serializable {
-    private static final long serialVersionUID = -6811413456868519795L;
-    private static RoleManager instance = null;
-    private static Set<Role> roles;
+public class RoleManager implements Manager, Serializable {
+    private static final long serialVersionUID = -507172932190933218L;
+    private Set<Role> roles = new HashSet<>();
 
     /**
-     * Private constructor
+     * Constructor
      *
      * @param roles Set of roles
      */
-    private RoleManager(Set<Role> roles) {
+    public RoleManager(Set<Role> roles) {
         this.roles = checkNotNull(roles);
     }
 
     /**
-     * Get the singleton instance of the role manager. If the instance has not been created, or the given set of roles is different
-     * than that in the existing instance, then a new role manager instance is created with the given role set
-     *
-     * @param roleSet   Set of roles
-     * @return Role manager
+     * No-arguments constructor
      */
-    public static RoleManager getInstance(Set<Role> roleSet) {
-        if(instance == null || !roles.equals(roleSet)) {
-            instance = new RoleManager(roleSet);
-        }
-        return instance;
-    }
-
-    /**
-     * Get the singleton instance of the role manager. If the instance has not been created, then a role manager instance is
-     * created with an empty set of roles
-     *
-     * @return Role manager
-     */
-    public static RoleManager getInstance() {
-        if(instance == null) {
-            instance = new RoleManager(new HashSet<>());
-        }
-        return instance;
-    }
+    public RoleManager() { }
 
     /**
      * Add the specified role

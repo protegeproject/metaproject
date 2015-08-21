@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
+import java.util.Optional;
+
 /**
  * A strategy for automatically generating unique term identifiers (i.e., classes,
  * object properties, data properties, annotation properties, and individuals)
@@ -43,5 +45,12 @@ public interface OntologyTermIdGenerator extends IdGenerator {
      * @return Individual identifier
      */
     Id getNextIndividualId();
+
+    /**
+     * Get the current status of ontology term identifiers, i.e., the last generated identifiers
+     *
+     * @return Ontology term identifier status instance
+     */
+    Optional<OntologyTermIdStatus> getCurrentOntologyTermIdStatus();
 
 }

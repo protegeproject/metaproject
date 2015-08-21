@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import edu.stanford.protege.metaproject.api.Property;

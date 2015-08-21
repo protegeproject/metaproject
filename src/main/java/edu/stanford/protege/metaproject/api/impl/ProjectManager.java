@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.ProjectNotFoundException;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -19,45 +20,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class ProjectManager implements Manager {
-    private static ProjectManager instance = null;
-    private static Set<Project> projects;
+public class ProjectManager implements Manager, Serializable {
+    private static final long serialVersionUID = 8029409556302800883L;
+    private Set<Project> projects = new HashSet<>();
 
     /**
-     * Private constructor
+     * Constructor
      *
      * @param projects  Set of projects
      */
-    private ProjectManager(Set<Project> projects) {
+    public ProjectManager(Set<Project> projects) {
         this.projects = checkNotNull(projects);
     }
 
     /**
-     * Get the singleton instance of the project manager. If the instance has not been created, or the given set of projects is different
-     * than that in the existing instance, then a new project manager instance is created with the given project set
-     *
-     * @param projectSet   Set of projects
-     * @return Project manager
+     * No-arguments constructor
      */
-    public static ProjectManager getInstance(Set<Project> projectSet) {
-        if(instance == null || !projects.equals(projectSet)) {
-            instance = new ProjectManager(projectSet);
-        }
-        return instance;
-    }
-
-    /**
-     * Get the singleton instance of the project manager. If the instance has not been created, then a project manager instance is
-     * created with an empty set of projects
-     *
-     * @return Project manager
-     */
-    public static ProjectManager getInstance() {
-        if(instance == null) {
-            instance = new ProjectManager(new HashSet<>());
-        }
-        return instance;
-    }
+    public ProjectManager() { }
 
     /**
      * Add a project to the project registry

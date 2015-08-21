@@ -20,11 +20,9 @@ public class ProjectSerializer implements JsonDeserializer<Project> {
         ProjectId projectId = new ProjectIdImpl(obj.getAsJsonPrimitive("id").getAsString());
         Name projectName = new NameImpl(obj.getAsJsonPrimitive("name").getAsString());
         Description projectDescription = new DescriptionImpl(obj.getAsJsonPrimitive("description").getAsString());
-        Address projectLocation = new AddressImpl(obj.getAsJsonPrimitive("location").getAsString());
-        UserId owner = context.deserialize(obj.get("owner"), UserId.class);
-
-        Type listOfTestObject = new TypeToken<ImmutableSet<UserId>>(){}.getType();
-        ImmutableSet<UserId> administrators = context.deserialize(obj.get("administrators"), listOfTestObject);
+        Address projectLocation = new AddressImpl(obj.getAsJsonPrimitive("address").getAsString());
+        UserId owner = new UserIdImpl(obj.getAsJsonPrimitive("owner").getAsString());
+        ImmutableSet<UserId> administrators = context.deserialize(obj.get("administrators"), new TypeToken<ImmutableSet<UserIdImpl>>(){}.getType());
         return new ProjectImpl(projectId, projectName, projectDescription, projectLocation, owner, administrators);
     }
 }

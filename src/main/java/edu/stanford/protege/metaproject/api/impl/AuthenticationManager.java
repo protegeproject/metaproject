@@ -3,10 +3,13 @@ package edu.stanford.protege.metaproject.api.impl;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
-import edu.stanford.protege.metaproject.api.exception.UserNotFoundException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
+import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -17,45 +20,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class AuthenticationManager implements Manager {
-    private static AuthenticationManager instance = null;
-    private static Set<UserAuthenticationDetails> userAuthenticationDetails;
-    private UserManager userManager = UserManager.getInstance();
+public class AuthenticationManager implements Manager, Serializable {
+    private static final long serialVersionUID = -4147595425630794400L;
+    private Set<UserAuthenticationDetails> userAuthenticationDetails = new HashSet<>();
+    private PasswordMaster passwordMaster = new PBKDF2PasswordMaster.Builder().createPasswordMaster();
 
     /**
-     * Private constructor
+     * Constructor
      *
      * @param userAuthenticationDetails   Set of user authentication details
      */
-    private AuthenticationManager(Set<UserAuthenticationDetails> userAuthenticationDetails) {
+    public AuthenticationManager(Set<UserAuthenticationDetails> userAuthenticationDetails) {
         this.userAuthenticationDetails = checkNotNull(userAuthenticationDetails);
     }
 
     /**
-     * Get the singleton instance of the authentication manager with the supplied set of user
-     * authentication details
-     *
-     * @param userAuthDetails   Set of user authentication details
-     * @return Authentication manager
+     * No-arguments constructor for a new, empty policy
      */
-    public static AuthenticationManager getInstance(Set<UserAuthenticationDetails> userAuthDetails) {
-        if(instance == null || !userAuthenticationDetails.equals(userAuthDetails)) {
-            instance = new AuthenticationManager(userAuthDetails);
-        }
-        return instance;
-    }
-
-    /**
-     * Get the singleton instance of authentication manager
-     *
-     * @return Authentication manager
-     */
-    public static AuthenticationManager getInstance() {
-        if(instance == null) {
-            instance = new AuthenticationManager(new HashSet<>());
-        }
-        return instance;
-    }
+    public AuthenticationManager() { }
 
     /**
      * Verify whether the given user-password pair is a valid (registered) one
@@ -65,31 +47,24 @@ public class AuthenticationManager implements Manager {
      * @return true if user and password are valid w.r.t. the authentication details, false otherwise
      * @throws UserNotRegisteredException   User is not registered
      */
-    public boolean hasValidCredentials(Id userId, Password password) throws UserNotRegisteredException {
+    public boolean hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException {
         UserAuthenticationDetails userDetails = getUserDetails(userId);
-        if(userDetails.getPassword().equals(password)) {
-            return true;
-        }
-        return false;
+        return passwordMaster.validatePassword(password, userDetails.getPassword());
     }
 
     /**
      * Register a user in the user registry
      *
-     * @param user  User
-     * @param password  Password
-     * @param salt  Salt
+     * @param userId  User identifier
+     * @param password  Plain text password
      * @throws UserAlreadyRegisteredException   User is already registered
-     * @throws UserAddressAlreadyInUseException User email address is already in use by another user
+     * @throws UserAddressAlreadyInUseException Email address is already in use by another user
      */
-    public void registerUser(Id user, Password password, Salt salt) throws UserAlreadyRegisteredException, UserAddressAlreadyInUseException {
-        if(isRegistered(user)) {
+    public void registerUser(UserId userId, PlainPassword password) throws UserAlreadyRegisteredException, UserAddressAlreadyInUseException {
+        if(isRegistered(userId)) {
             throw new UserAlreadyRegisteredException("The specified user is already registered with the authentication protocol. Recover or change the password.");
         }
-        if(isAddressUsed(user)) {
-            throw new UserAddressAlreadyInUseException("The specified user address is already used for authentication purposes by another user.");
-        }
-        userAuthenticationDetails.add(getUserAuthenticationDetails(user, password, salt));
+        userAuthenticationDetails.add(getHashedUserAuthenticationDetails(userId, password));
     }
 
     /**
@@ -98,16 +73,8 @@ public class AuthenticationManager implements Manager {
      * @param userId  User identifier
      * @throws UserNotRegisteredException   User is not registered
      */
-    public void removeUser(Id userId) throws UserNotRegisteredException {
-        if(!isRegistered(userId)) {
-            throw new UserNotRegisteredException("The specified user has not been registered.");
-        }
-        UserAuthenticationDetails toDelete = null;
-        for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
-            if(userDetails.getId().equals(userId)) {
-                toDelete = userDetails;
-            }
-        }
+    public void removeUser(UserId userId) throws UserNotRegisteredException {
+        UserAuthenticationDetails toDelete = getUserDetails(userId);
         userAuthenticationDetails.remove(toDelete);
     }
 
@@ -118,18 +85,15 @@ public class AuthenticationManager implements Manager {
      * @param password  New password
      * @throws UserNotRegisteredException   User is not registered
      */
-    public void changePassword(Id userId, Password password) throws UserNotRegisteredException {
-        if(!isRegistered(userId)) {
-            throw new UserNotRegisteredException("The specified user has not been registered.");
-        }
-        UserAuthenticationDetails toDelete = null;
-        for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
-            if(userDetails.getId().equals(userId)) {
-                toDelete = userDetails;
-            }
-        }
-        userAuthenticationDetails.remove(toDelete);
-        userAuthenticationDetails.add(getUserAuthenticationDetails(userId, password, toDelete.getSalt()));
+    public void changePassword(UserId userId, PlainPassword password) throws UserNotRegisteredException {
+        UserAuthenticationDetails userDetails = getUserDetails(userId);
+        changePassword(userDetails, password);
+    }
+
+    public void changePassword(UserAuthenticationDetails userDetails, PlainPassword password) {
+        userAuthenticationDetails.remove(userDetails);
+        UserAuthenticationDetails newUserDetails = getHashedUserAuthenticationDetails(userDetails.getUserId(), password);
+        userAuthenticationDetails.add(newUserDetails);
     }
 
     /**
@@ -139,52 +103,29 @@ public class AuthenticationManager implements Manager {
      * @return Authentication details of user
      * @throws UserNotRegisteredException   User is not registered
      */
-    private UserAuthenticationDetails getUserDetails(Id userId) throws UserNotRegisteredException {
+    private UserAuthenticationDetails getUserDetails(UserId userId) throws UserNotRegisteredException {
         UserAuthenticationDetails details = null;
         for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
-            if (userDetails.getId().equals(userId)) {
+            if (userDetails.getUserId().equals(userId)) {
                 details = userDetails;
                 break;
             }
         }
         if(details == null) {
-            throw new UserNotRegisteredException("The specified user identifier does not correspond" +
-                    "to a register user.");
+            throw new UserNotRegisteredException("The specified user identifier does not correspond to a registered user.");
         }
         return details;
     }
 
     /**
-     * Verify whether a given user is already registered
+     * Check whether a given user is already registered
      *
      * @param userId  User identifier
      * @return true if user is registered, false otherwise
      */
-    public boolean isRegistered(Id userId) {
+    public boolean isRegistered(UserId userId) {
         for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
-            if(userDetails.getId().equals(userId)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Verify whether the email address of the given user is already being used by another user
-     *
-     * @param id   User identifier
-     * @return true if email address is used by some other user, false otherwise
-     */
-    public boolean isAddressUsed(Id id) {
-        User user = null;
-        try {
-            user = userManager.getUser(id);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        }
-        Address email = user.getAddress();
-        for(User u : userManager.getUsers()) {
-            if(u.getAddress().equals(email)) {
+            if(userDetails.getUserId().equals(userId)) {
                 return true;
             }
         }
@@ -196,17 +137,26 @@ public class AuthenticationManager implements Manager {
      *
      * @param userId    User identifier
      * @param password  Password
-     * @param salt  Salt
      * @return Instance of UserAuthenticationDetails
      */
-    private UserAuthenticationDetails getUserAuthenticationDetails(Id userId, Password password, Salt salt) {
-        return new UserAuthenticationDetailsImpl(userId, password, salt);
+    private UserAuthenticationDetails getHashedUserAuthenticationDetails(UserId userId, Password password) {
+        SaltedPassword passwordHash = passwordMaster.createHash(password.getPassword());
+        return new HashedUserAuthenticationDetails(userId, passwordHash, Optional.of(passwordHash.getSalt()));
+    }
+
+    /**
+     * Get all entries of user authentication details
+     *
+     * @return Set of user authentication details
+     */
+    public Set<UserAuthenticationDetails> getUserAuthenticationDetails() {
+        return userAuthenticationDetails;
     }
 
     @Override
     public boolean exists(Id userId) {
         for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
-            if(userDetails.getId().equals(userId)) {
+            if(userDetails.getUserId().equals(userId)) {
                 return true;
             }
         }

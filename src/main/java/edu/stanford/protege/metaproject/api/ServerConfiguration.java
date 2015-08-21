@@ -23,17 +23,10 @@ public interface ServerConfiguration extends Configuration {
     Policy getPolicy();
 
     /**
-     * Get the ontology term identifier generator
+     * Get the ontology term identifier status, which contains the last generated identifiers and/or their prefixes
      *
-     * @return Ontology term identifier generator instance
+     * @return Ontology term identifier status instance
      */
-    OntologyTermIdGenerator getOntologyTermIdGenerator();
-
-    /**
-     * Get the access control object identifier generator
-     *
-     * @return Access control object identifier generator
-     */
-    AccessControlObjectIdGenerator getAccessControlObjectIdGenerator();
+    OntologyTermIdStatus getOntologyTermIdStatus();
 
 }

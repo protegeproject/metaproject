@@ -2,7 +2,9 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import edu.stanford.protege.metaproject.api.Id;
 import edu.stanford.protege.metaproject.api.OntologyTermIdGenerator;
+import edu.stanford.protege.metaproject.api.OntologyTermIdStatus;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -54,6 +56,11 @@ public final class OntologyTermUUIDGenerator implements OntologyTermIdGenerator 
     @Override
     public Id getNextIndividualId() {
         return new OntologyTermIdImpl(new OntologyTermIdPrefix(""), new OntologyTermIdSuffix(getId()));
+    }
+
+    @Override
+    public Optional<OntologyTermIdStatus> getCurrentOntologyTermIdStatus() {
+        return Optional.empty();
     }
 
     /**

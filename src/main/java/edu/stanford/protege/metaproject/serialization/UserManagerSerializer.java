@@ -1,6 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.User;
 import edu.stanford.protege.metaproject.api.impl.UserManager;
 
@@ -15,15 +16,12 @@ public class UserManagerSerializer implements JsonSerializer<UserManager>, JsonD
 
     @Override
     public JsonElement serialize(UserManager userManager, Type type, JsonSerializationContext context) {
-        JsonObject object = new JsonObject();
-        object.add("users", context.serialize(userManager.getUsers()));
-        return object;
+        return context.serialize(userManager.getUsers());
     }
 
     @Override
-    public UserManager deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject obj = jsonElement.getAsJsonObject();
-        Set<User> users = context.deserialize(obj.getAsJsonArray("users"), Set.class);
-        return UserManager.getInstance(users);
+    public UserManager deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+        Set<User> users = context.deserialize(element.getAsJsonArray(), new TypeToken<Set<User>>(){}.getType());
+        return new UserManager(users);
     }
 }

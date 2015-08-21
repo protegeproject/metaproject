@@ -2,10 +2,9 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.Password;
+import edu.stanford.protege.metaproject.api.PlainPassword;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -13,17 +12,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class SaltedPassword implements Password, Serializable {
-    private static final long serialVersionUID = 3999269367644040407L;
-    private final byte[] saltedPassword;
+public final class PlainPasswordImpl implements PlainPassword, Serializable {
+    private static final long serialVersionUID = -8121510304157657203L;
+    private final String plainPassword;
 
     /**
      * Constructor
      *
-     * @param saltedPassword    Salted password bytes array
+     * @param plainPassword    Password string
      */
-    public SaltedPassword(byte[] saltedPassword) {
-        this.saltedPassword = checkNotNull(saltedPassword);
+    public PlainPasswordImpl(String plainPassword) {
+        this.plainPassword = checkNotNull(plainPassword);
     }
 
     /**
@@ -31,27 +30,27 @@ public final class SaltedPassword implements Password, Serializable {
      *
      * @return Salted password bytes array
      */
-    public byte[] getBytes() {
-        return saltedPassword;
+    public String getPassword() {
+        return plainPassword;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SaltedPassword that = (SaltedPassword) o;
-        return Arrays.equals(saltedPassword, that.saltedPassword);
+        PlainPasswordImpl that = (PlainPasswordImpl) o;
+        return Objects.equal(plainPassword, that.plainPassword);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(saltedPassword);
+        return Objects.hashCode(plainPassword);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("saltedPassword", saltedPassword)
+                .add("plainPassword", "******")
                 .toString();
     }
 }

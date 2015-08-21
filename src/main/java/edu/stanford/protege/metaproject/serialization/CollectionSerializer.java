@@ -27,18 +27,14 @@ public class CollectionSerializer<E> implements JsonSerializer<Collection<E>>, J
         ParameterizedType deserializationCollection = ((ParameterizedType) type);
         Type collectionItemType = deserializationCollection.getActualTypeArguments()[0];
         Collection<E> list;
-
         try {
             list = (Collection<E>)((Class<?>) deserializationCollection.getRawType()).newInstance();
             for(JsonElement e : items){
                 list.add((E)context.deserialize(e, collectionItemType));
             }
-        } catch (InstantiationException e) {
-            throw new JsonParseException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new JsonParseException(e);
         }
-
         return list;
     }
 }

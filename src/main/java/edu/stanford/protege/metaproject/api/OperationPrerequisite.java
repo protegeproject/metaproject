@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import org.semanticweb.owlapi.model.OWLPrimitive;
+import org.semanticweb.owlapi.model.IRI;
 
 /**
  * A representation of an operation prerequisite (e.g., presence or absence of some OWL entity)
@@ -11,11 +11,11 @@ import org.semanticweb.owlapi.model.OWLPrimitive;
 public interface OperationPrerequisite {
 
     /**
-     * Get the prerequisite
+     * Get the prerequisite IRI
      *
-     * @return Operation prerequisite
+     * @return IRI
      */
-    OWLPrimitive getPrerequisite();
+    IRI getPrerequisite();
 
     /**
      * Get the prerequisite modifier that determines whether, for example,
