@@ -1,12 +1,12 @@
 package edu.stanford.protege.metaproject.serialization;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.impl.*;
 
 import java.lang.reflect.Type;
+import java.util.Set;
 
 /**
  * @author Rafael Gonçalves <br>
@@ -20,7 +20,7 @@ public class OperationSerializer implements JsonDeserializer<Operation> {
         OperationId operationId = new OperationIdImpl(obj.getAsJsonPrimitive("id").getAsString());
         Name operationName = new NameImpl(obj.getAsJsonPrimitive("name").getAsString());
         Description operationDescription = new DescriptionImpl(obj.getAsJsonPrimitive("description").getAsString());
-        ImmutableSet<OperationPrerequisite> prerequisites = context.deserialize(obj.getAsJsonArray("prerequisites"), new TypeToken<ImmutableSet<OWLEntityOperationPrerequisite>>(){}.getType());
+        Set<OperationPrerequisite> prerequisites = context.deserialize(obj.getAsJsonArray("prerequisites"), new TypeToken<Set<OperationPrerequisite>>(){}.getType());
         return new OperationImpl(operationId, operationName, operationDescription, prerequisites);
     }
 }

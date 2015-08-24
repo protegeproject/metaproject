@@ -6,6 +6,9 @@ import edu.stanford.protege.metaproject.api.User;
 import edu.stanford.protege.metaproject.api.impl.UserManager;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +19,9 @@ public class UserManagerSerializer implements JsonSerializer<UserManager>, JsonD
 
     @Override
     public JsonElement serialize(UserManager userManager, Type type, JsonSerializationContext context) {
-        return context.serialize(userManager.getUsers());
+        List<User> list = new ArrayList<>(userManager.getUsers());
+        Collections.sort(list);
+        return context.serialize(list);
     }
 
     @Override

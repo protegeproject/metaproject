@@ -2,9 +2,11 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.*;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -16,8 +18,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class OperationImpl implements Operation, Serializable {
-    private static final long serialVersionUID = 878905616314595481L;
+public final class OperationImpl implements Operation, Serializable, Comparable<Operation> {
+    private static final long serialVersionUID = 829463917574250691L;
     private final OperationId id;
     private final Name name;
     private final Description description;
@@ -102,5 +104,12 @@ public final class OperationImpl implements Operation, Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(id, name, description, prerequisites);
+    }
+
+    @Override
+    public int compareTo(@Nonnull Operation that) {
+        return ComparisonChain.start()
+                .compare(this.id.get(), that.getId().get())
+                .result();
     }
 }

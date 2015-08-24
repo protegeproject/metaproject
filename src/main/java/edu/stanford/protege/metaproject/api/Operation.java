@@ -6,7 +6,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Operation extends AccessControlObject, HasName, HasDescription {
+public interface Operation extends AccessControlObject, HasName, HasDescription, Comparable<Operation> {
 
     OperationId getId();
 

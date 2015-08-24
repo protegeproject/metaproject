@@ -2,8 +2,10 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.*;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -13,8 +15,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class HashedUserAuthenticationDetails implements UserAuthenticationDetails, Serializable {
-    private static final long serialVersionUID = -485199887863623147L;
+public final class HashedUserAuthenticationDetails implements UserAuthenticationDetails, Serializable, Comparable<UserAuthenticationDetails> {
+    private static final long serialVersionUID = -461646307722268866L;
     private final UserId userId;
     private final SaltedPassword password;
     private final Salt salt;
@@ -74,5 +76,12 @@ public final class HashedUserAuthenticationDetails implements UserAuthentication
                 .add("password", password)
                 .add("salt", salt)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(@Nonnull UserAuthenticationDetails that) {
+        return ComparisonChain.start()
+                .compare(this.userId.get(), that.getUserId().get())
+                .result();
     }
 }

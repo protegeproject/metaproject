@@ -1,12 +1,12 @@
 package edu.stanford.protege.metaproject.serialization;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.impl.*;
 
 import java.lang.reflect.Type;
+import java.util.Set;
 
 /**
  * @author Rafael Gonçalves <br>
@@ -20,8 +20,8 @@ public class RoleSerializer implements JsonDeserializer<Role> {
         RoleId operationId = new RoleIdImpl(obj.getAsJsonPrimitive("id").getAsString());
         Name operationName = new NameImpl(obj.getAsJsonPrimitive("name").getAsString());
         Description operationDescription = new DescriptionImpl(obj.getAsJsonPrimitive("description").getAsString());
-        ImmutableSet<ProjectId> projects = context.deserialize(obj.getAsJsonArray("projects"), new TypeToken<ImmutableSet<ProjectIdImpl>>(){}.getType());
-        ImmutableSet<OperationId> operations = context.deserialize(obj.getAsJsonArray("operations"), new TypeToken<ImmutableSet<OperationIdImpl>>(){}.getType());
+        Set<ProjectId> projects = context.deserialize(obj.getAsJsonArray("projects"), new TypeToken<Set<ProjectIdImpl>>(){}.getType());
+        Set<OperationId> operations = context.deserialize(obj.getAsJsonArray("operations"), new TypeToken<Set<OperationIdImpl>>(){}.getType());
         return new RoleImpl(operationId, operationName, operationDescription, projects, operations);
     }
 }

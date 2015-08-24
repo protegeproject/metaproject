@@ -6,7 +6,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Project extends AccessControlObject, HasName, HasDescription, HasAddress {
+public interface Project extends AccessControlObject, HasName, HasDescription, HasAddress, Comparable<Project> {
 
     ProjectId getId();
 

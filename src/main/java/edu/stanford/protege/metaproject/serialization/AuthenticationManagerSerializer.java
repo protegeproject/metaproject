@@ -6,6 +6,9 @@ import edu.stanford.protege.metaproject.api.UserAuthenticationDetails;
 import edu.stanford.protege.metaproject.api.impl.AuthenticationManager;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +19,9 @@ public class AuthenticationManagerSerializer implements JsonSerializer<Authentic
 
     @Override
     public JsonElement serialize(AuthenticationManager authenticationManager, Type type, JsonSerializationContext context) {
-        return context.serialize(authenticationManager.getUserAuthenticationDetails());
+        List<UserAuthenticationDetails> list = new ArrayList<>(authenticationManager.getUserAuthenticationDetails());
+        Collections.sort(list);
+        return context.serialize(list);
     }
 
     @Override

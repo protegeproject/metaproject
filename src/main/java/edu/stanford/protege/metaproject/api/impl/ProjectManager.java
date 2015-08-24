@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ProjectManager implements Manager, Serializable {
-    private static final long serialVersionUID = 8029409556302800883L;
+    private static final long serialVersionUID = 7276763869042059706L;
     private Set<Project> projects = new HashSet<>();
 
     /**
@@ -39,12 +39,14 @@ public class ProjectManager implements Manager, Serializable {
     public ProjectManager() { }
 
     /**
-     * Add a project to the project registry
+     * Add the given project(s) to the project registry
      *
-     * @param project   New project
+     * @param project   One or more new projects
      */
-    public void addProject(Project project) {
-        projects.add(checkNotNull(project));
+    public void addProject(Project... project) {
+        for(Project p : project) {
+            projects.add(checkNotNull(p));
+        }
     }
 
     /**
@@ -57,16 +59,18 @@ public class ProjectManager implements Manager, Serializable {
     }
 
     /**
-     * Remove a project from the project registry
+     * Remove the specified project(s) from the project registry
      *
-     * @param project   Project to be removed
+     * @param project   One or more projects to be removed
      * @throws ProjectNotFoundException Project not found
      */
-    public void removeProject(Project project) throws ProjectNotFoundException {
-        if(!projects.contains(checkNotNull(project))) {
-            throw new ProjectNotFoundException("The specified project does not exist");
+    public void removeProject(Project... project) throws ProjectNotFoundException {
+        for(Project p : project) {
+            if (!projects.contains(checkNotNull(p))) {
+                throw new ProjectNotFoundException("The specified project does not exist");
+            }
+            projects.remove(p);
         }
-        projects.remove(project);
     }
 
     /**

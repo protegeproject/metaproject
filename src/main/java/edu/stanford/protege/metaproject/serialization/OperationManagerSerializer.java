@@ -6,6 +6,9 @@ import edu.stanford.protege.metaproject.api.Operation;
 import edu.stanford.protege.metaproject.api.impl.OperationManager;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +19,9 @@ public class OperationManagerSerializer implements JsonSerializer<OperationManag
 
     @Override
     public JsonElement serialize(OperationManager operationManager, Type type, JsonSerializationContext context) {
-        return context.serialize(operationManager.getOperations());
+        List<Operation> list = new ArrayList<>(operationManager.getOperations());
+        Collections.sort(list);
+        return context.serialize(list);
     }
 
     @Override

@@ -3,6 +3,7 @@ package edu.stanford.protege.metaproject.api.impl;
 import edu.stanford.protege.metaproject.api.*;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -11,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class AccessControlServerConfiguration implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = 3203353307534792442L;
+    private static final long serialVersionUID = -2167646552408654273L;
     private final Host host;
     private final Policy policy;
     private final OntologyTermIdStatus ontologyTermIdStatus;
@@ -23,10 +24,10 @@ public final class AccessControlServerConfiguration implements ServerConfigurati
      * @param policy    Access control policy
      * @param ontologyTermIdStatus  Ontology term identifier status
      */
-    AccessControlServerConfiguration(Host host, Policy policy, OntologyTermIdStatus ontologyTermIdStatus) {
+    AccessControlServerConfiguration(Host host, Policy policy, Optional<OntologyTermIdStatus> ontologyTermIdStatus) {
         this.host = checkNotNull(host);
         this.policy = checkNotNull(policy);
-        this.ontologyTermIdStatus = checkNotNull(ontologyTermIdStatus);
+        this.ontologyTermIdStatus = (ontologyTermIdStatus.isPresent() ? checkNotNull(ontologyTermIdStatus.get()) : null);
     }
 
     @Override
@@ -69,7 +70,7 @@ public final class AccessControlServerConfiguration implements ServerConfigurati
         }
 
         public AccessControlServerConfiguration createAccessControlServerConfiguration() {
-            return new AccessControlServerConfiguration(host, policy, ontologyTermIdStatus);
+            return new AccessControlServerConfiguration(host, policy, Optional.ofNullable(ontologyTermIdStatus));
         }
     }
 }

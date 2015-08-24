@@ -6,6 +6,9 @@ import edu.stanford.protege.metaproject.api.Project;
 import edu.stanford.protege.metaproject.api.impl.ProjectManager;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +19,9 @@ public class ProjectManagerSerializer implements JsonSerializer<ProjectManager>,
 
     @Override
     public JsonElement serialize(ProjectManager projectManager, Type type, JsonSerializationContext context) {
-        return context.serialize(projectManager.getProjects());
+        List<Project> list = new ArrayList<>(projectManager.getProjects());
+        Collections.sort(list);
+        return context.serialize(list);
     }
 
     @Override

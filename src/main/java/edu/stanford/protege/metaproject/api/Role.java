@@ -6,7 +6,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Role extends AccessControlObject, HasName, HasDescription {
+public interface Role extends AccessControlObject, HasName, HasDescription, Comparable<Role> {
 
     RoleId getId();
 

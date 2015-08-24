@@ -5,13 +5,16 @@ import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.Address;
 import edu.stanford.protege.metaproject.api.Host;
 
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class HostImpl implements Host {
+public final class HostImpl implements Host, Serializable {
+    private static final long serialVersionUID = 5370873288010759211L;
     private final Address hostAddress;
     private final int hostPort;
 

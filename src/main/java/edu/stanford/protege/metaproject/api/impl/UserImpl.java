@@ -2,8 +2,13 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.*;
+import com.google.common.collect.ComparisonChain;
+import edu.stanford.protege.metaproject.api.Address;
+import edu.stanford.protege.metaproject.api.Name;
+import edu.stanford.protege.metaproject.api.User;
+import edu.stanford.protege.metaproject.api.UserId;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -14,8 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class UserImpl implements User, Serializable {
-    private static final long serialVersionUID = 7145049739576315983L;
+public final class UserImpl implements User, Serializable, Comparable<User> {
+    private static final long serialVersionUID = -913296756918747114L;
     private final UserId id;
     private final Name name;
     private final Address emailAddress;
@@ -85,5 +90,12 @@ public final class UserImpl implements User, Serializable {
                 .add("name", name)
                 .add("emailAddress", emailAddress)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(@Nonnull User that) {
+        return ComparisonChain.start()
+                .compare(this.id.get(), that.getId().get())
+                .result();
     }
 }

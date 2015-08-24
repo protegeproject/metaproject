@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class UserManager implements Manager, Serializable {
     private static final String GUEST_ID = "guest", GUEST_NAME = "guest user", GUEST_EMAIL = "";
-    private static final long serialVersionUID = -2510957728872778738L;
+    private static final long serialVersionUID = 7848069332534234821L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -53,20 +53,22 @@ public class UserManager implements Manager, Serializable {
     }
 
     /**
-     * Add a user
+     * Add user(s)
      *
-     * @param user  User instance
+     * @param users  One or more users
      * @throws UserAddressAlreadyInUseException Email address already in use by another user
      * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
      */
-    public void addUser(User user) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
-        if(exists(user.getId())) {
-            throw new UserAlreadyRegisteredException("The specified user identifier is already used by another user");
+    public void addUser(User... users) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+        for(User user : users) {
+            if (exists(user.getId())) {
+                throw new UserAlreadyRegisteredException("The specified user identifier is already used by another user");
+            }
+            if (isAddressUsed(user.getAddress())) {
+                throw new UserAddressAlreadyInUseException("The specified user address is already used by another user.");
+            }
+            this.users.add(user);
         }
-        if(isAddressUsed(user.getAddress())) {
-            throw new UserAddressAlreadyInUseException("The specified user address is already used by another user.");
-        }
-        users.add(user);
     }
 
     /**
@@ -98,16 +100,18 @@ public class UserManager implements Manager, Serializable {
     }
 
     /**
-     * Remove a user
+     * Remove the given user(s)
      *
-     * @param user User instance
+     * @param user One or more users
      * @throws UserNotFoundException  User does not exist
      */
-    public void removeUser(User user) throws UserNotFoundException {
-        if(!users.contains(user)) {
-            throw new UserNotFoundException("The specified user does not exist");
+    public void removeUser(User... user) throws UserNotFoundException {
+        for(User u : user) {
+            if (!this.users.contains(u)) {
+                throw new UserNotFoundException("The specified user does not exist");
+            }
+            this.users.remove(u);
         }
-        users.remove(user);
     }
 
     /**

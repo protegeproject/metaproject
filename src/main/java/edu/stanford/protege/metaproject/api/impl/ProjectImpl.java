@@ -2,9 +2,11 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.*;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -17,8 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class ProjectImpl implements Project, Serializable {
-    private static final long serialVersionUID = -2832186869913699658L;
+public final class ProjectImpl implements Project, Serializable, Comparable<Project> {
+    private static final long serialVersionUID = -9026692908634301909L;
     private final ProjectId id;
     private final Name name;
     private final Description description;
@@ -146,5 +148,12 @@ public final class ProjectImpl implements Project, Serializable {
                 .add("owner", owner)
                 .add("administrators", administrators)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(@Nonnull Project that) {
+        return ComparisonChain.start()
+                .compare(this.id.get(), that.getId().get())
+                .result();
     }
 }

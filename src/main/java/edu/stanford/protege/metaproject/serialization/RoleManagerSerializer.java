@@ -6,6 +6,9 @@ import edu.stanford.protege.metaproject.api.Role;
 import edu.stanford.protege.metaproject.api.impl.RoleManager;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +19,9 @@ public class RoleManagerSerializer implements JsonSerializer<RoleManager>, JsonD
 
     @Override
     public JsonElement serialize(RoleManager roleManager, Type type, JsonSerializationContext context) {
-        return context.serialize(roleManager.getRoles());
+        List<Role> list = new ArrayList<>(roleManager.getRoles());
+        Collections.sort(list);
+        return context.serialize(list);
     }
 
     @Override

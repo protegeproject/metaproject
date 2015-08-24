@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class RoleManager implements Manager, Serializable {
-    private static final long serialVersionUID = -507172932190933218L;
+    private static final long serialVersionUID = 8037604453923523937L;
     private Set<Role> roles = new HashSet<>();
 
     /**
@@ -39,12 +39,14 @@ public class RoleManager implements Manager, Serializable {
     public RoleManager() { }
 
     /**
-     * Add the specified role
+     * Add the specified role(s)
      *
-     * @param role  Role
+     * @param role  One or more roles
      */
-    public void addRole(Role role) {
-        roles.add(checkNotNull(role));
+    public void addRole(Role... role) {
+        for(Role r : role) {
+            roles.add(checkNotNull(r));
+        }
     }
 
     /**
@@ -57,16 +59,18 @@ public class RoleManager implements Manager, Serializable {
     }
 
     /**
-     * Remove a given role
+     * Remove the given role(s)
      *
-     * @param role  Role
+     * @param role  One or more roles
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeRole(Role role) throws RoleNotFoundException {
-        if(!roles.contains(role)) {
-            throw new RoleNotFoundException("The specified role does not exist");
+    public void removeRole(Role... role) throws RoleNotFoundException {
+        for(Role r : role) {
+            if (!roles.contains(r)) {
+                throw new RoleNotFoundException("The specified role does not exist");
+            }
+            roles.remove(r);
         }
-        roles.remove(role);
     }
 
     /**

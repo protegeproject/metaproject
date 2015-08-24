@@ -20,8 +20,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationManager implements Manager, Serializable {
-    private static final long serialVersionUID = 4954396447342746105L;
-    private Set<Operation> operations;
+    private static final long serialVersionUID = 6445984833759487695L;
+    private Set<Operation> operations = new HashSet<>();
 
     /**
      * Constructor
@@ -38,12 +38,14 @@ public class OperationManager implements Manager, Serializable {
     public OperationManager() { }
 
     /**
-     * Add an operation
+     * Add operation(s)
      *
-     * @param operation Operation
+     * @param operation One or more operations
      */
-    public void addOperation(Operation operation) {
-        operations.add(checkNotNull(operation));
+    public void addOperation(Operation... operation) {
+        for(Operation o : operation) {
+            operations.add(checkNotNull(o));
+        }
     }
 
     /**
@@ -56,16 +58,18 @@ public class OperationManager implements Manager, Serializable {
     }
 
     /**
-     * Remove the specified operation
+     * Remove the specified operation(s)
      *
-     * @param operation Operation
+     * @param operation One or more operations
      * @throws OperationNotFoundException   Operation not found
      */
-    public void removeOperation(Operation operation) throws OperationNotFoundException {
-        if(!operations.contains(operation)) {
-            throw new OperationNotFoundException("The specified operation does not exist");
+    public void removeOperation(Operation... operation) throws OperationNotFoundException {
+        for(Operation op : operation) {
+            if (!operations.contains(op)) {
+                throw new OperationNotFoundException("The specified operation does not exist");
+            }
+            operations.remove(op);
         }
-        operations.remove(operation);
     }
 
     /**

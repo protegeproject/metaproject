@@ -121,9 +121,10 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
     public Id getNextDataPropertyId() {
         dataPropertyIdSuffix = checkState(dataPropertyIdSuffix);
         int intId = Integer.parseInt(dataPropertyIdSuffix.get());
-        if (isPrefixClashing(classIdPrefix)) {
+        if(isPrefixClashing(classIdPrefix)) {
             intId = findHighestIdentifier();
         }
+        intId++;
         dataPropertyIdSuffix = new OntologyTermIdSuffix(Integer.toString(intId));
         return getId(dataPropertyIdPrefix, dataPropertyIdSuffix);
     }
