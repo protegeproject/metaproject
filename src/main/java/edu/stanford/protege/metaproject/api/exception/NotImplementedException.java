@@ -4,7 +4,8 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class NotImplementedException extends Exception {
+public class NotImplementedException extends MetaprojectException {
+    private static final long serialVersionUID = -4422098388446057753L;
 
     public NotImplementedException() {
         super();

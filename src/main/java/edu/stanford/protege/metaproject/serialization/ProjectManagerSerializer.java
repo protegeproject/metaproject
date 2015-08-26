@@ -3,7 +3,8 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.Project;
-import edu.stanford.protege.metaproject.api.impl.ProjectManager;
+import edu.stanford.protege.metaproject.api.ProjectManager;
+import edu.stanford.protege.metaproject.api.impl.ProjectManagerImpl;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -27,6 +28,6 @@ public class ProjectManagerSerializer implements JsonSerializer<ProjectManager>,
     @Override
     public ProjectManager deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         Set<Project> projects = context.deserialize(element.getAsJsonArray(), new TypeToken<Set<Project>>(){}.getType());
-        return new ProjectManager(projects);
+        return new ProjectManagerImpl(projects);
     }
 }

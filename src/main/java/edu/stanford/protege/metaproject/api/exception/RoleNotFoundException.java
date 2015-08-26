@@ -4,7 +4,8 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleNotFoundException extends ElementNotFoundException {
+public class RoleNotFoundException extends AccessControlObjectNotFoundException {
+    private static final long serialVersionUID = 7884481607368116995L;
 
     public RoleNotFoundException() {
         super();

@@ -3,7 +3,8 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.Role;
-import edu.stanford.protege.metaproject.api.impl.RoleManager;
+import edu.stanford.protege.metaproject.api.RoleManager;
+import edu.stanford.protege.metaproject.api.impl.RoleManagerImpl;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -27,6 +28,6 @@ public class RoleManagerSerializer implements JsonSerializer<RoleManager>, JsonD
     @Override
     public RoleManager deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         Set<Role> roles = context.deserialize(element.getAsJsonArray(), new TypeToken<Set<Role>>(){}.getType());
-        return new RoleManager(roles);
+        return new RoleManagerImpl(roles);
     }
 }

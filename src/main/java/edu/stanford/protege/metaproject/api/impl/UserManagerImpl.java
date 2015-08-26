@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
@@ -21,9 +22,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UserManager implements Manager, Serializable {
+public class UserManagerImpl implements UserManager, Serializable {
     private static final String GUEST_ID = "guest", GUEST_NAME = "guest user", GUEST_EMAIL = "";
-    private static final long serialVersionUID = 7848069332534234821L;
+    private static final long serialVersionUID = 4737112809180106195L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -31,26 +32,14 @@ public class UserManager implements Manager, Serializable {
      *
      * @param users Set of users
      */
-    public UserManager(Set<User> users) {
+    public UserManagerImpl(Set<User> users) {
         this.users = checkNotNull(users);
     }
 
     /**
      * No-arguments constructor
      */
-    public UserManager() { }
-
-    /**
-     * Create a new user instance with the given details
-     *
-     * @param userId    User identifier
-     * @param userName  User name
-     * @param emailAddress  User email address
-     * @return New user instance
-     */
-    public User createUser(String userId, String userName, String emailAddress) {
-        return new UserImpl(new UserIdImpl(userId), new NameImpl(userName), new AddressImpl(emailAddress));
-    }
+    public UserManagerImpl() { }
 
     /**
      * Add user(s)
@@ -59,7 +48,7 @@ public class UserManager implements Manager, Serializable {
      * @throws UserAddressAlreadyInUseException Email address already in use by another user
      * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
      */
-    public void addUser(User... users) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+    public void add(User... users) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
         for(User user : users) {
             if (exists(user.getId())) {
                 throw new UserAlreadyRegisteredException("The specified user identifier is already used by another user");
@@ -72,57 +61,17 @@ public class UserManager implements Manager, Serializable {
     }
 
     /**
-     * Verify whether the email address of the given user is already being used by another user
-     *
-     * @param address   User address
-     * @return true if email address is used by some other user, false otherwise
-     */
-    private boolean isAddressUsed(Address address) {
-        for(User u : users) {
-            if(u.getAddress().equals(address)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Add a given set of users
-     *
-     * @param users    Set of users
-     * @throws UserAddressAlreadyInUseException Email address already in use by another user
-     * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
-     */
-    public void addUsers(Set<User> users) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
-        for(User user : users) {
-            addUser(user);
-        }
-    }
-
-    /**
      * Remove the given user(s)
      *
      * @param user One or more users
      * @throws UserNotFoundException  User does not exist
      */
-    public void removeUser(User... user) throws UserNotFoundException {
+    public void remove(User... user) throws UserNotFoundException {
         for(User u : user) {
             if (!this.users.contains(u)) {
                 throw new UserNotFoundException("The specified user does not exist");
             }
             this.users.remove(u);
-        }
-    }
-
-    /**
-     * Remove a given set of users
-     *
-     * @param users Set of users
-     * @throws UserNotFoundException    User not found
-     */
-    public void removeUsers(Set<User> users) throws UserNotFoundException {
-        for(User user : users) {
-            removeUser(user);
         }
     }
 
@@ -141,7 +90,7 @@ public class UserManager implements Manager, Serializable {
      * @param userId  User identifier
      * @return User instance
      */
-    public Optional<User> getUserOptional(UserId userId) {
+    private Optional<User> getUserOptional(UserId userId) {
         User userFound = null;
         for(User user : users) {
             if(user.getId().equals(userId)) {
@@ -176,17 +125,7 @@ public class UserManager implements Manager, Serializable {
      * @return Set of users with given name
      */
     public Set<User> getUsers(Name userName) {
-        return getUsers(userName.get());
-    }
-
-    /**
-     * Get the user(s) registerd with the specified name
-     *
-     * @param userName  User name string
-     * @return Set of users with given name
-     */
-    public Set<User> getUsers(String userName) {
-        return users.stream().filter(user -> user.getName().get().equals(userName)).collect(Collectors.toSet());
+        return users.stream().filter(user -> user.getName().get().equals(userName.get())).collect(Collectors.toSet());
     }
 
     /**
@@ -200,6 +139,15 @@ public class UserManager implements Manager, Serializable {
     }
 
     /**
+     * Get a guest user instance
+     *
+     * @return Guest user
+     */
+    public User getGuestUser() {
+        return new UserImpl(new UserIdImpl(GUEST_ID), new NameImpl(GUEST_NAME), new AddressImpl(GUEST_EMAIL));
+    }
+
+    /**
      * Change the display name of the given user
      *
      * @param userId    User identifier
@@ -210,9 +158,9 @@ public class UserManager implements Manager, Serializable {
      */
     public void changeUserName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
         User user = getUser(userId);
-        removeUser(user);
+        remove(user);
         User newUser = new UserImpl(userId, userName, user.getAddress());
-        addUser(newUser);
+        add(newUser);
     }
 
     /**
@@ -226,18 +174,9 @@ public class UserManager implements Manager, Serializable {
      */
     public void changeEmailAddress(UserId userId, Address emailAddress) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
         User user = getUser(userId);
-        removeUser(user);
+        remove(user);
         User newUser = new UserImpl(userId, user.getName(), emailAddress);
-        addUser(newUser);
-    }
-
-    /**
-     * Get a guest user instance
-     *
-     * @return Guest user
-     */
-    public User getGuestUser() {
-        return new UserImpl(new UserIdImpl(GUEST_ID), new NameImpl(GUEST_NAME), new AddressImpl(GUEST_EMAIL));
+        add(newUser);
     }
 
     /**
@@ -246,9 +185,24 @@ public class UserManager implements Manager, Serializable {
      * @param userId User identifier
      * @return true if user with the given user identifier exists, false otherwise
      */
-    public boolean exists(Id userId) {
+    public boolean exists(AccessControlObjectId userId) {
         for(User user : users) {
             if(user.getId().equals(userId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Verify whether the email address of the given user is already being used by another user
+     *
+     * @param address   User address
+     * @return true if email address is used by some other user, false otherwise
+     */
+    private boolean isAddressUsed(Address address) {
+        for(User u : users) {
+            if(u.getAddress().equals(address)) {
                 return true;
             }
         }
@@ -259,12 +213,19 @@ public class UserManager implements Manager, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserManager that = (UserManager) o;
+        UserManagerImpl that = (UserManagerImpl) o;
         return Objects.equal(users, that.users);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(users);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("users", users)
+                .toString();
     }
 }

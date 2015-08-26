@@ -5,6 +5,7 @@ package edu.stanford.protege.metaproject.api.exception;
  * Stanford Center for Biomedical Informatics Research
  */
 public class UserNotInPolicyException extends PolicyException {
+    private static final long serialVersionUID = 6115069361381109569L;
 
     public UserNotInPolicyException() {
         super();

@@ -5,6 +5,7 @@ package edu.stanford.protege.metaproject.api.exception;
  * Stanford Center for Biomedical Informatics Research
  */
 public class MalformedInputException extends RuntimeException {
+    private static final long serialVersionUID = 2038466373311194682L;
 
     public MalformedInputException() {
         super();

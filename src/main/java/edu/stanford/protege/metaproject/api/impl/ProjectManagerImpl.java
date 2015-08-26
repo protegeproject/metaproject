@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.ProjectNotFoundException;
@@ -20,8 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class ProjectManager implements Manager, Serializable {
-    private static final long serialVersionUID = 7276763869042059706L;
+public class ProjectManagerImpl implements ProjectManager, Serializable {
+    private static final long serialVersionUID = -5071816958481766140L;
     private Set<Project> projects = new HashSet<>();
 
     /**
@@ -29,14 +30,14 @@ public class ProjectManager implements Manager, Serializable {
      *
      * @param projects  Set of projects
      */
-    public ProjectManager(Set<Project> projects) {
+    public ProjectManagerImpl(Set<Project> projects) {
         this.projects = checkNotNull(projects);
     }
 
     /**
      * No-arguments constructor
      */
-    public ProjectManager() { }
+    public ProjectManagerImpl() { }
 
     /**
      * Add the given project(s) to the project registry
@@ -47,15 +48,6 @@ public class ProjectManager implements Manager, Serializable {
         for(Project p : project) {
             projects.add(checkNotNull(p));
         }
-    }
-
-    /**
-     * Add a given set of projects
-     *
-     * @param projects  Set of projects
-     */
-    public void addProjects(Set<Project> projects) {
-        projects.forEach(this::addProject);
     }
 
     /**
@@ -74,18 +66,6 @@ public class ProjectManager implements Manager, Serializable {
     }
 
     /**
-     * Remove a given set of projects
-     *
-     * @param projects  Set of projects
-     * @throws ProjectNotFoundException Project not found
-     */
-    public void removeProjects(Set<Project> projects) throws ProjectNotFoundException {
-        for(Project project : projects) {
-            removeProject(project);
-        }
-    }
-
-    /**
      * Get the set of all projects
      *
      * @return Set of projects
@@ -100,7 +80,7 @@ public class ProjectManager implements Manager, Serializable {
      * @param projectId   Project identifier
      * @return Project instance
      */
-    public Optional<Project> getProjectOptional(Id projectId) {
+    private Optional<Project> getProjectOptional(Id projectId) {
         Project project = null;
         for(Project p : projects) {
             if(p.getId().equals(projectId)) {
@@ -117,7 +97,7 @@ public class ProjectManager implements Manager, Serializable {
      * @return Project instance
      * @throws ProjectNotFoundException    Project not found
      */
-    public Project getProject(Id projectId) throws ProjectNotFoundException {
+    public Project getProject(ProjectId projectId) throws ProjectNotFoundException {
         Optional<Project> project = getProjectOptional(checkNotNull(projectId));
         if(project.isPresent()) {
             return project.get();
@@ -140,12 +120,14 @@ public class ProjectManager implements Manager, Serializable {
     /**
      * Change the name of the given project
      *
-     * @param project   Project
+     * @param projectId   Project identifier
      * @param projectName   New project name
      * @throws ProjectNotFoundException Project not found
      */
-    public void changeProjectName(Project project, Name projectName) throws ProjectNotFoundException {
+    public void changeProjectName(ProjectId projectId, Name projectName) throws ProjectNotFoundException {
+        Project project = getProject(projectId);
         removeProject(project);
+
         Project newProject = new ProjectImpl(project.getId(), checkNotNull(projectName), project.getDescription(), project.getAddress(), project.getOwner(), project.getAdministrators());
         addProject(newProject);
     }
@@ -153,12 +135,14 @@ public class ProjectManager implements Manager, Serializable {
     /**
      * Change the description of the given project
      *
-     * @param project   Project
+     * @param projectId   Project identifier
      * @param projectDescription    New project description
      * @throws ProjectNotFoundException Project not found
      */
-    public void changeProjectDescription(Project project, Description projectDescription) throws ProjectNotFoundException {
+    public void changeProjectDescription(ProjectId projectId, Description projectDescription) throws ProjectNotFoundException {
+        Project project = getProject(projectId);
         removeProject(project);
+
         Project newProject = new ProjectImpl(project.getId(), project.getName(), checkNotNull(projectDescription), project.getAddress(), project.getOwner(), project.getAdministrators());
         addProject(newProject);
     }
@@ -166,12 +150,14 @@ public class ProjectManager implements Manager, Serializable {
     /**
      * Change the owner of the specified project
      *
-     * @param project   Project
+     * @param projectId   Project identifier
      * @param userId    New owner user identifier
      * @throws ProjectNotFoundException Project not found
      */
-    public void changeOwner(Project project, UserId userId) throws ProjectNotFoundException {
+    public void changeOwner(ProjectId projectId, UserId userId) throws ProjectNotFoundException {
+        Project project = getProject(projectId);
         removeProject(project);
+
         Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), checkNotNull(userId), project.getAdministrators());
         addProject(newProject);
     }
@@ -179,12 +165,14 @@ public class ProjectManager implements Manager, Serializable {
     /**
      * Change the location of the specified project
      *
-     * @param project Project
+     * @param projectId Project identifier
      * @param projectAddress   Project address
      * @throws ProjectNotFoundException Project not found
      */
-    public void changeLocation(Project project, Address projectAddress) throws ProjectNotFoundException {
+    public void changeLocation(ProjectId projectId, Address projectAddress) throws ProjectNotFoundException {
+        Project project = getProject(projectId);
         removeProject(project);
+
         Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), checkNotNull(projectAddress), project.getOwner(), project.getAdministrators());
         addProject(newProject);
     }
@@ -192,24 +180,25 @@ public class ProjectManager implements Manager, Serializable {
     /**
      * Add an administrator user to the specified project
      *
-     * @param project   Project
+     * @param projectId   Project identifier
      * @param userId    Administrator user identifier user to be added
      * @throws ProjectNotFoundException Project not found
      */
-    public void addAdministrator(Project project, UserId userId) throws ProjectNotFoundException {
+    public void addAdministrator(ProjectId projectId, UserId userId) throws ProjectNotFoundException {
         Set<UserId> users = new HashSet<>();
         users.add(checkNotNull(userId));
-        addAdministrators(checkNotNull(project), users);
+        addAdministrators(checkNotNull(projectId), users);
     }
 
     /**
      * Add a set of administrator users to the specified project
      *
-     * @param project   Project
+     * @param projectId   Project identifier
      * @param users    Set of user identifiers of administrators to be added
      * @throws ProjectNotFoundException Project not found
      */
-    public void addAdministrators(Project project, Set<UserId> users) throws ProjectNotFoundException {
+    public void addAdministrators(ProjectId projectId, Set<UserId> users) throws ProjectNotFoundException {
+        Project project = getProject(projectId);
         removeProject(project);
 
         Set<UserId> administrators = project.getAdministrators();
@@ -222,24 +211,25 @@ public class ProjectManager implements Manager, Serializable {
     /**
      * Remove an administrator user from the specified project
      *
-     * @param project   Project
+     * @param projectId   Project identifier
      * @param userId    User identifier of administrator to be removed
      * @throws ProjectNotFoundException Project not found
      */
-    public void removeAdministrator(Project project, UserId userId) throws ProjectNotFoundException {
+    public void removeAdministrator(ProjectId projectId, UserId userId) throws ProjectNotFoundException {
         Set<UserId> users = new HashSet<>();
         users.add(checkNotNull(userId));
-        removeAdministrators(checkNotNull(project), users);
+        removeAdministrators(checkNotNull(projectId), users);
     }
 
     /**
      * Remove a set of administrator users from the specified project
      *
-     * @param project   Project
+     * @param projectId   Project identifier
      * @param users    Set of user identifiers of administrators to be removed
      * @throws ProjectNotFoundException Project not found
      */
-    public void removeAdministrators(Project project, Set<UserId> users) throws ProjectNotFoundException {
+    public void removeAdministrators(ProjectId projectId, Set<UserId> users) throws ProjectNotFoundException {
+        Project project = getProject(projectId);
         removeProject(project);
 
         Set<UserId> administrators = project.getAdministrators();
@@ -255,7 +245,7 @@ public class ProjectManager implements Manager, Serializable {
      * @param projectId Project identifier
      * @return true if project with the given project identifier exists, false otherwise
      */
-    public boolean exists(Id projectId) {
+    public boolean exists(AccessControlObjectId projectId) {
         for(Project p : projects) {
             if(p.getId().equals(projectId)) {
                 return true;
@@ -268,12 +258,19 @@ public class ProjectManager implements Manager, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProjectManager that = (ProjectManager) o;
+        ProjectManagerImpl that = (ProjectManagerImpl) o;
         return Objects.equal(projects, that.projects);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(projects);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("projects", projects)
+                .toString();
     }
 }

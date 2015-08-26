@@ -4,7 +4,8 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UnrecognizedIdTypeException extends Exception {
+public class UnrecognizedIdTypeException extends MetaprojectException {
+    private static final long serialVersionUID = -913492734865078766L;
 
     public UnrecognizedIdTypeException() {
         super();

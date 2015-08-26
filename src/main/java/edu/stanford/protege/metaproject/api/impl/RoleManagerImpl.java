@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.RoleNotFoundException;
@@ -20,8 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleManager implements Manager, Serializable {
-    private static final long serialVersionUID = 8037604453923523937L;
+public class RoleManagerImpl implements RoleManager, Serializable {
+    private static final long serialVersionUID = 4502007814521085197L;
     private Set<Role> roles = new HashSet<>();
 
     /**
@@ -29,33 +30,24 @@ public class RoleManager implements Manager, Serializable {
      *
      * @param roles Set of roles
      */
-    public RoleManager(Set<Role> roles) {
+    public RoleManagerImpl(Set<Role> roles) {
         this.roles = checkNotNull(roles);
     }
 
     /**
      * No-arguments constructor
      */
-    public RoleManager() { }
+    public RoleManagerImpl() { }
 
     /**
      * Add the specified role(s)
      *
-     * @param role  One or more roles
+     * @param roles  One or more roles
      */
-    public void addRole(Role... role) {
-        for(Role r : role) {
-            roles.add(checkNotNull(r));
+    public void add(Role... roles) {
+        for(Role r : roles) {
+            this.roles.add(checkNotNull(r));
         }
-    }
-
-    /**
-     * Add a given set of roles
-     *
-     * @param roles Set of roles
-     */
-    public void addRoles(Set<Role> roles) {
-        roles.forEach(this::addRole);
     }
 
     /**
@@ -64,24 +56,12 @@ public class RoleManager implements Manager, Serializable {
      * @param role  One or more roles
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeRole(Role... role) throws RoleNotFoundException {
+    public void remove(Role... role) throws RoleNotFoundException {
         for(Role r : role) {
             if (!roles.contains(r)) {
                 throw new RoleNotFoundException("The specified role does not exist");
             }
             roles.remove(r);
-        }
-    }
-
-    /**
-     * Remove a given set of roles
-     *
-     * @param roles Set of roles
-     * @throws RoleNotFoundException    Role not found
-     */
-    public void removeRoles(Set<Role> roles) throws RoleNotFoundException {
-        for(Role role : roles) {
-            removeRole(role);
         }
     }
 
@@ -100,7 +80,7 @@ public class RoleManager implements Manager, Serializable {
      * @param roleId    Role identifier
      * @return Role instance
      */
-    public Optional<Role> getRoleOptional(Id roleId) {
+    private Optional<Role> getRoleOptional(Id roleId) {
         Role role = null;
         for(Role r : roles) {
             if(r.getId().equals(roleId)) {
@@ -117,7 +97,7 @@ public class RoleManager implements Manager, Serializable {
      * @return Role instance
      * @throws RoleNotFoundException    Role not found
      */
-    public Role getRole(Id roleId) throws RoleNotFoundException {
+    public Role getRole(RoleId roleId) throws RoleNotFoundException {
         Optional<Role> role = getRoleOptional(roleId);
         if(role.isPresent()) {
             return role.get();
@@ -130,147 +110,153 @@ public class RoleManager implements Manager, Serializable {
     /**
      * Change the name of the given role to a new one
      *
-     * @param role  Role
+     * @param roleId  Role identifier
      * @param roleName  New role name
      * @throws RoleNotFoundException    Role not found
      */
-    public void changeRoleName(Role role, Name roleName) throws RoleNotFoundException {
-        removeRole(role);
+    public void changeRoleName(RoleId roleId, Name roleName) throws RoleNotFoundException {
+        Role role = getRole(roleId);
+        remove(role);
         Role newRole = new RoleImpl(role.getId(), roleName, role.getDescription(), role.getProjects(), role.getOperations());
-        addRole(newRole);
+        add(newRole);
     }
 
     /**
      * Change the description of the given role to a new one
      *
-     * @param role  Role
+     * @param roleId  Role identifier
      * @param roleDescription   New role description
      * @throws RoleNotFoundException    Role not found
      */
-    public void changeRoleDescription(Role role, Description roleDescription) throws RoleNotFoundException {
-        removeRole(role);
+    public void changeRoleDescription(RoleId roleId, Description roleDescription) throws RoleNotFoundException {
+        Role role = getRole(roleId);
+        remove(role);
         Role newRole = new RoleImpl(role.getId(), role.getName(), roleDescription, role.getProjects(), role.getOperations());
-        addRole(newRole);
+        add(newRole);
     }
 
     /**
      * Add a project to the working projects of the given role
      *
-     * @param role    Role
+     * @param roleId    Role identifier
      * @param projectId Project identifier
      * @throws RoleNotFoundException    Role not found
      */
-    public void addProject(Role role, ProjectId projectId) throws RoleNotFoundException {
+    public void addProject(RoleId roleId, ProjectId projectId) throws RoleNotFoundException {
         Set<ProjectId> projects = new HashSet<>();
         projects.add(projectId);
-        addProjects(role, projects);
+        addProjects(roleId, projects);
     }
 
     /**
      * Add a set of projects to the working projects of the given role
      *
-     * @param role    Role
+     * @param roleId    Role identifier
      * @param projectIdSet  Set of project identifiers
      * @throws RoleNotFoundException    Role not found
      */
-    public void addProjects(Role role, Set<ProjectId> projectIdSet) throws RoleNotFoundException {
-        removeRole(role);
+    public void addProjects(RoleId roleId, Set<ProjectId> projectIdSet) throws RoleNotFoundException {
+        Role role = getRole(roleId);
+        remove(role);
 
         Set<ProjectId> projects = role.getProjects();
         projects.addAll(projectIdSet);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), projects, role.getOperations());
-        addRole(newRole);
+        add(newRole);
     }
 
     /**
      * Remove a project from the working projects of the given role
      *
-     * @param role    Role
+     * @param roleId    Role identifier
      * @param project Project identifier
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeProject(Role role, ProjectId project) throws RoleNotFoundException {
+    public void removeProject(RoleId roleId, ProjectId project) throws RoleNotFoundException {
         Set<ProjectId> projects = new HashSet<>();
         projects.add(project);
-        removeProjects(role, projects);
+        removeProjects(roleId, projects);
     }
 
     /**
      * Remove a project from the working projects of the given role
      *
-     * @param role    Role
+     * @param roleId    Role identifier
      * @param projectIds  Set of project identifiers
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeProjects(Role role, Set<ProjectId> projectIds) throws RoleNotFoundException {
-        removeRole(role);
+    public void removeProjects(RoleId roleId, Set<ProjectId> projectIds) throws RoleNotFoundException {
+        Role role = getRole(roleId);
+        remove(role);
 
         Set<ProjectId> projects = role.getProjects();
         projects.removeAll(projectIds);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), projects, role.getOperations());
-        addRole(newRole);
+        add(newRole);
     }
 
     /**
      * Add an operation to the permitted operations of the given role
      *
-     * @param role    Role
+     * @param roleId    Role identifier
      * @param operationId   Operation identifier
      * @throws RoleNotFoundException    Role not found
      */
-    public void addOperation(Role role, OperationId operationId) throws RoleNotFoundException {
+    public void addOperation(RoleId roleId, OperationId operationId) throws RoleNotFoundException {
         Set<OperationId> operations = new HashSet<>();
         operations.add(operationId);
-        addOperations(role, operations);
+        addOperations(roleId, operations);
     }
 
     /**
      * Add a set of operations to the permitted operations of the given role
      *
-     * @param role    Role
+     * @param roleId    Role identifier
      * @param operationIds    Set of operation identifiers
      * @throws RoleNotFoundException    Role not found
      */
-    public void addOperations(Role role, Set<OperationId> operationIds) throws RoleNotFoundException {
-        removeRole(role);
+    public void addOperations(RoleId roleId, Set<OperationId> operationIds) throws RoleNotFoundException {
+        Role role = getRole(roleId);
+        remove(role);
 
         Set<OperationId> operations = role.getOperations();
         operations.addAll(operationIds);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), role.getProjects(), operations);
-        addRole(newRole);
+        add(newRole);
     }
 
     /**
      * Remove an operation from the permitted operations of the given role
      *
-     * @param role    Role
+     * @param roleId    Role identifier
      * @param operationId   Operation identifier
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeOperation(Role role, OperationId operationId) throws RoleNotFoundException {
+    public void removeOperation(RoleId roleId, OperationId operationId) throws RoleNotFoundException {
         Set<OperationId> operations = new HashSet<>();
         operations.add(operationId);
-        removeOperations(role, operations);
+        removeOperations(roleId, operations);
     }
 
     /**
      * Remove a set of operations from the permitted operations of the given role
      *
-     * @param role    Role
+     * @param roleId    Role identifier
      * @param operationIds    Set of operation identifiers
      * @throws RoleNotFoundException    Role not found
      */
-    public void removeOperations(Role role, Set<OperationId> operationIds) throws RoleNotFoundException {
-        removeRole(role);
+    public void removeOperations(RoleId roleId, Set<OperationId> operationIds) throws RoleNotFoundException {
+        Role role = getRole(roleId);
+        remove(role);
 
         Set<OperationId> operations = role.getOperations();
         operations.removeAll(operationIds);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), role.getProjects(), operations);
-        addRole(newRole);
+        add(newRole);
     }
 
     /**
@@ -279,7 +265,7 @@ public class RoleManager implements Manager, Serializable {
      * @param roleId Role identifier
      * @return true if role with the given role identifier exists, false otherwise
      */
-    public boolean exists(Id roleId) {
+    public boolean exists(AccessControlObjectId roleId) {
         for(Role role : roles) {
             if(role.getId().equals(roleId)) {
                 return true;
@@ -292,12 +278,19 @@ public class RoleManager implements Manager, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RoleManager that = (RoleManager) o;
+        RoleManagerImpl that = (RoleManagerImpl) o;
         return Objects.equal(roles, that.roles);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(roles);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("roles", roles)
+                .toString();
     }
 }

@@ -4,7 +4,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.OperationPrerequisite;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLEntity;
 
 import java.io.Serializable;
 
@@ -16,8 +15,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class OWLEntityOperationPrerequisite implements OperationPrerequisite, Serializable {
-    private static final long serialVersionUID = 2951557764655420242L;
+public final class OperationPrerequisiteImpl implements OperationPrerequisite, Serializable {
+    private static final long serialVersionUID = 4773121492510564964L;
     private final IRI prerequisite;
     private final Modifier modifier;
 
@@ -27,7 +26,7 @@ public final class OWLEntityOperationPrerequisite implements OperationPrerequisi
      * @param prerequisite  Prerequisite OWL entity IRI
      * @param modifier  Operation prerequisite modifier
      */
-    public OWLEntityOperationPrerequisite(IRI prerequisite, Modifier modifier) {
+    public OperationPrerequisiteImpl(IRI prerequisite, Modifier modifier) {
         this.prerequisite = checkNotNull(prerequisite);
         this.modifier = checkNotNull(modifier);
     }
@@ -44,7 +43,7 @@ public final class OWLEntityOperationPrerequisite implements OperationPrerequisi
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OWLEntityOperationPrerequisite that = (OWLEntityOperationPrerequisite) o;
+        OperationPrerequisiteImpl that = (OperationPrerequisiteImpl) o;
         return Objects.equal(prerequisite, that.prerequisite) &&
                 Objects.equal(modifier, that.modifier);
     }

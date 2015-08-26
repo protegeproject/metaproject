@@ -2,8 +2,9 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import edu.stanford.protege.metaproject.api.AuthenticationManager;
 import edu.stanford.protege.metaproject.api.UserAuthenticationDetails;
-import edu.stanford.protege.metaproject.api.impl.AuthenticationManager;
+import edu.stanford.protege.metaproject.api.impl.AuthenticationManagerImpl;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -28,6 +29,6 @@ public class AuthenticationManagerSerializer implements JsonSerializer<Authentic
     public AuthenticationManager deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         Set<UserAuthenticationDetails> userAuthenticationDetails =
                 context.deserialize(element.getAsJsonArray(), new TypeToken<Set<UserAuthenticationDetails>>() {}.getType());
-        return new AuthenticationManager(userAuthenticationDetails);
+        return new AuthenticationManagerImpl(userAuthenticationDetails);
     }
 }

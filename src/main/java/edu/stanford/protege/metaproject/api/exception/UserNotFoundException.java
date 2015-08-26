@@ -4,7 +4,8 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UserNotFoundException extends ElementNotFoundException {
+public class UserNotFoundException extends AccessControlObjectNotFoundException {
+    private static final long serialVersionUID = -6778106293367200892L;
 
     public UserNotFoundException() {
         super();

@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -10,6 +11,8 @@ public interface Operation extends AccessControlObject, HasName, HasDescription,
 
     OperationId getId();
 
-    Set<OperationPrerequisite> getPrerequisites();
+    OperationType getType();
+
+    Optional<Set<OperationPrerequisite>> getPrerequisites();
 
 }

@@ -4,7 +4,8 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class PolicyException extends Exception {
+public class PolicyException extends MetaprojectException {
+    private static final long serialVersionUID = -8412362008816335161L;
 
     public PolicyException() {
         super();

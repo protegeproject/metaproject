@@ -29,19 +29,20 @@ public final class SimpleGsonSerializer {
 
             // server configuration
             .registerTypeAdapter(ServerConfiguration.class, new ServerConfigurationSerializer())
-            .registerTypeAdapter(AccessControlPolicy.class, new AccessControlPolicySerializer())
+            .registerTypeAdapter(Policy.class, new AccessControlPolicySerializer())
             .registerTypeAdapter(Host.class, new HostSerializer())
 
             // access control object managers
-            .registerTypeAdapter(OperationManager.class, new OperationManagerSerializer())
-            .registerTypeAdapter(ProjectManager.class, new ProjectManagerSerializer())
-            .registerTypeAdapter(RoleManager.class, new RoleManagerSerializer())
-            .registerTypeAdapter(UserManager.class, new UserManagerSerializer())
-            .registerTypeAdapter(AuthenticationManager.class, new AuthenticationManagerSerializer())
+            .registerTypeAdapter(OperationManagerImpl.class, new OperationManagerSerializer())
+            .registerTypeAdapter(ProjectManagerImpl.class, new ProjectManagerSerializer())
+            .registerTypeAdapter(RoleManagerImpl.class, new RoleManagerSerializer())
+            .registerTypeAdapter(UserManagerImpl.class, new UserManagerSerializer())
+            .registerTypeAdapter(AuthenticationManagerImpl.class, new AuthenticationManagerSerializer())
 
             // properties and lower level objects
             .registerTypeHierarchyAdapter(StringProperty.class, new StringPropertySerializer())
             .registerTypeAdapter(OperationPrerequisite.class, new OperationPrerequisiteSerializer())
+            .registerTypeAdapter(OntologyTermIdStatus.class, new OntologyTermIdStatusSerializer())
 
             .setPrettyPrinting()
             .create();

@@ -8,6 +8,7 @@ import edu.stanford.protege.metaproject.api.*;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -19,10 +20,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class OperationImpl implements Operation, Serializable, Comparable<Operation> {
-    private static final long serialVersionUID = 829463917574250691L;
+    private static final long serialVersionUID = 4817701907932931711L;
     private final OperationId id;
     private final Name name;
     private final Description description;
+    private final OperationType type;
     private final ImmutableSet<OperationPrerequisite> prerequisites;
 
     /**
@@ -30,14 +32,15 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
      * @param id   Operation identifier
      * @param operationName Operation name
      * @param description  Operation description
+     * @param type Operation type
      * @param prerequisites Operation prerequisites
      */
-    public OperationImpl(OperationId id, Name operationName, Description description, Set<OperationPrerequisite> prerequisites) {
+    public OperationImpl(OperationId id, Name operationName, Description description, OperationType type, Optional<Set<OperationPrerequisite>> prerequisites) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(operationName);
         this.description = checkNotNull(description);
-        ImmutableSet<OperationPrerequisite> prerequisitesCopy = new ImmutableSet.Builder<OperationPrerequisite>().addAll(checkNotNull(prerequisites)).build();
-        this.prerequisites = checkNotNull(prerequisitesCopy);
+        this.type = checkNotNull(type);
+        this.prerequisites = (prerequisites.isPresent() ? new ImmutableSet.Builder<OperationPrerequisite>().addAll(checkNotNull(prerequisites.get())).build() : null);
     }
 
     /**
@@ -71,13 +74,40 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
     }
 
     /**
+     * Get the type of operation
+     *
+     * @return Operation type
+     */
+    @Override
+    public OperationType getType() {
+        return type;
+    }
+
+    /**
      * Get the set of prerequisites for the operation
      *
      * @return Set of operation prerequisites
      */
     @Override
-    public Set<OperationPrerequisite> getPrerequisites() {
-        return prerequisites;
+    public Optional<Set<OperationPrerequisite>> getPrerequisites() {
+        return Optional.ofNullable(prerequisites);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OperationImpl operation = (OperationImpl) o;
+        return Objects.equal(id, operation.id) &&
+                Objects.equal(name, operation.name) &&
+                Objects.equal(description, operation.description) &&
+                Objects.equal(type, operation.type) &&
+                Objects.equal(prerequisites, operation.prerequisites);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, name, description, type, prerequisites);
     }
 
     @Override
@@ -86,24 +116,9 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
                 .add("id", id)
                 .add("name", name)
                 .add("description", description)
+                .add("type", type)
                 .add("prerequisites", prerequisites)
                 .toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OperationImpl that = (OperationImpl) o;
-        return Objects.equal(id, that.id) &&
-                Objects.equal(name, that.name) &&
-                Objects.equal(description, that.description) &&
-                Objects.equal(prerequisites, that.prerequisites);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id, name, description, prerequisites);
     }
 
     @Override

@@ -4,13 +4,11 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.PolicyException;
+import edu.stanford.protege.metaproject.api.exception.RoleNotFoundException;
 import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -22,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class AccessControlPolicy implements Policy, Serializable {
-    private static final long serialVersionUID = 6660583481655821761L;
+    private static final long serialVersionUID = -8216942937465045473L;
     private Map<UserId,Set<RoleId>> userRoleMap = new HashMap<>();
 
     // access control objects managers
@@ -36,68 +34,47 @@ public class AccessControlPolicy implements Policy, Serializable {
      *
      * @param userRoleMap   Map of users to their roles
      */
-    AccessControlPolicy(Map<UserId,Set<RoleId>> userRoleMap, Set<Role> roles, Set<Operation> operations, Set<User> users, Set<Project> projects) {
+    AccessControlPolicy(Map<UserId,Set<RoleId>> userRoleMap, RoleManager roleManager, OperationManager operationManager, UserManager userManager, ProjectManager projectManager) {
         this.userRoleMap = checkNotNull(userRoleMap);
-        this.roleManager = new RoleManager(checkNotNull(roles));
-        this.operationManager = new OperationManager(checkNotNull(operations));
-        this.userManager = new UserManager(checkNotNull(users));
-        this.projectManager = new ProjectManager(checkNotNull(projects));
+        this.roleManager = checkNotNull(roleManager);
+        this.operationManager = checkNotNull(operationManager);
+        this.userManager = checkNotNull(userManager);
+        this.projectManager = checkNotNull(projectManager);
     }
 
     /**
-     * Add a user-role tuple to the access control policy
+     * Add a user to the access control policy with the specified role(s)
      *
      * @param userId    User identifier
-     * @param roleId    Role identifier
+     * @param roleIds    Role identifier(s)
      * @throws PolicyException    Policy exception
      */
-    public void addPolicy(UserId userId, RoleId roleId) throws PolicyException {
+    public void addPolicy(UserId userId, RoleId... roleIds) throws PolicyException {
         checkExistence(userManager, userId);
-        checkExistence(roleManager, roleId);
+        checkExistence(roleManager, roleIds);
 
         if(userRoleMap.containsKey(userId)) {
             Set<RoleId> roles = userRoleMap.get(userId);
-            roles.add(roleId);
+            Collections.addAll(roles, roleIds);
             userRoleMap.put(userId, roles);
         }
         else {
             Set<RoleId> roles = new HashSet<>();
-            roles.add(roleId);
+            Collections.addAll(roles, roleIds);
             userRoleMap.put(userId, roles);
         }
     }
 
     /**
-     * Add a user with multiple roles to the access control policy
+     * Assign a role to one or more users in the access control policy
      *
-     * @param userId    User identifier
-     * @param roles Set of role identifiers
+     * @param roleId    Role identifier
+     * @param userIds   User identifier(s)
      * @throws PolicyException    Policy exception
      */
-    public void addPolicy(UserId userId, Set<RoleId> roles) throws PolicyException {
-        checkExistence(userManager, userId);
-        checkExistence(roleManager, roles.toArray(new RoleId[roles.size()]));
-
-        if(userRoleMap.containsKey(userId)) {
-            Set<RoleId> roleSet = userRoleMap.get(userId);
-            roleSet.addAll(roles);
-            userRoleMap.put(userId, roleSet);
-        }
-        else {
-            userRoleMap.put(userId, roles);
-        }
-    }
-
-    /**
-     * Add multiple users with a single role to the access control policy
-     *
-     * @param users Set of user identifiers
-     * @param role    Role identifier
-     * @throws PolicyException    Policy exception
-     */
-    public void addPolicy(Set<UserId> users, RoleId role) throws PolicyException {
-        for(UserId user : users) {
-            addPolicy(user, role);
+    public void addPolicy(RoleId roleId, UserId... userIds) throws PolicyException {
+        for(UserId userId : userIds) {
+            addPolicy(userId, roleId);
         }
     }
 
@@ -132,10 +109,14 @@ public class AccessControlPolicy implements Policy, Serializable {
         checkUserIsInPolicy(userId);
 
         Set<RoleId> roles = userRoleMap.get(userId);
-        for (RoleId role : roles) {
-            Role r = roleManager.getRoleOptional(role).get();
-            if (r.getProjects().contains(projectId) && r.getOperations().contains(operationId)) {
-                return true;
+        for(RoleId role : roles) {
+            try {
+                Role r = roleManager.getRole(role);
+                if(r.getProjects().contains(projectId) && r.getOperations().contains(operationId)) {
+                    return true;
+                }
+            } catch (RoleNotFoundException e) {
+                e.printStackTrace();
             }
         }
         return false;
@@ -166,7 +147,6 @@ public class AccessControlPolicy implements Policy, Serializable {
      */
     public Set<RoleId> getRoles(UserId userId) throws UserNotInPolicyException {
         checkUserIsInPolicy(userId);
-
         return userRoleMap.get(userId);
     }
 
@@ -278,38 +258,38 @@ public class AccessControlPolicy implements Policy, Serializable {
      */
     public static class Builder {
         private Map<UserId, Set<RoleId>> userRoleMap = new HashMap<>();
-        private Set<Role> roles = new HashSet<>();
-        private Set<Operation> operations = new HashSet<>();
-        private Set<User> users = new HashSet<>();
-        private Set<Project> projects = new HashSet<>();
+        private RoleManager roleManager = new RoleManagerImpl();
+        private OperationManager operationManager = new OperationManagerImpl();
+        private UserManager userManager = new UserManagerImpl();
+        private ProjectManager projectManager = new ProjectManagerImpl();
 
         public Builder setUserRoleMap(Map<UserId, Set<RoleId>> userRoleMap) {
             this.userRoleMap = userRoleMap;
             return this;
         }
 
-        public Builder setRoles(Set<Role> roles) {
-            this.roles = roles;
+        public Builder setRoleManager(RoleManager roleManager) {
+            this.roleManager = roleManager;
             return this;
         }
 
-        public Builder setOperations(Set<Operation> operations) {
-            this.operations = operations;
+        public Builder setOperationManager(OperationManager operationManager) {
+            this.operationManager = operationManager;
             return this;
         }
 
-        public Builder setUsers(Set<User> users) {
-            this.users = users;
+        public Builder setUserManager(UserManager userManager) {
+            this.userManager = userManager;
             return this;
         }
 
-        public Builder setProjects(Set<Project> projects) {
-            this.projects = projects;
+        public Builder setProjectManager(ProjectManager projectManager) {
+            this.projectManager = projectManager;
             return this;
         }
 
         public AccessControlPolicy createAccessControlPolicy() {
-            return new AccessControlPolicy(userRoleMap, roles, operations, users, projects);
+            return new AccessControlPolicy(userRoleMap, roleManager, operationManager, userManager, projectManager);
         }
     }
 }

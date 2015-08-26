@@ -64,7 +64,7 @@ public final class OntologyTermUUIDGenerator implements OntologyTermIdGenerator 
     }
 
     /**
-     * Convenience method to get a random UUID
+     * Convenience method to getUsers a random UUID
      *
      * @return String identifier
      */

@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
+import java.util.Map;
+
 /**
  * Manager for server-side configurations
  *
@@ -28,5 +30,12 @@ public interface ServerConfiguration extends Configuration {
      * @return Ontology term identifier status instance
      */
     OntologyTermIdStatus getOntologyTermIdStatus();
+
+    /**
+     * Get the key-value server configuration properties
+     *
+     * @return Server configuration properties (aside from policy, host, and term identifiers status)
+     */
+    Map<String,String> getProperties();
 
 }

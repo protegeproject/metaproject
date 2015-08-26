@@ -6,6 +6,12 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface Manager {
 
-    boolean exists(Id id);
+    /**
+     * Verify whether the access control object with the given identifier exists in the registry
+     *
+     * @param id    Access control object identifier
+     * @return true if the identifier corresponds to an existing, registered element, false otherwise
+     */
+    boolean exists(AccessControlObjectId id);
 
 }

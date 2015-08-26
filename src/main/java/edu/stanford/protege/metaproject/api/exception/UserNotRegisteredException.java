@@ -4,7 +4,8 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UserNotRegisteredException extends ElementNotFoundException {
+public class UserNotRegisteredException extends MetaprojectException {
+    private static final long serialVersionUID = -5990668314311315326L;
 
     public UserNotRegisteredException() {
         super();

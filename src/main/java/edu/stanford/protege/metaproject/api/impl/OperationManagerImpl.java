@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.OperationNotFoundException;
@@ -19,8 +20,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class OperationManager implements Manager, Serializable {
-    private static final long serialVersionUID = 6445984833759487695L;
+public class OperationManagerImpl implements OperationManager, Serializable {
+    private static final long serialVersionUID = 8623672863408301958L;
     private Set<Operation> operations = new HashSet<>();
 
     /**
@@ -28,33 +29,25 @@ public class OperationManager implements Manager, Serializable {
      *
      * @param operations    Set of operations
      */
-    public OperationManager(Set<Operation> operations) {
+    public OperationManagerImpl(Set<Operation> operations) {
         this.operations = checkNotNull(operations);
     }
 
     /**
      * No-arguments constructor
      */
-    public OperationManager() { }
+    public OperationManagerImpl() { }
 
     /**
      * Add operation(s)
      *
      * @param operation One or more operations
      */
-    public void addOperation(Operation... operation) {
+    @Override
+    public void add(Operation... operation) {
         for(Operation o : operation) {
             operations.add(checkNotNull(o));
         }
-    }
-
-    /**
-     * Add a set of operations
-     *
-     * @param operations    Set of operations
-     */
-    public void addOperations(Set<Operation> operations) {
-        operations.forEach(this::addOperation);
     }
 
     /**
@@ -63,7 +56,8 @@ public class OperationManager implements Manager, Serializable {
      * @param operation One or more operations
      * @throws OperationNotFoundException   Operation not found
      */
-    public void removeOperation(Operation... operation) throws OperationNotFoundException {
+    @Override
+    public void remove(Operation... operation) throws OperationNotFoundException {
         for(Operation op : operation) {
             if (!operations.contains(op)) {
                 throw new OperationNotFoundException("The specified operation does not exist");
@@ -73,22 +67,11 @@ public class OperationManager implements Manager, Serializable {
     }
 
     /**
-     * Remove the given set of operations
-     *
-     * @param operations Set of operations
-     * @throws OperationNotFoundException   Operation not found
-     */
-    public void removeOperations(Set<Operation> operations) throws OperationNotFoundException {
-        for(Operation operation : operations) {
-            removeOperation(operation);
-        }
-    }
-
-    /**
      * Get all known operations
      *
      * @return Set of operations
      */
+    @Override
     public Set<Operation> getOperations() {
         return operations;
     }
@@ -99,7 +82,7 @@ public class OperationManager implements Manager, Serializable {
      * @param operationId   Operation identifier
      * @return Operation
      */
-    public Optional<Operation> getOperationOptional(Id operationId) {
+    private Optional<Operation> getOperationOptional(Id operationId) {
         Operation operation = null;
         for(Operation o : operations) {
             if(o.getId().equals(operationId)) {
@@ -116,7 +99,8 @@ public class OperationManager implements Manager, Serializable {
      * @return Operation instance
      * @throws OperationNotFoundException    Operation not found
      */
-    public Operation getOperation(Id operationId) throws OperationNotFoundException {
+    @Override
+    public Operation getOperation(OperationId operationId) throws OperationNotFoundException {
         Optional<Operation> operation = getOperationOptional(operationId);
         if(operation.isPresent()) {
             return operation.get();
@@ -133,10 +117,11 @@ public class OperationManager implements Manager, Serializable {
      * @param operationName New operation name
      * @throws OperationNotFoundException    Operation not found
      */
+    @Override
     public void changeOperationName(Operation operation, Name operationName) throws OperationNotFoundException {
-        removeOperation(operation);
-        Operation newOperation = new OperationImpl(operation.getId(), operationName, operation.getDescription(), operation.getPrerequisites());
-        addOperation(newOperation);
+        remove(operation);
+        Operation newOperation = new OperationImpl(operation.getId(), operationName, operation.getDescription(), operation.getType(), operation.getPrerequisites());
+        add(newOperation);
     }
 
     /**
@@ -146,10 +131,11 @@ public class OperationManager implements Manager, Serializable {
      * @param operationDescription  New operation description
      * @throws OperationNotFoundException    Operation not found
      */
+    @Override
     public void changeOperationDescription(Operation operation, Description operationDescription) throws OperationNotFoundException {
-        removeOperation(operation);
-        Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operationDescription, operation.getPrerequisites());
-        addOperation(newOperation);
+        remove(operation);
+        Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operationDescription, operation.getType(), operation.getPrerequisites());
+        add(newOperation);
     }
 
     /**
@@ -159,6 +145,7 @@ public class OperationManager implements Manager, Serializable {
      * @param prerequisite  Operation prerequisite
      * @throws OperationNotFoundException   Operation not found
      */
+    @Override
     public void addPrerequisite(Operation operation, OperationPrerequisite prerequisite) throws OperationNotFoundException {
         Set<OperationPrerequisite> prerequisites = new HashSet<>();
         prerequisites.add(prerequisite);
@@ -172,14 +159,15 @@ public class OperationManager implements Manager, Serializable {
      * @param prerequisites  Set of operation prerequisites
      * @throws OperationNotFoundException   Operation not found
      */
+    @Override
     public void addPrerequisites(Operation operation, Set<OperationPrerequisite> prerequisites) throws OperationNotFoundException {
-        removeOperation(operation);
+        remove(operation);
 
-        Set<OperationPrerequisite> prerequisiteSet = operation.getPrerequisites();
-        prerequisiteSet.addAll(prerequisites);
+        Set<OperationPrerequisite> newPrerequisites = (operation.getPrerequisites().isPresent() ? operation.getPrerequisites().get() : new HashSet<>());
+        newPrerequisites.addAll(prerequisites);
 
-        Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operation.getDescription(), prerequisiteSet);
-        addOperation(newOperation);
+        Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.of(newPrerequisites));
+        add(newOperation);
     }
 
     /**
@@ -189,6 +177,7 @@ public class OperationManager implements Manager, Serializable {
      * @param prerequisite  Operation prerequisite
      * @throws OperationNotFoundException   Operation not found
      */
+    @Override
     public void removePrerequisite(Operation operation, OperationPrerequisite prerequisite) throws OperationNotFoundException {
         Set<OperationPrerequisite> prerequisites = new HashSet<>();
         prerequisites.remove(prerequisite);
@@ -202,14 +191,17 @@ public class OperationManager implements Manager, Serializable {
      * @param prerequisites  Set of operation prerequisites
      * @throws OperationNotFoundException   Operation not found
      */
+    @Override
     public void removePrerequisites(Operation operation, Set<OperationPrerequisite> prerequisites) throws OperationNotFoundException {
-        removeOperation(operation);
+        remove(operation);
 
-        Set<OperationPrerequisite> prerequisiteSet = operation.getPrerequisites();
-        prerequisiteSet.removeAll(prerequisites);
+        Set<OperationPrerequisite> prerequisiteSet = (operation.getPrerequisites().isPresent() ? operation.getPrerequisites().get() : null);
+        if(prerequisiteSet != null) {
+            prerequisiteSet.removeAll(prerequisites);
+        }
 
-        Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operation.getDescription(), prerequisiteSet);
-        addOperation(newOperation);
+        Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.ofNullable(prerequisiteSet));
+        add(newOperation);
     }
 
     /**
@@ -218,7 +210,7 @@ public class OperationManager implements Manager, Serializable {
      * @param operationId Operation identifier
      * @return true if operation with the given operation identifier exists, false otherwise
      */
-    public boolean exists(Id operationId) {
+    public boolean exists(AccessControlObjectId operationId) {
         for(Operation operation : operations) {
             if(operation.getId().equals(operationId)) {
                 return true;
@@ -231,12 +223,19 @@ public class OperationManager implements Manager, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OperationManager that = (OperationManager) o;
+        OperationManagerImpl that = (OperationManagerImpl) o;
         return Objects.equal(operations, that.operations);
     }
 
     @Override
     public int hashCode() {
         return Objects.hashCode(operations);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("operations", operations)
+                .toString();
     }
 }

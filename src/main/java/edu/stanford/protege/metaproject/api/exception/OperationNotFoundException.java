@@ -4,7 +4,8 @@ package edu.stanford.protege.metaproject.api.exception;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class OperationNotFoundException extends ElementNotFoundException {
+public class OperationNotFoundException extends AccessControlObjectNotFoundException {
+    private static final long serialVersionUID = 3465417694325272882L;
 
     public OperationNotFoundException() {
         super();

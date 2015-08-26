@@ -3,7 +3,8 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.User;
-import edu.stanford.protege.metaproject.api.impl.UserManager;
+import edu.stanford.protege.metaproject.api.UserManager;
+import edu.stanford.protege.metaproject.api.impl.UserManagerImpl;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -27,6 +28,6 @@ public class UserManagerSerializer implements JsonSerializer<UserManager>, JsonD
     @Override
     public UserManager deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         Set<User> users = context.deserialize(element.getAsJsonArray(), new TypeToken<Set<User>>(){}.getType());
-        return new UserManager(users);
+        return new UserManagerImpl(users);
     }
 }

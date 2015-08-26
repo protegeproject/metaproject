@@ -11,11 +11,9 @@ import java.util.Set;
  */
 public interface Policy {
 
-    void addPolicy(UserId userId, RoleId roleId) throws PolicyException;
+    void addPolicy(UserId userId, RoleId... roleIds) throws PolicyException;
 
-    void addPolicy(Set<UserId> userId, RoleId roleId) throws PolicyException;
-
-    void addPolicy(UserId userId, Set<RoleId> roleId) throws PolicyException;
+    void addPolicy(RoleId roleId, UserId... userIds) throws PolicyException;
 
     void removePolicy(UserId userId, RoleId roleId) throws PolicyException;
 
@@ -26,5 +24,13 @@ public interface Policy {
     Set<RoleId> getRoles(UserId userId) throws PolicyException;
 
     Map<UserId,Set<RoleId>> getUserRoleMappings();
+
+    RoleManager getRoleManager();
+
+    OperationManager getOperationManager();
+
+    UserManager getUserManager();
+
+    ProjectManager getProjectManager();
 
 }

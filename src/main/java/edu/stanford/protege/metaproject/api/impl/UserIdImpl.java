@@ -2,7 +2,6 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.AccessControlObjectId;
 import edu.stanford.protege.metaproject.api.UserId;
 
 import java.io.Serializable;

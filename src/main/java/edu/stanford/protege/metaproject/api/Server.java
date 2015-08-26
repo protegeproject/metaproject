@@ -15,4 +15,26 @@ public interface Server {
      */
     ServerConfiguration getConfiguration();
 
+    /**
+     * Get the ontology term identifier generator
+     *
+     * @return Ontology term identifier generator
+     */
+    OntologyTermIdGenerator getOntologyTermIdGenerator();
+
+    /**
+     * Update the server configuration with a new access control policy
+     *
+     * @param policy    New access control policy
+     */
+    void updateConfiguration(Policy policy);
+
+    /**
+     * Update the server configuration with a new ontology term identifier status, i.e.,
+     * the last generated identifiers for ontology terms
+     *
+     * @param ontologyTermIdStatus  New ontology term identifier status
+     */
+    void updateConfiguration(OntologyTermIdStatus ontologyTermIdStatus);
+
 }

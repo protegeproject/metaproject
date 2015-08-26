@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.OperationPrerequisite;
-import edu.stanford.protege.metaproject.api.impl.OWLEntityOperationPrerequisite;
+import edu.stanford.protege.metaproject.api.impl.OperationPrerequisiteImpl;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.lang.reflect.Type;
@@ -26,6 +26,6 @@ public class OperationPrerequisiteSerializer implements JsonSerializer<Operation
         JsonObject object = element.getAsJsonObject();
         IRI iri = IRI.create(object.getAsJsonPrimitive("prerequisite").getAsString());
         OperationPrerequisite.Modifier modifier = OperationPrerequisite.Modifier.valueOf(object.getAsJsonPrimitive("modifier").getAsString());
-        return new OWLEntityOperationPrerequisite(iri, modifier);
+        return new OperationPrerequisiteImpl(iri, modifier);
     }
 }
