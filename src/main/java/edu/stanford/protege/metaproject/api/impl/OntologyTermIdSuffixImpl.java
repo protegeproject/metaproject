@@ -30,6 +30,7 @@ public final class OntologyTermIdSuffixImpl implements OntologyTermIdSuffix, Ser
      *
      * @return Prefix string
      */
+    @Override
     public String get() {
         return suffix;
     }

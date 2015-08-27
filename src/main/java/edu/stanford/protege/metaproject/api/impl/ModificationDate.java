@@ -10,6 +10,8 @@ import java.util.Date;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
+ * A representation of a modification date
+ *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
@@ -31,6 +33,7 @@ public final class ModificationDate implements DateProperty, Serializable {
      *
      * @return Modification date
      */
+    @Override
     public Date get() {
         return date;
     }

@@ -15,7 +15,8 @@ import java.util.Set;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A manager for everything authentication-related
+ * Manager for user authentication; handles the (modification of the) registration of users in the server, and the verification
+ * of credentials for accessing the server. The AuthenticationManager maintains a collection of user authentication details
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -94,6 +95,12 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
         changePassword(userDetails, password);
     }
 
+    /**
+     * Change password of the user to the given password, based on the specified authentication details
+     *
+     * @param userDetails   User authentication details
+     * @param password  New password
+     */
     @Override
     public void changePassword(UserAuthenticationDetails userDetails, PlainPassword password) {
         userAuthenticationDetails.remove(userDetails);

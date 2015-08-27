@@ -35,28 +35,28 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
     }
 
     @Override
-    public Id getNextClassId() {
-        return new OntologyTermIdImpl(classIdPrefix, getId());
+    public OntologyTermId getNextClassId() {
+        return new OntologyTermIdImpl(classIdPrefix, getIdSuffix());
     }
 
     @Override
-    public Id getNextObjectPropertyId() {
-        return new OntologyTermIdImpl(objectPropertyIdPrefix, getId());
+    public OntologyTermId getNextObjectPropertyId() {
+        return new OntologyTermIdImpl(objectPropertyIdPrefix, getIdSuffix());
     }
 
     @Override
-    public Id getNextDataPropertyId() {
-        return new OntologyTermIdImpl(dataPropertyIdPrefix, getId());
+    public OntologyTermId getNextDataPropertyId() {
+        return new OntologyTermIdImpl(dataPropertyIdPrefix, getIdSuffix());
     }
 
     @Override
-    public Id getNextAnnotationPropertyId() {
-        return new OntologyTermIdImpl(annotationPropertyIdPrefix, getId());
+    public OntologyTermId getNextAnnotationPropertyId() {
+        return new OntologyTermIdImpl(annotationPropertyIdPrefix, getIdSuffix());
     }
 
     @Override
-    public Id getNextIndividualId() {
-        return new OntologyTermIdImpl(individualIdPrefix, getId());
+    public OntologyTermId getNextIndividualId() {
+        return new OntologyTermIdImpl(individualIdPrefix, getIdSuffix());
     }
 
     /**
@@ -64,7 +64,7 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
      *
      * @return String identifier
      */
-    private edu.stanford.protege.metaproject.api.OntologyTermIdSuffix getId() {
+    private OntologyTermIdSuffix getIdSuffix() {
         return new OntologyTermIdSuffixImpl(UUID.randomUUID().toString());
     }
 

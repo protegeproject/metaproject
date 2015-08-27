@@ -1,10 +1,12 @@
 package edu.stanford.protege.metaproject.api;
 
 import javax.swing.*;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * Manager for client-side configurations
+ * A representation of a client configuration, consisting of the value for the client-server synchronisation delay,
+ * the set of UI components that are disabled for this client
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -24,5 +26,12 @@ public interface ClientConfiguration extends Configuration {
      * @return Set of java swing components
      */
     Set<? extends JComponent> getDisabledUIElements();
+
+    /**
+     * Get the map of client configuration properties
+     *
+     * @return Map of string properties
+     */
+    Map<String,String> getProperties();
 
 }

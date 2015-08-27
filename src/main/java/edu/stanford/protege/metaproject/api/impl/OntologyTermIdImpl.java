@@ -2,20 +2,22 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.api.OntologyTermId;
 import edu.stanford.protege.metaproject.api.OntologyTermIdPrefix;
 import edu.stanford.protege.metaproject.api.OntologyTermIdSuffix;
-import edu.stanford.protege.metaproject.api.OntologyTermId;
 
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
+ * A representation of an identifier of an ontology term, such as a class or property
+ *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
 public final class OntologyTermIdImpl implements OntologyTermId, Serializable {
-    private static final long serialVersionUID = -3431336312540440484L;
+    private static final long serialVersionUID = -1818949363645495437L;
     private final OntologyTermIdPrefix prefix;
     private final OntologyTermIdSuffix suffix;
 
@@ -65,17 +67,19 @@ public final class OntologyTermIdImpl implements OntologyTermId, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OntologyTermIdImpl that = (OntologyTermIdImpl) o;
-        return Objects.equal(suffix, that.suffix);
+        return Objects.equal(prefix, that.prefix) &&
+                Objects.equal(suffix, that.suffix);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(suffix);
+        return Objects.hashCode(prefix, suffix);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .add("prefix", prefix)
                 .add("suffix", suffix)
                 .toString();
     }

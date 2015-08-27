@@ -32,6 +32,7 @@ public final class SaltImpl implements Salt, Serializable {
      *
      * @return Byte array
      */
+    @Override
     public byte[] getBytes() {
         return Arrays.copyOf(bytes, bytes.length);
     }

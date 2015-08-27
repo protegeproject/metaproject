@@ -10,7 +10,7 @@ import java.io.Serializable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A representation of an operation prerequisite that is an OWL entity
+ * A representation of an operation prerequisite (e.g., presence or absence of some OWL entity)
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research

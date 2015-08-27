@@ -7,6 +7,7 @@ import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -44,6 +45,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @param password  Plain password to hash
      * @return Salted PBKDF2 hash of the password
      */
+    @Override
     public SaltedPassword createHash(PlainPassword password) {
         return createHash(password.getPassword());
     }
@@ -54,6 +56,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @param password  String password to hash
      * @return Salted PBKDF2 hash of the password
      */
+    @Override
     public SaltedPassword createHash(String password) {
         return createHash(password.toCharArray());
     }
@@ -83,6 +86,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @param correctHash   The hash of the valid password
      * @return true if the password is correct, false otherwise
      */
+    @Override
     public boolean validatePassword(String password, String correctHash) {
         return validatePassword(password.toCharArray(), correctHash);
     }
@@ -94,6 +98,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @param correctHash   The correct salted hashed password instance
      * @return true if the password is correct, false otherwise
      */
+    @Override
     public boolean validatePassword(PlainPassword password, SaltedPassword correctHash) {
         return validatePassword(password.getPassword().toCharArray(), correctHash.getPassword());
     }
@@ -188,6 +193,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      *
      * @return Salt generator
      */
+    @Override
     public SaltGenerator getSaltGenerator() {
         return saltGenerator;
     }
@@ -197,6 +203,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      *
      * @return Salt byte size
      */
+    @Override
     public int getSaltByteSize() {
         return saltByteSize;
     }
@@ -206,6 +213,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      *
      * @return Hash byte size
      */
+    @Override
     public int getHashByteSize() {
         return hashByteSize;
     }
@@ -215,8 +223,9 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      *
      * @return Number of PBKDF2 iterations
      */
-    public int getNrPBKDF2Iterations() {
-        return nrPBKDF2Iterations;
+    @Override
+    public Optional<Integer> getNumberOfIterations() {
+        return Optional.of(nrPBKDF2Iterations);
     }
 
 

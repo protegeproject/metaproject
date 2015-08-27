@@ -9,6 +9,8 @@ import java.io.Serializable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
+ * A representation of a project identifier
+ *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */

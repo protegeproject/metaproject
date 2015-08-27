@@ -61,6 +61,7 @@ public final class SaltGeneratorImpl implements SaltGenerator {
      *
      * @return Salt
      */
+    @Override
     public Salt generate() {
         byte[] bytes = new byte[nrBytes];
         random.nextBytes(bytes);
@@ -72,6 +73,7 @@ public final class SaltGeneratorImpl implements SaltGenerator {
      *
      * @return Number of bytes
      */
+    @Override
     public int getByteLength() {
         return nrBytes;
     }

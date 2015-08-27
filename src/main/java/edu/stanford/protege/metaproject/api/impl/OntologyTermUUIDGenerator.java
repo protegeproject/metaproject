@@ -1,8 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
-import edu.stanford.protege.metaproject.api.Id;
-import edu.stanford.protege.metaproject.api.OntologyTermIdGenerator;
-import edu.stanford.protege.metaproject.api.OntologyTermIdStatus;
+import edu.stanford.protege.metaproject.api.*;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -34,28 +32,28 @@ public final class OntologyTermUUIDGenerator implements OntologyTermIdGenerator 
     }
 
     @Override
-    public Id getNextClassId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
+    public OntologyTermId getNextClassId() {
+        return new OntologyTermIdImpl(getEmptyPrefix(), getRandomUUIDSuffix());
     }
 
     @Override
-    public Id getNextObjectPropertyId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
+    public OntologyTermId getNextObjectPropertyId() {
+        return new OntologyTermIdImpl(getEmptyPrefix(), getRandomUUIDSuffix());
     }
 
     @Override
-    public Id getNextDataPropertyId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
+    public OntologyTermId getNextDataPropertyId() {
+        return new OntologyTermIdImpl(getEmptyPrefix(), getRandomUUIDSuffix());
     }
 
     @Override
-    public Id getNextAnnotationPropertyId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
+    public OntologyTermId getNextAnnotationPropertyId() {
+        return new OntologyTermIdImpl(getEmptyPrefix(), getRandomUUIDSuffix());
     }
 
     @Override
-    public Id getNextIndividualId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
+    public OntologyTermId getNextIndividualId() {
+        return new OntologyTermIdImpl(getEmptyPrefix(), getRandomUUIDSuffix());
     }
 
     @Override
@@ -64,11 +62,29 @@ public final class OntologyTermUUIDGenerator implements OntologyTermIdGenerator 
     }
 
     /**
-     * Convenience method to getUsers a random UUID
+     * Get an empty identifier prefix
      *
-     * @return String identifier
+     * @return Identifier prefix
      */
-    private String getId() {
+    private OntologyTermIdPrefix getEmptyPrefix() {
+        return new OntologyTermIdPrefixImpl("");
+    }
+
+    /**
+     * Get an identifier suffix based on a random UUID
+     *
+     * @return Identifier suffix
+     */
+    private OntologyTermIdSuffix getRandomUUIDSuffix() {
+        return new OntologyTermIdSuffixImpl(getRandomUUID());
+    }
+
+    /**
+     * Convenience method to get a random UUID
+     *
+     * @return Random string UUID
+     */
+    private String getRandomUUID() {
         return UUID.randomUUID().toString();
     }
 }

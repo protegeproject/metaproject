@@ -13,8 +13,8 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A manager for server access control where users are associated with roles that
- * have a defined set of operations the user is allowed to perform
+ * A representation of an access control policy where users are associated with roles. Roles have
+ * a defined set of operations the user is allowed to perform within a set of projects
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -49,6 +49,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      * @param roleIds    Role identifier(s)
      * @throws PolicyException    Policy exception
      */
+    @Override
     public void addPolicy(UserId userId, RoleId... roleIds) throws PolicyException {
         checkExistence(userManager, userId);
         checkExistence(roleManager, roleIds);
@@ -72,6 +73,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      * @param userIds   User identifier(s)
      * @throws PolicyException    Policy exception
      */
+    @Override
     public void addPolicy(RoleId roleId, UserId... userIds) throws PolicyException {
         for(UserId userId : userIds) {
             addPolicy(userId, roleId);
@@ -85,6 +87,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      * @param roleId    Role identifier
      * @throws PolicyException    Policy exception
      */
+    @Override
     public void removePolicy(UserId userId, RoleId roleId) throws PolicyException {
         checkExistence(userManager, userId);
         checkExistence(roleManager, roleId);
@@ -103,6 +106,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      * @return true if user is allowed to carry out the specified operation, false otherwise
      * @throws PolicyException    Policy exception
      */
+    @Override
     public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) throws PolicyException {
         checkExistence(operationManager, operationId);
         checkExistence(projectManager, projectId);
@@ -130,6 +134,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      * @return true if user has specified role, false otherwise
      * @throws PolicyException    Policy exception
      */
+    @Override
     public boolean hasRole(UserId userId, RoleId roleId) throws PolicyException {
         checkUserIsInPolicy(userId);
         checkExistence(roleManager, roleId);
@@ -145,6 +150,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      * @return Set of role identifiers the user has
      * @throws UserNotInPolicyException    User not registered in the access control policy
      */
+    @Override
     public Set<RoleId> getRoles(UserId userId) throws UserNotInPolicyException {
         checkUserIsInPolicy(userId);
         return userRoleMap.get(userId);
@@ -155,6 +161,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      *
      * @return Map of users to their roles
      */
+    @Override
     public Map<UserId,Set<RoleId>> getUserRoleMappings() {
         return userRoleMap;
     }
@@ -164,6 +171,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      *
      * @return Role manager
      */
+    @Override
     public RoleManager getRoleManager() {
         return roleManager;
     }
@@ -173,6 +181,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      *
      * @return Operation manager
      */
+    @Override
     public OperationManager getOperationManager() {
         return operationManager;
     }
@@ -182,6 +191,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      *
      * @return User manager
      */
+    @Override
     public UserManager getUserManager() {
         return userManager;
     }
@@ -191,6 +201,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      *
      * @return Project manager
      */
+    @Override
     public ProjectManager getProjectManager() {
         return projectManager;
     }

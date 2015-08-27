@@ -16,35 +16,35 @@ public interface OntologyTermIdGenerator extends IdGenerator {
      *
      * @return Class identifier
      */
-    Id getNextClassId();
+    OntologyTermId getNextClassId();
 
     /**
      * Get the next object property identifier
      *
      * @return Object property identifier
      */
-    Id getNextObjectPropertyId();
+    OntologyTermId getNextObjectPropertyId();
 
     /**
      * Get the next data property identifier
      *
      * @return Data property identifier
      */
-    Id getNextDataPropertyId();
+    OntologyTermId getNextDataPropertyId();
 
     /**
      * Get the next annotation property identifier
      *
      * @return Annotation property identifier
      */
-    Id getNextAnnotationPropertyId();
+    OntologyTermId getNextAnnotationPropertyId();
 
     /**
      * Get the next individual identifier
      *
      * @return Individual identifier
      */
-    Id getNextIndividualId();
+    OntologyTermId getNextIndividualId();
 
     /**
      * Get the current status of ontology term identifiers, i.e., the last generated identifiers

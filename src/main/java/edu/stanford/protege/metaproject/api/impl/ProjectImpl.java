@@ -144,7 +144,7 @@ public final class ProjectImpl implements Project, Serializable, Comparable<Proj
                 .add("id", id)
                 .add("name", name)
                 .add("description", description)
-                .add("location", address)
+                .add("address", address)
                 .add("owner", owner)
                 .add("administrators", administrators)
                 .toString();

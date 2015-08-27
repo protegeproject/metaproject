@@ -9,6 +9,8 @@ import java.io.Serializable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
+ * A representation of a plain password, i.e., one that has yet to be hashed
+ *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
@@ -30,6 +32,7 @@ public final class PlainPasswordImpl implements PlainPassword, Serializable {
      *
      * @return Salted password bytes array
      */
+    @Override
     public String getPassword() {
         return plainPassword;
     }

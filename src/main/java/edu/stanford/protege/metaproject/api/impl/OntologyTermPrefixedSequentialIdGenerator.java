@@ -78,7 +78,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      */
     private boolean isPositiveInteger(String str) {
         int length = str.length(), i = 0;
-        if(str == null || length == 0) {
+        if(str.equals("") || length == 0) {
             return false;
         }
         if(str.charAt(0) == '-') {
@@ -94,7 +94,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
     }
 
     @Override
-    public Id getNextClassId() {
+    public OntologyTermId getNextClassId() {
         classIdSuffix = checkState(classIdSuffix);
         int intId = Integer.parseInt(classIdSuffix.get());
         if(isPrefixClashing(classIdPrefix)) {
@@ -106,7 +106,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
     }
 
     @Override
-    public Id getNextObjectPropertyId() {
+    public OntologyTermId getNextObjectPropertyId() {
         objectPropertyIdSuffix = checkState(objectPropertyIdSuffix);
         int intId = Integer.parseInt(objectPropertyIdSuffix.get());
         if(isPrefixClashing(classIdPrefix)) {
@@ -118,7 +118,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
     }
 
     @Override
-    public Id getNextDataPropertyId() {
+    public OntologyTermId getNextDataPropertyId() {
         dataPropertyIdSuffix = checkState(dataPropertyIdSuffix);
         int intId = Integer.parseInt(dataPropertyIdSuffix.get());
         if(isPrefixClashing(classIdPrefix)) {
@@ -130,7 +130,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
     }
 
     @Override
-    public Id getNextAnnotationPropertyId() {
+    public OntologyTermId getNextAnnotationPropertyId() {
         annotationPropertyIdSuffix = checkState(annotationPropertyIdSuffix);
         int intId = Integer.parseInt(annotationPropertyIdSuffix.get());
         if(isPrefixClashing(annotationPropertyIdPrefix)) {
@@ -142,7 +142,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
     }
 
     @Override
-    public Id getNextIndividualId() {
+    public OntologyTermId getNextIndividualId() {
         individualIdSuffix = checkState(individualIdSuffix);
         int intId = Integer.parseInt(individualIdSuffix.get());
         if(isPrefixClashing(classIdPrefix)) {
@@ -160,7 +160,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      * @param suffix    Ontology term identifier suffix
      * @return Ontology term identifier
      */
-    private Id getId(OntologyTermIdPrefix prefix, OntologyTermIdSuffix suffix) {
+    private OntologyTermId getId(OntologyTermIdPrefix prefix, OntologyTermIdSuffix suffix) {
         return new OntologyTermIdImpl(prefix, suffix);
     }
 
@@ -187,14 +187,9 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      * @return true if given prefix exists more than once, false otherwise
      */
     private boolean isPrefixClashing(OntologyTermIdPrefix prefix) {
-        List<OntologyTermIdPrefix> copy = new ArrayList(prefixes);
+        List<OntologyTermIdPrefix> copy = new ArrayList<>(prefixes);
         copy.remove(prefix);
-        if(copy.contains(prefix)) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return copy.contains(prefix);
     }
 
     /**

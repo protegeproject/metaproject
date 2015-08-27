@@ -10,6 +10,9 @@ import java.io.Serializable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
+ * A representation of a salted password, consisting of the (string) hashed password,
+ * and the salt used to hash the password
+ *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
@@ -34,6 +37,7 @@ public final class SaltedPasswordImpl implements SaltedPassword, Serializable {
      *
      * @return Password hash
      */
+    @Override
     public String getPassword() {
         return password;
     }
@@ -48,18 +52,20 @@ public final class SaltedPasswordImpl implements SaltedPassword, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SaltedPasswordImpl that = (SaltedPasswordImpl) o;
-        return Objects.equal(password, that.password);
+        return Objects.equal(password, that.password) &&
+                Objects.equal(salt, that.salt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(password);
+        return Objects.hashCode(password, salt);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("password", password)
+                .add("salt", salt)
                 .toString();
     }
 }

@@ -3,7 +3,8 @@ package edu.stanford.protege.metaproject.api;
 import java.util.Map;
 
 /**
- * Manager for server-side configurations
+ * A representation of a server configuration, composed of host information, the access control policy, the status of
+ * ontology term identifiers (i.e., last generated identifiers), and additional configuration properties
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research

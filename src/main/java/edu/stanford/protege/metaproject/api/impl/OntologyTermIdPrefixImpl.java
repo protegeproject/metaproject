@@ -30,6 +30,7 @@ public final class OntologyTermIdPrefixImpl implements OntologyTermIdPrefix, Ser
      *
      * @return Prefix string
      */
+    @Override
     public String get() {
         return prefix;
     }
