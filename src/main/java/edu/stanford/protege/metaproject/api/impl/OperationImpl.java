@@ -30,14 +30,14 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
     /**
      * Constructor
      * @param id   Operation identifier
-     * @param operationName Operation name
+     * @param name Operation name
      * @param description  Operation description
      * @param type Operation type
      * @param prerequisites Operation prerequisites
      */
-    public OperationImpl(OperationId id, Name operationName, Description description, OperationType type, Optional<Set<OperationPrerequisite>> prerequisites) {
+    public OperationImpl(OperationId id, Name name, Description description, OperationType type, Optional<Set<OperationPrerequisite>> prerequisites) {
         this.id = checkNotNull(id);
-        this.name = checkNotNull(operationName);
+        this.name = checkNotNull(name);
         this.description = checkNotNull(description);
         this.type = checkNotNull(type);
         this.prerequisites = (prerequisites.isPresent() ? new ImmutableSet.Builder<OperationPrerequisite>().addAll(checkNotNull(prerequisites.get())).build() : null);

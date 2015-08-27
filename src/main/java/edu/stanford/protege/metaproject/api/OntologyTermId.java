@@ -6,8 +6,8 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface OntologyTermId extends Id {
 
-    IdPrefix getPrefix();
+    OntologyTermIdPrefix getPrefix();
 
-    IdSuffix getSuffix();
+    OntologyTermIdSuffix getSuffix();
 
 }

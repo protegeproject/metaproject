@@ -15,8 +15,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class HashedUserAuthenticationDetails implements UserAuthenticationDetails, Serializable, Comparable<UserAuthenticationDetails> {
-    private static final long serialVersionUID = -461646307722268866L;
+public final class UserAuthenticationDetailsImpl implements UserAuthenticationDetails, Serializable, Comparable<UserAuthenticationDetails> {
+    private static final long serialVersionUID = 3608591750640716757L;
     private final UserId userId;
     private final SaltedPassword password;
     private final Salt salt;
@@ -28,7 +28,7 @@ public final class HashedUserAuthenticationDetails implements UserAuthentication
      * @param password  Salted (hashed) password
      * @param salt  Salt (possibly null)
      */
-    public HashedUserAuthenticationDetails(UserId userId, SaltedPassword password, Optional<Salt> salt) {
+    public UserAuthenticationDetailsImpl(UserId userId, SaltedPassword password, Optional<Salt> salt) {
         this.userId = checkNotNull(userId);
         this.password = checkNotNull(password);
         if(salt.isPresent()) {
@@ -58,7 +58,7 @@ public final class HashedUserAuthenticationDetails implements UserAuthentication
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HashedUserAuthenticationDetails that = (HashedUserAuthenticationDetails) o;
+        UserAuthenticationDetailsImpl that = (UserAuthenticationDetailsImpl) o;
         return Objects.equal(userId, that.userId) &&
                 Objects.equal(password, that.password) &&
                 Objects.equal(salt, that.salt);

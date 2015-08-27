@@ -16,9 +16,6 @@ import java.util.stream.Collectors;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A manager for users and user details (except password, which is handled by {@link AuthenticationManager}).
- * The user manager follows the singleton pattern; only one instance of this manager may exist.
- *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
@@ -41,13 +38,7 @@ public class UserManagerImpl implements UserManager, Serializable {
      */
     public UserManagerImpl() { }
 
-    /**
-     * Add user(s)
-     *
-     * @param users  One or more users
-     * @throws UserAddressAlreadyInUseException Email address already in use by another user
-     * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
-     */
+    @Override
     public void add(User... users) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
         for(User user : users) {
             if (exists(user.getId())) {
@@ -60,12 +51,7 @@ public class UserManagerImpl implements UserManager, Serializable {
         }
     }
 
-    /**
-     * Remove the given user(s)
-     *
-     * @param user One or more users
-     * @throws UserNotFoundException  User does not exist
-     */
+    @Override
     public void remove(User... user) throws UserNotFoundException {
         for(User u : user) {
             if (!this.users.contains(u)) {
@@ -75,13 +61,61 @@ public class UserManagerImpl implements UserManager, Serializable {
         }
     }
 
-    /**
-     * Get all users
-     *
-     * @return Set of all users
-     */
+    @Override
     public Set<User> getUsers() {
         return users;
+    }
+
+    @Override
+    public User getUser(UserId userId) throws UserNotFoundException {
+        Optional<User> user = getUserOptional(userId);
+        if(user.isPresent()) {
+            return user.get();
+        }
+        else {
+            throw new UserNotFoundException("The specified user identifier does not correspond to an existing user");
+        }
+    }
+
+    @Override
+    public Set<User> getUsers(Name userName) {
+        return users.stream().filter(user -> user.getName().get().equals(userName.get())).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<User> getUsers(Address emailAddress) {
+        return users.stream().filter(user -> user.getAddress().equals(emailAddress)).collect(Collectors.toSet());
+    }
+
+    @Override
+    public User getGuestUser() {
+        return new UserImpl(new UserIdImpl(GUEST_ID), new NameImpl(GUEST_NAME), new AddressImpl(GUEST_EMAIL));
+    }
+
+    @Override
+    public void changeUserName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+        User user = getUser(userId);
+        remove(user);
+        User newUser = new UserImpl(userId, userName, user.getAddress());
+        add(newUser);
+    }
+
+    @Override
+    public void changeEmailAddress(UserId userId, Address emailAddress) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+        User user = getUser(userId);
+        remove(user);
+        User newUser = new UserImpl(userId, user.getName(), emailAddress);
+        add(newUser);
+    }
+
+    @Override
+    public boolean exists(AccessControlObjectId userId) {
+        for(User user : users) {
+            if(user.getId().equals(userId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -99,99 +133,6 @@ public class UserManagerImpl implements UserManager, Serializable {
             }
         }
         return Optional.ofNullable(userFound);
-    }
-
-    /**
-     * A convenience method to fetch a user or die trying (with an exception)
-     *
-     * @param userId    User identifier
-     * @return User instance
-     * @throws UserNotFoundException    User not found
-     */
-    public User getUser(UserId userId) throws UserNotFoundException {
-        Optional<User> user = getUserOptional(userId);
-        if(user.isPresent()) {
-            return user.get();
-        }
-        else {
-            throw new UserNotFoundException("The specified user identifier does not correspond to an existing user");
-        }
-    }
-
-    /**
-     * Get the user(s) registered with the specified name
-     *
-     * @param userName  User name instance
-     * @return Set of users with given name
-     */
-    public Set<User> getUsers(Name userName) {
-        return users.stream().filter(user -> user.getName().get().equals(userName.get())).collect(Collectors.toSet());
-    }
-
-    /**
-     * Get the user(s) registered with the specified email address
-     *
-     * @param emailAddress  Email address
-     * @return Set of users
-     */
-    public Set<User> getUsers(Address emailAddress) {
-        return users.stream().filter(user -> user.getAddress().equals(emailAddress)).collect(Collectors.toSet());
-    }
-
-    /**
-     * Get a guest user instance
-     *
-     * @return Guest user
-     */
-    public User getGuestUser() {
-        return new UserImpl(new UserIdImpl(GUEST_ID), new NameImpl(GUEST_NAME), new AddressImpl(GUEST_EMAIL));
-    }
-
-    /**
-     * Change the display name of the given user
-     *
-     * @param userId    User identifier
-     * @param userName  New name
-     * @throws UserNotFoundException  User does not exist
-     * @throws UserAddressAlreadyInUseException Email address already in use by another user
-     * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
-     */
-    public void changeUserName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
-        User user = getUser(userId);
-        remove(user);
-        User newUser = new UserImpl(userId, userName, user.getAddress());
-        add(newUser);
-    }
-
-    /**
-     * Change the email address of a user
-     *
-     * @param userId  User identifier
-     * @param emailAddress New email address
-     * @throws UserNotFoundException  User does not exist
-     * @throws UserAddressAlreadyInUseException Email address already in use by another user
-     * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
-     */
-    public void changeEmailAddress(UserId userId, Address emailAddress) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
-        User user = getUser(userId);
-        remove(user);
-        User newUser = new UserImpl(userId, user.getName(), emailAddress);
-        add(newUser);
-    }
-
-    /**
-     * Verify whether a given user identifier corresponds to a registered user
-     *
-     * @param userId User identifier
-     * @return true if user with the given user identifier exists, false otherwise
-     */
-    public boolean exists(AccessControlObjectId userId) {
-        for(User user : users) {
-            if(user.getId().equals(userId)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

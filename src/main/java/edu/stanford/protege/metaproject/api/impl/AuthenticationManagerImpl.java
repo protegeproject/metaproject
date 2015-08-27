@@ -147,7 +147,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      */
     private UserAuthenticationDetails getHashedUserAuthenticationDetails(UserId userId, Password password) {
         SaltedPassword passwordHash = passwordMaster.createHash(password.getPassword());
-        return new HashedUserAuthenticationDetails(userId, passwordHash, Optional.of(passwordHash.getSalt()));
+        return new UserAuthenticationDetailsImpl(userId, passwordHash, Optional.of(passwordHash.getSalt()));
     }
 
     /**

@@ -18,12 +18,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPrefixedIdGenerator {
-    private IdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
-    private IdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
+    private OntologyTermIdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
+    private OntologyTermIdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
 
     // lists of identifiers and prefixes, for convenience of subroutines such as checking prefix clashes
-    private List<IdSuffix> identifiers = Arrays.asList(classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix);
-    private List<IdPrefix> prefixes = Arrays.asList(classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix);
+    private List<OntologyTermIdSuffix> identifiers = Arrays.asList(classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix);
+    private List<OntologyTermIdPrefix> prefixes = Arrays.asList(classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix);
 
     /**
      * Package-private constructor; use builder
@@ -39,9 +39,9 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      * @param annotationPropertyIdSuffix  Annotation property identifier suffix
      * @param individualIdSuffix  Individual identifier suffix
      */
-    OntologyTermPrefixedSequentialIdGenerator(IdPrefix classIdPrefix, IdPrefix objectPropertyIdPrefix, IdPrefix dataPropertyIdPrefix, IdPrefix annotationPropertyIdPrefix,
-                                              IdPrefix individualIdPrefix, Optional<IdSuffix> classIdSuffix, Optional<IdSuffix> objectPropertyIdSuffix,
-                                              Optional<IdSuffix> dataPropertyIdSuffix, Optional<IdSuffix> annotationPropertyIdSuffix, Optional<IdSuffix> individualIdSuffix)
+    OntologyTermPrefixedSequentialIdGenerator(OntologyTermIdPrefix classIdPrefix, OntologyTermIdPrefix objectPropertyIdPrefix, OntologyTermIdPrefix dataPropertyIdPrefix, OntologyTermIdPrefix annotationPropertyIdPrefix,
+                                              OntologyTermIdPrefix individualIdPrefix, Optional<OntologyTermIdSuffix> classIdSuffix, Optional<OntologyTermIdSuffix> objectPropertyIdSuffix,
+                                              Optional<OntologyTermIdSuffix> dataPropertyIdSuffix, Optional<OntologyTermIdSuffix> annotationPropertyIdSuffix, Optional<OntologyTermIdSuffix> individualIdSuffix)
     {
         this.classIdPrefix = checkNotNull(classIdPrefix);
         this.objectPropertyIdPrefix = checkNotNull(objectPropertyIdPrefix);
@@ -63,7 +63,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      * @return Suffix reference
      * @throws MalformedInputException  if the identifier suffix is not a positive integer
      */
-    private IdSuffix checkFormat(IdSuffix suffix) throws MalformedInputException {
+    private OntologyTermIdSuffix checkFormat(OntologyTermIdSuffix suffix) throws MalformedInputException {
         if(!isPositiveInteger(suffix.get())) {
             throw new MalformedInputException("The identifier suffix must be a positive integer (supplied value: " + suffix.get() + ")");
         }
@@ -101,7 +101,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
             intId = findHighestIdentifier();
         }
         intId++;
-        classIdSuffix = new OntologyTermIdSuffix(Integer.toString(intId));
+        classIdSuffix = new OntologyTermIdSuffixImpl(Integer.toString(intId));
         return getId(classIdPrefix, classIdSuffix);
     }
 
@@ -113,7 +113,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
             intId = findHighestIdentifier();
         }
         intId++;
-        objectPropertyIdSuffix = new OntologyTermIdSuffix(Integer.toString(intId));
+        objectPropertyIdSuffix = new OntologyTermIdSuffixImpl(Integer.toString(intId));
         return getId(objectPropertyIdPrefix, objectPropertyIdSuffix);
     }
 
@@ -125,7 +125,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
             intId = findHighestIdentifier();
         }
         intId++;
-        dataPropertyIdSuffix = new OntologyTermIdSuffix(Integer.toString(intId));
+        dataPropertyIdSuffix = new OntologyTermIdSuffixImpl(Integer.toString(intId));
         return getId(dataPropertyIdPrefix, dataPropertyIdSuffix);
     }
 
@@ -137,7 +137,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
             intId = findHighestIdentifier();
         }
         intId++;
-        annotationPropertyIdSuffix = new OntologyTermIdSuffix(Integer.toString(intId));
+        annotationPropertyIdSuffix = new OntologyTermIdSuffixImpl(Integer.toString(intId));
         return getId(annotationPropertyIdPrefix, annotationPropertyIdSuffix);
     }
 
@@ -149,7 +149,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
             intId = findHighestIdentifier();
         }
         intId++;
-        individualIdSuffix = new OntologyTermIdSuffix(Integer.toString(intId));
+        individualIdSuffix = new OntologyTermIdSuffixImpl(Integer.toString(intId));
         return getId(individualIdPrefix, individualIdSuffix);
     }
 
@@ -160,7 +160,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      * @param suffix    Ontology term identifier suffix
      * @return Ontology term identifier
      */
-    private Id getId(IdPrefix prefix, IdSuffix suffix) {
+    private Id getId(OntologyTermIdPrefix prefix, OntologyTermIdSuffix suffix) {
         return new OntologyTermIdImpl(prefix, suffix);
     }
 
@@ -170,9 +170,9 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      *
      * @param termId    Term identifier
      */
-    private IdSuffix checkState(IdSuffix termId) {
+    private OntologyTermIdSuffix checkState(OntologyTermIdSuffix termId) {
         if(termId == null) {
-            return new OntologyTermIdSuffix(Integer.toString(0));
+            return new OntologyTermIdSuffixImpl(Integer.toString(0));
         }
         else {
             return termId;
@@ -186,8 +186,8 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      * @param prefix    Prefix
      * @return true if given prefix exists more than once, false otherwise
      */
-    private boolean isPrefixClashing(IdPrefix prefix) {
-        List<IdPrefix> copy = new ArrayList(prefixes);
+    private boolean isPrefixClashing(OntologyTermIdPrefix prefix) {
+        List<OntologyTermIdPrefix> copy = new ArrayList(prefixes);
         copy.remove(prefix);
         if(copy.contains(prefix)) {
             return true;
@@ -204,7 +204,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      */
     private int findHighestIdentifier() {
         int highest = 0;
-        for(IdSuffix termId : identifiers) {
+        for(OntologyTermIdSuffix termId : identifiers) {
             int id = Integer.parseInt(termId.get());
             if(id > highest) {
                 highest = id;
@@ -214,27 +214,27 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
     }
 
     @Override
-    public IdPrefix getClassIdPrefix() {
+    public OntologyTermIdPrefix getClassIdPrefix() {
         return classIdPrefix;
     }
 
     @Override
-    public IdPrefix getObjectPropertyIdPrefix() {
+    public OntologyTermIdPrefix getObjectPropertyIdPrefix() {
         return objectPropertyIdPrefix;
     }
 
     @Override
-    public IdPrefix getDataPropertyIdPrefix() {
+    public OntologyTermIdPrefix getDataPropertyIdPrefix() {
         return dataPropertyIdPrefix;
     }
 
     @Override
-    public IdPrefix getAnnotationPropertyIdPrefix() {
+    public OntologyTermIdPrefix getAnnotationPropertyIdPrefix() {
         return annotationPropertyIdPrefix;
     }
 
     @Override
-    public IdPrefix getIndividualIdPrefix() {
+    public OntologyTermIdPrefix getIndividualIdPrefix() {
         return individualIdPrefix;
     }
 
@@ -243,7 +243,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      *
      * @return Last generated (class) term identifier suffix
      */
-    public IdSuffix getClassIdSuffix() {
+    public OntologyTermIdSuffix getClassIdSuffix() {
         return classIdSuffix;
     }
 
@@ -252,7 +252,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      *
      * @return Last generated (object property) term identifier suffix
      */
-    public IdSuffix getObjectPropertyIdSuffix() {
+    public OntologyTermIdSuffix getObjectPropertyIdSuffix() {
         return objectPropertyIdSuffix;
     }
 
@@ -261,7 +261,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      *
      * @return Last generated (data property) term identifier suffix
      */
-    public IdSuffix getDataPropertyIdSuffix() {
+    public OntologyTermIdSuffix getDataPropertyIdSuffix() {
         return dataPropertyIdSuffix;
     }
 
@@ -270,7 +270,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      *
      * @return Last generated (annotation property) term identifier suffix
      */
-    public IdSuffix getAnnotationPropertyIdSuffix() {
+    public OntologyTermIdSuffix getAnnotationPropertyIdSuffix() {
         return annotationPropertyIdSuffix;
     }
 
@@ -279,7 +279,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      *
      * @return Last generated (individual) term identifier suffix
      */
-    public IdSuffix getIndividualIdSuffix() {
+    public OntologyTermIdSuffix getIndividualIdSuffix() {
         return individualIdSuffix;
     }
 
@@ -306,8 +306,8 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
      * Stanford Center for Biomedical Informatics Research
      */
     public static class Builder {
-        private IdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
-        private IdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
+        private OntologyTermIdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
+        private OntologyTermIdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
 
         /**
          * Set the prefix used for class identifiers
@@ -315,7 +315,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param classIdPrefix    Class identifier prefix
          * @return Builder
          */
-        public Builder setClassIdPrefix(IdPrefix classIdPrefix) {
+        public Builder setClassIdPrefix(OntologyTermIdPrefix classIdPrefix) {
             this.classIdPrefix = classIdPrefix;
             return this;
         }
@@ -326,7 +326,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param objectPropertyIdPrefix    Object property identifier prefix
          * @return Builder
          */
-        public Builder setObjectPropertyIdPrefix(IdPrefix objectPropertyIdPrefix) {
+        public Builder setObjectPropertyIdPrefix(OntologyTermIdPrefix objectPropertyIdPrefix) {
             this.objectPropertyIdPrefix = objectPropertyIdPrefix;
             return this;
         }
@@ -337,7 +337,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param dataPropertyIdPrefix    Data property identifier prefix
          * @return Builder
          */
-        public Builder setDataPropertyIdPrefix(IdPrefix dataPropertyIdPrefix) {
+        public Builder setDataPropertyIdPrefix(OntologyTermIdPrefix dataPropertyIdPrefix) {
             this.dataPropertyIdPrefix = dataPropertyIdPrefix;
             return this;
         }
@@ -348,7 +348,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param annotationPropertyIdPrefix    Annotation property identifier prefix
          * @return Builder
          */
-        public Builder setAnnotationPropertyIdPrefix(IdPrefix annotationPropertyIdPrefix) {
+        public Builder setAnnotationPropertyIdPrefix(OntologyTermIdPrefix annotationPropertyIdPrefix) {
             this.annotationPropertyIdPrefix = annotationPropertyIdPrefix;
             return this;
         }
@@ -359,7 +359,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param individualIdPrefix    Individual identifier prefix
          * @return Builder
          */
-        public Builder setIndividualIdPrefix(IdPrefix individualIdPrefix) {
+        public Builder setIndividualIdPrefix(OntologyTermIdPrefix individualIdPrefix) {
             this.individualIdPrefix = individualIdPrefix;
             return this;
         }
@@ -370,7 +370,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param classIdSuffix   Class identifier suffix
          * @return Builder
          */
-        public Builder setClassIdSuffix(IdSuffix classIdSuffix) {
+        public Builder setClassIdSuffix(OntologyTermIdSuffix classIdSuffix) {
             this.classIdSuffix = classIdSuffix;
             return this;
         }
@@ -381,7 +381,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param objectPropertyIdSuffix   Object property identifier suffix
          * @return Builder
          */
-        public Builder setObjectPropertyIdSuffix(IdSuffix objectPropertyIdSuffix) {
+        public Builder setObjectPropertyIdSuffix(OntologyTermIdSuffix objectPropertyIdSuffix) {
             this.objectPropertyIdSuffix = objectPropertyIdSuffix;
             return this;
         }
@@ -392,7 +392,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param dataPropertyIdSuffix   Data property identifier suffix
          * @return Builder
          */
-        public Builder setDataPropertyIdSuffix(IdSuffix dataPropertyIdSuffix) {
+        public Builder setDataPropertyIdSuffix(OntologyTermIdSuffix dataPropertyIdSuffix) {
             this.dataPropertyIdSuffix = dataPropertyIdSuffix;
             return this;
         }
@@ -403,7 +403,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param annotationPropertyIdSuffix   Annotation property identifier suffix
          * @return Builder
          */
-        public Builder setAnnotationPropertyIdSuffix(IdSuffix annotationPropertyIdSuffix) {
+        public Builder setAnnotationPropertyIdSuffix(OntologyTermIdSuffix annotationPropertyIdSuffix) {
             this.annotationPropertyIdSuffix = annotationPropertyIdSuffix;
             return this;
         }
@@ -414,7 +414,7 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
          * @param individualIdSuffix   Individual identifier suffix
          * @return Builder
          */
-        public Builder setIndividualIdSuffix(IdSuffix individualIdSuffix) {
+        public Builder setIndividualIdSuffix(OntologyTermIdSuffix individualIdSuffix) {
             this.individualIdSuffix = individualIdSuffix;
             return this;
         }

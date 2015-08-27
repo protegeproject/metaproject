@@ -2,55 +2,55 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.IdSuffix;
+import edu.stanford.protege.metaproject.api.OntologyTermIdPrefix;
 
 import java.io.Serializable;
 
 /**
- * A representation of a suffix of a term identifier
+ * A representation of a prefix of a term identifier
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class OntologyTermIdSuffix implements IdSuffix, Serializable {
-    private static final long serialVersionUID = -6682143437258102232L;
-    private final String suffix;
+public final class OntologyTermIdPrefixImpl implements OntologyTermIdPrefix, Serializable {
+    private static final long serialVersionUID = -2085838644841448135L;
+    private final String prefix;
 
     /**
      * Constructor
      *
-     * @param suffix    Prefix string
+     * @param prefix    Prefix string
      */
-    public OntologyTermIdSuffix(String suffix) {
-        this.suffix = suffix;
+    public OntologyTermIdPrefixImpl(String prefix) {
+        this.prefix = prefix;
     }
 
     /**
-     * Get the term identifier suffix as a string
+     * Get the term identifier prefix as a string
      *
      * @return Prefix string
      */
     public String get() {
-        return suffix;
+        return prefix;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OntologyTermIdSuffix that = (OntologyTermIdSuffix) o;
-        return Objects.equal(suffix, that.suffix);
+        OntologyTermIdPrefixImpl that = (OntologyTermIdPrefixImpl) o;
+        return Objects.equal(prefix, that.prefix);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(suffix);
+        return Objects.hashCode(prefix);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("suffix", suffix)
+                .add("prefix", prefix)
                 .toString();
     }
 }

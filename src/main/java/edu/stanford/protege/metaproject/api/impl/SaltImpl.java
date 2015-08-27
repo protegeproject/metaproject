@@ -46,7 +46,7 @@ public final class SaltImpl implements Salt, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(bytes);
+        return Arrays.hashCode(bytes);
     }
 
     @Override

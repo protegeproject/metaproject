@@ -8,6 +8,11 @@ package edu.stanford.protege.metaproject.api;
  */
 interface HasDescription {
 
+    /**
+     * Get the description of the object
+     *
+     * @return Description
+     */
     Description getDescription();
 
 }

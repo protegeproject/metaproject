@@ -13,8 +13,6 @@ import java.util.Set;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A role defines a group of allowed operations within some project
- *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */

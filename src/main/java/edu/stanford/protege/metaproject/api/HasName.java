@@ -8,6 +8,11 @@ package edu.stanford.protege.metaproject.api;
  */
 interface HasName {
 
+    /**
+     * Get the name of the object
+     *
+     * @return Name
+     */
     Name getName();
 
 }

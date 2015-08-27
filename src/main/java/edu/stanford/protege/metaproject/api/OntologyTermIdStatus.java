@@ -9,25 +9,25 @@ import java.util.Optional;
 public interface OntologyTermIdStatus {
 
     // suffixes
-    Optional<IdSuffix> getClassIdSuffix();
+    Optional<OntologyTermIdSuffix> getClassIdSuffix();
 
-    Optional<IdSuffix> getObjectPropertyIdSuffix();
+    Optional<OntologyTermIdSuffix> getObjectPropertyIdSuffix();
 
-    Optional<IdSuffix> getDataPropertyIdSuffix();
+    Optional<OntologyTermIdSuffix> getDataPropertyIdSuffix();
 
-    Optional<IdSuffix> getAnnotationPropertyIdSuffix();
+    Optional<OntologyTermIdSuffix> getAnnotationPropertyIdSuffix();
 
-    Optional<IdSuffix> getIndividualIdSuffix();
+    Optional<OntologyTermIdSuffix> getIndividualIdSuffix();
 
     // prefixes
-    Optional<IdPrefix> getClassIdPrefix();
+    Optional<OntologyTermIdPrefix> getClassIdPrefix();
 
-    Optional<IdPrefix> getObjectPropertyIdPrefix();
+    Optional<OntologyTermIdPrefix> getObjectPropertyIdPrefix();
 
-    Optional<IdPrefix> getDataPropertyIdPrefix();
+    Optional<OntologyTermIdPrefix> getDataPropertyIdPrefix();
 
-    Optional<IdPrefix> getAnnotationPropertyIdPrefix();
+    Optional<OntologyTermIdPrefix> getAnnotationPropertyIdPrefix();
 
-    Optional<IdPrefix> getIndividualIdPrefix();
+    Optional<OntologyTermIdPrefix> getIndividualIdPrefix();
 
 }

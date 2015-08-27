@@ -14,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPrefixedIdGenerator {
-    private final IdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
+    private final OntologyTermIdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
 
     /**
      * Package-private constructor; use builder
@@ -25,8 +25,8 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
      * @param annotationPropertyIdPrefix    Annotation property identifier prefix
      * @param individualIdPrefix    Individual identifier prefix
      */
-    OntologyTermPrefixedUUIDGenerator(IdPrefix classIdPrefix, IdPrefix objectPropertyIdPrefix, IdPrefix dataPropertyIdPrefix,
-                                      IdPrefix annotationPropertyIdPrefix, IdPrefix individualIdPrefix) {
+    OntologyTermPrefixedUUIDGenerator(OntologyTermIdPrefix classIdPrefix, OntologyTermIdPrefix objectPropertyIdPrefix, OntologyTermIdPrefix dataPropertyIdPrefix,
+                                      OntologyTermIdPrefix annotationPropertyIdPrefix, OntologyTermIdPrefix individualIdPrefix) {
         this.classIdPrefix = checkNotNull(classIdPrefix);
         this.objectPropertyIdPrefix = checkNotNull(objectPropertyIdPrefix);
         this.dataPropertyIdPrefix = checkNotNull(dataPropertyIdPrefix);
@@ -64,32 +64,32 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
      *
      * @return String identifier
      */
-    private IdSuffix getId() {
-        return new OntologyTermIdSuffix(UUID.randomUUID().toString());
+    private edu.stanford.protege.metaproject.api.OntologyTermIdSuffix getId() {
+        return new OntologyTermIdSuffixImpl(UUID.randomUUID().toString());
     }
 
     @Override
-    public IdPrefix getClassIdPrefix() {
+    public OntologyTermIdPrefix getClassIdPrefix() {
         return classIdPrefix;
     }
 
     @Override
-    public IdPrefix getObjectPropertyIdPrefix() {
+    public OntologyTermIdPrefix getObjectPropertyIdPrefix() {
         return objectPropertyIdPrefix;
     }
 
     @Override
-    public IdPrefix getDataPropertyIdPrefix() {
+    public OntologyTermIdPrefix getDataPropertyIdPrefix() {
         return dataPropertyIdPrefix;
     }
 
     @Override
-    public IdPrefix getAnnotationPropertyIdPrefix() {
+    public OntologyTermIdPrefix getAnnotationPropertyIdPrefix() {
         return annotationPropertyIdPrefix;
     }
 
     @Override
-    public IdPrefix getIndividualIdPrefix() {
+    public OntologyTermIdPrefix getIndividualIdPrefix() {
         return individualIdPrefix;
     }
 
@@ -103,7 +103,7 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
      * Stanford Center for Biomedical Informatics Research
      */
     public static class Builder {
-        private IdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
+        private OntologyTermIdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
 
         /**
          * Set the class identifier prefix
@@ -111,7 +111,7 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
          * @param classIdPrefix Class identifier prefix
          * @return Builder
          */
-        public Builder setClassIdPrefix(IdPrefix classIdPrefix) {
+        public Builder setClassIdPrefix(OntologyTermIdPrefix classIdPrefix) {
             this.classIdPrefix = classIdPrefix;
             return this;
         }
@@ -121,7 +121,7 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
          * @param objectPropertyIdPrefix    Object property identifier prefix
          * @return Builder
          */
-        public Builder setObjectPropertyIdPrefix(IdPrefix objectPropertyIdPrefix) {
+        public Builder setObjectPropertyIdPrefix(OntologyTermIdPrefix objectPropertyIdPrefix) {
             this.objectPropertyIdPrefix = objectPropertyIdPrefix;
             return this;
         }
@@ -132,7 +132,7 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
          * @param dataPropertyIdPrefix  Data property identifier prefix
          * @return Builder
          */
-        public Builder setDataPropertyIdPrefix(IdPrefix dataPropertyIdPrefix) {
+        public Builder setDataPropertyIdPrefix(OntologyTermIdPrefix dataPropertyIdPrefix) {
             this.dataPropertyIdPrefix = dataPropertyIdPrefix;
             return this;
         }
@@ -143,7 +143,7 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
          * @param annotationPropertyIdPrefix    Annotation property identifier prefix
          * @return Builder
          */
-        public Builder setAnnotationPropertyIdPrefix(IdPrefix annotationPropertyIdPrefix) {
+        public Builder setAnnotationPropertyIdPrefix(OntologyTermIdPrefix annotationPropertyIdPrefix) {
             this.annotationPropertyIdPrefix = annotationPropertyIdPrefix;
             return this;
         }
@@ -153,7 +153,7 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
          * @param individualIdPrefix    Individual identifier prefix
          * @return Builder
          */
-        public Builder setIndividualIdPrefix(IdPrefix individualIdPrefix) {
+        public Builder setIndividualIdPrefix(OntologyTermIdPrefix individualIdPrefix) {
             this.individualIdPrefix = individualIdPrefix;
             return this;
         }

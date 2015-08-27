@@ -6,6 +6,11 @@ package edu.stanford.protege.metaproject.api;
  */
 interface HasAddress {
 
+    /**
+     * Get the address of the object
+     *
+     * @return Address
+     */
     Address getAddress();
 
 }

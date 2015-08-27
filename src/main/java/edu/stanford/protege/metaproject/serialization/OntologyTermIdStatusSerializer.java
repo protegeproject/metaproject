@@ -1,12 +1,12 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
-import edu.stanford.protege.metaproject.api.IdPrefix;
-import edu.stanford.protege.metaproject.api.IdSuffix;
+import edu.stanford.protege.metaproject.api.OntologyTermIdPrefix;
+import edu.stanford.protege.metaproject.api.OntologyTermIdSuffix;
 import edu.stanford.protege.metaproject.api.OntologyTermIdStatus;
-import edu.stanford.protege.metaproject.api.impl.OntologyTermIdPrefix;
+import edu.stanford.protege.metaproject.api.impl.OntologyTermIdPrefixImpl;
 import edu.stanford.protege.metaproject.api.impl.OntologyTermIdStatusImpl;
-import edu.stanford.protege.metaproject.api.impl.OntologyTermIdSuffix;
+import edu.stanford.protege.metaproject.api.impl.OntologyTermIdSuffixImpl;
 
 import java.lang.reflect.Type;
 
@@ -57,18 +57,18 @@ public class OntologyTermIdStatusSerializer implements JsonSerializer<OntologyTe
         JsonObject obj = element.getAsJsonObject();
 
         // prefixes
-        IdPrefix classIdPrefix = context.deserialize(obj.getAsJsonPrimitive("classIdPrefix"), OntologyTermIdPrefix.class);
-        IdPrefix objectPropertyIdPrefix = context.deserialize(obj.getAsJsonPrimitive("objectPropertyIdPrefix"), OntologyTermIdPrefix.class);
-        IdPrefix dataPropertyIdPrefix = context.deserialize(obj.getAsJsonPrimitive("dataPropertyIdPrefix"), OntologyTermIdPrefix.class);
-        IdPrefix annotationPropertyIdPrefix = context.deserialize(obj.getAsJsonPrimitive("annotationPropertyIdPrefix"), OntologyTermIdPrefix.class);
-        IdPrefix individualIdPrefix = context.deserialize(obj.getAsJsonPrimitive("individualIdPrefix"), OntologyTermIdPrefix.class);
+        OntologyTermIdPrefix classIdPrefix = context.deserialize(obj.getAsJsonPrimitive("classIdPrefix"), OntologyTermIdPrefixImpl.class);
+        OntologyTermIdPrefix objectPropertyIdPrefix = context.deserialize(obj.getAsJsonPrimitive("objectPropertyIdPrefix"), OntologyTermIdPrefixImpl.class);
+        OntologyTermIdPrefix dataPropertyIdPrefix = context.deserialize(obj.getAsJsonPrimitive("dataPropertyIdPrefix"), OntologyTermIdPrefixImpl.class);
+        OntologyTermIdPrefix annotationPropertyIdPrefix = context.deserialize(obj.getAsJsonPrimitive("annotationPropertyIdPrefix"), OntologyTermIdPrefixImpl.class);
+        OntologyTermIdPrefix individualIdPrefix = context.deserialize(obj.getAsJsonPrimitive("individualIdPrefix"), OntologyTermIdPrefixImpl.class);
 
         // suffixes
-        IdSuffix classIdSuffix = context.deserialize(obj.getAsJsonPrimitive("classIdSuffix"), OntologyTermIdSuffix.class);
-        IdSuffix objectPropertyIdSuffix = context.deserialize(obj.getAsJsonPrimitive("objectPropertyIdSuffix"), OntologyTermIdSuffix.class);
-        IdSuffix dataPropertyIdSuffix = context.deserialize(obj.getAsJsonPrimitive("dataPropertyIdSuffix"), OntologyTermIdSuffix.class);
-        IdSuffix annotationPropertyIdSuffix = context.deserialize(obj.getAsJsonPrimitive("annotationPropertyIdSuffix"), OntologyTermIdSuffix.class);
-        IdSuffix individualIdSuffix = context.deserialize(obj.getAsJsonPrimitive("individualIdSuffix"), OntologyTermIdSuffix.class);
+        OntologyTermIdSuffix classIdSuffix = context.deserialize(obj.getAsJsonPrimitive("classIdSuffix"), OntologyTermIdSuffixImpl.class);
+        OntologyTermIdSuffix objectPropertyIdSuffix = context.deserialize(obj.getAsJsonPrimitive("objectPropertyIdSuffix"), OntologyTermIdSuffixImpl.class);
+        OntologyTermIdSuffix dataPropertyIdSuffix = context.deserialize(obj.getAsJsonPrimitive("dataPropertyIdSuffix"), OntologyTermIdSuffixImpl.class);
+        OntologyTermIdSuffix annotationPropertyIdSuffix = context.deserialize(obj.getAsJsonPrimitive("annotationPropertyIdSuffix"), OntologyTermIdSuffixImpl.class);
+        OntologyTermIdSuffix individualIdSuffix = context.deserialize(obj.getAsJsonPrimitive("individualIdSuffix"), OntologyTermIdSuffixImpl.class);
 
         return new OntologyTermIdStatusImpl.Builder()
                 .setClassIdPrefix(classIdPrefix)

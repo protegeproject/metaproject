@@ -2,8 +2,8 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.IdPrefix;
-import edu.stanford.protege.metaproject.api.IdSuffix;
+import edu.stanford.protege.metaproject.api.OntologyTermIdPrefix;
+import edu.stanford.protege.metaproject.api.OntologyTermIdSuffix;
 import edu.stanford.protege.metaproject.api.OntologyTermIdStatus;
 
 import java.io.Serializable;
@@ -17,8 +17,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class OntologyTermIdStatusImpl implements OntologyTermIdStatus, Serializable {
     private static final long serialVersionUID = -9007514337006498320L;
-    private final IdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
-    private final IdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
+    private final OntologyTermIdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
+    private final OntologyTermIdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
 
     /**
      * Package-private constructor; use builder
@@ -34,10 +34,10 @@ public final class OntologyTermIdStatusImpl implements OntologyTermIdStatus, Ser
      * @param annotationPropertyIdSuffix    Annotation property identifier suffix
      * @param individualIdSuffix    Individual identifier suffix
      */
-    OntologyTermIdStatusImpl(Optional<IdPrefix> classIdPrefix, Optional<IdPrefix> objectPropertyIdPrefix, Optional<IdPrefix> dataPropertyIdPrefix,
-                                    Optional<IdPrefix> annotationPropertyIdPrefix, Optional<IdPrefix> individualIdPrefix,
-                                    Optional<IdSuffix> classIdSuffix, Optional<IdSuffix> objectPropertyIdSuffix, Optional<IdSuffix> dataPropertyIdSuffix,
-                                    Optional<IdSuffix> annotationPropertyIdSuffix, Optional<IdSuffix> individualIdSuffix)
+    OntologyTermIdStatusImpl(Optional<OntologyTermIdPrefix> classIdPrefix, Optional<OntologyTermIdPrefix> objectPropertyIdPrefix, Optional<OntologyTermIdPrefix> dataPropertyIdPrefix,
+                                    Optional<OntologyTermIdPrefix> annotationPropertyIdPrefix, Optional<OntologyTermIdPrefix> individualIdPrefix,
+                                    Optional<OntologyTermIdSuffix> classIdSuffix, Optional<OntologyTermIdSuffix> objectPropertyIdSuffix, Optional<OntologyTermIdSuffix> dataPropertyIdSuffix,
+                                    Optional<OntologyTermIdSuffix> annotationPropertyIdSuffix, Optional<OntologyTermIdSuffix> individualIdSuffix)
     {
         this.classIdPrefix = (classIdPrefix.isPresent() ? checkNotNull(classIdPrefix.get()) : null);
         this.objectPropertyIdPrefix = (objectPropertyIdPrefix.isPresent() ? checkNotNull(objectPropertyIdPrefix.get()) : null);
@@ -53,52 +53,52 @@ public final class OntologyTermIdStatusImpl implements OntologyTermIdStatus, Ser
     }
 
     @Override
-    public Optional<IdPrefix> getClassIdPrefix() {
+    public Optional<OntologyTermIdPrefix> getClassIdPrefix() {
         return Optional.ofNullable(classIdPrefix);
     }
 
     @Override
-    public Optional<IdPrefix> getObjectPropertyIdPrefix() {
+    public Optional<OntologyTermIdPrefix> getObjectPropertyIdPrefix() {
         return Optional.ofNullable(objectPropertyIdPrefix);
     }
 
     @Override
-    public Optional<IdPrefix> getDataPropertyIdPrefix() {
+    public Optional<OntologyTermIdPrefix> getDataPropertyIdPrefix() {
         return Optional.ofNullable(dataPropertyIdPrefix);
     }
 
     @Override
-    public Optional<IdPrefix> getAnnotationPropertyIdPrefix() {
+    public Optional<OntologyTermIdPrefix> getAnnotationPropertyIdPrefix() {
         return Optional.ofNullable(annotationPropertyIdPrefix);
     }
 
     @Override
-    public Optional<IdPrefix> getIndividualIdPrefix() {
+    public Optional<OntologyTermIdPrefix> getIndividualIdPrefix() {
         return Optional.ofNullable(individualIdPrefix);
     }
 
     @Override
-    public Optional<IdSuffix> getClassIdSuffix() {
+    public Optional<OntologyTermIdSuffix> getClassIdSuffix() {
         return Optional.ofNullable(classIdSuffix);
     }
 
     @Override
-    public Optional<IdSuffix> getObjectPropertyIdSuffix() {
+    public Optional<OntologyTermIdSuffix> getObjectPropertyIdSuffix() {
         return Optional.ofNullable(objectPropertyIdSuffix);
     }
 
     @Override
-    public Optional<IdSuffix> getDataPropertyIdSuffix() {
+    public Optional<OntologyTermIdSuffix> getDataPropertyIdSuffix() {
         return Optional.ofNullable(dataPropertyIdSuffix);
     }
 
     @Override
-    public Optional<IdSuffix> getAnnotationPropertyIdSuffix() {
+    public Optional<OntologyTermIdSuffix> getAnnotationPropertyIdSuffix() {
         return Optional.ofNullable(annotationPropertyIdSuffix);
     }
 
     @Override
-    public Optional<IdSuffix> getIndividualIdSuffix() {
+    public Optional<OntologyTermIdSuffix> getIndividualIdSuffix() {
         return Optional.ofNullable(individualIdSuffix);
     }
 
@@ -146,55 +146,55 @@ public final class OntologyTermIdStatusImpl implements OntologyTermIdStatus, Ser
      * Builder for ontology term identifier status instances
      */
     public static class Builder {
-        private IdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
-        private IdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
+        private OntologyTermIdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
+        private OntologyTermIdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
 
-        public Builder setClassIdPrefix(IdPrefix classIdPrefix) {
+        public Builder setClassIdPrefix(OntologyTermIdPrefix classIdPrefix) {
             this.classIdPrefix = classIdPrefix;
             return this;
         }
 
-        public Builder setObjectPropertyIdPrefix(IdPrefix objectPropertyIdPrefix) {
+        public Builder setObjectPropertyIdPrefix(OntologyTermIdPrefix objectPropertyIdPrefix) {
             this.objectPropertyIdPrefix = objectPropertyIdPrefix;
             return this;
         }
 
-        public Builder setDataPropertyIdPrefix(IdPrefix dataPropertyIdPrefix) {
+        public Builder setDataPropertyIdPrefix(OntologyTermIdPrefix dataPropertyIdPrefix) {
             this.dataPropertyIdPrefix = dataPropertyIdPrefix;
             return this;
         }
 
-        public Builder setAnnotationPropertyIdPrefix(IdPrefix annotationPropertyIdPrefix) {
+        public Builder setAnnotationPropertyIdPrefix(OntologyTermIdPrefix annotationPropertyIdPrefix) {
             this.annotationPropertyIdPrefix = annotationPropertyIdPrefix;
             return this;
         }
 
-        public Builder setIndividualIdPrefix(IdPrefix individualIdPrefix) {
+        public Builder setIndividualIdPrefix(OntologyTermIdPrefix individualIdPrefix) {
             this.individualIdPrefix = individualIdPrefix;
             return this;
         }
 
-        public Builder setClassIdSuffix(IdSuffix classIdSuffix) {
+        public Builder setClassIdSuffix(OntologyTermIdSuffix classIdSuffix) {
             this.classIdSuffix = classIdSuffix;
             return this;
         }
 
-        public Builder setObjectPropertyIdSuffix(IdSuffix objectPropertyIdSuffix) {
+        public Builder setObjectPropertyIdSuffix(OntologyTermIdSuffix objectPropertyIdSuffix) {
             this.objectPropertyIdSuffix = objectPropertyIdSuffix;
             return this;
         }
 
-        public Builder setDataPropertyIdSuffix(IdSuffix dataPropertyIdSuffix) {
+        public Builder setDataPropertyIdSuffix(OntologyTermIdSuffix dataPropertyIdSuffix) {
             this.dataPropertyIdSuffix = dataPropertyIdSuffix;
             return this;
         }
 
-        public Builder setAnnotationPropertyIdSuffix(IdSuffix annotationPropertyIdSuffix) {
+        public Builder setAnnotationPropertyIdSuffix(OntologyTermIdSuffix annotationPropertyIdSuffix) {
             this.annotationPropertyIdSuffix = annotationPropertyIdSuffix;
             return this;
         }
 
-        public Builder setIndividualIdSuffix(IdSuffix individualIdSuffix) {
+        public Builder setIndividualIdSuffix(OntologyTermIdSuffix individualIdSuffix) {
             this.individualIdSuffix = individualIdSuffix;
             return this;
         }

@@ -35,27 +35,27 @@ public final class OntologyTermUUIDGenerator implements OntologyTermIdGenerator 
 
     @Override
     public Id getNextClassId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefix(""), new OntologyTermIdSuffix(getId()));
+        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
     }
 
     @Override
     public Id getNextObjectPropertyId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefix(""), new OntologyTermIdSuffix(getId()));
+        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
     }
 
     @Override
     public Id getNextDataPropertyId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefix(""), new OntologyTermIdSuffix(getId()));
+        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
     }
 
     @Override
     public Id getNextAnnotationPropertyId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefix(""), new OntologyTermIdSuffix(getId()));
+        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
     }
 
     @Override
     public Id getNextIndividualId() {
-        return new OntologyTermIdImpl(new OntologyTermIdPrefix(""), new OntologyTermIdSuffix(getId()));
+        return new OntologyTermIdImpl(new OntologyTermIdPrefixImpl(""), new OntologyTermIdSuffixImpl(getId()));
     }
 
     @Override

@@ -2,8 +2,8 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.IdPrefix;
-import edu.stanford.protege.metaproject.api.IdSuffix;
+import edu.stanford.protege.metaproject.api.OntologyTermIdPrefix;
+import edu.stanford.protege.metaproject.api.OntologyTermIdSuffix;
 import edu.stanford.protege.metaproject.api.OntologyTermId;
 
 import java.io.Serializable;
@@ -16,8 +16,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class OntologyTermIdImpl implements OntologyTermId, Serializable {
     private static final long serialVersionUID = -3431336312540440484L;
-    private final IdPrefix prefix;
-    private final IdSuffix suffix;
+    private final OntologyTermIdPrefix prefix;
+    private final OntologyTermIdSuffix suffix;
 
     /**
      * Constructor
@@ -25,7 +25,7 @@ public final class OntologyTermIdImpl implements OntologyTermId, Serializable {
      * @param prefix    Identifier prefix
      * @param suffix    Identifier suffix
      */
-    public OntologyTermIdImpl(IdPrefix prefix, IdSuffix suffix) {
+    public OntologyTermIdImpl(OntologyTermIdPrefix prefix, OntologyTermIdSuffix suffix) {
         this.prefix = checkNotNull(prefix);
         this.suffix = checkNotNull(suffix);
     }
@@ -46,7 +46,7 @@ public final class OntologyTermIdImpl implements OntologyTermId, Serializable {
      * @return Identifier prefix
      */
     @Override
-    public IdPrefix getPrefix() {
+    public OntologyTermIdPrefix getPrefix() {
         return prefix;
     }
 
@@ -56,7 +56,7 @@ public final class OntologyTermIdImpl implements OntologyTermId, Serializable {
      * @return Identifier suffix
      */
     @Override
-    public IdSuffix getSuffix() {
+    public OntologyTermIdSuffix getSuffix() {
         return suffix;
     }
 
