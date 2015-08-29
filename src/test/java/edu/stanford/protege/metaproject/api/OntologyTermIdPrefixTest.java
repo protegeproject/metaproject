@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class OntologyTermIdPrefixTest {
     private static final String
             idPrefixStr = "testIdPrefix",
@@ -23,9 +21,9 @@ public class OntologyTermIdPrefixTest {
 
     @Before
     public void setUp() {
-        idPrefix = TestUtils.getOntologyTermIdPrefix(idPrefixStr);
-        otherIdPrefix = TestUtils.getOntologyTermIdPrefix(idPrefixStr);
-        diffIdPrefix = TestUtils.getOntologyTermIdPrefix(diffIdPrefixStr);
+        idPrefix = Utils.getOntologyTermIdPrefix(idPrefixStr);
+        otherIdPrefix = Utils.getOntologyTermIdPrefix(idPrefixStr);
+        diffIdPrefix = Utils.getOntologyTermIdPrefix(diffIdPrefixStr);
     }
 
     @Test
@@ -40,17 +38,17 @@ public class OntologyTermIdPrefixTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(idPrefix, is(equalTo(idPrefix)));
+        assertThat(idPrefix, is(idPrefix));
     }
 
     @Test
     public void testEquals() {
-        assertThat(idPrefix, is(equalTo(otherIdPrefix)));
+        assertThat(idPrefix, is(otherIdPrefix));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(idPrefix, is(not(equalTo(diffIdPrefix))));
+        assertThat(idPrefix, is(not(diffIdPrefix)));
     }
 
     @Test

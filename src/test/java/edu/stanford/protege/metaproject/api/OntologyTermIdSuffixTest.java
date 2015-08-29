@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class OntologyTermIdSuffixTest {
     private static final String
             idSuffixStr = "testIdSuffix",
@@ -23,9 +21,9 @@ public class OntologyTermIdSuffixTest {
 
     @Before
     public void setUp() {
-        idSuffix = TestUtils.getOntologyTermIdSuffix(idSuffixStr);
-        otherIdSuffix = TestUtils.getOntologyTermIdSuffix(idSuffixStr);
-        diffIdSuffix = TestUtils.getOntologyTermIdSuffix(diffIdSuffixStr);
+        idSuffix = Utils.getOntologyTermIdSuffix(idSuffixStr);
+        otherIdSuffix = Utils.getOntologyTermIdSuffix(idSuffixStr);
+        diffIdSuffix = Utils.getOntologyTermIdSuffix(diffIdSuffixStr);
     }
 
     @Test

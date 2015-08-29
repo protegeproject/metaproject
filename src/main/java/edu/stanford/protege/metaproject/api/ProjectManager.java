@@ -20,7 +20,7 @@ public interface ProjectManager extends Manager {
      *
      * @param project   One or more new projects
      */
-    void addProject(Project... project);
+    void add(Project... project);
 
     /**
      * Remove the specified project(s) from the project registry
@@ -28,7 +28,7 @@ public interface ProjectManager extends Manager {
      * @param project   One or more projects to be removed
      * @throws ProjectNotFoundException Project not found
      */
-    void removeProject(Project... project) throws AccessControlObjectNotFoundException;
+    void remove(Project... project) throws AccessControlObjectNotFoundException;
 
     /**
      * Get the set of all projects
@@ -61,7 +61,7 @@ public interface ProjectManager extends Manager {
      * @param projectName   New project name
      * @throws ProjectNotFoundException Project not found
      */
-    void changeProjectName(ProjectId projectId, Name projectName) throws ProjectNotFoundException;
+    void changeName(ProjectId projectId, Name projectName) throws ProjectNotFoundException;
 
     /**
      * Change the description of the given project
@@ -70,7 +70,7 @@ public interface ProjectManager extends Manager {
      * @param projectDescription    New project description
      * @throws ProjectNotFoundException Project not found
      */
-    void changeProjectDescription(ProjectId projectId, Description projectDescription) throws ProjectNotFoundException;
+    void changeDescription(ProjectId projectId, Description projectDescription) throws ProjectNotFoundException;
 
     /**
      * Change the owner of the specified project
@@ -88,42 +88,24 @@ public interface ProjectManager extends Manager {
      * @param projectAddress   Project address
      * @throws ProjectNotFoundException Project not found
      */
-    void changeLocation(ProjectId projectId, Address projectAddress) throws ProjectNotFoundException;
+    void changeAddress(ProjectId projectId, Address projectAddress) throws ProjectNotFoundException;
 
     /**
-     * Add an administrator user to the specified project
+     * Add one or more administrator users to the specified project
      *
      * @param projectId   Project identifier
-     * @param userId    Administrator user identifier user to be added
+     * @param userId    User identifier(s) of administrator(s) to be added
      * @throws ProjectNotFoundException Project not found
      */
-    void addAdministrator(ProjectId projectId, UserId userId) throws ProjectNotFoundException;
+    void addAdministrator(ProjectId projectId, UserId... userId) throws ProjectNotFoundException;
 
     /**
-     * Add a set of administrator users to the specified project
+     * Remove one or more administrator users from the specified project
      *
      * @param projectId   Project identifier
-     * @param users    Set of user identifiers of administrators to be added
+     * @param userId    User identifier(s) of administrator(s) to be removed
      * @throws ProjectNotFoundException Project not found
      */
-    void addAdministrators(ProjectId projectId, Set<UserId> users) throws ProjectNotFoundException;
-
-    /**
-     * Remove an administrator user from the specified project
-     *
-     * @param projectId   Project identifier
-     * @param userId    User identifier of administrator to be removed
-     * @throws ProjectNotFoundException Project not found
-     */
-    void removeAdministrator(ProjectId projectId, UserId userId) throws ProjectNotFoundException;
-
-    /**
-     * Remove a set of administrator users from the specified project
-     *
-     * @param projectId   Project identifier
-     * @param users    Set of user identifiers of administrators to be removed
-     * @throws ProjectNotFoundException Project not found
-     */
-    void removeAdministrators(ProjectId projectId, Set<UserId> users) throws ProjectNotFoundException;
+    void removeAdministrator(ProjectId projectId, UserId... userId) throws ProjectNotFoundException;
 
 }

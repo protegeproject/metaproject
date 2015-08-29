@@ -12,7 +12,7 @@ import java.util.UUID;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class OntologyTermUUIDGenerator implements OntologyTermIdGenerator {
-    private OntologyTermUUIDGenerator instance = null;
+    private static OntologyTermUUIDGenerator instance = null;
 
     /**
      * Constructor
@@ -24,7 +24,7 @@ public final class OntologyTermUUIDGenerator implements OntologyTermIdGenerator 
      *
      * @return Instance of ontology term UUID generator
      */
-    public OntologyTermUUIDGenerator getInstance() {
+    public static OntologyTermUUIDGenerator getInstance() {
         if(instance == null) {
             instance = new OntologyTermUUIDGenerator();
         }

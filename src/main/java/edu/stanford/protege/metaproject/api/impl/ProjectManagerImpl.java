@@ -6,6 +6,7 @@ import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.ProjectNotFoundException;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -18,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ProjectManagerImpl implements ProjectManager, Serializable {
-    private static final long serialVersionUID = -5071816958481766140L;
+    private static final long serialVersionUID = -3102222571430826344L;
     private Set<Project> projects = new HashSet<>();
 
     /**
@@ -36,19 +37,22 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     public ProjectManagerImpl() { }
 
     @Override
-    public void addProject(Project... project) {
-        for(Project p : project) {
-            projects.add(checkNotNull(p));
+    public void add(Project... projects) {
+        checkNotNull(projects);
+        for(Project p : projects) {
+            this.projects.add(checkNotNull(p));
         }
     }
 
     @Override
-    public void removeProject(Project... project) throws ProjectNotFoundException {
-        for(Project p : project) {
-            if (!projects.contains(checkNotNull(p))) {
+    public void remove(Project... projects) throws ProjectNotFoundException {
+        checkNotNull(projects);
+        for(Project p : projects) {
+            checkNotNull(p);
+            if (!this.projects.contains(p)) {
                 throw new ProjectNotFoundException("The specified project does not exist");
             }
-            projects.remove(p);
+            this.projects.remove(p);
         }
     }
 
@@ -59,7 +63,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
 
     @Override
     public Project getProject(ProjectId projectId) throws ProjectNotFoundException {
-        Optional<Project> project = getProjectOptional(checkNotNull(projectId));
+        Optional<Project> project = getProjectOptional(projectId);
         if(project.isPresent()) {
             return project.get();
         }
@@ -70,85 +74,81 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
 
     @Override
     public Set<Project> getProjects(Name projectName) {
-        return projects.stream().filter(project -> project.getName().equals(checkNotNull(projectName))).collect(Collectors.toSet());
+        checkNotNull(projectName);
+        return projects.stream().filter(project -> project.getName().equals(projectName)).collect(Collectors.toSet());
     }
 
     @Override
-    public void changeProjectName(ProjectId projectId, Name projectName) throws ProjectNotFoundException {
+    public void changeName(ProjectId projectId, Name projectName) throws ProjectNotFoundException {
+        checkNotNull(projectName);
         Project project = getProject(projectId);
-        removeProject(project);
+        remove(project);
 
-        Project newProject = new ProjectImpl(project.getId(), checkNotNull(projectName), project.getDescription(), project.getAddress(), project.getOwner(), project.getAdministrators());
-        addProject(newProject);
+        Project newProject = new ProjectImpl(project.getId(), projectName, project.getDescription(), project.getAddress(), project.getOwner(), project.getAdministrators());
+        add(newProject);
     }
 
     @Override
-    public void changeProjectDescription(ProjectId projectId, Description projectDescription) throws ProjectNotFoundException {
+    public void changeDescription(ProjectId projectId, Description projectDescription) throws ProjectNotFoundException {
+        checkNotNull(projectDescription);
         Project project = getProject(projectId);
-        removeProject(project);
+        remove(project);
 
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), checkNotNull(projectDescription), project.getAddress(), project.getOwner(), project.getAdministrators());
-        addProject(newProject);
+        Project newProject = new ProjectImpl(project.getId(), project.getName(), projectDescription, project.getAddress(), project.getOwner(), project.getAdministrators());
+        add(newProject);
     }
 
     @Override
     public void changeOwner(ProjectId projectId, UserId userId) throws ProjectNotFoundException {
+        checkNotNull(userId);
         Project project = getProject(projectId);
-        removeProject(project);
+        remove(project);
 
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), checkNotNull(userId), project.getAdministrators());
-        addProject(newProject);
+        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), userId, project.getAdministrators());
+        add(newProject);
     }
 
     @Override
-    public void changeLocation(ProjectId projectId, Address projectAddress) throws ProjectNotFoundException {
+    public void changeAddress(ProjectId projectId, Address projectAddress) throws ProjectNotFoundException {
+        checkNotNull(projectAddress);
         Project project = getProject(projectId);
-        removeProject(project);
+        remove(project);
 
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), checkNotNull(projectAddress), project.getOwner(), project.getAdministrators());
-        addProject(newProject);
+        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), projectAddress, project.getOwner(), project.getAdministrators());
+        add(newProject);
     }
 
     @Override
-    public void addAdministrator(ProjectId projectId, UserId userId) throws ProjectNotFoundException {
-        Set<UserId> users = new HashSet<>();
-        users.add(checkNotNull(userId));
-        addAdministrators(checkNotNull(projectId), users);
-    }
-
-    @Override
-    public void addAdministrators(ProjectId projectId, Set<UserId> users) throws ProjectNotFoundException {
+    public void addAdministrator(ProjectId projectId, UserId... userIds) throws ProjectNotFoundException {
+        checkNotNull(userIds);
         Project project = getProject(projectId);
-        removeProject(project);
+        remove(project);
 
-        Set<UserId> administrators = project.getAdministrators();
-        administrators.addAll(checkNotNull(users));
+        Set<UserId> administrators = new HashSet<>(project.getAdministrators());
+        Collections.addAll(administrators, userIds);
 
         Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
-        addProject(newProject);
+        add(newProject);
     }
 
     @Override
-    public void removeAdministrator(ProjectId projectId, UserId userId) throws ProjectNotFoundException {
-        Set<UserId> users = new HashSet<>();
-        users.add(checkNotNull(userId));
-        removeAdministrators(checkNotNull(projectId), users);
-    }
-
-    @Override
-    public void removeAdministrators(ProjectId projectId, Set<UserId> users) throws ProjectNotFoundException {
+    public void removeAdministrator(ProjectId projectId, UserId... userIds) throws ProjectNotFoundException {
+        checkNotNull(userIds);
         Project project = getProject(projectId);
-        removeProject(project);
+        remove(project);
 
-        Set<UserId> administrators = project.getAdministrators();
-        administrators.removeAll(checkNotNull(users));
+        Set<UserId> administrators = new HashSet<>(project.getAdministrators());
+        for(UserId userId : userIds) {
+            administrators.remove(checkNotNull(userId));
+        }
 
         Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
-        addProject(newProject);
+        add(newProject);
     }
 
     @Override
     public boolean exists(AccessControlObjectId projectId) {
+        checkNotNull(projectId);
         for(Project p : projects) {
             if(p.getId().equals(projectId)) {
                 return true;
@@ -163,7 +163,8 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
      * @param projectId   Project identifier
      * @return Project instance
      */
-    private Optional<Project> getProjectOptional(Id projectId) {
+    private Optional<Project> getProjectOptional(ProjectId projectId) {
+        checkNotNull(projectId);
         Project project = null;
         for(Project p : projects) {
             if(p.getId().equals(projectId)) {

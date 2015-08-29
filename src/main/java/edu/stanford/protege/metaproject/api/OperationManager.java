@@ -49,55 +49,37 @@ public interface OperationManager extends Manager {
     /**
      * Change the name of the given operation
      *
-     * @param operation Operation
+     * @param operationId Operation identifier
      * @param operationName New operation name
      * @throws OperationNotFoundException    Operation not found
      */
-    void changeOperationName(Operation operation, Name operationName) throws OperationNotFoundException;
+    void changeName(OperationId operationId, Name operationName) throws OperationNotFoundException;
 
     /**
      * Change the description of a given operation
      *
-     * @param operation Operation
+     * @param operationId Operation identifier
      * @param operationDescription  New operation description
      * @throws OperationNotFoundException    Operation not found
      */
-    void changeOperationDescription(Operation operation, Description operationDescription) throws OperationNotFoundException;
+    void changeDescription(OperationId operationId, Description operationDescription) throws OperationNotFoundException;
 
     /**
-     * Add an operation prerequisite to the specified operation
+     * Add one or more operation prerequisites to the specified operation
      *
-     * @param operation   Operation
-     * @param prerequisite  Operation prerequisite
+     * @param operationId   Operation identifier
+     * @param prerequisites  Operation prerequisite(s)
      * @throws OperationNotFoundException   Operation not found
      */
-    void addPrerequisite(Operation operation, OperationPrerequisite prerequisite) throws OperationNotFoundException;
+    void addPrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws OperationNotFoundException;
 
     /**
-     * Add a set of operation prerequisites to the specified operation
+     * Remove one or more operation prerequisites from the specified operation
      *
-     * @param operation   Operation
-     * @param prerequisites  Set of operation prerequisites
+     * @param operationId   Operation identifier
+     * @param prerequisites  Operation prerequisite(s)
      * @throws OperationNotFoundException   Operation not found
      */
-    void addPrerequisites(Operation operation, Set<OperationPrerequisite> prerequisites) throws OperationNotFoundException;
-
-    /**
-     * Remove an operation prerequisite from the specified operation
-     *
-     * @param operation   Operation
-     * @param prerequisite  Operation prerequisite
-     * @throws OperationNotFoundException   Operation not found
-     */
-    void removePrerequisite(Operation operation, OperationPrerequisite prerequisite) throws OperationNotFoundException;
-
-    /**
-     * Remove a set of operation prerequisites from the specified operation
-     *
-     * @param operation   Operation
-     * @param prerequisites  Set of operation prerequisites
-     * @throws OperationNotFoundException   Operation not found
-     */
-    void removePrerequisites(Operation operation, Set<OperationPrerequisite> prerequisites) throws OperationNotFoundException;
+    void removePrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws OperationNotFoundException;
 
 }

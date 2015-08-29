@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Set;
 
@@ -14,7 +13,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class RoleTest {
     private static final String
             roleIdStr = "testRoleId1",
@@ -23,19 +21,19 @@ public class RoleTest {
             roleDescriptionStr = "test role description",
             toStringHead = "Role";
 
-    private static final RoleId roleId = TestUtils.getRoleId(roleIdStr), diffRoleId = TestUtils.getRoleId(otherIdStr);
-    private static final Name roleName = TestUtils.getName(roleNameStr);
-    private static final Description roleDescription = TestUtils.getDescription(roleDescriptionStr);
-    private static final Set<OperationId> operations = TestUtils.getOperationIdSet("testOperationId1", "testOperationId2");
-    private static final Set<ProjectId> projects = TestUtils.getProjectIdSet("testProjectId1", "testProjectId2");
+    private static final RoleId roleId = Utils.getRoleId(roleIdStr), diffRoleId = Utils.getRoleId(otherIdStr);
+    private static final Name roleName = Utils.getName(roleNameStr);
+    private static final Description roleDescription = Utils.getDescription(roleDescriptionStr);
+    private static final Set<OperationId> operations = Utils.getOperationIdSet("testOperationId1", "testOperationId2");
+    private static final Set<ProjectId> projects = Utils.getProjectIdSet("testProjectId1", "testProjectId2");
 
     private Role role, otherRole, diffRole;
 
     @Before
     public void setUp() {
-        role = TestUtils.getRole(roleId, roleName, roleDescription, projects, operations);
-        otherRole = TestUtils.getRole(roleId, roleName, roleDescription, projects, operations);
-        diffRole = TestUtils.getRole(diffRoleId, roleName, roleDescription, projects, operations);
+        role = Utils.getRole(roleId, roleName, roleDescription, projects, operations);
+        otherRole = Utils.getRole(roleId, roleName, roleDescription, projects, operations);
+        diffRole = Utils.getRole(diffRoleId, roleName, roleDescription, projects, operations);
     }
 
     @Test
@@ -70,17 +68,17 @@ public class RoleTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(role, is(equalTo(role)));
+        assertThat(role, is(role));
     }
 
     @Test
     public void testEquals() {
-        assertThat(role, is(equalTo(otherRole)));
+        assertThat(role, is(otherRole));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(role, is(not(equalTo(diffRole))));
+        assertThat(role, is(not(diffRole)));
     }
 
     @Test

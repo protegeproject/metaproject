@@ -81,7 +81,7 @@ public interface UserManager extends Manager {
      * @throws UserAddressAlreadyInUseException Email address already in use by another user
      * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
      */
-    void changeUserName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException;
+    void changeName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException;
 
     /**
      * Change the email address of a user

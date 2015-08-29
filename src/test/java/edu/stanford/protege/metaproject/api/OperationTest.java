@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 import java.util.Set;
@@ -15,7 +14,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class OperationTest {
     private static final String
             operationIdStr = "testOperationId1",
@@ -24,19 +22,19 @@ public class OperationTest {
             operationDescriptionStr = "test operation description",
             toStringHead = "Operation";
 
-    private static final OperationId operationId = TestUtils.getOperationId(operationIdStr), diffOperationId = TestUtils.getOperationId(otherIdStr);
-    private static final Name operationName = TestUtils.getName(operationNameStr);
-    private static final Description operationDescription = TestUtils.getDescription(operationDescriptionStr);
+    private static final OperationId operationId = Utils.getOperationId(operationIdStr), diffOperationId = Utils.getOperationId(otherIdStr);
+    private static final Name operationName = Utils.getName(operationNameStr);
+    private static final Description operationDescription = Utils.getDescription(operationDescriptionStr);
     private static final OperationType operationType = OperationType.POLICY;
-    private static final OperationPrerequisite prerequisite = TestUtils.getOperationPrerequisite(OperationPrerequisite.Modifier.ABSENT);
-    private static final Set<OperationPrerequisite> prerequisites = TestUtils.getOperationPrerequisiteSet(prerequisite);
+    private static final OperationPrerequisite prerequisite = Utils.getOperationPrerequisite(OperationPrerequisite.Modifier.ABSENT);
+    private static final Set<OperationPrerequisite> prerequisites = Utils.getOperationPrerequisiteSet(prerequisite);
     private Operation operation, otherOperation, diffOperation;
 
     @Before
     public void setUp() {
-        operation = TestUtils.getOperation(operationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
-        otherOperation = TestUtils.getOperation(operationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
-        diffOperation = TestUtils.getOperation(diffOperationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
+        operation = Utils.getOperation(operationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
+        otherOperation = Utils.getOperation(operationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
+        diffOperation = Utils.getOperation(diffOperationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
     }
 
     @Test
@@ -71,17 +69,17 @@ public class OperationTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(operation, is(equalTo(operation)));
+        assertThat(operation, is(operation));
     }
 
     @Test
     public void testEquals() {
-        assertThat(operation, is(equalTo(otherOperation)));
+        assertThat(operation, is(otherOperation));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(operation, is(not(equalTo(diffOperation))));
+        assertThat(operation, is(not(diffOperation)));
     }
 
     @Test

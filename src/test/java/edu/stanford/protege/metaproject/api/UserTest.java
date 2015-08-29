@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class UserTest {
     private static final String
             userIdStr = "testUserId1",
@@ -21,17 +19,17 @@ public class UserTest {
             userEmailStr = "test@EmailAddress",
             toStringHead = "User";
 
-    private static final UserId userId = TestUtils.getUserId(userIdStr), diffUserId = TestUtils.getUserId(otherIdStr);
-    private static final Name userName = TestUtils.getName(userNameStr);
-    private static final Address userEmail = TestUtils.getAddress(userEmailStr);
+    private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(otherIdStr);
+    private static final Name userName = Utils.getName(userNameStr);
+    private static final Address userEmail = Utils.getAddress(userEmailStr);
 
     private User user, otherUser, diffUser;
 
     @Before
     public void setUp() {
-        user = TestUtils.getUser(userId, userName, userEmail);
-        otherUser = TestUtils.getUser(userId, userName, userEmail);
-        diffUser = TestUtils.getUser(diffUserId, userName, userEmail);
+        user = Utils.getUser(userId, userName, userEmail);
+        otherUser = Utils.getUser(userId, userName, userEmail);
+        diffUser = Utils.getUser(diffUserId, userName, userEmail);
     }
 
     @Test
@@ -56,17 +54,17 @@ public class UserTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(user, is(equalTo(user)));
+        assertThat(user, is(user));
     }
 
     @Test
     public void testEquals() {
-        assertThat(user, is(equalTo(otherUser)));
+        assertThat(user, is(otherUser));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(user, is(not(equalTo(diffUser))));
+        assertThat(user, is(not(diffUser)));
     }
 
     @Test

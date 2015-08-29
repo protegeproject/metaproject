@@ -11,53 +11,53 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleIdTest {
+public class SaltTest {
     private static final String
-            roleIdStr = "testRoleId1",
-            diffIdStr = "testRoleId2",
-            toStringHead = "RoleId";
+            saltStr = "testSalt1",
+            diffSaltStr = "testSalt2",
+            toStringHead = "Salt";
 
-    private RoleId roleId, otherRoleId, diffRoleId;
+    private Salt salt, otherSalt, diffSalt;
 
     @Before
     public void setUp() {
-        roleId = Utils.getRoleId(roleIdStr);
-        otherRoleId = Utils.getRoleId(roleIdStr);
-        diffRoleId = Utils.getRoleId(diffIdStr);
+        salt = Utils.getSalt(saltStr.getBytes());
+        otherSalt = Utils.getSalt(saltStr.getBytes());
+        diffSalt = Utils.getSalt(diffSaltStr.getBytes());
     }
 
     @Test
     public void testNotNull() {
-        assertThat(roleId, is(not(equalTo(null))));
+        assertThat(salt, is(not(equalTo(null))));
     }
 
     @Test
-    public void testGet() {
-        assertThat(roleId.get(), is(roleIdStr));
+    public void testGetBytes() {
+        assertThat(salt.getBytes(), is(saltStr.getBytes()));
     }
 
     @Test
     public void testEqualToSelf() {
-        assertThat(roleId, is(roleId));
+        assertThat(salt, is(salt));
     }
 
     @Test
     public void testEquals() {
-        assertThat(roleId, is(otherRoleId));
+        assertThat(salt, is(otherSalt));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(roleId, is(not(diffRoleId)));
+        assertThat(salt, is(not(diffSalt)));
     }
 
     @Test
     public void testHashCode() {
-        assertThat(roleId.hashCode(), is(otherRoleId.hashCode()));
+        assertThat(salt.hashCode(), is(otherSalt.hashCode()));
     }
 
     @Test
     public void testToString() {
-        assertThat(roleId.toString(), startsWith(toStringHead));
+        assertThat(salt.toString(), startsWith(toStringHead));
     }
 }

@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class UserManagerImpl implements UserManager, Serializable {
     private static final String GUEST_ID = "guest", GUEST_NAME = "guest user", GUEST_EMAIL = "";
-    private static final long serialVersionUID = 4737112809180106195L;
+    private static final long serialVersionUID = -4332369697083173511L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -40,7 +40,9 @@ public class UserManagerImpl implements UserManager, Serializable {
 
     @Override
     public void add(User... users) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+        checkNotNull(users);
         for(User user : users) {
+            checkNotNull(user);
             if (exists(user.getId())) {
                 throw new UserAlreadyRegisteredException("The specified user identifier is already used by another user");
             }
@@ -52,8 +54,10 @@ public class UserManagerImpl implements UserManager, Serializable {
     }
 
     @Override
-    public void remove(User... user) throws UserNotFoundException {
-        for(User u : user) {
+    public void remove(User... users) throws UserNotFoundException {
+        checkNotNull(users);
+        for(User u : users) {
+            checkNotNull(u);
             if (!this.users.contains(u)) {
                 throw new UserNotFoundException("The specified user does not exist");
             }
@@ -79,11 +83,13 @@ public class UserManagerImpl implements UserManager, Serializable {
 
     @Override
     public Set<User> getUsers(Name userName) {
+        checkNotNull(userName);
         return users.stream().filter(user -> user.getName().get().equals(userName.get())).collect(Collectors.toSet());
     }
 
     @Override
     public Set<User> getUsers(Address emailAddress) {
+        checkNotNull(emailAddress);
         return users.stream().filter(user -> user.getAddress().equals(emailAddress)).collect(Collectors.toSet());
     }
 
@@ -93,7 +99,8 @@ public class UserManagerImpl implements UserManager, Serializable {
     }
 
     @Override
-    public void changeUserName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+    public void changeName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+        checkNotNull(userName);
         User user = getUser(userId);
         remove(user);
         User newUser = new UserImpl(userId, userName, user.getAddress());
@@ -102,6 +109,7 @@ public class UserManagerImpl implements UserManager, Serializable {
 
     @Override
     public void changeEmailAddress(UserId userId, Address emailAddress) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+        checkNotNull(emailAddress);
         User user = getUser(userId);
         remove(user);
         User newUser = new UserImpl(userId, user.getName(), emailAddress);
@@ -110,6 +118,7 @@ public class UserManagerImpl implements UserManager, Serializable {
 
     @Override
     public boolean exists(AccessControlObjectId userId) {
+        checkNotNull(userId);
         for(User user : users) {
             if(user.getId().equals(userId)) {
                 return true;
@@ -125,6 +134,7 @@ public class UserManagerImpl implements UserManager, Serializable {
      * @return User instance
      */
     private Optional<User> getUserOptional(UserId userId) {
+        checkNotNull(userId);
         User userFound = null;
         for(User user : users) {
             if(user.getId().equals(userId)) {
@@ -142,6 +152,7 @@ public class UserManagerImpl implements UserManager, Serializable {
      * @return true if email address is used by some other user, false otherwise
      */
     private boolean isAddressUsed(Address address) {
+        checkNotNull(address);
         for(User u : users) {
             if(u.getAddress().equals(address)) {
                 return true;

@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class UserIdTest {
     private static final String
             userIdStr = "testUserId1",
@@ -23,9 +21,9 @@ public class UserIdTest {
 
     @Before
     public void setUp() {
-        userId = TestUtils.getUserId(userIdStr);
-        otherUserId = TestUtils.getUserId(userIdStr);
-        diffUserId = TestUtils.getUserId(diffIdStr);
+        userId = Utils.getUserId(userIdStr);
+        otherUserId = Utils.getUserId(userIdStr);
+        diffUserId = Utils.getUserId(diffIdStr);
     }
 
     @Test
@@ -40,17 +38,17 @@ public class UserIdTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(userId, is(equalTo(userId)));
+        assertThat(userId, is(userId));
     }
 
     @Test
     public void testEquals() {
-        assertThat(userId, is(equalTo(otherUserId)));
+        assertThat(userId, is(otherUserId));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(userId, is(not(equalTo(diffUserId))));
+        assertThat(userId, is(not(diffUserId)));
     }
 
     @Test

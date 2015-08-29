@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class NameTest {
     private static final String
             nameStr = "testName",
@@ -23,9 +21,9 @@ public class NameTest {
 
     @Before
     public void setUp() {
-        name = TestUtils.getName(nameStr);
-        otherName = TestUtils.getName(nameStr);
-        diffName = TestUtils.getName(diffNameStr);
+        name = Utils.getName(nameStr);
+        otherName = Utils.getName(nameStr);
+        diffName = Utils.getName(diffNameStr);
     }
 
     @Test
@@ -40,17 +38,17 @@ public class NameTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(name, is(equalTo(name)));
+        assertThat(name, is(name));
     }
 
     @Test
     public void testEquals() {
-        assertThat(name, is(equalTo(otherName)));
+        assertThat(name, is(otherName));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(name, is(not(equalTo(diffName))));
+        assertThat(name, is(not(diffName)));
     }
 
     @Test

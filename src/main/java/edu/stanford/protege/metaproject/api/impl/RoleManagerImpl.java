@@ -6,6 +6,7 @@ import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.RoleNotFoundException;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -17,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class RoleManagerImpl implements RoleManager, Serializable {
-    private static final long serialVersionUID = 4502007814521085197L;
+    private static final long serialVersionUID = -584068152904153123L;
     private Set<Role> roles = new HashSet<>();
 
     /**
@@ -36,6 +37,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
 
     @Override
     public void add(Role... roles) {
+        checkNotNull(roles);
         for(Role r : roles) {
             this.roles.add(checkNotNull(r));
         }
@@ -43,7 +45,9 @@ public class RoleManagerImpl implements RoleManager, Serializable {
 
     @Override
     public void remove(Role... role) throws RoleNotFoundException {
+        checkNotNull(role);
         for(Role r : role) {
+            checkNotNull(r);
             if (!roles.contains(r)) {
                 throw new RoleNotFoundException("The specified role does not exist");
             }
@@ -68,7 +72,8 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void changeRoleName(RoleId roleId, Name roleName) throws RoleNotFoundException {
+    public void changeName(RoleId roleId, Name roleName) throws RoleNotFoundException {
+        checkNotNull(roleName);
         Role role = getRole(roleId);
         remove(role);
         Role newRole = new RoleImpl(role.getId(), roleName, role.getDescription(), role.getProjects(), role.getOperations());
@@ -76,7 +81,8 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void changeRoleDescription(RoleId roleId, Description roleDescription) throws RoleNotFoundException {
+    public void changeDescription(RoleId roleId, Description roleDescription) throws RoleNotFoundException {
+        checkNotNull(roleDescription);
         Role role = getRole(roleId);
         remove(role);
         Role newRole = new RoleImpl(role.getId(), role.getName(), roleDescription, role.getProjects(), role.getOperations());
@@ -84,76 +90,56 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void addProject(RoleId roleId, ProjectId projectId) throws RoleNotFoundException {
-        Set<ProjectId> projects = new HashSet<>();
-        projects.add(projectId);
-        addProjects(roleId, projects);
-    }
-
-    @Override
-    public void addProjects(RoleId roleId, Set<ProjectId> projectIdSet) throws RoleNotFoundException {
+    public void addProject(RoleId roleId, ProjectId... projectIds) throws RoleNotFoundException {
+        checkNotNull(projectIds);
         Role role = getRole(roleId);
         remove(role);
 
-        Set<ProjectId> projects = role.getProjects();
-        projects.addAll(projectIdSet);
+        Set<ProjectId> projects = new HashSet<>(role.getProjects());
+        Collections.addAll(projects, projectIds);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), projects, role.getOperations());
         add(newRole);
     }
 
     @Override
-    public void removeProject(RoleId roleId, ProjectId project) throws RoleNotFoundException {
-        Set<ProjectId> projects = new HashSet<>();
-        projects.add(project);
-        removeProjects(roleId, projects);
-    }
-
-    @Override
-    public void removeProjects(RoleId roleId, Set<ProjectId> projectIds) throws RoleNotFoundException {
+    public void removeProject(RoleId roleId, ProjectId... projectIds) throws RoleNotFoundException {
+        checkNotNull(projectIds);
         Role role = getRole(roleId);
         remove(role);
 
-        Set<ProjectId> projects = role.getProjects();
-        projects.removeAll(projectIds);
+        Set<ProjectId> projects = new HashSet<>(role.getProjects());
+        for(ProjectId projectId : projectIds) {
+            projects.remove(checkNotNull(projectId));
+        }
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), projects, role.getOperations());
         add(newRole);
     }
 
     @Override
-    public void addOperation(RoleId roleId, OperationId operationId) throws RoleNotFoundException {
-        Set<OperationId> operations = new HashSet<>();
-        operations.add(operationId);
-        addOperations(roleId, operations);
-    }
-
-    @Override
-    public void addOperations(RoleId roleId, Set<OperationId> operationIds) throws RoleNotFoundException {
+    public void addOperation(RoleId roleId, OperationId... operationIds) throws RoleNotFoundException {
+        checkNotNull(operationIds);
         Role role = getRole(roleId);
         remove(role);
 
-        Set<OperationId> operations = role.getOperations();
-        operations.addAll(operationIds);
+        Set<OperationId> operations = new HashSet<>(role.getOperations());
+        Collections.addAll(operations, operationIds);
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), role.getProjects(), operations);
         add(newRole);
     }
 
     @Override
-    public void removeOperation(RoleId roleId, OperationId operationId) throws RoleNotFoundException {
-        Set<OperationId> operations = new HashSet<>();
-        operations.add(operationId);
-        removeOperations(roleId, operations);
-    }
-
-    @Override
-    public void removeOperations(RoleId roleId, Set<OperationId> operationIds) throws RoleNotFoundException {
+    public void removeOperation(RoleId roleId, OperationId... operationIds) throws RoleNotFoundException {
+        checkNotNull(operationIds);
         Role role = getRole(roleId);
         remove(role);
 
-        Set<OperationId> operations = role.getOperations();
-        operations.removeAll(operationIds);
+        Set<OperationId> operations = new HashSet<>(role.getOperations());
+        for(OperationId operationId : operationIds) {
+            operations.remove(checkNotNull(operationId));
+        }
 
         Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), role.getProjects(), operations);
         add(newRole);
@@ -161,6 +147,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
 
     @Override
     public boolean exists(AccessControlObjectId roleId) {
+        checkNotNull(roleId);
         for(Role role : roles) {
             if(role.getId().equals(roleId)) {
                 return true;
@@ -175,7 +162,8 @@ public class RoleManagerImpl implements RoleManager, Serializable {
      * @param roleId    Role identifier
      * @return Role instance
      */
-    private Optional<Role> getRoleOptional(Id roleId) {
+    private Optional<Role> getRoleOptional(RoleId roleId) {
+        checkNotNull(roleId);
         Role role = null;
         for(Role r : roles) {
             if(r.getId().equals(roleId)) {

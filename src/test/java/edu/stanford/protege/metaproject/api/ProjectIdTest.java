@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ProjectIdTest {
     private static final String
             projectIdStr = "testProjectId1",
@@ -23,9 +21,9 @@ public class ProjectIdTest {
 
     @Before
     public void setUp() {
-        projectId = TestUtils.getProjectId(projectIdStr);
-        otherProjectId = TestUtils.getProjectId(projectIdStr);
-        diffProjectId = TestUtils.getProjectId(diffIdStr);
+        projectId = Utils.getProjectId(projectIdStr);
+        otherProjectId = Utils.getProjectId(projectIdStr);
+        diffProjectId = Utils.getProjectId(diffIdStr);
     }
 
     @Test
@@ -40,17 +38,17 @@ public class ProjectIdTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(projectId, is(equalTo(projectId)));
+        assertThat(projectId, is(projectId));
     }
 
     @Test
     public void testEquals() {
-        assertThat(projectId, is(equalTo(otherProjectId)));
+        assertThat(projectId, is(otherProjectId));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(projectId, is(not(equalTo(diffProjectId))));
+        assertThat(projectId, is(not(diffProjectId)));
     }
 
     @Test

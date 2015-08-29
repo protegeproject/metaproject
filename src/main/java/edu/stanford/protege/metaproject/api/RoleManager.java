@@ -53,7 +53,7 @@ public interface RoleManager extends Manager {
      * @param roleName  New role name
      * @throws RoleNotFoundException    Role not found
      */
-    void changeRoleName(RoleId roleId, Name roleName) throws RoleNotFoundException;
+    void changeName(RoleId roleId, Name roleName) throws RoleNotFoundException;
 
     /**
      * Change the description of the given role to a new one
@@ -62,78 +62,42 @@ public interface RoleManager extends Manager {
      * @param roleDescription   New role description
      * @throws RoleNotFoundException    Role not found
      */
-    void changeRoleDescription(RoleId roleId, Description roleDescription) throws RoleNotFoundException;
+    void changeDescription(RoleId roleId, Description roleDescription) throws RoleNotFoundException;
 
     /**
-     * Add a project to the working projects of the given role
+     * Add one or more projects to the working projects of the given role
      *
      * @param roleId    Role identifier
-     * @param projectId Project identifier
+     * @param projectIds Project identifier(s)
      * @throws RoleNotFoundException    Role not found
      */
-    void addProject(RoleId roleId, ProjectId projectId) throws RoleNotFoundException;
+    void addProject(RoleId roleId, ProjectId... projectIds) throws RoleNotFoundException;
 
     /**
-     * Add a set of projects to the working projects of the given role
+     * Remove one or more projects from the working projects of the given role
      *
      * @param roleId    Role identifier
-     * @param projectIdSet  Set of project identifiers
+     * @param projectIds Project identifier(s)
      * @throws RoleNotFoundException    Role not found
      */
-    void addProjects(RoleId roleId, Set<ProjectId> projectIdSet) throws RoleNotFoundException;
+    void removeProject(RoleId roleId, ProjectId... projectIds) throws RoleNotFoundException;
 
     /**
-     * Remove a project from the working projects of the given role
+     * Add one or more operations to the permitted operations of the given role
      *
      * @param roleId    Role identifier
-     * @param project Project identifier
+     * @param operationIds   Operation identifier(s)
      * @throws RoleNotFoundException    Role not found
      */
-    void removeProject(RoleId roleId, ProjectId project) throws RoleNotFoundException;
+    void addOperation(RoleId roleId, OperationId... operationIds) throws RoleNotFoundException;
 
     /**
-     * Remove a project from the working projects of the given role
+     * Remove one or more operations from the permitted operations of the given role
      *
      * @param roleId    Role identifier
-     * @param projectIds  Set of project identifiers
+     * @param operationIds   Operation identifier(s)
      * @throws RoleNotFoundException    Role not found
      */
-    void removeProjects(RoleId roleId, Set<ProjectId> projectIds) throws RoleNotFoundException;
-
-    /**
-     * Add an operation to the permitted operations of the given role
-     *
-     * @param roleId    Role identifier
-     * @param operationId   Operation identifier
-     * @throws RoleNotFoundException    Role not found
-     */
-    void addOperation(RoleId roleId, OperationId operationId) throws RoleNotFoundException;
-
-    /**
-     * Add a set of operations to the permitted operations of the given role
-     *
-     * @param roleId    Role identifier
-     * @param operationIds    Set of operation identifiers
-     * @throws RoleNotFoundException    Role not found
-     */
-    void addOperations(RoleId roleId, Set<OperationId> operationIds) throws RoleNotFoundException;
-
-    /**
-     * Remove an operation from the permitted operations of the given role
-     *
-     * @param roleId    Role identifier
-     * @param operationId   Operation identifier
-     * @throws RoleNotFoundException    Role not found
-     */
-    void removeOperation(RoleId roleId, OperationId operationId) throws RoleNotFoundException;
-
-    /**
-     * Remove a set of operations from the permitted operations of the given role
-     *
-     * @param roleId    Role identifier
-     * @param operationIds    Set of operation identifiers
-     * @throws RoleNotFoundException    Role not found
-     */
-    void removeOperations(RoleId roleId, Set<OperationId> operationIds) throws RoleNotFoundException;
+    void removeOperation(RoleId roleId, OperationId... operationIds) throws RoleNotFoundException;
 
 }

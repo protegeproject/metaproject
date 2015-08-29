@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -14,7 +13,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class UserAuthenticationDetailsTest {
     private static final String
             userIdStr = "testUserId1",
@@ -23,17 +21,17 @@ public class UserAuthenticationDetailsTest {
             saltStr = "testSalt",
             toStringHead = "UserAuthenticationDetails";
 
-    private static final UserId userId = TestUtils.getUserId(userIdStr), diffUserId = TestUtils.getUserId(diffUserIdStr);
-    private static final Salt salt = TestUtils.getSalt(saltStr.getBytes());
-    private static final SaltedPassword password = TestUtils.getSaltedPassword(passwordStr, salt);
+    private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(diffUserIdStr);
+    private static final Salt salt = Utils.getSalt(saltStr.getBytes());
+    private static final SaltedPassword password = Utils.getSaltedPassword(passwordStr, salt);
 
     private UserAuthenticationDetails userDetails, otherUserDetails, diffUserDetails;
 
     @Before
     public void setUp() {
-        userDetails = TestUtils.getUserAuthenticationDetails(userId, password, Optional.of(salt));
-        otherUserDetails = TestUtils.getUserAuthenticationDetails(userId, password, Optional.of(salt));
-        diffUserDetails = TestUtils.getUserAuthenticationDetails(diffUserId, password, Optional.of(salt));
+        userDetails = Utils.getUserAuthenticationDetails(userId, password, Optional.of(salt));
+        otherUserDetails = Utils.getUserAuthenticationDetails(userId, password, Optional.of(salt));
+        diffUserDetails = Utils.getUserAuthenticationDetails(diffUserId, password, Optional.of(salt));
     }
 
     @Test
@@ -68,17 +66,17 @@ public class UserAuthenticationDetailsTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(userDetails, is(equalTo(userDetails)));
+        assertThat(userDetails, is(userDetails));
     }
 
     @Test
     public void testEquals() {
-        assertThat(userDetails, is(equalTo(otherUserDetails)));
+        assertThat(userDetails, is(otherUserDetails));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(userDetails, is(not(equalTo(diffUserDetails))));
+        assertThat(userDetails, is(not(diffUserDetails)));
     }
 
     @Test

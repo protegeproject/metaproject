@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-@RunWith(MockitoJUnitRunner.class)
 public class OperationIdTest {
     private static final String
             operationIdStr = "testOperationId1",
@@ -23,9 +21,9 @@ public class OperationIdTest {
 
     @Before
     public void setUp() {
-        operationId = TestUtils.getOperationId(operationIdStr);
-        otherOperationId = TestUtils.getOperationId(operationIdStr);
-        diffOperationId = TestUtils.getOperationId(diffIdStr);
+        operationId = Utils.getOperationId(operationIdStr);
+        otherOperationId = Utils.getOperationId(operationIdStr);
+        diffOperationId = Utils.getOperationId(diffIdStr);
     }
 
     @Test
@@ -40,17 +38,17 @@ public class OperationIdTest {
 
     @Test
     public void testEqualToSelf() {
-        assertThat(operationId, is(equalTo(operationId)));
+        assertThat(operationId, is(operationId));
     }
 
     @Test
     public void testEquals() {
-        assertThat(operationId, is(equalTo(otherOperationId)));
+        assertThat(operationId, is(otherOperationId));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(operationId, is(not(equalTo(diffOperationId))));
+        assertThat(operationId, is(not(diffOperationId)));
     }
 
     @Test
