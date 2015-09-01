@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationManagerImpl implements OperationManager, Serializable {
-    private static final long serialVersionUID = 7881633729484427699L;
+    private static final long serialVersionUID = 1859235816703554459L;
     private Set<Operation> operations = new HashSet<>();
 
     /**
@@ -44,15 +44,18 @@ public class OperationManagerImpl implements OperationManager, Serializable {
     }
 
     @Override
-    public void remove(Operation... operations) throws OperationNotFoundException {
+    public void remove(Operation... operations) {
         checkNotNull(operations);
         for(Operation o : operations) {
             checkNotNull(o);
-            if (!this.operations.contains(o)) {
-                throw new OperationNotFoundException("The specified operation does not exist");
-            }
             this.operations.remove(o);
         }
+    }
+
+    @Override
+    public Operation create(String name, String description, OperationType operationType, Optional<Set<OperationPrerequisite>> prerequisites) {
+        AccessControlObjectUUIDGenerator gen = AccessControlObjectUUIDGenerator.getInstance();
+        return new OperationImpl(gen.getOperationId(), new NameImpl(name), new DescriptionImpl(description), operationType, prerequisites);
     }
 
     @Override
@@ -107,6 +110,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
         checkNotNull(prerequisites);
         if(prerequisites.length > 0) {
             Operation operation = getOperation(operationId);
+            remove(operation);
             Set<OperationPrerequisite> prerequisiteSet = null;
             if(operation.getPrerequisites().isPresent()) {
                 prerequisiteSet = new HashSet<>(operation.getPrerequisites().get());
@@ -120,7 +124,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
     }
 
     @Override
-    public boolean exists(AccessControlObjectId operationId) {
+    public boolean contains(AccessControlObjectId operationId) {
         checkNotNull(operationId);
         for(Operation operation : operations) {
             if(operation.getId().equals(operationId)) {

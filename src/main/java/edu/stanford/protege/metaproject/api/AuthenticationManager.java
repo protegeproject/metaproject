@@ -38,7 +38,16 @@ public interface AuthenticationManager extends Manager {
      *
      * @return Set of user authentication details
      */
-    Set<UserAuthenticationDetails> getUserAuthenticationDetails();
+    Set<AuthenticationDetails> getAuthenticationDetails();
+
+    /**
+     * Get the authentication details for a user with the given identifier
+     *
+     * @param userId    User identifier
+     * @return Authentication details
+     * @throws UserNotRegisteredException   User is not registered
+     */
+    AuthenticationDetails getAuthenticationDetails(UserId userId) throws UserNotRegisteredException;
 
     /**
      * Verify whether the given user-password pair is a valid (registered) one
@@ -73,6 +82,6 @@ public interface AuthenticationManager extends Manager {
      * @param userDetails   User authentication details
      * @param password  New password
      */
-    void changePassword(UserAuthenticationDetails userDetails, PlainPassword password);
+    void changePassword(AuthenticationDetails userDetails, PlainPassword password);
 
 }

@@ -3,11 +3,12 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
-import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.AuthenticationDetails;
+import edu.stanford.protege.metaproject.api.SaltedPassword;
+import edu.stanford.protege.metaproject.api.UserId;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -15,28 +16,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class UserAuthenticationDetailsImpl implements UserAuthenticationDetails, Serializable, Comparable<UserAuthenticationDetails> {
-    private static final long serialVersionUID = 3608591750640716757L;
+public final class AuthenticationDetailsImpl implements AuthenticationDetails, Serializable, Comparable<AuthenticationDetails> {
+    private static final long serialVersionUID = -4226255739793169878L;
     private final UserId userId;
     private final SaltedPassword password;
-    private final Salt salt;
 
     /**
      * Constructor
      *
      * @param userId    User identifier
      * @param password  Salted (hashed) password
-     * @param salt  Salt (possibly null)
      */
-    public UserAuthenticationDetailsImpl(UserId userId, SaltedPassword password, Optional<Salt> salt) {
+    public AuthenticationDetailsImpl(UserId userId, SaltedPassword password) {
         this.userId = checkNotNull(userId);
         this.password = checkNotNull(password);
-        if(salt.isPresent()) {
-            this.salt = checkNotNull(salt.get());
-        }
-        else {
-            this.salt = null;
-        }
     }
 
     @Override
@@ -50,23 +43,17 @@ public final class UserAuthenticationDetailsImpl implements UserAuthenticationDe
     }
 
     @Override
-    public Optional<Salt> getSalt() {
-        return Optional.of(salt);
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserAuthenticationDetailsImpl that = (UserAuthenticationDetailsImpl) o;
+        AuthenticationDetailsImpl that = (AuthenticationDetailsImpl) o;
         return Objects.equal(userId, that.userId) &&
-                Objects.equal(password, that.password) &&
-                Objects.equal(salt, that.salt);
+                Objects.equal(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(userId, password, salt);
+        return Objects.hashCode(userId, password);
     }
 
     @Override
@@ -74,12 +61,11 @@ public final class UserAuthenticationDetailsImpl implements UserAuthenticationDe
         return MoreObjects.toStringHelper(this)
                 .add("userId", userId)
                 .add("password", password)
-                .add("salt", salt)
                 .toString();
     }
 
     @Override
-    public int compareTo(@Nonnull UserAuthenticationDetails that) {
+    public int compareTo(@Nonnull AuthenticationDetails that) {
         return ComparisonChain.start()
                 .compare(this.userId.get(), that.getUserId().get())
                 .result();

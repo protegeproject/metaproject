@@ -9,7 +9,6 @@ import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -22,17 +21,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class AuthenticationManagerImpl implements AuthenticationManager, Serializable {
-    private static final long serialVersionUID = -5888096508114441330L;
-    private Set<UserAuthenticationDetails> userAuthenticationDetails = new HashSet<>();
-    private PasswordMaster passwordMaster = new PBKDF2PasswordMaster.Builder().createPasswordMaster();
+    private static final long serialVersionUID = 3744980989244926797L;
+    private final PasswordMaster passwordMaster = new PBKDF2PasswordMaster.Builder().createPasswordMaster();
+    private Set<AuthenticationDetails> authenticationDetails = new HashSet<>();
 
     /**
      * Constructor
      *
-     * @param userAuthenticationDetails   Set of user authentication details
+     * @param authenticationDetails   Set of user authentication details
      */
-    public AuthenticationManagerImpl(Set<UserAuthenticationDetails> userAuthenticationDetails) {
-        this.userAuthenticationDetails = checkNotNull(userAuthenticationDetails);
+    public AuthenticationManagerImpl(Set<AuthenticationDetails> authenticationDetails) {
+        this.authenticationDetails = checkNotNull(authenticationDetails);
     }
 
     /**
@@ -50,7 +49,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      */
     @Override
     public boolean hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException {
-        UserAuthenticationDetails userDetails = getUserDetails(userId);
+        AuthenticationDetails userDetails = getAuthenticationDetails(userId);
         return passwordMaster.validatePassword(password, userDetails.getPassword());
     }
 
@@ -67,7 +66,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
         if(isRegistered(userId)) {
             throw new UserAlreadyRegisteredException("The specified user is already registered with the authentication protocol. Recover or change the password.");
         }
-        userAuthenticationDetails.add(getHashedUserAuthenticationDetails(userId, password));
+        authenticationDetails.add(getHashedAuthenticationDetails(userId, password));
     }
 
     /**
@@ -78,8 +77,8 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      */
     @Override
     public void removeUser(UserId userId) throws UserNotRegisteredException {
-        UserAuthenticationDetails toDelete = getUserDetails(userId);
-        userAuthenticationDetails.remove(toDelete);
+        AuthenticationDetails toDelete = getAuthenticationDetails(userId);
+        authenticationDetails.remove(toDelete);
     }
 
     /**
@@ -91,7 +90,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      */
     @Override
     public void changePassword(UserId userId, PlainPassword password) throws UserNotRegisteredException {
-        UserAuthenticationDetails userDetails = getUserDetails(userId);
+        AuthenticationDetails userDetails = getAuthenticationDetails(userId);
         changePassword(userDetails, password);
     }
 
@@ -102,10 +101,10 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      * @param password  New password
      */
     @Override
-    public void changePassword(UserAuthenticationDetails userDetails, PlainPassword password) {
-        userAuthenticationDetails.remove(userDetails);
-        UserAuthenticationDetails newUserDetails = getHashedUserAuthenticationDetails(userDetails.getUserId(), password);
-        userAuthenticationDetails.add(newUserDetails);
+    public void changePassword(AuthenticationDetails userDetails, PlainPassword password) {
+        authenticationDetails.remove(userDetails);
+        AuthenticationDetails newUserDetails = getHashedAuthenticationDetails(userDetails.getUserId(), password);
+        authenticationDetails.add(newUserDetails);
     }
 
     /**
@@ -115,9 +114,9 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      * @return Authentication details of user
      * @throws UserNotRegisteredException   User is not registered
      */
-    private UserAuthenticationDetails getUserDetails(UserId userId) throws UserNotRegisteredException {
-        UserAuthenticationDetails details = null;
-        for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
+    public AuthenticationDetails getAuthenticationDetails(UserId userId) throws UserNotRegisteredException {
+        AuthenticationDetails details = null;
+        for(AuthenticationDetails userDetails : authenticationDetails) {
             if (userDetails.getUserId().equals(userId)) {
                 details = userDetails;
                 break;
@@ -137,7 +136,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      */
     @Override
     public boolean isRegistered(UserId userId) {
-        for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
+        for(AuthenticationDetails userDetails : authenticationDetails) {
             if(userDetails.getUserId().equals(userId)) {
                 return true;
             }
@@ -152,9 +151,9 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      * @param password  Password
      * @return Instance of UserAuthenticationDetails
      */
-    private UserAuthenticationDetails getHashedUserAuthenticationDetails(UserId userId, Password password) {
+    private AuthenticationDetails getHashedAuthenticationDetails(UserId userId, Password password) {
         SaltedPassword passwordHash = passwordMaster.createHash(password.getPassword());
-        return new UserAuthenticationDetailsImpl(userId, passwordHash, Optional.of(passwordHash.getSalt()));
+        return new AuthenticationDetailsImpl(userId, passwordHash);
     }
 
     /**
@@ -163,13 +162,13 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      * @return Set of user authentication details
      */
     @Override
-    public Set<UserAuthenticationDetails> getUserAuthenticationDetails() {
-        return userAuthenticationDetails;
+    public Set<AuthenticationDetails> getAuthenticationDetails() {
+        return authenticationDetails;
     }
 
     @Override
-    public boolean exists(AccessControlObjectId userId) {
-        for(UserAuthenticationDetails userDetails : userAuthenticationDetails) {
+    public boolean contains(AccessControlObjectId userId) {
+        for(AuthenticationDetails userDetails : authenticationDetails) {
             if(userDetails.getUserId().equals(userId)) {
                 return true;
             }
@@ -182,20 +181,18 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthenticationManagerImpl that = (AuthenticationManagerImpl) o;
-        return Objects.equal(userAuthenticationDetails, that.userAuthenticationDetails) &&
-                Objects.equal(passwordMaster, that.passwordMaster);
+        return Objects.equal(authenticationDetails, that.authenticationDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(userAuthenticationDetails, passwordMaster);
+        return Objects.hashCode(authenticationDetails);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("userAuthenticationDetails", userAuthenticationDetails)
-                .add("passwordMaster", passwordMaster)
+                .add("userAuthenticationDetails", authenticationDetails)
                 .toString();
     }
 }

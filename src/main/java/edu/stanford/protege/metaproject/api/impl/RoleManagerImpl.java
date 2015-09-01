@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class RoleManagerImpl implements RoleManager, Serializable {
-    private static final long serialVersionUID = -584068152904153123L;
+    private static final long serialVersionUID = 3450780586872286800L;
     private Set<Role> roles = new HashSet<>();
 
     /**
@@ -44,15 +44,18 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void remove(Role... role) throws RoleNotFoundException {
-        checkNotNull(role);
-        for(Role r : role) {
+    public void remove(Role... roles) {
+        checkNotNull(roles);
+        for(Role r : roles) {
             checkNotNull(r);
-            if (!roles.contains(r)) {
-                throw new RoleNotFoundException("The specified role does not exist");
-            }
-            roles.remove(r);
+            this.roles.remove(r);
         }
+    }
+
+    @Override
+    public Role create(String name, String description, Set<ProjectId> projects, Set<OperationId> operations) {
+        AccessControlObjectUUIDGenerator gen = AccessControlObjectUUIDGenerator.getInstance();
+        return new RoleImpl(gen.getRoleId(), new NameImpl(name), new DescriptionImpl(description), projects, operations);
     }
 
     @Override
@@ -146,7 +149,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public boolean exists(AccessControlObjectId roleId) {
+    public boolean contains(AccessControlObjectId roleId) {
         checkNotNull(roleId);
         for(Role role : roles) {
             if(role.getId().equals(roleId)) {

@@ -21,14 +21,19 @@ public class SaltTest {
 
     @Before
     public void setUp() {
-        salt = Utils.getSalt(saltStr.getBytes());
-        otherSalt = Utils.getSalt(saltStr.getBytes());
-        diffSalt = Utils.getSalt(diffSaltStr.getBytes());
+        salt = Utils.getSalt(saltStr);
+        otherSalt = Utils.getSalt(saltStr);
+        diffSalt = Utils.getSalt(diffSaltStr);
     }
 
     @Test
     public void testNotNull() {
         assertThat(salt, is(not(equalTo(null))));
+    }
+
+    @Test
+    public void testGetString() {
+        assertThat(salt.getString(), is(saltStr));
     }
 
     @Test

@@ -1,6 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.AccessControlObjectNotFoundException;
 import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
 import edu.stanford.protege.metaproject.api.exception.UserNotFoundException;
@@ -29,9 +28,18 @@ public interface UserManager extends Manager {
      * Remove the given user(s)
      *
      * @param user One or more users
-     * @throws UserNotFoundException  User does not exist
      */
-    void remove(User... user) throws AccessControlObjectNotFoundException;
+    void remove(User... user);
+
+    /**
+     * Create a user with the given user identifier, name and email address
+     *
+     * @param userId    User identifier
+     * @param userName  User name
+     * @param emailAddress  User email address
+     * @return A user instance
+     */
+    User create(String userId, String userName, String emailAddress);
 
     /**
      * Get all users

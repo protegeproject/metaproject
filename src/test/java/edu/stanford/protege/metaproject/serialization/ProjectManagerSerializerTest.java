@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class ProjectManagerSerializationTest {
+public class ProjectManagerSerializerTest {
     private static final Set<Project> projectSet = Utils.getProjectSet(5), diffProjectSet = Utils.getProjectSet(3);
 
     private String jsonProjectManager, jsonOtherProjectManager, jsonDiffProjectManager;

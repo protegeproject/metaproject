@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class OperationPrerequisiteImpl implements OperationPrerequisite, Serializable {
-    private static final long serialVersionUID = 4773121492510564964L;
+    private static final long serialVersionUID = -1121403279037406776L;
     private final IRI prerequisite;
     private final Modifier modifier;
 
@@ -31,7 +31,7 @@ public final class OperationPrerequisiteImpl implements OperationPrerequisite, S
         this.modifier = checkNotNull(modifier);
     }
 
-    public IRI getPrerequisite() {
+    public IRI getPrerequisiteIRI() {
         return prerequisite;
     }
 

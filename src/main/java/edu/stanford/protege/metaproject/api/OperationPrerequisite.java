@@ -11,11 +11,11 @@ import org.semanticweb.owlapi.model.IRI;
 public interface OperationPrerequisite {
 
     /**
-     * Get the prerequisite IRI
+     * Get the prerequisite entity IRI
      *
      * @return IRI
      */
-    IRI getPrerequisite();
+    IRI getPrerequisiteIRI();
 
     /**
      * Get the prerequisite modifier that determines whether, for example,

@@ -101,24 +101,43 @@ public class Utils {
         return UUID.randomUUID().toString();
     }
 
-    public static SaltedPassword getSaltedPassword(String password, Salt salt) {
-        return new SaltedPasswordImpl(password, salt);
-    }
-
-    public static Salt getSalt(byte[] bytes) {
-        return new SaltImpl(bytes);
-    }
-
-    public static UserAuthenticationDetails getUserAuthenticationDetails(UserId userId, SaltedPassword password, Optional<Salt> salt) {
-        return new UserAuthenticationDetailsImpl(userId, password, salt);
-    }
-
     public static OntologyTermIdPrefix getOntologyTermIdPrefix(String prefix) {
         return new OntologyTermIdPrefixImpl(prefix);
     }
 
     public static OntologyTermIdSuffix getOntologyTermIdSuffix(String suffix) {
         return new OntologyTermIdSuffixImpl(suffix);
+    }
+
+    public static StringProperty getStringProperty(String propString) {
+        return () -> propString;
+    }
+
+
+    /*   authentication   */
+
+    public static SaltedPassword getSaltedPassword() {
+        return getSaltedPassword("testPassword" + random.nextInt(), getSalt());
+    }
+
+    public static SaltedPassword getSaltedPassword(String password, Salt salt) {
+        return new SaltedPasswordImpl(password, salt);
+    }
+
+    public static Salt getSalt() {
+        return getSalt("salt" + random.nextInt());
+    }
+
+    public static Salt getSalt(String s) {
+        return new SaltImpl(s.getBytes());
+    }
+
+    public static AuthenticationDetails getUserAuthenticationDetails() {
+        return getUserAuthenticationDetails(getUserId(), getSaltedPassword());
+    }
+
+    public static AuthenticationDetails getUserAuthenticationDetails(UserId userId, SaltedPassword password) {
+        return new AuthenticationDetailsImpl(userId, password);
     }
 
 
@@ -154,6 +173,82 @@ public class Utils {
 
     public static ProjectManager getProjectManager(Set<Project> projects) {
         return new ProjectManagerImpl(projects);
+    }
+
+    public static AuthenticationManager getAuthenticationManager() {
+        return new AuthenticationManagerImpl();
+    }
+
+    public static AuthenticationManager getAuthenticationManager(Set<AuthenticationDetails> authDetails) {
+        return new AuthenticationManagerImpl(authDetails);
+    }
+
+
+    /*   policy and server configuration   */
+
+    public static ServerConfiguration getServerConfiguration() {
+        return getServerConfiguration(Utils.getHost(), Utils.getPolicy(), Utils.getStringPropertyMap(), Utils.getOntologyTermIdStatus());
+    }
+
+    public static ServerConfiguration getServerConfiguration(Host host, Policy policy, Map<String, String> properties, OntologyTermIdStatus idStatus) {
+        return new ServerConfigurationImpl.Builder()
+                .setHost(host)
+                .setPolicy(policy)
+                .setPropertyMap(properties)
+                .setOntologyTermIdStatus(idStatus)
+                .createServerConfiguration();
+    }
+
+    public static Host getHost() {
+        return getHost(Utils.getAddress(), random.nextInt());
+    }
+
+    public static Host getHost(Address address, int port) {
+        return new HostImpl(address, port);
+    }
+
+    public static Policy getPolicySample() {
+        return new TestPolicy().getPolicy();
+    }
+
+    public static Policy getPolicy() {
+        return getPolicy(Utils.getUserRoleMap(), Utils.getUserManager(), Utils.getRoleManager(), Utils.getOperationManager(), Utils.getProjectManager());
+    }
+
+    public static Policy getPolicy(Map<UserId,Set<RoleId>> userRoleMap, UserManager userManager, RoleManager roleManager, OperationManager operationManager, ProjectManager projectManager) {
+        return new AccessControlPolicy.Builder()
+                .setUserRoleMap(userRoleMap)
+                .setUserManager(userManager)
+                .setRoleManager(roleManager)
+                .setOperationManager(operationManager)
+                .setProjectManager(projectManager)
+                .createAccessControlPolicy();
+    }
+
+    public static Map<UserId,Set<RoleId>> getUserRoleMap() {
+        Map<UserId,Set<RoleId>> map = new HashMap<>();
+        for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
+            map.put(Utils.getUserId(), Utils.getRoleIdSet());
+        }
+        return map;
+    }
+
+    public static OntologyTermIdStatus getOntologyTermIdStatus() {
+        return new OntologyTermIdStatusImpl.Builder()
+                .setClassIdPrefix(Utils.getOntologyTermIdPrefix("class"))
+                .setObjectPropertyIdPrefix(Utils.getOntologyTermIdPrefix("objprop"))
+                .setDataPropertyIdPrefix(Utils.getOntologyTermIdPrefix("dataprop"))
+                .setClassIdSuffix(Utils.getOntologyTermIdSuffix("13"))
+                .setObjectPropertyIdSuffix(Utils.getOntologyTermIdSuffix("4"))
+                .setDataPropertyIdSuffix(Utils.getOntologyTermIdSuffix("2"))
+                .createOntologyTermIdStatus();
+    }
+
+    public static Map<String,String> getStringPropertyMap() {
+        Map<String,String> map = new HashMap<>();
+        map.put("prop1", "value1");
+        map.put("prop2", "value2");
+        return map;
     }
 
 
@@ -337,11 +432,35 @@ public class Utils {
         return projectIdSet;
     }
 
+    public static Set<RoleId> getRoleIdSet() {
+        return getRoleIdSet(DEFAULT_SET_SIZE);
+    }
+
+    public static Set<RoleId> getRoleIdSet(int size) {
+        Set<RoleId> roleSet = new HashSet<>();
+        for(int i = 0; i < size; i++) {
+            roleSet.add(getRoleId());
+        }
+        return roleSet;
+    }
+
     /*   sets of other things   */
 
     public static Set<OperationPrerequisite> getOperationPrerequisiteSet(OperationPrerequisite... operationPrerequisites) {
         Set<OperationPrerequisite> operationPrerequisiteSet = new HashSet<>();
         Collections.addAll(operationPrerequisiteSet, operationPrerequisites);
         return operationPrerequisiteSet;
+    }
+
+    public static Set<AuthenticationDetails> getUserAuthenticationDetailsSet() {
+        return getUserAuthenticationDetailsSet(DEFAULT_SET_SIZE);
+    }
+
+    public static Set<AuthenticationDetails> getUserAuthenticationDetailsSet(int size) {
+        Set<AuthenticationDetails> set = new HashSet<>();
+        for(int i = 0; i < size; i++) {
+            set.add(getUserAuthenticationDetails());
+        }
+        return set;
     }
 }

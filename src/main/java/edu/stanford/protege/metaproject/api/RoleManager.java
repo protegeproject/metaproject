@@ -25,10 +25,20 @@ public interface RoleManager extends Manager {
     /**
      * Remove the given role(s)
      *
-     * @param role  One or more roles
-     * @throws RoleNotFoundException    Role not found
+     * @param roles  One or more roles
      */
-    void remove(Role... role) throws RoleNotFoundException;
+    void remove(Role... roles);
+
+    /**
+     * Create a new role
+     *
+     * @param name  Role name
+     * @param description   Role description
+     * @param projects  Set of projects
+     * @param operations    Set of operations
+     * @return New role instance
+     */
+    Role create(String name, String description, Set<ProjectId> projects, Set<OperationId> operations);
 
     /**
      * Get the set of all roles

@@ -79,8 +79,8 @@ public class UserManagerTest {
     @Test
     public void testExists() {
         UserId userId = Utils.getUserId("newTestUserId");
-        assertThat(userManager.exists(user1.getId()), is(true));
-        assertThat(userManager.exists(userId), is(false));
+        assertThat(userManager.contains(user1.getId()), is(true));
+        assertThat(userManager.contains(userId), is(false));
     }
 
     @Test

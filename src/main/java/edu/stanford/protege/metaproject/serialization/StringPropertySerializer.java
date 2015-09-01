@@ -19,6 +19,7 @@ public class StringPropertySerializer<E extends Property<String>> implements Jso
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public E deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         Object object = null;
         try {

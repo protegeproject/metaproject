@@ -1,10 +1,11 @@
 package edu.stanford.protege.metaproject.api.impl;
 
 import edu.stanford.protege.metaproject.api.*;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Optional;
@@ -19,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class PBKDF2PasswordMaster implements PasswordMaster {
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
-    private static final int SALT_INDEX = 0, PBKDF2_INDEX = 1;
 
     private final SaltGenerator saltGenerator;
     private final int saltByteSize, hashByteSize, nrPBKDF2Iterations;
@@ -76,7 +76,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
-        return new SaltedPasswordImpl(toHex(saltBytes) + ":" + toHex(hash), salt);
+        return new SaltedPasswordImpl(Hex.encodeHexString(hash), salt);
     }
 
     /**
@@ -86,21 +86,8 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @param correctHash   The hash of the valid password
      * @return true if the password is correct, false otherwise
      */
-    @Override
-    public boolean validatePassword(String password, String correctHash) {
-        return validatePassword(password.toCharArray(), correctHash);
-    }
-
-    /**
-     * Validates a password using a hash
-     *
-     * @param password  Plain password instance to check
-     * @param correctHash   The correct salted hashed password instance
-     * @return true if the password is correct, false otherwise
-     */
-    @Override
-    public boolean validatePassword(PlainPassword password, SaltedPassword correctHash) {
-        return validatePassword(password.getPassword().toCharArray(), correctHash.getPassword());
+    public boolean validatePassword(String password, SaltedPassword correctHash) {
+        return validatePassword(new PlainPasswordImpl(password), correctHash);
     }
 
     /**
@@ -110,13 +97,12 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @param correctHash   The hash of the valid password
      * @return true if the password is correct, false otherwise
      */
-    private boolean validatePassword(char[] password, String correctHash) {
-        String[] params = correctHash.split(":");
-        byte[] salt = fromHex(params[SALT_INDEX]);
-        byte[] hash = fromHex(params[PBKDF2_INDEX]);
+    public boolean validatePassword(PlainPassword password, SaltedPassword correctHash) {
+        byte[] salt = correctHash.getSalt().getBytes();
+        byte[] hash = fromHex(correctHash.getPassword());
         byte[] testHash = new byte[0];
         try {
-            testHash = pbkdf2(password, salt, nrPBKDF2Iterations, hash.length);
+            testHash = pbkdf2(password.getPassword().toCharArray(), salt, nrPBKDF2Iterations, hash.length);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
@@ -124,9 +110,8 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
     }
 
     /**
-     * Compares two byte arrays in length-constant time. This comparison method
-     * is used so that password hashes cannot be extracted from an on-line
-     * system using a timing attack and then attacked off-line.
+     * Compares two byte arrays in length-constant time. This comparison method is used so that password hashes
+     * cannot be extracted from an on-line system using a timing attack and then attacked off-line
      *
      * @param a First byte array
      * @param b Second byte array
@@ -134,8 +119,9 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      */
     private boolean equals(byte[] a, byte[] b) {
         int diff = a.length ^ b.length;
-        for(int i = 0; i < a.length && i < b.length; i++)
+        for(int i = 0; i < a.length && i < b.length; i++) {
             diff |= a[i] ^ b[i];
+        }
         return diff == 0;
     }
 
@@ -163,29 +149,13 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @return Byte array of decoded hex string
      */
     private byte[] fromHex(String hex) {
-        byte[] binary = new byte[hex.length() / 2];
-        for(int i = 0; i < binary.length; i++) {
-            binary[i] = (byte) Integer.parseInt(hex.substring(2*i, 2*i+2), 16);
+        byte[] binary = new byte[0];
+        try {
+            binary = Hex.decodeHex(hex.toCharArray());
+        } catch (DecoderException e) {
+            e.printStackTrace();
         }
         return binary;
-    }
-
-    /**
-     * Converts a byte array into a hexadecimal string
-     *
-     * @param array Byte array to convert
-     * @return A length*2 character string encoding the byte array
-     */
-    private String toHex(byte[] array) {
-        BigInteger bi = new BigInteger(1, array);
-        String hex = bi.toString(16);
-        int paddingLength = (array.length * 2) - hex.length();
-        if(paddingLength > 0) {
-            return String.format("%0" + paddingLength + "d", 0) + hex;
-        }
-        else {
-            return hex;
-        }
     }
 
     /**

@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleManagerSerializationTest {
+public class RoleManagerSerializerTest {
     private static final Set<Role> roleSet = Utils.getRoleSet(5), diffRoleSet = Utils.getRoleSet(3);
 
     private String jsonRoleManager, jsonOtherRoleManager, jsonDiffRoleManager;

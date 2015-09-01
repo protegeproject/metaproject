@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UserManagerSerializationTest {
+public class UserManagerSerializerTest {
     private static final Set<User> userSet = Utils.getUserSet(5), diffUserSet = Utils.getUserSet(3);
 
     private String jsonUserManager, jsonOtherUserManager, jsonDiffUserManager;

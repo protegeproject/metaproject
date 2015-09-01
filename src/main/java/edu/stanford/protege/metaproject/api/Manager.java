@@ -14,6 +14,6 @@ public interface Manager {
      * @param id    Access control object identifier
      * @return true if the identifier corresponds to an existing, registered element, false otherwise
      */
-    boolean exists(AccessControlObjectId id);
+    boolean contains(AccessControlObjectId id);
 
 }

@@ -92,8 +92,8 @@ public class ProjectManagerTest {
     @Test
     public void testExists() {
         ProjectId projectId = Utils.getProjectId("newTestProjectId");
-        assertThat(projectManager.exists(project1.getId()), is(true));
-        assertThat(projectManager.exists(projectId), is(false));
+        assertThat(projectManager.contains(project1.getId()), is(true));
+        assertThat(projectManager.contains(projectId), is(false));
     }
 
     @Test

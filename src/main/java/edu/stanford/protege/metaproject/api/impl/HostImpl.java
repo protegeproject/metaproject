@@ -14,23 +14,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class HostImpl implements Host, Serializable {
-    private static final long serialVersionUID = 5370873288010759211L;
-    private final Address hostAddress;
-    private final int hostPort;
+    private static final long serialVersionUID = 4102516354587034197L;
+    private final Address address;
+    private final int port;
 
-    public HostImpl(Address hostAddress, int hostPort) {
-        this.hostAddress = checkNotNull(hostAddress);
-        this.hostPort = checkNotNull(hostPort);
+    /**
+     * Constructor
+     * @param address   Host address
+     * @param port  Host port
+     */
+    public HostImpl(Address address, int port) {
+        this.address = checkNotNull(address);
+        this.port = checkNotNull(port);
     }
 
     @Override
     public int getPort() {
-        return hostPort;
+        return port;
     }
 
     @Override
     public Address getAddress() {
-        return hostAddress;
+        return address;
     }
 
     @Override
@@ -38,20 +43,20 @@ public final class HostImpl implements Host, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HostImpl host = (HostImpl) o;
-        return Objects.equal(hostPort, host.hostPort) &&
-                Objects.equal(hostAddress, host.hostAddress);
+        return Objects.equal(port, host.port) &&
+                Objects.equal(address, host.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(hostAddress, hostPort);
+        return Objects.hashCode(address, port);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("hostAddress", hostAddress)
-                .add("hostPort", hostPort)
+                .add("address", address)
+                .add("port", port)
                 .toString();
     }
 }

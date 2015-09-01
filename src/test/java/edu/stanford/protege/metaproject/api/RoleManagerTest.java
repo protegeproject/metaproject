@@ -78,8 +78,8 @@ public class RoleManagerTest {
     @Test
     public void testExists() {
         RoleId roleId = Utils.getRoleId("newTestRoleId");
-        assertThat(roleManager.exists(role1.getId()), is(true));
-        assertThat(roleManager.exists(roleId), is(false));
+        assertThat(roleManager.contains(role1.getId()), is(true));
+        assertThat(roleManager.contains(roleId), is(false));
     }
 
     @Test

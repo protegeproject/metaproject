@@ -15,4 +15,11 @@ public interface Salt {
      */
     byte[] getBytes();
 
+    /**
+     * Get string representation of salt
+     *
+     * @return Salt string
+     */
+    String getString();
+
 }

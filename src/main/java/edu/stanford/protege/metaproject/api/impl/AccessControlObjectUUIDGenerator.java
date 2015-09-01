@@ -21,7 +21,7 @@ public final class AccessControlObjectUUIDGenerator implements AccessControlObje
      *
      * @return Instance of the UUID generator
      */
-    public AccessControlObjectUUIDGenerator getInstance() {
+    public static AccessControlObjectUUIDGenerator getInstance() {
         if(instance == null) {
             instance = new AccessControlObjectUUIDGenerator();
         }

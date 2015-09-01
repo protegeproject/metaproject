@@ -4,8 +4,6 @@ import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
-
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -13,25 +11,23 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UserAuthenticationDetailsTest {
+public class AuthenticationDetailsTest {
     private static final String
             userIdStr = "testUserId1",
             diffUserIdStr = "testUserId2",
             passwordStr = "testPassword",
-            saltStr = "testSalt",
-            toStringHead = "UserAuthenticationDetails";
+            toStringHead = "AuthenticationDetails";
 
     private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(diffUserIdStr);
-    private static final Salt salt = Utils.getSalt(saltStr.getBytes());
-    private static final SaltedPassword password = Utils.getSaltedPassword(passwordStr, salt);
+    private static final SaltedPassword password = Utils.getSaltedPassword(passwordStr, Utils.getSalt());
 
-    private UserAuthenticationDetails userDetails, otherUserDetails, diffUserDetails;
+    private AuthenticationDetails userDetails, otherUserDetails, diffUserDetails;
 
     @Before
     public void setUp() {
-        userDetails = Utils.getUserAuthenticationDetails(userId, password, Optional.of(salt));
-        otherUserDetails = Utils.getUserAuthenticationDetails(userId, password, Optional.of(salt));
-        diffUserDetails = Utils.getUserAuthenticationDetails(diffUserId, password, Optional.of(salt));
+        userDetails = Utils.getUserAuthenticationDetails(userId, password);
+        otherUserDetails = Utils.getUserAuthenticationDetails(userId, password);
+        diffUserDetails = Utils.getUserAuthenticationDetails(diffUserId, password);
     }
 
     @Test
@@ -52,16 +48,6 @@ public class UserAuthenticationDetailsTest {
     @Test
     public void testGetPasswordText() {
         assertThat(userDetails.getPassword().getPassword(), is(passwordStr));
-    }
-
-    @Test
-    public void testGetSalt() {
-        assertThat(userDetails.getSalt().get(), is(salt));
-    }
-
-    @Test
-    public void testGetSaltText() {
-        assertThat(userDetails.getSalt().get().getBytes(), is(saltStr.getBytes()));
     }
 
     @Test

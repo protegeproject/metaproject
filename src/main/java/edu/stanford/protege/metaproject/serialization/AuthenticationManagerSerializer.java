@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.AuthenticationManager;
-import edu.stanford.protege.metaproject.api.UserAuthenticationDetails;
+import edu.stanford.protege.metaproject.api.AuthenticationDetails;
 import edu.stanford.protege.metaproject.api.impl.AuthenticationManagerImpl;
 
 import java.lang.reflect.Type;
@@ -20,15 +20,15 @@ public class AuthenticationManagerSerializer implements JsonSerializer<Authentic
 
     @Override
     public JsonElement serialize(AuthenticationManager authenticationManager, Type type, JsonSerializationContext context) {
-        List<UserAuthenticationDetails> list = new ArrayList<>(authenticationManager.getUserAuthenticationDetails());
+        List<AuthenticationDetails> list = new ArrayList<>(authenticationManager.getAuthenticationDetails());
         Collections.sort(list);
         return context.serialize(list);
     }
 
     @Override
     public AuthenticationManager deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        Set<UserAuthenticationDetails> userAuthenticationDetails =
-                context.deserialize(element.getAsJsonArray(), new TypeToken<Set<UserAuthenticationDetails>>() {}.getType());
-        return new AuthenticationManagerImpl(userAuthenticationDetails);
+        Set<AuthenticationDetails> authenticationDetails =
+                context.deserialize(element.getAsJsonArray(), new TypeToken<Set<AuthenticationDetails>>(){}.getType());
+        return new AuthenticationManagerImpl(authenticationDetails);
     }
 }

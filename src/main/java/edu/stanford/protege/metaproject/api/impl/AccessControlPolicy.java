@@ -229,7 +229,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      */
     private void checkExistence(Manager manager, AccessControlObjectId... objects) throws PolicyException {
         for(AccessControlObjectId obj : objects) {
-            if(!manager.exists(obj)) {
+            if(!manager.contains(obj)) {
                 throw new PolicyException("The specified access control object does not correspond to a known one. " +
                         "It may not have been registered with the appropriate manager");
             }

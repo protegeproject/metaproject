@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.Salt;
 
 import java.io.Serializable;
@@ -16,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class SaltImpl implements Salt, Serializable {
-    private static final long serialVersionUID = 8560569220447125258L;
+    private static final long serialVersionUID = -8434267075481461361L;
     private final byte[] bytes;
 
     /**
@@ -35,6 +34,11 @@ public final class SaltImpl implements Salt, Serializable {
     @Override
     public byte[] getBytes() {
         return Arrays.copyOf(bytes, bytes.length);
+    }
+
+    @Override
+    public String getString() {
+        return new String(bytes);
     }
 
     @Override

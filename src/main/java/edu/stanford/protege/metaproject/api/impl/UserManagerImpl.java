@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class UserManagerImpl implements UserManager, Serializable {
     private static final String GUEST_ID = "guest", GUEST_NAME = "guest user", GUEST_EMAIL = "";
-    private static final long serialVersionUID = -4332369697083173511L;
+    private static final long serialVersionUID = -6991365562729428408L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -43,7 +43,7 @@ public class UserManagerImpl implements UserManager, Serializable {
         checkNotNull(users);
         for(User user : users) {
             checkNotNull(user);
-            if (exists(user.getId())) {
+            if (contains(user.getId())) {
                 throw new UserAlreadyRegisteredException("The specified user identifier is already used by another user");
             }
             if (isAddressUsed(user.getAddress())) {
@@ -54,15 +54,17 @@ public class UserManagerImpl implements UserManager, Serializable {
     }
 
     @Override
-    public void remove(User... users) throws UserNotFoundException {
+    public void remove(User... users) {
         checkNotNull(users);
-        for(User u : users) {
-            checkNotNull(u);
-            if (!this.users.contains(u)) {
-                throw new UserNotFoundException("The specified user does not exist");
-            }
-            this.users.remove(u);
+        for(User user : users) {
+            checkNotNull(user);
+            this.users.remove(user);
         }
+    }
+
+    @Override
+    public User create(String userId, String userName, String emailAddress) {
+        return new UserImpl(new UserIdImpl(userId), new NameImpl(userName), new AddressImpl(emailAddress));
     }
 
     @Override
@@ -117,7 +119,7 @@ public class UserManagerImpl implements UserManager, Serializable {
     }
 
     @Override
-    public boolean exists(AccessControlObjectId userId) {
+    public boolean contains(AccessControlObjectId userId) {
         checkNotNull(userId);
         for(User user : users) {
             if(user.getId().equals(userId)) {

@@ -15,11 +15,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class ProjectSerializationTest {
-    private static final String
-            projectIdStr = "testProjectId1",
-            diffIdStr = "testProjectId2";
-
+public class ProjectSerializerTest {
+    private static final String projectIdStr = "testProjectId1", diffIdStr = "testProjectId2";
     private static final ProjectId projectId = Utils.getProjectId(projectIdStr), diffProjectId = Utils.getProjectId(diffIdStr);
     private static final Name projectName = Utils.getName();
     private static final Description projectDescription = Utils.getDescription();

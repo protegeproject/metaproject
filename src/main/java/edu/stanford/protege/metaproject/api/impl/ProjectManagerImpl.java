@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ProjectManagerImpl implements ProjectManager, Serializable {
-    private static final long serialVersionUID = -3102222571430826344L;
+    private static final long serialVersionUID = 3036722212682375549L;
     private Set<Project> projects = new HashSet<>();
 
     /**
@@ -45,15 +45,18 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public void remove(Project... projects) throws ProjectNotFoundException {
+    public void remove(Project... projects) {
         checkNotNull(projects);
         for(Project p : projects) {
             checkNotNull(p);
-            if (!this.projects.contains(p)) {
-                throw new ProjectNotFoundException("The specified project does not exist");
-            }
             this.projects.remove(p);
         }
+    }
+
+    @Override
+    public Project create(String name, String description, String address, UserId ownerId, Set<UserId> admins) {
+        AccessControlObjectUUIDGenerator gen = AccessControlObjectUUIDGenerator.getInstance();
+        return new ProjectImpl(gen.getProjectId(), new NameImpl(name), new DescriptionImpl(description), new AddressImpl(address), ownerId, admins);
     }
 
     @Override
@@ -147,7 +150,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public boolean exists(AccessControlObjectId projectId) {
+    public boolean contains(AccessControlObjectId projectId) {
         checkNotNull(projectId);
         for(Project p : projects) {
             if(p.getId().equals(projectId)) {

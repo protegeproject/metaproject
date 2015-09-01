@@ -15,11 +15,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleSerializationTest {
-    private static final String
-            roleIdStr = "testRoleId1",
-            diffIdStr = "testRoleId2";
-
+public class RoleSerializerTest {
+    private static final String roleIdStr = "testRoleId1", diffIdStr = "testRoleId2";
     private static final RoleId roleId = Utils.getRoleId(roleIdStr), diffRoleId = Utils.getRoleId(diffIdStr);
     private static final Name roleName = Utils.getName();
     private static final Description roleDescription = Utils.getDescription();
