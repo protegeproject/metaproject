@@ -4,7 +4,6 @@ import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.impl.*;
 import org.semanticweb.owlapi.model.IRI;
 
-import javax.swing.*;
 import java.util.*;
 
 /**
@@ -165,6 +164,26 @@ public class Utils {
         return new AuthenticationDetailsImpl(userId, password);
     }
 
+    public static SaltGenerator getSaltGenerator() {
+        return new SaltGeneratorImpl();
+    }
+
+    public static SaltGenerator getSaltGenerator(int byteSize) {
+        return new SaltGeneratorImpl(byteSize);
+    }
+
+    public static PasswordMaster getPasswordMaster() {
+        return new PBKDF2PasswordMaster.Builder().createPasswordMaster();
+    }
+
+    public static PasswordMaster getPasswordMaster(int hashByteSize, int nrPBKDF2Iterations, SaltGenerator saltGenerator) {
+        return new PBKDF2PasswordMaster.Builder()
+                .setHashByteSize(hashByteSize)
+                .setNrPBKDF2Iterations(nrPBKDF2Iterations)
+                .setSaltGenerator(saltGenerator)
+                .createPasswordMaster();
+    }
+
 
     /*   access control policy managers   */
 
@@ -233,10 +252,10 @@ public class Utils {
     }
 
     public static ClientConfiguration getClientConfiguration() {
-        return getClientConfiguration(Utils.getPolicy(), random.nextInt(), Utils.getJComponentSet(), Utils.getStringPropertyMap());
+        return getClientConfiguration(Utils.getPolicy(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getStringPropertyMap());
     }
 
-    public static ClientConfiguration getClientConfiguration(Policy policy, int syncDelay, Set<? extends JComponent> disabledUIComponents, Map<String,String> propertyMap) {
+    public static ClientConfiguration getClientConfiguration(Policy policy, int syncDelay, Set<GUIRestriction> disabledUIComponents, Map<String,String> propertyMap) {
         return new ClientConfigurationImpl(policy, syncDelay, disabledUIComponents, propertyMap);
     }
 
@@ -515,12 +534,20 @@ public class Utils {
         return set;
     }
 
-    public static Set<JComponent> getJComponentSet() {
-        Set<JComponent> set = new HashSet<>();
+    public static Set<GUIRestriction> getGUIRestrictionSet() {
+        Set<GUIRestriction> set = new HashSet<>();
         for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
-            set.add(new JButton("button" + newUUID()));
+            set.add(Utils.getGUIRestriction());
         }
         return set;
+    }
+
+    public static GUIRestriction getGUIRestriction() {
+        return getGUIRestriction("button" + newUUID(), GUIRestriction.Visibility.VISIBLE);
+    }
+
+    public static GUIRestriction getGUIRestriction(String componentName, GUIRestriction.Visibility visibility) {
+        return new GUIRestrictionImpl(componentName, visibility);
     }
 
 

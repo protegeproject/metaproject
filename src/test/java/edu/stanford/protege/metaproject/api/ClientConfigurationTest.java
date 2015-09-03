@@ -4,7 +4,6 @@ import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ClientConfigurationTest {
     private static final String toStringHead = "ClientConfiguration";
     private static final Policy policy = Utils.getPolicySample();
-    private static final Set<JComponent> disabledElements = Utils.getJComponentSet();
+    private static final Set<GUIRestriction> disabledElements = Utils.getGUIRestrictionSet();
     private static final int syncDelay = 30;
     private static final Map<String,String> propertiesMap = Utils.getStringPropertyMap();
 
@@ -47,8 +46,8 @@ public class ClientConfigurationTest {
     }
 
     @Test
-    public void testGetDisabledUIElements() {
-        assertThat(clientConfiguration.getDisabledUIElements(), is(disabledElements));
+    public void testGetGUIRestrictions() {
+        assertThat(clientConfiguration.getGUIRestrictions(), is(disabledElements));
     }
 
     @Test

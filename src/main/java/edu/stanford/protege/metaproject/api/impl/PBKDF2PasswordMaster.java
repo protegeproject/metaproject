@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -22,19 +24,17 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
 
     private final SaltGenerator saltGenerator;
-    private final int saltByteSize, hashByteSize, nrPBKDF2Iterations;
+    private final int hashByteSize, nrPBKDF2Iterations;
 
     /**
      * Package-private constructor; use builder
      *
      * @param saltGenerator Salt generator
-     * @param saltByteSize  Salt byte size
      * @param hashByteSize  Hash byte size
      * @param nrPBKDF2Iterations    Number of iterations
      */
-    PBKDF2PasswordMaster(SaltGenerator saltGenerator, int saltByteSize, int hashByteSize, int nrPBKDF2Iterations) {
+    PBKDF2PasswordMaster(SaltGenerator saltGenerator, int hashByteSize, int nrPBKDF2Iterations) {
         this.saltGenerator = checkNotNull(saltGenerator);
-        this.saltByteSize = checkNotNull(saltByteSize);
         this.hashByteSize = checkNotNull(hashByteSize);
         this.nrPBKDF2Iterations = checkNotNull(nrPBKDF2Iterations);
     }
@@ -86,6 +86,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @param correctHash   The hash of the valid password
      * @return true if the password is correct, false otherwise
      */
+    @Override
     public boolean validatePassword(String password, SaltedPassword correctHash) {
         return validatePassword(new PlainPasswordImpl(password), correctHash);
     }
@@ -97,6 +98,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      * @param correctHash   The hash of the valid password
      * @return true if the password is correct, false otherwise
      */
+    @Override
     public boolean validatePassword(PlainPassword password, SaltedPassword correctHash) {
         byte[] salt = correctHash.getSalt().getBytes();
         byte[] hash = fromHex(correctHash.getPassword());
@@ -169,16 +171,6 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
     }
 
     /**
-     * Get the byte size set for salts
-     *
-     * @return Salt byte size
-     */
-    @Override
-    public int getSaltByteSize() {
-        return saltByteSize;
-    }
-
-    /**
      * Get the byte size set for hashes
      *
      * @return Hash byte size
@@ -198,24 +190,41 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
         return Optional.of(nrPBKDF2Iterations);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PBKDF2PasswordMaster that = (PBKDF2PasswordMaster) o;
+        return Objects.equal(hashByteSize, that.hashByteSize) &&
+                Objects.equal(nrPBKDF2Iterations, that.nrPBKDF2Iterations) &&
+                Objects.equal(saltGenerator, that.saltGenerator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(saltGenerator, hashByteSize, nrPBKDF2Iterations);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("saltGenerator", saltGenerator)
+                .add("hashByteSize", hashByteSize)
+                .add("nrPBKDF2Iterations", nrPBKDF2Iterations)
+                .toString();
+    }
 
     /**
      * @author Rafael Gonçalves <br>
      * Stanford Center for Biomedical Informatics Research
      */
     public static class Builder {
-        private int saltByteSize = 24;
         private int hashByteSize = 24;
         private int nrPBKDF2Iterations = 1000;
-        private SaltGenerator saltGenerator = new SaltGeneratorImpl(saltByteSize);
+        private SaltGenerator saltGenerator = new SaltGeneratorImpl();
 
         public Builder setSaltGenerator(SaltGenerator saltGenerator) {
             this.saltGenerator = saltGenerator;
-            return this;
-        }
-
-        public Builder setSaltByteSize(int saltByteSize) {
-            this.saltByteSize = saltByteSize;
             return this;
         }
 
@@ -230,7 +239,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
         }
 
         public PBKDF2PasswordMaster createPasswordMaster() {
-            return new PBKDF2PasswordMaster(saltGenerator, saltByteSize, hashByteSize, nrPBKDF2Iterations);
+            return new PBKDF2PasswordMaster(saltGenerator, hashByteSize, nrPBKDF2Iterations);
         }
     }
 }

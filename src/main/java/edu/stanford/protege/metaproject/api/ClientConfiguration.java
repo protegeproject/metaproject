@@ -1,6 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import javax.swing.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -28,11 +27,11 @@ public interface ClientConfiguration extends Configuration {
     int getSynchronisationDelay();
 
     /**
-     * Get the set of swing components that are disabled
+     * Get the set of GUI restrictions
      *
-     * @return Set of java swing components
+     * @return Set of GUI restrictions
      */
-    Set<? extends JComponent> getDisabledUIElements();
+    Set<GUIRestriction> getGUIRestrictions();
 
     /**
      * Get the map of client configuration properties

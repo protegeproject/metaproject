@@ -29,6 +29,15 @@ public interface PasswordMaster {
     boolean validatePassword(PlainPassword password, SaltedPassword correctHash);
 
     /**
+     * Validates a password using a hash
+     *
+     * @param password  String password
+     * @param correctHash   Correct hash
+     * @return true if the password is correct, false otherwise
+     */
+    boolean validatePassword(String password, SaltedPassword correctHash);
+
+    /**
      * Create a salted hash of the password
      *
      * @param password  Plain password to hash
@@ -43,13 +52,6 @@ public interface PasswordMaster {
      * @return Salted hash of the password
      */
     SaltedPassword createHash(PlainPassword password);
-
-    /**
-     * Get the byte size set for salts
-     *
-     * @return Salt byte size
-     */
-    int getSaltByteSize();
 
     /**
      * Get the byte size set for hashes

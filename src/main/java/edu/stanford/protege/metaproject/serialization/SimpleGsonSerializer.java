@@ -29,8 +29,9 @@ public final class SimpleGsonSerializer {
                 .registerTypeAdapter(Role.class, new RoleSerializer())
                 .registerTypeAdapter(User.class, new UserSerializer())
 
-                // server configuration
+                // configurations
                 .registerTypeAdapter(ServerConfiguration.class, new ServerConfigurationSerializer())
+                .registerTypeAdapter(ClientConfiguration.class, new ClientConfigurationSerializer())
                 .registerTypeAdapter(Policy.class, new PolicySerializer())
                 .registerTypeAdapter(Host.class, new HostSerializer())
 
@@ -46,6 +47,7 @@ public final class SimpleGsonSerializer {
                 .registerTypeAdapter(OperationPrerequisite.class, new OperationPrerequisiteSerializer())
                 .registerTypeAdapter(OntologyTermIdStatus.class, new OntologyTermIdStatusSerializer())
                 .registerTypeHierarchyAdapter(AuthenticationDetails.class, new AuthenticationDetailsSerializer())
+                .registerTypeAdapter(GUIRestriction.class, new GUIRestrictionSerializer())
 
                 .enableComplexMapKeySerialization()
                 .setPrettyPrinting()
