@@ -207,7 +207,7 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
         private int saltByteSize = 24;
         private int hashByteSize = 24;
         private int nrPBKDF2Iterations = 1000;
-        private SaltGenerator saltGenerator = SaltGeneratorImpl.getInstance(saltByteSize);
+        private SaltGenerator saltGenerator = new SaltGeneratorImpl(saltByteSize);
 
         public Builder setSaltGenerator(SaltGenerator saltGenerator) {
             this.saltGenerator = saltGenerator;

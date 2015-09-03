@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class AuthenticationManagerImpl implements AuthenticationManager, Serializable {
-    private static final long serialVersionUID = 3744980989244926797L;
+    private static final long serialVersionUID = 6121384391913289619L;
     private final PasswordMaster passwordMaster = new PBKDF2PasswordMaster.Builder().createPasswordMaster();
     private Set<AuthenticationDetails> authenticationDetails = new HashSet<>();
 
@@ -62,8 +62,8 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      * @throws UserAddressAlreadyInUseException Email address is already in use by another user
      */
     @Override
-    public void registerUser(UserId userId, PlainPassword password) throws UserAlreadyRegisteredException, UserAddressAlreadyInUseException {
-        if(isRegistered(userId)) {
+    public void add(UserId userId, PlainPassword password) throws UserAlreadyRegisteredException, UserAddressAlreadyInUseException {
+        if(contains(userId)) {
             throw new UserAlreadyRegisteredException("The specified user is already registered with the authentication protocol. Recover or change the password.");
         }
         authenticationDetails.add(getHashedAuthenticationDetails(userId, password));
@@ -76,7 +76,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      * @throws UserNotRegisteredException   User is not registered
      */
     @Override
-    public void removeUser(UserId userId) throws UserNotRegisteredException {
+    public void remove(UserId userId) throws UserNotRegisteredException {
         AuthenticationDetails toDelete = getAuthenticationDetails(userId);
         authenticationDetails.remove(toDelete);
     }
@@ -126,22 +126,6 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
             throw new UserNotRegisteredException("The specified user identifier does not correspond to a registered user.");
         }
         return details;
-    }
-
-    /**
-     * Check whether a given user is already registered
-     *
-     * @param userId  User identifier
-     * @return true if user is registered, false otherwise
-     */
-    @Override
-    public boolean isRegistered(UserId userId) {
-        for(AuthenticationDetails userDetails : authenticationDetails) {
-            if(userDetails.getUserId().equals(userId)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

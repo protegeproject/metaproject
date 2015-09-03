@@ -19,9 +19,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class AccessControlPolicy implements Policy, Serializable {
-    private static final long serialVersionUID = -8216942937465045473L;
-    private Map<UserId,Set<RoleId>> userRoleMap = new HashMap<>();
+public class PolicyImpl implements Policy, Serializable {
+    private static final long serialVersionUID = -6333147884251670498L;
+    private Map<UserId,Set<RoleId>> userRoleMap;
 
     // access control objects managers
     private RoleManager roleManager;
@@ -34,7 +34,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      *
      * @param userRoleMap   Map of users to their roles
      */
-    AccessControlPolicy(Map<UserId,Set<RoleId>> userRoleMap, RoleManager roleManager, OperationManager operationManager, UserManager userManager, ProjectManager projectManager) {
+    PolicyImpl(Map<UserId, Set<RoleId>> userRoleMap, RoleManager roleManager, OperationManager operationManager, UserManager userManager, ProjectManager projectManager) {
         this.userRoleMap = checkNotNull(userRoleMap);
         this.roleManager = checkNotNull(roleManager);
         this.operationManager = checkNotNull(operationManager);
@@ -92,9 +92,15 @@ public class AccessControlPolicy implements Policy, Serializable {
         checkExistence(userManager, userId);
         checkExistence(roleManager, roleId);
 
-        Set<RoleId> roles = userRoleMap.get(userId);
+        Set<RoleId> roles = new HashSet<>(getRoles(userId));
         roles.remove(roleId);
-        userRoleMap.put(userId, roles);
+
+        if(roles.isEmpty()) {
+            userRoleMap.remove(userId);
+        }
+        else {
+            userRoleMap.put(userId, roles);
+        }
     }
 
     /**
@@ -110,9 +116,8 @@ public class AccessControlPolicy implements Policy, Serializable {
     public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) throws PolicyException {
         checkExistence(operationManager, operationId);
         checkExistence(projectManager, projectId);
-        checkUserIsInPolicy(userId);
 
-        Set<RoleId> roles = userRoleMap.get(userId);
+        Set<RoleId> roles = getRoles(userId);
         for(RoleId role : roles) {
             try {
                 Role r = roleManager.getRole(role);
@@ -229,6 +234,7 @@ public class AccessControlPolicy implements Policy, Serializable {
      */
     private void checkExistence(Manager manager, AccessControlObjectId... objects) throws PolicyException {
         for(AccessControlObjectId obj : objects) {
+            checkNotNull(obj);
             if(!manager.contains(obj)) {
                 throw new PolicyException("The specified access control object does not correspond to a known one. " +
                         "It may not have been registered with the appropriate manager");
@@ -240,7 +246,7 @@ public class AccessControlPolicy implements Policy, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AccessControlPolicy policy = (AccessControlPolicy) o;
+        PolicyImpl policy = (PolicyImpl) o;
         return Objects.equal(userRoleMap, policy.userRoleMap) &&
                 Objects.equal(roleManager, policy.roleManager) &&
                 Objects.equal(operationManager, policy.operationManager) &&
@@ -299,8 +305,8 @@ public class AccessControlPolicy implements Policy, Serializable {
             return this;
         }
 
-        public AccessControlPolicy createAccessControlPolicy() {
-            return new AccessControlPolicy(userRoleMap, roleManager, operationManager, userManager, projectManager);
+        public PolicyImpl createAccessControlPolicy() {
+            return new PolicyImpl(userRoleMap, roleManager, operationManager, userManager, projectManager);
         }
     }
 }

@@ -3,8 +3,8 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.OntologyTermIdPrefix;
-import edu.stanford.protege.metaproject.api.OntologyTermIdSuffix;
 import edu.stanford.protege.metaproject.api.OntologyTermIdStatus;
+import edu.stanford.protege.metaproject.api.OntologyTermIdSuffix;
 
 import java.io.Serializable;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class OntologyTermIdStatusImpl implements OntologyTermIdStatus, Serializable {
-    private static final long serialVersionUID = -9007514337006498320L;
+    private static final long serialVersionUID = -5927607230008423930L;
     private final OntologyTermIdPrefix classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix;
     private final OntologyTermIdSuffix classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix;
 

@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -49,5 +51,27 @@ public class ServerImpl implements Server {
                 .setPolicy(configuration.getPolicy())
                 .setOntologyTermIdStatus(checkNotNull(ontologyTermIdStatus))
                 .createServerConfiguration();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ServerImpl server = (ServerImpl) o;
+        return Objects.equal(configuration, server.configuration) &&
+                Objects.equal(idGenerator, server.idGenerator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(configuration, idGenerator);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("configuration", configuration)
+                .add("idGenerator", idGenerator)
+                .toString();
     }
 }

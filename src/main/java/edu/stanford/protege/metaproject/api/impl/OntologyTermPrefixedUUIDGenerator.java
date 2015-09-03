@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 
 import java.util.Optional;
@@ -95,7 +97,35 @@ public final class OntologyTermPrefixedUUIDGenerator implements OntologyTermPref
 
     @Override
     public Optional<OntologyTermIdStatus> getCurrentOntologyTermIdStatus() {
-        return null;
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OntologyTermPrefixedUUIDGenerator that = (OntologyTermPrefixedUUIDGenerator) o;
+        return Objects.equal(classIdPrefix, that.classIdPrefix) &&
+                Objects.equal(objectPropertyIdPrefix, that.objectPropertyIdPrefix) &&
+                Objects.equal(dataPropertyIdPrefix, that.dataPropertyIdPrefix) &&
+                Objects.equal(annotationPropertyIdPrefix, that.annotationPropertyIdPrefix) &&
+                Objects.equal(individualIdPrefix, that.individualIdPrefix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("classIdPrefix", classIdPrefix)
+                .add("objectPropertyIdPrefix", objectPropertyIdPrefix)
+                .add("dataPropertyIdPrefix", dataPropertyIdPrefix)
+                .add("annotationPropertyIdPrefix", annotationPropertyIdPrefix)
+                .add("individualIdPrefix", individualIdPrefix)
+                .toString();
     }
 
     /**

@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
 import edu.stanford.protege.metaproject.api.*;
 
 import java.util.Optional;
@@ -86,5 +87,11 @@ public final class OntologyTermUUIDGenerator implements OntologyTermIdGenerator 
      */
     private String getRandomUUID() {
         return UUID.randomUUID().toString();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .toString();
     }
 }

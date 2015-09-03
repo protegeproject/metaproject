@@ -4,6 +4,7 @@ import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.impl.*;
 import org.semanticweb.owlapi.model.IRI;
 
+import javax.swing.*;
 import java.util.*;
 
 /**
@@ -11,15 +12,16 @@ import java.util.*;
  * Stanford Center for Biomedical Informatics Research
  */
 public class Utils {
+    private static final int DEFAULT_SET_SIZE = 3;
     private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.READ;
     private static final OperationPrerequisite.Modifier DEFAULT_MODIFIER = OperationPrerequisite.Modifier.PRESENT;
-    private static final int DEFAULT_SET_SIZE = 3;
+    private static final String iriBase = "http://protege.stanford.edu/test/";
     private static final Random random = new Random();
-
-    /*   identifiers   */
+    
+    /*   access control object identifiers   */
 
     public static UserId getUserId() {
-        return getUserId("userId" + random.nextInt());
+        return getUserId("userId" + newUUID());
     }
 
     public static UserId getUserId(String userId) {
@@ -27,7 +29,7 @@ public class Utils {
     }
 
     public static RoleId getRoleId() {
-        return getRoleId("roleId" + random.nextInt());
+        return getRoleId("roleId" + newUUID());
     }
 
     public static RoleId getRoleId(String roleId) {
@@ -35,7 +37,7 @@ public class Utils {
     }
 
     public static ProjectId getProjectId() {
-        return getProjectId("projectId" + random.nextInt());
+        return getProjectId("projectId" + newUUID());
     }
 
     public static ProjectId getProjectId(String projectId) {
@@ -43,7 +45,7 @@ public class Utils {
     }
 
     public static OperationId getOperationId() {
-        return getOperationId("operationId" + random.nextInt());
+        return getOperationId("operationId" + newUUID());
     }
 
     public static OperationId getOperationId(String operationId) {
@@ -51,10 +53,37 @@ public class Utils {
     }
 
 
+    /*   ontology term identifiers   */
+
+    public static OntologyTermIdPrefix getOntologyTermIdPrefix() {
+        return getOntologyTermIdPrefix("prefix" + newUUID());
+    }
+
+    public static OntologyTermIdPrefix getOntologyTermIdPrefix(String prefix) {
+        return new OntologyTermIdPrefixImpl(prefix);
+    }
+
+    public static OntologyTermIdSuffix getOntologyTermIdSuffix() {
+        return getOntologyTermIdSuffix("" + random.nextInt(Integer.SIZE - 1));
+    }
+
+    public static OntologyTermIdSuffix getOntologyTermIdSuffix(String suffix) {
+        return new OntologyTermIdSuffixImpl(suffix);
+    }
+
+    public static OntologyTermId getOntologyTermId() {
+        return getOntologyTermId(Utils.getOntologyTermIdPrefix(), Utils.getOntologyTermIdSuffix());
+    }
+
+    public static OntologyTermId getOntologyTermId(OntologyTermIdPrefix prefix, OntologyTermIdSuffix suffix) {
+        return new OntologyTermIdImpl(prefix, suffix);
+    }
+
+
     /*   basic elements   */
 
     public static Name getName() {
-        return getName("name " + random.nextInt());
+        return getName("name " + newUUID());
     }
 
     public static Name getName(String name) {
@@ -62,7 +91,7 @@ public class Utils {
     }
 
     public static Description getDescription() {
-        return getDescription("description " + random.nextInt());
+        return getDescription("description " + newUUID());
     }
 
     public static Description getDescription(String description) {
@@ -70,7 +99,7 @@ public class Utils {
     }
 
     public static Address getAddress() {
-        return getAddress("address " + random.nextInt());
+        return getAddress("address " + newUUID());
     }
 
     public static Address getAddress(String address) {
@@ -90,7 +119,7 @@ public class Utils {
     }
 
     public static IRI getIRI() {
-        return getIRI("http://protege.stanford.edu/test/" + newUUID());
+        return getIRI(iriBase + newUUID());
     }
 
     public static IRI getIRI(String iri) {
@@ -99,18 +128,6 @@ public class Utils {
 
     public static String newUUID() {
         return UUID.randomUUID().toString();
-    }
-
-    public static OntologyTermIdPrefix getOntologyTermIdPrefix(String prefix) {
-        return new OntologyTermIdPrefixImpl(prefix);
-    }
-
-    public static OntologyTermIdSuffix getOntologyTermIdSuffix(String suffix) {
-        return new OntologyTermIdSuffixImpl(suffix);
-    }
-
-    public static StringProperty getStringProperty(String propString) {
-        return () -> propString;
     }
 
 
@@ -124,19 +141,27 @@ public class Utils {
         return new SaltedPasswordImpl(password, salt);
     }
 
+    public static PlainPassword getPlainPassword() {
+        return getPlainPassword("testPassword" + newUUID());
+    }
+
+    public static PlainPassword getPlainPassword(String password) {
+        return new PlainPasswordImpl(password);
+    }
+
     public static Salt getSalt() {
-        return getSalt("salt" + random.nextInt());
+        return getSalt("salt" + newUUID());
     }
 
     public static Salt getSalt(String s) {
         return new SaltImpl(s.getBytes());
     }
 
-    public static AuthenticationDetails getUserAuthenticationDetails() {
-        return getUserAuthenticationDetails(getUserId(), getSaltedPassword());
+    public static AuthenticationDetails getAuthenticationDetails() {
+        return getAuthenticationDetails(getUserId(), getSaltedPassword());
     }
 
-    public static AuthenticationDetails getUserAuthenticationDetails(UserId userId, SaltedPassword password) {
+    public static AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPassword password) {
         return new AuthenticationDetailsImpl(userId, password);
     }
 
@@ -184,7 +209,15 @@ public class Utils {
     }
 
 
-    /*   policy and server configuration   */
+    /*   policy and server/client configurations   */
+
+    public static Server getServer(ServerConfiguration configuration, OntologyTermIdGenerator idGenerator) {
+        return new ServerImpl(configuration, idGenerator);
+    }
+
+    public static Client getClient(ClientConfiguration configuration) {
+        return new ClientImpl(configuration);
+    }
 
     public static ServerConfiguration getServerConfiguration() {
         return getServerConfiguration(Utils.getHost(), Utils.getPolicy(), Utils.getStringPropertyMap(), Utils.getOntologyTermIdStatus());
@@ -197,6 +230,14 @@ public class Utils {
                 .setPropertyMap(properties)
                 .setOntologyTermIdStatus(idStatus)
                 .createServerConfiguration();
+    }
+
+    public static ClientConfiguration getClientConfiguration() {
+        return getClientConfiguration(Utils.getPolicy(), random.nextInt(), Utils.getJComponentSet(), Utils.getStringPropertyMap());
+    }
+
+    public static ClientConfiguration getClientConfiguration(Policy policy, int syncDelay, Set<? extends JComponent> disabledUIComponents, Map<String,String> propertyMap) {
+        return new ClientConfigurationImpl(policy, syncDelay, disabledUIComponents, propertyMap);
     }
 
     public static Host getHost() {
@@ -216,7 +257,7 @@ public class Utils {
     }
 
     public static Policy getPolicy(Map<UserId,Set<RoleId>> userRoleMap, UserManager userManager, RoleManager roleManager, OperationManager operationManager, ProjectManager projectManager) {
-        return new AccessControlPolicy.Builder()
+        return new PolicyImpl.Builder()
                 .setUserRoleMap(userRoleMap)
                 .setUserManager(userManager)
                 .setRoleManager(roleManager)
@@ -231,17 +272,6 @@ public class Utils {
             map.put(Utils.getUserId(), Utils.getRoleIdSet());
         }
         return map;
-    }
-
-    public static OntologyTermIdStatus getOntologyTermIdStatus() {
-        return new OntologyTermIdStatusImpl.Builder()
-                .setClassIdPrefix(Utils.getOntologyTermIdPrefix("class"))
-                .setObjectPropertyIdPrefix(Utils.getOntologyTermIdPrefix("objprop"))
-                .setDataPropertyIdPrefix(Utils.getOntologyTermIdPrefix("dataprop"))
-                .setClassIdSuffix(Utils.getOntologyTermIdSuffix("13"))
-                .setObjectPropertyIdSuffix(Utils.getOntologyTermIdSuffix("4"))
-                .setDataPropertyIdSuffix(Utils.getOntologyTermIdSuffix("2"))
-                .createOntologyTermIdStatus();
     }
 
     public static Map<String,String> getStringPropertyMap() {
@@ -274,8 +304,14 @@ public class Utils {
         return getRole(getRoleId(), getName(), getDescription(), getProjectIdSet(DEFAULT_SET_SIZE), getOperationIdSet(DEFAULT_SET_SIZE));
     }
 
-    public static Role getRole(int setsSize) {
-        return getRole(getRoleId(), getName(), getDescription(), getProjectIdSet(setsSize), getOperationIdSet(setsSize));
+    public static Role getRole(ProjectId project, OperationId operation) {
+        Set<ProjectId> projects = new HashSet<>();
+        projects.add(project);
+
+        Set<OperationId> operations = new HashSet<>();
+        operations.add(operation);
+
+        return getRole(getRoleId(), getName(), getDescription(), projects, operations);
     }
 
     public static Role getRole(RoleId id, Name name, Description description, Set<ProjectId> projects, Set<OperationId> operations) {
@@ -289,6 +325,7 @@ public class Utils {
     public static User getUser(UserId userId, Name name, Address emailAddress) {
         return new UserImpl(userId, name, emailAddress);
     }
+
 
     /*   sets of access control policy objects   */
 
@@ -364,6 +401,7 @@ public class Utils {
         return projectSet;
     }
 
+
     /*   sets of identifiers   */
 
     public static Set<UserId> getUserIdSet() {
@@ -432,6 +470,12 @@ public class Utils {
         return projectIdSet;
     }
 
+    public static Set<RoleId> getRoleIdSet(RoleId... roleIds) {
+        Set<RoleId> roles = new HashSet<>();
+        Collections.addAll(roles, roleIds);
+        return roles;
+    }
+
     public static Set<RoleId> getRoleIdSet() {
         return getRoleIdSet(DEFAULT_SET_SIZE);
     }
@@ -444,6 +488,7 @@ public class Utils {
         return roleSet;
     }
 
+
     /*   sets of other things   */
 
     public static Set<OperationPrerequisite> getOperationPrerequisiteSet(OperationPrerequisite... operationPrerequisites) {
@@ -452,15 +497,111 @@ public class Utils {
         return operationPrerequisiteSet;
     }
 
-    public static Set<AuthenticationDetails> getUserAuthenticationDetailsSet() {
-        return getUserAuthenticationDetailsSet(DEFAULT_SET_SIZE);
+    public static Set<AuthenticationDetails> getAuthenticationDetailsSet() {
+        return getAuthenticationDetailsSet(DEFAULT_SET_SIZE);
     }
 
-    public static Set<AuthenticationDetails> getUserAuthenticationDetailsSet(int size) {
+    public static Set<AuthenticationDetails> getAuthenticationDetailsSet(int size) {
         Set<AuthenticationDetails> set = new HashSet<>();
         for(int i = 0; i < size; i++) {
-            set.add(getUserAuthenticationDetails());
+            set.add(getAuthenticationDetails());
         }
         return set;
+    }
+
+    public static Set<AuthenticationDetails> getAuthenticationDetailsSet(AuthenticationDetails... details) {
+        Set<AuthenticationDetails> set = new HashSet<>();
+        Collections.addAll(set, details);
+        return set;
+    }
+
+    public static Set<JComponent> getJComponentSet() {
+        Set<JComponent> set = new HashSet<>();
+        for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
+            set.add(new JButton("button" + newUUID()));
+        }
+        return set;
+    }
+
+
+    /*   ontology term identifier generation   */
+
+    public static OntologyTermPrefixedUUIDGenerator getOntologyTermPrefixedUUIDGenerator(
+            OntologyTermIdPrefix classIdPrefix, OntologyTermIdPrefix objectPropertyIdPrefix, OntologyTermIdPrefix dataPropertyIdPrefix,
+            OntologyTermIdPrefix annotationPropertyIdPrefix, OntologyTermIdPrefix individualIdPrefix)
+    {
+        return new OntologyTermPrefixedUUIDGenerator.Builder()
+                .setClassIdPrefix(classIdPrefix)
+                .setObjectPropertyIdPrefix(objectPropertyIdPrefix)
+                .setDataPropertyIdPrefix(dataPropertyIdPrefix)
+                .setAnnotationPropertyIdPrefix(annotationPropertyIdPrefix)
+                .setIndividualIdPrefix(individualIdPrefix)
+                .createPrefixedUUIDGenerator();
+    }
+
+    public static OntologyTermPrefixedSequentialIdGenerator getOntologyTermPrefixedSequentialIdGenerator(
+            OntologyTermIdPrefix classIdPrefix, OntologyTermIdPrefix objectPropertyIdPrefix, OntologyTermIdPrefix dataPropertyIdPrefix,
+            OntologyTermIdPrefix annotationPropertyIdPrefix, OntologyTermIdPrefix individualIdPrefix,
+            OntologyTermIdSuffix classIdSuffix, OntologyTermIdSuffix objPropSuffix, OntologyTermIdSuffix dataPropSuffix,
+            OntologyTermIdSuffix annPropSuffix, OntologyTermIdSuffix indSuffix)
+    {
+        return new OntologyTermPrefixedSequentialIdGenerator.Builder()
+                .setClassIdPrefix(classIdPrefix)
+                .setObjectPropertyIdPrefix(objectPropertyIdPrefix)
+                .setDataPropertyIdPrefix(dataPropertyIdPrefix)
+                .setAnnotationPropertyIdPrefix(annotationPropertyIdPrefix)
+                .setIndividualIdPrefix(individualIdPrefix)
+                .setClassIdSuffix(classIdSuffix)
+                .setObjectPropertyIdSuffix(objPropSuffix)
+                .setDataPropertyIdSuffix(dataPropSuffix)
+                .setAnnotationPropertyIdSuffix(annPropSuffix)
+                .setIndividualIdSuffix(indSuffix)
+                .createSequentialPrefixedIdGenerator();
+    }
+
+    public static OntologyTermUUIDGenerator getOntologyTermUUIDGenerator() {
+        return OntologyTermUUIDGenerator.getInstance();
+    }
+
+    public static OntologyTermIdStatus getOntologyTermIdStatus() {
+        return getOntologyTermIdStatus(
+                Utils.getOntologyTermIdSuffix("" + random.nextInt()),
+                Utils.getOntologyTermIdSuffix("" + random.nextInt()),
+                Utils.getOntologyTermIdSuffix("" + random.nextInt()),
+                Utils.getOntologyTermIdSuffix("" + random.nextInt()),
+                Utils.getOntologyTermIdSuffix("" + random.nextInt()));
+    }
+
+    public static OntologyTermIdStatus getOntologyTermIdStatus(OntologyTermIdSuffix classId, OntologyTermIdSuffix objPropId,
+                                                               OntologyTermIdSuffix dataPropId, OntologyTermIdSuffix annPropId, OntologyTermIdSuffix indId)
+    {
+        return new OntologyTermIdStatusImpl.Builder()
+                .setClassIdPrefix(Utils.getOntologyTermIdPrefix("class"))
+                .setObjectPropertyIdPrefix(Utils.getOntologyTermIdPrefix("objprop"))
+                .setDataPropertyIdPrefix(Utils.getOntologyTermIdPrefix("dataprop"))
+                .setClassIdSuffix(classId)
+                .setObjectPropertyIdSuffix(objPropId)
+                .setDataPropertyIdSuffix(dataPropId)
+                .setAnnotationPropertyIdSuffix(annPropId)
+                .setIndividualIdSuffix(indId)
+                .createOntologyTermIdStatus();
+    }
+
+    public static OntologyTermIdStatus getOntologyTermIdStatus(OntologyTermIdPrefix classPrefix, OntologyTermIdPrefix objPropPrefix, OntologyTermIdPrefix dataPropPrefix,
+                                                               OntologyTermIdPrefix annPropPrefix, OntologyTermIdPrefix indPrefix, OntologyTermIdSuffix classId, OntologyTermIdSuffix objPropId,
+                                                               OntologyTermIdSuffix dataPropId, OntologyTermIdSuffix annPropId, OntologyTermIdSuffix indId)
+    {
+        return new OntologyTermIdStatusImpl.Builder()
+                .setClassIdPrefix(classPrefix)
+                .setObjectPropertyIdPrefix(objPropPrefix)
+                .setDataPropertyIdPrefix(dataPropPrefix)
+                .setAnnotationPropertyIdPrefix(annPropPrefix)
+                .setIndividualIdPrefix(indPrefix)
+                .setClassIdSuffix(classId)
+                .setObjectPropertyIdSuffix(objPropId)
+                .setDataPropertyIdSuffix(dataPropId)
+                .setAnnotationPropertyIdSuffix(annPropId)
+                .setIndividualIdSuffix(indId)
+                .createOntologyTermIdStatus();
     }
 }

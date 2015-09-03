@@ -20,7 +20,7 @@ public class TestPolicy {
     public TestPolicy() {}
 
     public Policy getPolicy() {
-        Policy policy = new AccessControlPolicy.Builder().createAccessControlPolicy();
+        Policy policy = new PolicyImpl.Builder().createAccessControlPolicy();
 
         // access control object managers
         UserManager userManager = policy.getUserManager();

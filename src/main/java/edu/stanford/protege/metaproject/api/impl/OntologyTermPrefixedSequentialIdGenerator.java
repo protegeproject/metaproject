@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.MalformedInputException;
 
@@ -294,6 +296,49 @@ public class OntologyTermPrefixedSequentialIdGenerator implements OntologyTermPr
                         .setIndividualIdSuffix(individualIdSuffix)
                         .createOntologyTermIdStatus()
         );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OntologyTermPrefixedSequentialIdGenerator that = (OntologyTermPrefixedSequentialIdGenerator) o;
+        return Objects.equal(classIdSuffix, that.classIdSuffix) &&
+                Objects.equal(objectPropertyIdSuffix, that.objectPropertyIdSuffix) &&
+                Objects.equal(dataPropertyIdSuffix, that.dataPropertyIdSuffix) &&
+                Objects.equal(annotationPropertyIdSuffix, that.annotationPropertyIdSuffix) &&
+                Objects.equal(individualIdSuffix, that.individualIdSuffix) &&
+                Objects.equal(classIdPrefix, that.classIdPrefix) &&
+                Objects.equal(objectPropertyIdPrefix, that.objectPropertyIdPrefix) &&
+                Objects.equal(dataPropertyIdPrefix, that.dataPropertyIdPrefix) &&
+                Objects.equal(annotationPropertyIdPrefix, that.annotationPropertyIdPrefix) &&
+                Objects.equal(individualIdPrefix, that.individualIdPrefix) &&
+                Objects.equal(identifiers, that.identifiers) &&
+                Objects.equal(prefixes, that.prefixes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(classIdSuffix, objectPropertyIdSuffix, dataPropertyIdSuffix, annotationPropertyIdSuffix, individualIdSuffix,
+                classIdPrefix, objectPropertyIdPrefix, dataPropertyIdPrefix, annotationPropertyIdPrefix, individualIdPrefix, identifiers, prefixes);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("classIdSuffix", classIdSuffix)
+                .add("objectPropertyIdSuffix", objectPropertyIdSuffix)
+                .add("dataPropertyIdSuffix", dataPropertyIdSuffix)
+                .add("annotationPropertyIdSuffix", annotationPropertyIdSuffix)
+                .add("individualIdSuffix", individualIdSuffix)
+                .add("classIdPrefix", classIdPrefix)
+                .add("objectPropertyIdPrefix", objectPropertyIdPrefix)
+                .add("dataPropertyIdPrefix", dataPropertyIdPrefix)
+                .add("annotationPropertyIdPrefix", annotationPropertyIdPrefix)
+                .add("individualIdPrefix", individualIdPrefix)
+                .add("identifiers", identifiers)
+                .add("prefixes", prefixes)
+                .toString();
     }
 
     /**

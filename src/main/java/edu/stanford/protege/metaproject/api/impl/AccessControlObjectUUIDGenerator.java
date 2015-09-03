@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api.impl;
 
+import com.google.common.base.MoreObjects;
 import edu.stanford.protege.metaproject.api.*;
 
 import java.util.UUID;
@@ -75,5 +76,11 @@ public final class AccessControlObjectUUIDGenerator implements AccessControlObje
      */
     private String newUUID() {
         return UUID.randomUUID().toString();
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .toString();
     }
 }

@@ -25,9 +25,9 @@ public class AuthenticationDetailsTest {
 
     @Before
     public void setUp() {
-        userDetails = Utils.getUserAuthenticationDetails(userId, password);
-        otherUserDetails = Utils.getUserAuthenticationDetails(userId, password);
-        diffUserDetails = Utils.getUserAuthenticationDetails(diffUserId, password);
+        userDetails = Utils.getAuthenticationDetails(userId, password);
+        otherUserDetails = Utils.getAuthenticationDetails(userId, password);
+        diffUserDetails = Utils.getAuthenticationDetails(diffUserId, password);
     }
 
     @Test

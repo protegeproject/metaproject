@@ -14,6 +14,13 @@ import java.util.Set;
 public interface ClientConfiguration extends Configuration {
 
     /**
+     * Get the access control policy in effect for the client
+     *
+     * @return Access control policy
+     */
+    Policy getPolicy();
+
+    /**
      * Get the time (in seconds) between client-server synchronisation attempts
      *
      * @return Synchronisation delay in seconds

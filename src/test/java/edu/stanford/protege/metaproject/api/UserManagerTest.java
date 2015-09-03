@@ -19,14 +19,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class UserManagerTest {
+    private static final String toStringHead = "UserManager";
     private static final User user1 = Utils.getUser(), user2 = Utils.getUser(), user3 = Utils.getUser();
     private static final Set<User> userSet = Utils.getUserSet(user1, user2, user3);
 
-    private UserManager userManager;
+    private UserManager userManager, otherUserManager, diffUserManager;
 
     @Before
     public void setUp() {
         userManager = Utils.getUserManager(userSet);
+        otherUserManager = Utils.getUserManager(userSet);
+        diffUserManager = Utils.getUserManager();
     }
 
     @Test
@@ -95,5 +98,30 @@ public class UserManagerTest {
         Set<User> userSet = new HashSet<>();
         userSet.add(user1);
         assertThat(userManager.getUsers(user1.getAddress()), is(userSet));
+    }
+
+    @Test
+    public void testEqualToSelf() {
+        assertThat(userManager, is(userManager));
+    }
+
+    @Test
+    public void testEquals() {
+        assertThat(userManager, is(otherUserManager));
+    }
+
+    @Test
+    public void testNotEquals() {
+        assertThat(userManager, is(not(diffUserManager)));
+    }
+
+    @Test
+    public void testHashcode() {
+        assertThat(userManager.hashCode(), is(otherUserManager.hashCode()));
+    }
+
+    @Test
+    public void testToString() {
+        assertThat(userManager.toString(), startsWith(toStringHead));
     }
 }

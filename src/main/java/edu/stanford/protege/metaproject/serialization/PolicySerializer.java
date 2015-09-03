@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.impl.AccessControlPolicy;
+import edu.stanford.protege.metaproject.api.impl.PolicyImpl;
 import edu.stanford.protege.metaproject.api.impl.RoleIdImpl;
 import edu.stanford.protege.metaproject.api.impl.UserIdImpl;
 
@@ -36,7 +36,7 @@ public class PolicySerializer implements JsonSerializer<Policy>, JsonDeserialize
         ProjectManager projectManager = context.deserialize(obj.getAsJsonArray("projects"), ProjectManager.class);
         OperationManager operationManager = context.deserialize(obj.getAsJsonArray("operations"), OperationManager.class);
         RoleManager roleManager = context.deserialize(obj.getAsJsonArray("roles"), RoleManager.class);
-        return new AccessControlPolicy.Builder()
+        return new PolicyImpl.Builder()
                 .setUserRoleMap(map)
                 .setUserManager(userManager)
                 .setProjectManager(projectManager)

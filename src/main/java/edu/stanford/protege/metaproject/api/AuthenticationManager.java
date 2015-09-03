@@ -23,7 +23,7 @@ public interface AuthenticationManager extends Manager {
      * @throws UserAlreadyRegisteredException   User is already registered
      * @throws UserAddressAlreadyInUseException Email address is already in use by another user
      */
-    void registerUser(UserId userId, PlainPassword password) throws UserAlreadyRegisteredException, UserAddressAlreadyInUseException;
+    void add(UserId userId, PlainPassword password) throws UserAlreadyRegisteredException, UserAddressAlreadyInUseException;
 
     /**
      * Remove user from the authentication registry (the user will not be able to login)
@@ -31,7 +31,7 @@ public interface AuthenticationManager extends Manager {
      * @param userId  User identifier
      * @throws UserNotRegisteredException   User is not registered
      */
-    void removeUser(UserId userId) throws UserNotRegisteredException;
+    void remove(UserId userId) throws UserNotRegisteredException;
 
     /**
      * Get all entries of user authentication details
@@ -58,14 +58,6 @@ public interface AuthenticationManager extends Manager {
      * @throws UserNotRegisteredException   User is not registered
      */
     boolean hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException;
-
-    /**
-     * Check whether a given user is already registered
-     *
-     * @param userId  User identifier
-     * @return true if user is registered, false otherwise
-     */
-    boolean isRegistered(UserId userId);
 
     /**
      * Change password of a specified user to the given password

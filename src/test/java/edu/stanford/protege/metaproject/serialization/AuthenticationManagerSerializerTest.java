@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class AuthenticationManagerSerializerTest {
-    private static final Set<AuthenticationDetails> authenticationSet = Utils.getUserAuthenticationDetailsSet(), diffAuthenticationSet = Utils.getUserAuthenticationDetailsSet(1);
+    private static final Set<AuthenticationDetails> authenticationSet = Utils.getAuthenticationDetailsSet(), diffAuthenticationSet = Utils.getAuthenticationDetailsSet(1);
 
     private String jsonAuthenticationManager, jsonOtherAuthenticationManager, jsonDiffAuthenticationManager;
     private AuthenticationManager authenticationManager, otherAuthenticationManager, diffAuthenticationManager;
