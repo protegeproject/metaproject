@@ -9,7 +9,7 @@ import java.util.Optional;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface OntologyTermIdGenerator extends IdGenerator {
+public interface OntologyTermIdGenerator {
 
     /**
      * Get the next class identifier

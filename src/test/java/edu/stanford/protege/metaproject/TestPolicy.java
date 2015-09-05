@@ -19,14 +19,15 @@ public class TestPolicy {
 
     public TestPolicy() {}
 
-    public Policy getPolicy() {
-        Policy policy = new PolicyImpl.Builder().createAccessControlPolicy();
+    public Metaproject getPolicy() {
+        Metaproject metaproject = new MetaprojectImpl.Builder().createAccessControlPolicy();
 
         // access control object managers
-        UserManager userManager = policy.getUserManager();
-        ProjectManager projectManager = policy.getProjectManager();
-        OperationManager operationManager = policy.getOperationManager();
-        RoleManager roleManager = policy.getRoleManager();
+        UserManager userManager = metaproject.getUserManager();
+        ProjectManager projectManager = metaproject.getProjectManager();
+        OperationManager operationManager = metaproject.getOperationManager();
+        RoleManager roleManager = metaproject.getRoleManager();
+        PolicyManager policyManager = metaproject.getPolicyManager();
 
         // create new user
         User user1 = userManager.create("user1", "user 1", "test_user_1@test.com");
@@ -84,14 +85,11 @@ public class TestPolicy {
         roleManager.add(role1, role2);
 
         // add pairs to policy
-        try {
-            policy.addPolicy(user1.getId(), role1.getId());
-            policy.addPolicy(user1.getId(), role2.getId());
-            policy.addPolicy(user2.getId(), role2.getId());
-        } catch (PolicyException e) {
-            e.printStackTrace();
-        }
-        return policy;
+        policyManager.add(user1.getId(), role1.getId());
+        policyManager.add(user1.getId(), role2.getId());
+        policyManager.add(user2.getId(), role2.getId());
+
+        return metaproject;
     }
 }
 

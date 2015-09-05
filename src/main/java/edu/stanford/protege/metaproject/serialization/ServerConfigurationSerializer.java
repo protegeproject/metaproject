@@ -17,12 +17,14 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
     public ServerConfiguration deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = element.getAsJsonObject();
         Host host = context.deserialize(obj.get("host"), Host.class);
-        Policy policy = context.deserialize(obj.getAsJsonObject("policy"), Policy.class);
+        Metaproject metaproject = context.deserialize(obj.getAsJsonObject("metaproject"), Metaproject.class);
+        AuthenticationManager authenticationManager = context.deserialize(obj.get("authentication"), AuthenticationManager.class);
         Map<String,String> map = context.deserialize(obj.get("properties"), Map.class);
         OntologyTermIdStatus status = context.deserialize(obj.get("termIdentifiers"), OntologyTermIdStatus.class);
         return new ServerConfigurationImpl.Builder()
                 .setHost(host)
-                .setPolicy(policy)
+                .setMetaproject(metaproject)
+                .setAuthenticationManager(authenticationManager)
                 .setPropertyMap(map)
                 .setOntologyTermIdStatus(status)
                 .createServerConfiguration();
@@ -31,10 +33,11 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
     @Override
     public JsonElement serialize(ServerConfiguration config, Type type, JsonSerializationContext context) {
         JsonObject obj = new JsonObject();
-        obj.add("host", context.serialize(config.getHost(), HostSerializer.class));
-        obj.add("policy", context.serialize(config.getPolicy(), PolicySerializer.class));
-        obj.add("properties", context.serialize(config.getProperties(), StringPropertySerializer.class));
-        obj.add("termIdentifiers", context.serialize(config.getOntologyTermIdStatus(), OntologyTermIdStatusSerializer.class));
+        obj.add("host", context.serialize(config.getHost(), Host.class));
+        obj.add("metaproject", context.serialize(config.getMetaproject(), Metaproject.class));
+        obj.add("authentication", context.serialize(config.getAuthenticationManager(), AuthenticationManager.class));
+        obj.add("properties", context.serialize(config.getProperties().get(), Map.class));
+        obj.add("termIdentifiers", context.serialize(config.getOntologyTermIdStatus().get(), OntologyTermIdStatus.class));
         return obj;
     }
 }

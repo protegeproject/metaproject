@@ -187,6 +187,14 @@ public class Utils {
 
     /*   access control policy managers   */
 
+    public static PolicyManager getPolicyManager() {
+        return new PolicyManagerImpl();
+    }
+
+    public static PolicyManager getPolicyManager(Map<UserId, Set<RoleId>> map) {
+        return new PolicyManagerImpl(map);
+    }
+
     public static UserManager getUserManager() {
         return new UserManagerImpl();
     }
@@ -220,7 +228,7 @@ public class Utils {
     }
 
     public static AuthenticationManager getAuthenticationManager() {
-        return new AuthenticationManagerImpl();
+        return new AuthenticationManagerImpl(Utils.getAuthenticationDetailsSet());
     }
 
     public static AuthenticationManager getAuthenticationManager(Set<AuthenticationDetails> authDetails) {
@@ -239,24 +247,25 @@ public class Utils {
     }
 
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Utils.getHost(), Utils.getPolicy(), Utils.getStringPropertyMap(), Utils.getOntologyTermIdStatus());
+        return getServerConfiguration(Utils.getHost(), Utils.getMetaproject(), Utils.getAuthenticationManager(), Utils.getStringPropertyMap(), Utils.getOntologyTermIdStatus());
     }
 
-    public static ServerConfiguration getServerConfiguration(Host host, Policy policy, Map<String, String> properties, OntologyTermIdStatus idStatus) {
+    public static ServerConfiguration getServerConfiguration(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Map<String, String> properties, OntologyTermIdStatus idStatus) {
         return new ServerConfigurationImpl.Builder()
                 .setHost(host)
-                .setPolicy(policy)
+                .setMetaproject(metaproject)
+                .setAuthenticationManager(authenticationManager)
                 .setPropertyMap(properties)
                 .setOntologyTermIdStatus(idStatus)
                 .createServerConfiguration();
     }
 
     public static ClientConfiguration getClientConfiguration() {
-        return getClientConfiguration(Utils.getPolicy(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getStringPropertyMap());
+        return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getStringPropertyMap());
     }
 
-    public static ClientConfiguration getClientConfiguration(Policy policy, int syncDelay, Set<GUIRestriction> disabledUIComponents, Map<String,String> propertyMap) {
-        return new ClientConfigurationImpl(policy, syncDelay, disabledUIComponents, propertyMap);
+    public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Set<GUIRestriction> disabledUIComponents, Map<String,String> propertyMap) {
+        return new ClientConfigurationImpl(metaproject, syncDelay, disabledUIComponents, propertyMap);
     }
 
     public static Host getHost() {
@@ -267,17 +276,18 @@ public class Utils {
         return new HostImpl(address, port);
     }
 
-    public static Policy getPolicySample() {
+    public static Metaproject getPolicySample() {
         return new TestPolicy().getPolicy();
     }
 
-    public static Policy getPolicy() {
-        return getPolicy(Utils.getUserRoleMap(), Utils.getUserManager(), Utils.getRoleManager(), Utils.getOperationManager(), Utils.getProjectManager());
+    public static Metaproject getMetaproject() {
+        return getMetaproject(Utils.getPolicyManager(Utils.getUserRoleMap()), Utils.getUserManager(Utils.getUserSet()),
+                Utils.getRoleManager(Utils.getRoleSet()), Utils.getOperationManager(Utils.getOperationSet()), Utils.getProjectManager(Utils.getProjectSet()));
     }
 
-    public static Policy getPolicy(Map<UserId,Set<RoleId>> userRoleMap, UserManager userManager, RoleManager roleManager, OperationManager operationManager, ProjectManager projectManager) {
-        return new PolicyImpl.Builder()
-                .setUserRoleMap(userRoleMap)
+    public static Metaproject getMetaproject(PolicyManager policyManager, UserManager userManager, RoleManager roleManager, OperationManager operationManager, ProjectManager projectManager) {
+        return new MetaprojectImpl.Builder()
+                .setPolicyManager(policyManager)
                 .setUserManager(userManager)
                 .setRoleManager(roleManager)
                 .setOperationManager(operationManager)

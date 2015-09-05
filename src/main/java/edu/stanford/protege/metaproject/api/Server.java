@@ -23,11 +23,11 @@ public interface Server {
     OntologyTermIdGenerator getOntologyTermIdGenerator();
 
     /**
-     * Update the server configuration with a new access control policy
+     * Update the server configuration with a new metaproject definition
      *
-     * @param policy    New access control policy
+     * @param metaproject    New metaproject
      */
-    void updateConfiguration(Policy policy);
+    void updateConfiguration(Metaproject metaproject);
 
     /**
      * Update the server configuration with a new ontology term identifier status, i.e.,

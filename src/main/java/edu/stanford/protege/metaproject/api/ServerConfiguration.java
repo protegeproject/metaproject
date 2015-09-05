@@ -1,10 +1,11 @@
 package edu.stanford.protege.metaproject.api;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
- * A representation of a server configuration, composed of host information, the access control policy, the status of
- * ontology term identifiers (i.e., last generated identifiers), and additional configuration properties
+ * A representation of a server configuration, composed of host information, the metaproject definition, the status of
+ * ontology term identifiers (i.e., last generated identifiers), and optional additional configuration properties
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -19,24 +20,31 @@ public interface ServerConfiguration extends Configuration {
     Host getHost();
 
     /**
-     * Get the access control policy for the server
+     * Get the metaproject definition in effect on the server
      *
-     * @return Access control policy
+     * @return Metaproject
      */
-    Policy getPolicy();
+    Metaproject getMetaproject();
+
+    /**
+     * Get the user authentication manager
+     *
+     * @return Authentication manager
+     */
+    AuthenticationManager getAuthenticationManager();
 
     /**
      * Get the ontology term identifier status, which contains the last generated identifiers and/or their prefixes
      *
      * @return Ontology term identifier status instance
      */
-    OntologyTermIdStatus getOntologyTermIdStatus();
+    Optional<OntologyTermIdStatus> getOntologyTermIdStatus();
 
     /**
      * Get the key-value server configuration properties
      *
      * @return Server configuration properties (aside from policy, host, and term identifiers status)
      */
-    Map<String,String> getProperties();
+    Optional<Map<String,String>> getProperties();
 
 }

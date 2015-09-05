@@ -36,11 +36,12 @@ public class ServerImpl implements Server {
     }
 
     @Override
-    public void updateConfiguration(Policy policy) {
+    public void updateConfiguration(Metaproject metaproject) {
         this.configuration = new ServerConfigurationImpl.Builder()
                 .setHost(configuration.getHost())
-                .setPolicy(checkNotNull(policy))
-                .setOntologyTermIdStatus(configuration.getOntologyTermIdStatus())
+                .setMetaproject(checkNotNull(metaproject))
+                .setAuthenticationManager(configuration.getAuthenticationManager())
+                .setOntologyTermIdStatus(configuration.getOntologyTermIdStatus().get())
                 .createServerConfiguration();
     }
 
@@ -48,7 +49,8 @@ public class ServerImpl implements Server {
     public void updateConfiguration(OntologyTermIdStatus ontologyTermIdStatus) {
         this.configuration = new ServerConfigurationImpl.Builder()
                 .setHost(configuration.getHost())
-                .setPolicy(configuration.getPolicy())
+                .setMetaproject(configuration.getMetaproject())
+                .setAuthenticationManager(configuration.getAuthenticationManager())
                 .setOntologyTermIdStatus(checkNotNull(ontologyTermIdStatus))
                 .createServerConfiguration();
     }

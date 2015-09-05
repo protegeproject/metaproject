@@ -32,10 +32,11 @@ public final class SimpleGsonSerializer {
                 // configurations
                 .registerTypeAdapter(ServerConfiguration.class, new ServerConfigurationSerializer())
                 .registerTypeAdapter(ClientConfiguration.class, new ClientConfigurationSerializer())
-                .registerTypeAdapter(Policy.class, new PolicySerializer())
+                .registerTypeAdapter(Metaproject.class, new MetaprojectSerializer())
                 .registerTypeAdapter(Host.class, new HostSerializer())
 
                 // access control object managers
+                .registerTypeAdapter(PolicyManager.class, new PolicyManagerSerializer())
                 .registerTypeAdapter(OperationManager.class, new OperationManagerSerializer())
                 .registerTypeAdapter(ProjectManager.class, new ProjectManagerSerializer())
                 .registerTypeAdapter(RoleManager.class, new RoleManagerSerializer())

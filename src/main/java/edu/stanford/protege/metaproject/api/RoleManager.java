@@ -48,7 +48,7 @@ public interface RoleManager extends Manager {
     Set<Role> getRoles();
 
     /**
-     * A convenience method to fetch a role or die trying (with an exception)
+     * A convenience method to fetch a role or throw an exception
      *
      * @param roleId    Role identifier
      * @return Role instance

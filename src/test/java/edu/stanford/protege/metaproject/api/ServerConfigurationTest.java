@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,16 +17,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ServerConfigurationTest {
     private static final String toStringHead = "ServerConfiguration";
     private static final Host host = Utils.getHost();
-    private static final Policy policy = Utils.getPolicySample();
+    private static final Metaproject metaproject = Utils.getMetaproject();
     private static final OntologyTermIdStatus idStatus = Utils.getOntologyTermIdStatus();
+    private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
     private static Map<String,String> propertiesMap = Utils.getStringPropertyMap();
 
     private ServerConfiguration serverConfiguration, otherServerConfiguration, diffServerConfiguration;
 
     @Before
     public void setUp() {
-        serverConfiguration = Utils.getServerConfiguration(host, policy, propertiesMap, idStatus);
-        otherServerConfiguration = Utils.getServerConfiguration(host, policy, propertiesMap, idStatus);
+        serverConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertiesMap, idStatus);
+        otherServerConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertiesMap, idStatus);
         diffServerConfiguration = Utils.getServerConfiguration();
     }
 
@@ -41,17 +43,17 @@ public class ServerConfigurationTest {
 
     @Test
     public void testGetPolicy() {
-        assertThat(serverConfiguration.getPolicy(), is(policy));
+        assertThat(serverConfiguration.getMetaproject(), is(metaproject));
     }
 
     @Test
     public void testGetOntologyTermIdStatus() {
-        assertThat(serverConfiguration.getOntologyTermIdStatus(), is(idStatus));
+        assertThat(serverConfiguration.getOntologyTermIdStatus(), is(Optional.of(idStatus)));
     }
 
     @Test
     public void testGetProperties() {
-        assertThat(serverConfiguration.getProperties(), is(propertiesMap));
+        assertThat(serverConfiguration.getProperties(), is(Optional.of(propertiesMap)));
     }
 
     @Test

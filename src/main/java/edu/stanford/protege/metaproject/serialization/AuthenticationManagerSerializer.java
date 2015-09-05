@@ -2,8 +2,8 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import edu.stanford.protege.metaproject.api.AuthenticationManager;
 import edu.stanford.protege.metaproject.api.AuthenticationDetails;
+import edu.stanford.protege.metaproject.api.AuthenticationManager;
 import edu.stanford.protege.metaproject.api.impl.AuthenticationManagerImpl;
 
 import java.lang.reflect.Type;

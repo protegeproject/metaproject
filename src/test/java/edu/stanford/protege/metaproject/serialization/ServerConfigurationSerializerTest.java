@@ -2,14 +2,12 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.Host;
-import edu.stanford.protege.metaproject.api.OntologyTermIdStatus;
-import edu.stanford.protege.metaproject.api.Policy;
-import edu.stanford.protege.metaproject.api.ServerConfiguration;
+import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -20,7 +18,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ServerConfigurationSerializerTest {
     private static final Host host = Utils.getHost(), diffHost = Utils.getHost();
-    private static final Policy policy = Utils.getPolicy();
+    private static final Metaproject metaproject = Utils.getMetaproject();
+    private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
     private static final Map<String,String> propertyMap = Utils.getStringPropertyMap();
     private static final OntologyTermIdStatus idStatus = Utils.getOntologyTermIdStatus();
 
@@ -32,13 +31,13 @@ public class ServerConfigurationSerializerTest {
     public void setUp() {
         gson = new SimpleGsonSerializer().getDefaultSerializer();
 
-        config = Utils.getServerConfiguration(host, policy, propertyMap, idStatus);
-        otherServerConfiguration = Utils.getServerConfiguration(host, policy, propertyMap, idStatus);
-        diffServerConfiguration = Utils.getServerConfiguration(diffHost, policy, propertyMap, idStatus);
+        config = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertyMap, idStatus);
+        otherServerConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertyMap, idStatus);
+        diffServerConfiguration = Utils.getServerConfiguration(diffHost, metaproject, authenticationManager, propertyMap, idStatus);
 
-        jsonServerConfiguration = gson.toJson(config);
-        jsonOtherServerConfiguration = gson.toJson(otherServerConfiguration);
-        jsonDiffServerConfiguration = gson.toJson(diffServerConfiguration);
+        jsonServerConfiguration = gson.toJson(config, ServerConfiguration.class);
+        jsonOtherServerConfiguration = gson.toJson(otherServerConfiguration, ServerConfiguration.class);
+        jsonDiffServerConfiguration = gson.toJson(diffServerConfiguration, ServerConfiguration.class);
     }
 
     @Test
@@ -85,16 +84,16 @@ public class ServerConfigurationSerializerTest {
 
     @Test
     public void testGetPolicy() {
-        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getPolicy(), is(policy));
+        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getMetaproject(), is(metaproject));
     }
 
     @Test
     public void testGetProperties() {
-        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getProperties(), is(propertyMap));
+        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getProperties(), is(Optional.of(propertyMap)));
     }
 
     @Test
     public void testGetOntologyTermIdStatus() {
-        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getOntologyTermIdStatus(), is(idStatus));
+        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getOntologyTermIdStatus(), is(Optional.of(idStatus)));
     }
 }

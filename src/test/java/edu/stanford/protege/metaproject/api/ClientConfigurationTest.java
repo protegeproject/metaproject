@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ClientConfigurationTest {
     private static final String toStringHead = "ClientConfiguration";
-    private static final Policy policy = Utils.getPolicySample();
+    private static final Metaproject metaproject = Utils.getMetaproject();
     private static final Set<GUIRestriction> disabledElements = Utils.getGUIRestrictionSet();
     private static final int syncDelay = 30;
     private static final Map<String,String> propertiesMap = Utils.getStringPropertyMap();
@@ -25,8 +25,8 @@ public class ClientConfigurationTest {
 
     @Before
     public void setUp() {
-        clientConfiguration = Utils.getClientConfiguration(policy, syncDelay, disabledElements, propertiesMap);
-        otherClientConfiguration = Utils.getClientConfiguration(policy, syncDelay, disabledElements, propertiesMap);;
+        clientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, disabledElements, propertiesMap);
+        otherClientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, disabledElements, propertiesMap);;
         diffClientConfiguration = Utils.getClientConfiguration();
     }
 
@@ -37,7 +37,7 @@ public class ClientConfigurationTest {
 
     @Test
     public void testGetPolicy() {
-        assertThat(clientConfiguration.getPolicy(), is(policy));
+        assertThat(clientConfiguration.getMetaproject(), is(metaproject));
     }
 
     @Test

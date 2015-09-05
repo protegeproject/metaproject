@@ -4,6 +4,8 @@ import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -42,16 +44,16 @@ public class ServerTest {
 
     @Test
     public void testUpdateConfigurationPolicy() {
-        Policy newPolicy = Utils.getPolicy();
-        server.updateConfiguration(newPolicy);
-        assertThat(server.getConfiguration().getPolicy(), is(newPolicy));
+        Metaproject newMetaproject = Utils.getMetaproject();
+        server.updateConfiguration(newMetaproject);
+        assertThat(server.getConfiguration().getMetaproject(), is(newMetaproject));
     }
 
     @Test
     public void testUpdateConfigurationTermStatus() {
         OntologyTermIdStatus newStatus = Utils.getOntologyTermIdStatus();
         server.updateConfiguration(newStatus);
-        assertThat(server.getConfiguration().getOntologyTermIdStatus(), is(newStatus));
+        assertThat(server.getConfiguration().getOntologyTermIdStatus(), is(Optional.of(newStatus)));
     }
 
     @Test

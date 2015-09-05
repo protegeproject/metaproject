@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class GUIRestrictionImpl implements GUIRestriction, Serializable {
-    private static final long serialVersionUID = -2926753038288857138L;
+    private static final long serialVersionUID = -732167589486693327L;
     private final String component;
     private final Visibility visibility;
 
