@@ -1,8 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.api.exception.MetaprojectException;
 import edu.stanford.protege.metaproject.api.exception.PolicyException;
-import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -79,35 +79,35 @@ public class MetaprojectTest {
     }
 
     @Test
-    public void testIsOperationAllowed() throws PolicyException {
+    public void testIsOperationAllowed() throws MetaprojectException {
         assertThat(metaproject.getPolicyManager().getRoles(user1.getId()).contains(role1.getId()), is(true));
         assertThat(metaproject.isOperationAllowed(operation1.getId(), project1.getId(), user1.getId()), is(true));
         assertThat(metaproject.isOperationAllowed(operation3.getId(), project1.getId(), user1.getId()), is(false));
     }
 
     @Test
-    public void testGetOperationsInProject() throws UserNotInPolicyException {
+    public void testGetOperationsInProject() throws MetaprojectException {
         Set<Operation> results = new HashSet<>(); results.add(operation1);
         assertThat(metaproject.getOperationsInProject(user1.getId(), project1.getId()), is(results));
         assertThat(metaproject.getOperationsInProject(user3.getId(), project3.getId()).isEmpty(), is(true));
     }
 
     @Test
-    public void testGetProjects() throws UserNotInPolicyException {
+    public void testGetProjects() throws MetaprojectException {
         Set<Project> projects = new HashSet<>();
         projects.add(project1); projects.add(project2);
         assertThat(metaproject.getProjects(user1.getId()), is(projects));
     }
 
     @Test
-    public void testGetRoles() throws UserNotInPolicyException {
+    public void testGetRoles() throws MetaprojectException {
         Set<Role> roles = new HashSet<>();
         roles.add(role1); roles.add(role2);
         assertThat(metaproject.getRoles(user1.getId()), is(roles));
     }
 
     @Test
-    public void testGetUsers() {
+    public void testGetUsers() throws MetaprojectException {
         Set<User> users = new HashSet<>();
         users.add(user1); users.add(user3);
         assertThat(metaproject.getUsers(project1.getId()), is(users));

@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.PolicyException;
-import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
+import edu.stanford.protege.metaproject.api.exception.MetaprojectException;
 
 import java.util.Set;
 
@@ -21,9 +20,9 @@ public interface Metaproject {
      * @param projectId   Project identifier
      * @param userId  User identifier
      * @return true if user is allowed to carry out the specified operation, false otherwise
-     * @throws PolicyException    Policy exception
+     * @throws MetaprojectException Metaproject exception
      */
-    boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) throws PolicyException;
+    boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) throws MetaprojectException;
 
     /**
      * Get the set of operations allowed for a given user in a specific project
@@ -31,35 +30,36 @@ public interface Metaproject {
      * @param userId    User identifier
      * @param projectId Project identifier
      * @return Set of operations
-     * @throws UserNotInPolicyException User not in policy
+     * @throws MetaprojectException Metaproject exception
      */
-    Set<Operation> getOperationsInProject(UserId userId, ProjectId projectId) throws UserNotInPolicyException;
+    Set<Operation> getOperationsInProject(UserId userId, ProjectId projectId) throws MetaprojectException;
 
     /**
      * Get the set of projects that a user plays some role in
      *
      * @param userId    User identifier
      * @return Set of projects
-     * @throws UserNotInPolicyException User not in policy
+     * @throws MetaprojectException Metaproject exception
      */
-    Set<Project> getProjects(UserId userId) throws UserNotInPolicyException;
+    Set<Project> getProjects(UserId userId) throws MetaprojectException;
 
     /**
      * Get the set of roles that a given user has assigned
      *
      * @param userId    User identifier
      * @return Set of roles
-     * @throws UserNotInPolicyException User not in policy
+     * @throws MetaprojectException Metaproject exception
      */
-    Set<Role> getRoles(UserId userId) throws UserNotInPolicyException;
+    Set<Role> getRoles(UserId userId) throws MetaprojectException;
 
     /**
      * Get the set of users that have some role in the specified project
      *
      * @param projectId    Project identifier
      * @return Set of users
+     * @throws MetaprojectException Metaproject exception
      */
-    Set<User> getUsers(ProjectId projectId);
+    Set<User> getUsers(ProjectId projectId) throws MetaprojectException;
 
     /**
      * Get the policy manager, which is responsible for handling the assignments

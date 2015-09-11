@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.*;
+import edu.stanford.protege.metaproject.api.exception.MetaprojectException;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * a defined set of operations the user is allowed to perform within a set of projects
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ *         Stanford Center for Biomedical Informatics Research
  */
 public class MetaprojectImpl implements Metaproject, Serializable {
     private static final long serialVersionUID = 231539690194538811L;
@@ -29,7 +29,7 @@ public class MetaprojectImpl implements Metaproject, Serializable {
     /**
      * Package-private constructor; use builder
      *
-     * @param policyManager   Policy manager
+     * @param policyManager Policy manager
      */
     MetaprojectImpl(PolicyManager policyManager, RoleManager roleManager, OperationManager operationManager, UserManager userManager, ProjectManager projectManager) {
         this.policyManager = checkNotNull(policyManager);
@@ -40,84 +40,63 @@ public class MetaprojectImpl implements Metaproject, Serializable {
     }
 
     @Override
-    public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) throws PolicyException {
+    public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) throws MetaprojectException {
         checkExistence(operationManager, operationId);
         checkExistence(projectManager, projectId);
 
         Set<RoleId> roles = policyManager.getRoles(userId);
-        for(RoleId role : roles) {
-            try {
-                Role r = roleManager.getRole(role);
-                if(r.getProjects().contains(projectId) && r.getOperations().contains(operationId)) {
-                    return true;
-                }
-            } catch (RoleNotFoundException e) {
-                e.printStackTrace();
+        for (RoleId role : roles) {
+            Role r = roleManager.getRole(role);
+            if (r.getProjects().contains(projectId) && r.getOperations().contains(operationId)) {
+                return true;
             }
         }
         return false;
     }
 
     @Override
-    public Set<Operation> getOperationsInProject(UserId userId, ProjectId projectId) throws UserNotInPolicyException {
+    public Set<Operation> getOperationsInProject(UserId userId, ProjectId projectId) throws MetaprojectException {
         Set<Operation> operations = new HashSet<>();
         Set<Role> roles = getRoles(userId);
-        roles.stream().filter(r -> r.getProjects().contains(projectId)).forEach(r -> {
-            for (OperationId opId : r.getOperations()) {
-                try {
-                    operations.add(operationManager.getOperation(opId));
-                } catch (OperationNotFoundException e) {
-                    e.printStackTrace();
+        for(Role role : roles) {
+            if(role.getProjects().contains(projectId)) {
+                for(OperationId operationId : role.getOperations()) {
+                    operations.add(operationManager.getOperation(operationId));
                 }
             }
-        });
+        }
         return operations;
     }
 
     @Override
-    public Set<Project> getProjects(UserId userId) throws UserNotInPolicyException {
+    public Set<Project> getProjects(UserId userId) throws MetaprojectException {
         Set<Project> projects = new HashSet<>();
         Set<Role> roles = getRoles(userId);
-        for(Role role : roles) {
-            for(ProjectId p : role.getProjects()) {
-                try {
-                    projects.add(projectManager.getProject(p));
-                } catch (ProjectNotFoundException e) {
-                    e.printStackTrace();
-                }
+        for (Role role : roles) {
+            for (ProjectId p : role.getProjects()) {
+                projects.add(projectManager.getProject(p));
             }
         }
         return projects;
     }
 
     @Override
-    public Set<Role> getRoles(UserId userId) throws UserNotInPolicyException {
+    public Set<Role> getRoles(UserId userId) throws MetaprojectException {
         Set<Role> roles = new HashSet<>();
-        for(RoleId roleId : policyManager.getRoles(userId)) {
-            System.out.println("role id being fetched: " + roleId.get());
-            try {
-                roles.add(roleManager.getRole(roleId));
-            } catch (RoleNotFoundException e) {
-                e.printStackTrace();
-            }
+        for (RoleId roleId : policyManager.getRoles(userId)) {
+            roles.add(roleManager.getRole(roleId));
         }
         return roles;
     }
 
     @Override
-    public Set<User> getUsers(ProjectId projectId) {
+    public Set<User> getUsers(ProjectId projectId) throws MetaprojectException {
         Set<User> users = new HashSet<>();
         for (UserId userId : policyManager.getUserRoleMappings().keySet()) {
-            try {
-                getRoles(userId).stream().filter(role -> role.getProjects().contains(projectId)).forEach(role -> {
-                    try {
-                        users.add(userManager.getUser(userId));
-                    } catch (UserNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                });
-            } catch (UserNotInPolicyException e) {
-                e.printStackTrace();
+            for(Role role : getRoles(userId)) {
+                if(role.getProjects().contains(projectId)) {
+                    users.add(userManager.getUser(userId));
+                }
             }
         }
         return users;
@@ -151,15 +130,15 @@ public class MetaprojectImpl implements Metaproject, Serializable {
     /**
      * Verify whether access control object(s) are registered with the given manager
      *
-     * @param manager   Manager for given access control object
-     * @param objects   One or more access control object identifiers
-     * @throws PolicyException  Policy exception
+     * @param manager Manager for given access control object
+     * @param objects One or more access control object identifiers
+     * @throws MetaprojectException Metaproject exception
      */
-    private void checkExistence(Manager manager, AccessControlObjectId... objects) throws PolicyException {
-        for(AccessControlObjectId obj : objects) {
+    private void checkExistence(Manager manager, AccessControlObjectId... objects) throws MetaprojectException {
+        for (AccessControlObjectId obj : objects) {
             checkNotNull(obj);
-            if(!manager.contains(obj)) {
-                throw new PolicyException("The specified access control object does not correspond to a known one. " +
+            if (!manager.contains(obj)) {
+                throw new MetaprojectException("The specified access control object does not correspond to a known one. " +
                         "It may not have been registered with the appropriate manager");
             }
         }
