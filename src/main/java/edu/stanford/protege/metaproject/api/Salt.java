@@ -9,7 +9,7 @@ package edu.stanford.protege.metaproject.api;
 public interface Salt {
 
     /**
-     * Get salt data
+     * Get salt as a byte array
      *
      * @return Byte array
      */

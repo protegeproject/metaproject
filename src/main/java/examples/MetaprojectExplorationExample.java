@@ -33,7 +33,7 @@ public class MetaprojectExplorationExample {
         Utils.println("\n" + Utils.sep + "\nUsers\n" + Utils.sep);
 
         // get the known users (i.e., those registered with the user manager)
-        Set<User> userSet = metaproject.getUserManager().getUsers();
+        Set<User> userSet = userManager.getUsers();
 
         // sort users into a list
         List<User> userList = new ArrayList<>(userSet);
@@ -48,9 +48,10 @@ public class MetaprojectExplorationExample {
         /*   Projects   */
 
         Utils.println("\n" + Utils.sep + "\nProjects\n" + Utils.sep);
+        ProjectManager projectManager = metaproject.getProjectManager();
 
         // get the known projects (i.e., those registered with the project manager)
-        Set<Project> projects = metaproject.getProjectManager().getProjects();
+        Set<Project> projects = projectManager.getProjects();
 
         // print out the name, description, address, owner and administrators of each project
         for (Project project : projects) {
@@ -59,7 +60,7 @@ public class MetaprojectExplorationExample {
                     "\n\towner: " + project.getOwner().get() +
                     "\n\tadmins: ");
             for (UserId userId : project.getAdministrators()) {
-                Utils.print("'" + metaproject.getUserManager().getUser(userId).getName().get() + "' ");
+                Utils.print("'" + userManager.getUser(userId).getName().get() + "' ");
             }
             Utils.println();
         }

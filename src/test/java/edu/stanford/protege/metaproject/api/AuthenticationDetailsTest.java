@@ -46,11 +46,6 @@ public class AuthenticationDetailsTest {
     }
 
     @Test
-    public void testGetPasswordText() {
-        assertThat(userDetails.getPassword().getPassword(), is(passwordStr));
-    }
-
-    @Test
     public void testEqualToSelf() {
         assertThat(userDetails, is(userDetails));
     }

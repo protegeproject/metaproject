@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.Salt;
 import edu.stanford.protege.metaproject.api.SaltGenerator;
+import org.apache.commons.codec.binary.Hex;
 
 import java.security.SecureRandom;
 
@@ -44,7 +45,7 @@ public final class SaltGeneratorImpl implements SaltGenerator {
     public Salt generate() {
         byte[] bytes = new byte[nrBytes];
         new SecureRandom().nextBytes(bytes);
-        return new SaltImpl(bytes);
+        return new SaltImpl(Hex.encodeHexString(bytes));
     }
 
     /**

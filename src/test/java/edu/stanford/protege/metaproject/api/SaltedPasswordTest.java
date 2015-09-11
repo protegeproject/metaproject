@@ -16,7 +16,7 @@ public class SaltedPasswordTest {
             passwordStr = "testPassword1",
             diffPasswordStr = "testPassword2",
             toStringHead = "SaltedPassword";
-
+    PasswordMaster passwordMaster = Utils.getPasswordMaster();
     private static final Salt salt = Utils.getSalt(), diffSalt = Utils.getSalt();
 
     private SaltedPassword password, otherPassword, diffPassword;
@@ -35,7 +35,7 @@ public class SaltedPasswordTest {
 
     @Test
     public void testGetPassword() {
-        assertThat(password.getPassword(), is(passwordStr));
+        assertThat(passwordMaster.validatePassword(Utils.getPlainPassword(passwordStr), password), is(true));
     }
 
     @Test

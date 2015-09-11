@@ -137,7 +137,7 @@ public class Utils {
     }
 
     public static SaltedPassword getSaltedPassword(String password, Salt salt) {
-        return new SaltedPasswordImpl(password, salt);
+        return Utils.getPasswordMaster().createHash(new PlainPasswordImpl(password), salt);
     }
 
     public static PlainPassword getPlainPassword() {
@@ -149,11 +149,11 @@ public class Utils {
     }
 
     public static Salt getSalt() {
-        return getSalt("salt" + newUUID());
+        return getSaltGenerator().generate();
     }
 
     public static Salt getSalt(String s) {
-        return new SaltImpl(s.getBytes());
+        return new SaltImpl(s);
     }
 
     public static AuthenticationDetails getAuthenticationDetails() {

@@ -1,6 +1,7 @@
 package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.Salt;
 
 import java.io.Serializable;
@@ -15,49 +16,46 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class SaltImpl implements Salt, Serializable {
-    private static final long serialVersionUID = -8434267075481461361L;
-    private final byte[] bytes;
+    private static final long serialVersionUID = -8903105086233695979L;
+    private final String salt;
 
     /**
      * Constructor
-     * @param bytes Byte array
+     *
+     * @param salt Salt string
      */
-    public SaltImpl(byte[] bytes) {
-        this.bytes = checkNotNull(bytes);
+    public SaltImpl(String salt) {
+        this.salt = checkNotNull(salt);
     }
 
-    /**
-     * Get salt data
-     *
-     * @return Byte array
-     */
     @Override
     public byte[] getBytes() {
-        return Arrays.copyOf(bytes, bytes.length);
+        byte[] saltBytes = salt.getBytes();
+        return Arrays.copyOf(saltBytes, saltBytes.length);
     }
 
     @Override
     public String getString() {
-        return new String(bytes);
+        return salt;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SaltImpl salt = (SaltImpl) o;
-        return Arrays.equals(bytes, salt.bytes);
+        SaltImpl salt1 = (SaltImpl) o;
+        return Objects.equal(salt, salt1.salt);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(bytes);
+        return Objects.hashCode(salt);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("bytes", bytes)
+                .add("salt", salt)
                 .toString();
     }
 }

@@ -38,7 +38,7 @@ public class PBKDF2PasswordMasterTest {
 
     @Test
     public void testCreateHash() {
-        String testPassword = "testPassword";
+        PlainPassword testPassword = Utils.getPlainPassword("testPassword");
         SaltedPassword saltedPassword = passwordMaster.createHash(testPassword);
         assertThat(saltedPassword, is(not(equalTo(null))));
         assertThat(saltedPassword.getPassword(), is(not(equalTo(null))));
@@ -56,7 +56,7 @@ public class PBKDF2PasswordMasterTest {
 
     @Test
     public void testValidatePassword() {
-        String testPassword = "testPassword", diffPassword = "diffTestPassword";
+        PlainPassword testPassword = Utils.getPlainPassword("testPassword"), diffPassword = Utils.getPlainPassword("diffTestPassword");
         SaltedPassword saltedPassword = passwordMaster.createHash(testPassword);
         SaltedPassword diffSaltedPassword = passwordMaster.createHash(diffPassword);
         assertThat(passwordMaster.validatePassword(testPassword, saltedPassword), is(true));

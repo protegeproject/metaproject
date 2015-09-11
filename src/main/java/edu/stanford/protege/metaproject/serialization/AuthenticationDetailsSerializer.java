@@ -22,7 +22,7 @@ public class AuthenticationDetailsSerializer implements JsonSerializer<Authentic
     public AuthenticationDetails deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = element.getAsJsonObject();
         UserId userId = new UserIdImpl(obj.getAsJsonPrimitive("userId").getAsString());
-        Salt salt = new SaltImpl(obj.getAsJsonPrimitive("salt").getAsString().getBytes());
+        Salt salt = new SaltImpl(obj.getAsJsonPrimitive("salt").getAsString());
         SaltedPassword password = new SaltedPasswordImpl(obj.getAsJsonPrimitive("password").getAsString(), salt);
         return new AuthenticationDetailsImpl(userId, password);
     }

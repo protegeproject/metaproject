@@ -132,11 +132,11 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      * Get an instance of UserAuthenticationDetails using the specified user identifier, password and salt
      *
      * @param userId    User identifier
-     * @param password  Password
+     * @param password  Plain password
      * @return Instance of UserAuthenticationDetails
      */
-    private AuthenticationDetails getHashedAuthenticationDetails(UserId userId, Password password) {
-        SaltedPassword passwordHash = passwordMaster.createHash(password.getPassword());
+    private AuthenticationDetails getHashedAuthenticationDetails(UserId userId, PlainPassword password) {
+        SaltedPassword passwordHash = passwordMaster.createHash(password);
         return new AuthenticationDetailsImpl(userId, passwordHash);
     }
 

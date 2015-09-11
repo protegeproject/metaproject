@@ -47,28 +47,30 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
      */
     @Override
     public SaltedPassword createHash(PlainPassword password) {
-        return createHash(password.getPassword());
+        Salt salt = saltGenerator.generate();
+        return createHash(password, salt);
     }
 
     /**
-     * Create a salted PBKDF2 hash of the password
+     * Create a salted PBKDF2 hash of the password with the given salt
      *
-     * @param password  String password to hash
+     * @param password  Plain password
+     * @param salt  Salt
      * @return Salted PBKDF2 hash of the password
      */
     @Override
-    public SaltedPassword createHash(String password) {
-        return createHash(password.toCharArray());
+    public SaltedPassword createHash(PlainPassword password, Salt salt) {
+        return createHash(password.getPassword().toCharArray(), salt);
     }
 
     /**
      * Create a salted PBKDF2 hash of the password
      *
      * @param password  Character array password to hash
+     * @param salt  Salt
      * @return Salted PBKDF2 hash of the password
      */
-    private SaltedPassword createHash(char[] password) {
-        Salt salt = saltGenerator.generate();
+    private SaltedPassword createHash(char[] password, Salt salt) {
         byte[] saltBytes = salt.getBytes();
         byte[] hash = new byte[0];
         try {
@@ -77,18 +79,6 @@ public class PBKDF2PasswordMaster implements PasswordMaster {
             e.printStackTrace();
         }
         return new SaltedPasswordImpl(Hex.encodeHexString(hash), salt);
-    }
-
-    /**
-     * Validates a password against the expected hash
-     *
-     * @param password  The password to check
-     * @param correctHash   The hash of the valid password
-     * @return true if the password is correct, false otherwise
-     */
-    @Override
-    public boolean validatePassword(String password, SaltedPassword correctHash) {
-        return validatePassword(new PlainPasswordImpl(password), correctHash);
     }
 
     /**
