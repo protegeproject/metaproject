@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface PolicyManager {
+public interface PolicyManager extends Manager {
 
     /**
      * Add a user to the access control policy with the specified role(s)

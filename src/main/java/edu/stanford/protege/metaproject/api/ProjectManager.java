@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.ProjectNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 
 import java.util.Set;
 
@@ -52,9 +52,9 @@ public interface ProjectManager extends Manager {
      *
      * @param projectId    Project identifier
      * @return Project instance
-     * @throws ProjectNotFoundException    Project not found
+     * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    Project getProject(ProjectId projectId) throws ProjectNotFoundException;
+    Project getProject(ProjectId projectId) throws UnknownProjectIdException;
 
     /**
      * Get the set of projects with the specified project name
@@ -69,53 +69,53 @@ public interface ProjectManager extends Manager {
      *
      * @param projectId   Project identifier
      * @param projectName   New project name
-     * @throws ProjectNotFoundException Project not found
+     * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void changeName(ProjectId projectId, Name projectName) throws ProjectNotFoundException;
+    void changeName(ProjectId projectId, Name projectName) throws UnknownProjectIdException;
 
     /**
      * Change the description of the given project
      *
      * @param projectId   Project identifier
      * @param projectDescription    New project description
-     * @throws ProjectNotFoundException Project not found
+     * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void changeDescription(ProjectId projectId, Description projectDescription) throws ProjectNotFoundException;
+    void changeDescription(ProjectId projectId, Description projectDescription) throws UnknownProjectIdException;
 
     /**
      * Change the owner of the specified project
      *
      * @param projectId   Project identifier
      * @param userId    New owner user identifier
-     * @throws ProjectNotFoundException Project not found
+     * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void changeOwner(ProjectId projectId, UserId userId) throws ProjectNotFoundException;
+    void changeOwner(ProjectId projectId, UserId userId) throws UnknownProjectIdException;
 
     /**
      * Change the location of the specified project
      *
      * @param projectId Project identifier
      * @param projectAddress   Project address
-     * @throws ProjectNotFoundException Project not found
+     * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void changeAddress(ProjectId projectId, Address projectAddress) throws ProjectNotFoundException;
+    void changeAddress(ProjectId projectId, Address projectAddress) throws UnknownProjectIdException;
 
     /**
      * Add one or more administrator users to the specified project
      *
      * @param projectId   Project identifier
      * @param userId    User identifier(s) of administrator(s) to be added
-     * @throws ProjectNotFoundException Project not found
+     * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void addAdministrator(ProjectId projectId, UserId... userId) throws ProjectNotFoundException;
+    void addAdministrator(ProjectId projectId, UserId... userId) throws UnknownProjectIdException;
 
     /**
      * Remove one or more administrator users from the specified project
      *
      * @param projectId   Project identifier
      * @param userId    User identifier(s) of administrator(s) to be removed
-     * @throws ProjectNotFoundException Project not found
+     * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void removeAdministrator(ProjectId projectId, UserId... userId) throws ProjectNotFoundException;
+    void removeAdministrator(ProjectId projectId, UserId... userId) throws UnknownProjectIdException;
 
 }

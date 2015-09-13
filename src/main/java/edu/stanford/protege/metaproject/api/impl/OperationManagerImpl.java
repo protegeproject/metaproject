@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.OperationNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -54,7 +54,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
 
     @Override
     public Operation create(String name, String description, OperationType operationType, Optional<Set<OperationPrerequisite>> prerequisites) {
-        AccessControlObjectUUIDGenerator gen = AccessControlObjectUUIDGenerator.getInstance();
+        AccessControlObjectUuidGenerator gen = new AccessControlObjectUuidGenerator();
         return new OperationImpl(gen.getOperationId(), new NameImpl(name), new DescriptionImpl(description), operationType, prerequisites);
     }
 
@@ -64,18 +64,18 @@ public class OperationManagerImpl implements OperationManager, Serializable {
     }
 
     @Override
-    public Operation getOperation(OperationId operationId) throws OperationNotFoundException {
+    public Operation getOperation(OperationId operationId) throws UnknownOperationIdException {
         Optional<Operation> operation = getOperationOptional(operationId);
         if(operation.isPresent()) {
             return operation.get();
         }
         else {
-            throw new OperationNotFoundException("The specified operation identifier does not correspond to an existing operation");
+            throw new UnknownOperationIdException("The specified operation identifier does not correspond to an existing operation");
         }
     }
 
     @Override
-    public void changeName(OperationId operationId, Name operationName) throws OperationNotFoundException {
+    public void changeName(OperationId operationId, Name operationName) throws UnknownOperationIdException {
         checkNotNull(operationName);
         Operation operation = getOperation(operationId);
         remove(operation);
@@ -84,7 +84,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
     }
 
     @Override
-    public void changeDescription(OperationId operationId, Description operationDescription) throws OperationNotFoundException {
+    public void changeDescription(OperationId operationId, Description operationDescription) throws UnknownOperationIdException {
         checkNotNull(operationDescription);
         Operation operation = getOperation(operationId);
         remove(operation);
@@ -93,7 +93,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
     }
 
     @Override
-    public void addPrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws OperationNotFoundException {
+    public void addPrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws UnknownOperationIdException {
         checkNotNull(prerequisites);
         if(prerequisites.length > 0) {
             Operation operation = getOperation(operationId);
@@ -106,7 +106,7 @@ public class OperationManagerImpl implements OperationManager, Serializable {
     }
 
     @Override
-    public void removePrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws OperationNotFoundException {
+    public void removePrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws UnknownOperationIdException {
         checkNotNull(prerequisites);
         if(prerequisites.length > 0) {
             Operation operation = getOperation(operationId);

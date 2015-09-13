@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class MetaprojectExplorationExample {
 
-    public static void main(String[] args) throws FileNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException, UserNotFoundException, OperationNotFoundException, RoleNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, EmailAddressAlreadyInUseException, UserIdAlreadyInUseException, UnknownUserIdException, UnknownOperationIdException, UnknownRoleIdException {
         Metaproject metaproject = Utils.getMetaproject();
         Gson gson = Utils.getGson();
 
@@ -41,7 +41,7 @@ public class MetaprojectExplorationExample {
 
         // print out the name, (login) identifier, and email address of each user
         for (User user : userList) {
-            Utils.println(user.getName().get() + " (id: '" + user.getId().get() + "') - " + user.getAddress().get());
+            Utils.println(user.getName().get() + " (id: '" + user.getId().get() + "') - " + user.getEmailAddress().get());
         }
 
 

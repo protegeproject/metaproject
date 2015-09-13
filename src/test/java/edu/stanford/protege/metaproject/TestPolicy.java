@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.PolicyException;
-import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
+import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.impl.*;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -35,7 +34,7 @@ public class TestPolicy {
         User user3 = userManager.create("user3", "user 2", "test_user_3@test.com");
         try {
             userManager.add(user1, user2, user3);
-        } catch (UserAddressAlreadyInUseException | UserAlreadyRegisteredException e) {
+        } catch (EmailAddressAlreadyInUseException | UserIdAlreadyInUseException e) {
             e.printStackTrace();
         }
 

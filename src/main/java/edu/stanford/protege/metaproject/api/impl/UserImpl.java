@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
-import edu.stanford.protege.metaproject.api.Address;
+import edu.stanford.protege.metaproject.api.EmailAddress;
 import edu.stanford.protege.metaproject.api.Name;
 import edu.stanford.protege.metaproject.api.User;
 import edu.stanford.protege.metaproject.api.UserId;
@@ -20,10 +20,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class UserImpl implements User, Serializable, Comparable<User> {
-    private static final long serialVersionUID = -913296756918747114L;
+    private static final long serialVersionUID = 5414356492150592403L;
     private final UserId id;
     private final Name name;
-    private final Address emailAddress;
+    private final EmailAddress emailAddress;
 
     /**
      * Constructor
@@ -32,7 +32,7 @@ public final class UserImpl implements User, Serializable, Comparable<User> {
      * @param name  User display name
      * @param emailAddress  Email address
      */
-    public UserImpl(UserId id, Name name, Address emailAddress) {
+    public UserImpl(UserId id, Name name, EmailAddress emailAddress) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.emailAddress = checkNotNull(emailAddress);
@@ -64,7 +64,7 @@ public final class UserImpl implements User, Serializable, Comparable<User> {
      * @return Email address instance
      */
     @Override
-    public Address getAddress() {
+    public EmailAddress getEmailAddress() {
         return emailAddress;
     }
 

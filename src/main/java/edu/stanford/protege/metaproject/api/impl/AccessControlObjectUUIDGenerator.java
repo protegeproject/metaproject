@@ -9,25 +9,12 @@ import java.util.UUID;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class AccessControlObjectUUIDGenerator implements AccessControlObjectIdGenerator {
-    private static AccessControlObjectUUIDGenerator instance = null;
+public final class AccessControlObjectUuidGenerator implements AccessControlObjectIdGenerator {
 
     /**
      * Constructor
      */
-    private AccessControlObjectUUIDGenerator() {}
-
-    /**
-     * Get singleton instance of this UUID generator
-     *
-     * @return Instance of the UUID generator
-     */
-    public static AccessControlObjectUUIDGenerator getInstance() {
-        if(instance == null) {
-            instance = new AccessControlObjectUUIDGenerator();
-        }
-        return instance;
-    }
+    public AccessControlObjectUuidGenerator() { }
 
     /**
      * Get a new random UUID user identifier
@@ -36,7 +23,7 @@ public final class AccessControlObjectUUIDGenerator implements AccessControlObje
      */
     @Override
     public UserId getUserId() {
-        return new UserIdImpl(newUUID());
+        return new UserIdImpl(getNewUuid());
     }
 
     /**
@@ -46,7 +33,7 @@ public final class AccessControlObjectUUIDGenerator implements AccessControlObje
      */
     @Override
     public RoleId getRoleId() {
-        return new RoleIdImpl(newUUID());
+        return new RoleIdImpl(getNewUuid());
     }
 
     /**
@@ -56,7 +43,7 @@ public final class AccessControlObjectUUIDGenerator implements AccessControlObje
      */
     @Override
     public ProjectId getProjectId() {
-        return new ProjectIdImpl(newUUID());
+        return new ProjectIdImpl(getNewUuid());
     }
 
     /**
@@ -66,7 +53,7 @@ public final class AccessControlObjectUUIDGenerator implements AccessControlObje
      */
     @Override
     public OperationId getOperationId() {
-        return new OperationIdImpl(newUUID());
+        return new OperationIdImpl(getNewUuid());
     }
 
     /**
@@ -74,7 +61,7 @@ public final class AccessControlObjectUUIDGenerator implements AccessControlObje
      *
      * @return The string representing the generated UUID
      */
-    private String newUUID() {
+    private String getNewUuid() {
         return UUID.randomUUID().toString();
     }
 

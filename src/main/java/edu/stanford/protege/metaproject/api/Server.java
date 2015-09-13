@@ -16,11 +16,11 @@ public interface Server {
     ServerConfiguration getConfiguration();
 
     /**
-     * Get the ontology term identifier generator
+     * Get the ontology entity IRI generator
      *
-     * @return Ontology term identifier generator
+     * @return Entity IRI generator
      */
-    OntologyTermIdGenerator getOntologyTermIdGenerator();
+    EntityIriGenerator getEntityIriGenerator();
 
     /**
      * Update the server configuration with a new metaproject definition
@@ -33,8 +33,8 @@ public interface Server {
      * Update the server configuration with a new ontology term identifier status, i.e.,
      * the last generated identifiers for ontology terms
      *
-     * @param ontologyTermIdStatus  New ontology term identifier status
+     * @param entityIriStatus  New ontology term identifier status
      */
-    void updateConfiguration(OntologyTermIdStatus ontologyTermIdStatus);
+    void updateConfiguration(EntityIriStatus entityIriStatus);
 
 }

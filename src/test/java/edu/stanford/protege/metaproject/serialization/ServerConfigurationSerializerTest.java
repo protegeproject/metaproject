@@ -21,7 +21,7 @@ public class ServerConfigurationSerializerTest {
     private static final Metaproject metaproject = Utils.getMetaproject();
     private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
     private static final Map<String,String> propertyMap = Utils.getStringPropertyMap();
-    private static final OntologyTermIdStatus idStatus = Utils.getOntologyTermIdStatus();
+    private static final EntityIriStatus idStatus = Utils.getEntityIriStatus();
 
     private String jsonServerConfiguration, jsonOtherServerConfiguration, jsonDiffServerConfiguration;
     private ServerConfiguration config, otherServerConfiguration, diffServerConfiguration;

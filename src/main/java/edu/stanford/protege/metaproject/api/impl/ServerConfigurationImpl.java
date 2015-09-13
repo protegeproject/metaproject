@@ -16,12 +16,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = -2274852449459076105L;
+    private static final long serialVersionUID = -3935075518521349383L;
     private final Host host;
     private final Metaproject metaproject;
     private final AuthenticationManager authenticationManager;
     private final Map<String,String> properties;
-    private final OntologyTermIdStatus termIdentifiers;
+    private final EntityIriStatus termIdentifiers;
 
     /**
      * Package-private constructor; use builder
@@ -32,7 +32,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
      * @param properties   Map of simple configuration properties
      * @param termIdentifiers  Ontology term identifier status
      */
-    ServerConfigurationImpl(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Optional<Map<String,String>> properties, Optional<OntologyTermIdStatus> termIdentifiers) {
+    ServerConfigurationImpl(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Optional<Map<String,String>> properties, Optional<EntityIriStatus> termIdentifiers) {
         this.host = checkNotNull(host);
         this.metaproject = checkNotNull(metaproject);
         this.authenticationManager = checkNotNull(authenticationManager);
@@ -61,7 +61,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public Optional<OntologyTermIdStatus> getOntologyTermIdStatus() {
+    public Optional<EntityIriStatus> getOntologyTermIdStatus() {
         return Optional.ofNullable(termIdentifiers);
     }
 
@@ -101,7 +101,8 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         private Metaproject metaproject;
         private AuthenticationManager authenticationManager;
         private Map<String,String> properties = new HashMap<>();
-        private OntologyTermIdStatus ontologyTermIdStatus = new OntologyTermIdStatusImpl.Builder().createOntologyTermIdStatus();
+        private EntityIriPrefix defaultIri = new EntityIriPrefixImpl("http://www.semanticweb.org/");
+        private EntityIriStatus entityIriStatus = new EntityIriStatusImpl.Builder().setEntityIriPrefix(defaultIri).createEntityIriStatus();
 
         public Builder setHost(Host host) {
             this.host = host;
@@ -123,13 +124,13 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
             return this;
         }
 
-        public Builder setOntologyTermIdStatus(OntologyTermIdStatus ontologyTermIdStatus) {
-            this.ontologyTermIdStatus = ontologyTermIdStatus;
+        public Builder setEntityIriStatus(EntityIriStatus entityIriStatus) {
+            this.entityIriStatus = entityIriStatus;
             return this;
         }
 
         public ServerConfigurationImpl createServerConfiguration() {
-            return new ServerConfigurationImpl(host, metaproject, authenticationManager, Optional.ofNullable(properties), Optional.ofNullable(ontologyTermIdStatus));
+            return new ServerConfigurationImpl(host, metaproject, authenticationManager, Optional.ofNullable(properties), Optional.ofNullable(entityIriStatus));
         }
     }
 }

@@ -1,10 +1,10 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.exception.AccessControlObjectNotFoundException;
-import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
-import edu.stanford.protege.metaproject.api.exception.UserNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,32 +43,32 @@ public class UserManagerTest {
     }
 
     @Test
-    public void testGetUserById() throws UserNotFoundException {
+    public void testGetUserById() throws UnknownUserIdException {
         assertThat(userManager.getUser(user1.getId()), is(user1));
     }
 
     @Test
-    public void testRemoveUser() throws AccessControlObjectNotFoundException {
+    public void testRemoveUser() throws UnknownAccessControlObjectIdException {
         userManager.remove(user3);
         assertThat(userManager.getUsers().contains(user3), is(false));
     }
 
     @Test
-    public void testAddUser() throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+    public void testAddUser() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException {
         User user4 = Utils.getUser();
         userManager.add(user4);
         assertThat(userManager.getUsers().contains(user4), is(true));
     }
 
     @Test
-    public void testChangeEmailAddress() throws UserNotFoundException, UserAlreadyRegisteredException, UserAddressAlreadyInUseException {
-        Address newEmailAddress = Utils.getAddress("new_test_email@test.com");
+    public void testChangeEmailAddress() throws UnknownUserIdException, UserIdAlreadyInUseException, EmailAddressAlreadyInUseException {
+        EmailAddress newEmailAddress = Utils.getEmailAddress("new_test_email@test.com");
         userManager.changeEmailAddress(user2.getId(), newEmailAddress);
-        assertThat(userManager.getUser(user2.getId()).getAddress(), is(newEmailAddress));
+        assertThat(userManager.getUser(user2.getId()).getEmailAddress(), is(newEmailAddress));
     }
 
     @Test
-    public void testChangeName() throws UserNotFoundException, UserAlreadyRegisteredException, UserAddressAlreadyInUseException {
+    public void testChangeName() throws UnknownUserIdException, UserIdAlreadyInUseException, EmailAddressAlreadyInUseException {
         Name newName = Utils.getName("new test name");
         userManager.changeName(user2.getId(), newName);
         assertThat(userManager.getUser(user2.getId()).getName(), is(newName));
@@ -97,7 +97,7 @@ public class UserManagerTest {
     public void testGetUsersByEmail() {
         Set<User> userSet = new HashSet<>();
         userSet.add(user1);
-        assertThat(userManager.getUsers(user1.getAddress()), is(userSet));
+        assertThat(userManager.getUsers(user1.getEmailAddress()), is(userSet));
     }
 
     @Test

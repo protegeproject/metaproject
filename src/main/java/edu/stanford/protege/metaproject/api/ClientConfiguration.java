@@ -31,7 +31,7 @@ public interface ClientConfiguration extends Configuration {
      *
      * @return Set of GUI restrictions
      */
-    Set<GUIRestriction> getGUIRestrictions();
+    Set<GuiRestriction> getGuiRestrictions();
 
     /**
      * Get the map of client configuration properties

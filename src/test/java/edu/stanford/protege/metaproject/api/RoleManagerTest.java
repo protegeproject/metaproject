@@ -1,8 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.exception.AccessControlObjectNotFoundException;
-import edu.stanford.protege.metaproject.api.exception.RoleNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.UnknownRoleIdException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,19 +40,19 @@ public class RoleManagerTest {
     }
 
     @Test
-    public void testGetRoleById() throws RoleNotFoundException {
+    public void testGetRoleById() throws UnknownRoleIdException {
         assertThat(roleManager.getRole(role1.getId()), is(role1));
     }
 
     @Test
-    public void testRemoveRole() throws AccessControlObjectNotFoundException {
+    public void testRemoveRole() throws UnknownAccessControlObjectIdException {
         assertThat(roleManager.getRoles().contains(role4), is(true));
         roleManager.remove(role4);
         assertThat(roleManager.getRoles().contains(role4), is(false));
     }
 
     @Test
-    public void testAddRole() throws RoleNotFoundException {
+    public void testAddRole() throws UnknownRoleIdException {
         Role role5 = Utils.getRole();
         assertThat(roleManager.getRoles().contains(role5), is(false));
 
@@ -62,14 +62,14 @@ public class RoleManagerTest {
     }
 
     @Test
-    public void testChangeDescription() throws RoleNotFoundException {
+    public void testChangeDescription() throws UnknownRoleIdException {
         Description newDescription = Utils.getDescription("new test description");
         roleManager.changeDescription(role2.getId(), newDescription);
         assertThat(roleManager.getRole(role2.getId()).getDescription(), is(newDescription));
     }
 
     @Test
-    public void testChangeName() throws RoleNotFoundException {
+    public void testChangeName() throws UnknownRoleIdException {
         Name newName = Utils.getName("new test name");
         roleManager.changeName(role2.getId(), newName);
         assertThat(roleManager.getRole(role2.getId()).getName(), is(newName));
@@ -83,7 +83,7 @@ public class RoleManagerTest {
     }
 
     @Test
-    public void testAddOperation() throws RoleNotFoundException {
+    public void testAddOperation() throws UnknownRoleIdException {
         OperationId newOperation = Utils.getOperationId();
         assertThat(roleManager.getRole(role2.getId()).getOperations().contains(newOperation), is(false));
 
@@ -92,14 +92,14 @@ public class RoleManagerTest {
     }
 
     @Test
-    public void testRemoveOperation() throws RoleNotFoundException {
+    public void testRemoveOperation() throws UnknownRoleIdException {
         OperationId operationId = role2.getOperations().iterator().next();
         roleManager.removeOperation(role2.getId(), operationId);
         assertThat(roleManager.getRole(role2.getId()).getOperations().contains(operationId), is(false));
     }
 
     @Test
-    public void testAddProject() throws RoleNotFoundException {
+    public void testAddProject() throws UnknownRoleIdException {
         ProjectId projectId = Utils.getProjectId();
         assertThat(roleManager.getRole(role2.getId()).getProjects().contains(projectId), is(false));
 
@@ -108,7 +108,7 @@ public class RoleManagerTest {
     }
 
     @Test
-    public void testRemoveProject() throws RoleNotFoundException {
+    public void testRemoveProject() throws UnknownRoleIdException {
         ProjectId projectId = role2.getProjects().iterator().next();
         roleManager.removeProject(role2.getId(), projectId);
         assertThat(roleManager.getRole(role2.getId()).getProjects().contains(projectId), is(false));

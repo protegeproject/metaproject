@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.GUIRestriction;
+import edu.stanford.protege.metaproject.api.GuiRestriction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,12 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class GUIRestrictionSerializerTest {
+public class GuiRestrictionSerializerTest {
     private static final String componentName = "buttonX1", diffComponentName = "buttonXY3";
-    private static final GUIRestriction.Visibility visibility = GUIRestriction.Visibility.HIDDEN;
+    private static final GuiRestriction.Visibility visibility = GuiRestriction.Visibility.HIDDEN;
 
     private String jsonRestriction, jsonOtherRestriction, jsonDiffRestriction;
-    private GUIRestriction restriction, otherRestriction, diffRestriction;
+    private GuiRestriction restriction, otherRestriction, diffRestriction;
     private Gson gson;
 
     @Before
@@ -41,12 +41,12 @@ public class GUIRestrictionSerializerTest {
 
     @Test
     public void testNotNullDeserialization() {
-        assertThat(gson.fromJson(jsonRestriction, GUIRestriction.class), is(not(equalTo(null))));
+        assertThat(gson.fromJson(jsonRestriction, GuiRestriction.class), is(not(equalTo(null))));
     }
 
     @Test
     public void testRoundTrip() {
-        assertThat(restriction, is(gson.fromJson(jsonRestriction, GUIRestriction.class)));
+        assertThat(restriction, is(gson.fromJson(jsonRestriction, GuiRestriction.class)));
     }
 
     @Test
@@ -63,21 +63,21 @@ public class GUIRestrictionSerializerTest {
 
     @Test
     public void testDeserializationOfEqualObjects() {
-        assertThat(gson.fromJson(jsonRestriction, GUIRestriction.class), is(gson.fromJson(jsonOtherRestriction, GUIRestriction.class)));
+        assertThat(gson.fromJson(jsonRestriction, GuiRestriction.class), is(gson.fromJson(jsonOtherRestriction, GuiRestriction.class)));
     }
 
     @Test
     public void testDeserializationOfDifferentObjects() {
-        assertThat(gson.fromJson(jsonRestriction, GUIRestriction.class), is(not(gson.fromJson(jsonDiffRestriction, GUIRestriction.class))));
+        assertThat(gson.fromJson(jsonRestriction, GuiRestriction.class), is(not(gson.fromJson(jsonDiffRestriction, GuiRestriction.class))));
     }
 
     @Test
     public void testGetGUIComponentName() {
-        assertThat(gson.fromJson(jsonRestriction, GUIRestriction.class).getGUIComponentName(), is(componentName));
+        assertThat(gson.fromJson(jsonRestriction, GuiRestriction.class).getGuiComponentName(), is(componentName));
     }
 
     @Test
     public void testGetVisibility() {
-        assertThat(gson.fromJson(jsonRestriction, GUIRestriction.class).getVisibility(), is(visibility));
+        assertThat(gson.fromJson(jsonRestriction, GuiRestriction.class).getVisibility(), is(visibility));
     }
 }

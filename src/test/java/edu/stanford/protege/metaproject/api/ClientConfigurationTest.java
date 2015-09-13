@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ClientConfigurationTest {
     private static final String toStringHead = "ClientConfiguration";
     private static final Metaproject metaproject = Utils.getMetaproject();
-    private static final Set<GUIRestriction> disabledElements = Utils.getGUIRestrictionSet();
+    private static final Set<GuiRestriction> disabledElements = Utils.getGUIRestrictionSet();
     private static final int syncDelay = 30;
     private static final Map<String,String> propertiesMap = Utils.getStringPropertyMap();
 
@@ -47,7 +47,7 @@ public class ClientConfigurationTest {
 
     @Test
     public void testGetGUIRestrictions() {
-        assertThat(clientConfiguration.getGUIRestrictions(), is(disabledElements));
+        assertThat(clientConfiguration.getGuiRestrictions(), is(disabledElements));
     }
 
     @Test

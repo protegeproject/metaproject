@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.OperationNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
 
 import java.util.Optional;
 import java.util.Set;
@@ -52,44 +52,44 @@ public interface OperationManager extends Manager {
      *
      * @param operationId    Operation identifier
      * @return Operation instance
-     * @throws OperationNotFoundException    Operation not found
+     * @throws UnknownOperationIdException    Operation identifier is not recognized
      */
-    Operation getOperation(OperationId operationId) throws OperationNotFoundException;
+    Operation getOperation(OperationId operationId) throws UnknownOperationIdException;
 
     /**
      * Change the name of the given operation
      *
      * @param operationId Operation identifier
      * @param operationName New operation name
-     * @throws OperationNotFoundException    Operation not found
+     * @throws UnknownOperationIdException    Operation identifier is not recognized
      */
-    void changeName(OperationId operationId, Name operationName) throws OperationNotFoundException;
+    void changeName(OperationId operationId, Name operationName) throws UnknownOperationIdException;
 
     /**
      * Change the description of a given operation
      *
      * @param operationId Operation identifier
      * @param operationDescription  New operation description
-     * @throws OperationNotFoundException    Operation not found
+     * @throws UnknownOperationIdException    Operation identifier is not recognized
      */
-    void changeDescription(OperationId operationId, Description operationDescription) throws OperationNotFoundException;
+    void changeDescription(OperationId operationId, Description operationDescription) throws UnknownOperationIdException;
 
     /**
      * Add one or more operation prerequisites to the specified operation
      *
      * @param operationId   Operation identifier
      * @param prerequisites  Operation prerequisite(s)
-     * @throws OperationNotFoundException   Operation not found
+     * @throws UnknownOperationIdException  Operation identifier is not recognized
      */
-    void addPrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws OperationNotFoundException;
+    void addPrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws UnknownOperationIdException;
 
     /**
      * Remove one or more operation prerequisites from the specified operation
      *
      * @param operationId   Operation identifier
      * @param prerequisites  Operation prerequisite(s)
-     * @throws OperationNotFoundException   Operation not found
+     * @throws UnknownOperationIdException  Operation identifier is not recognized
      */
-    void removePrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws OperationNotFoundException;
+    void removePrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws UnknownOperationIdException;
 
 }

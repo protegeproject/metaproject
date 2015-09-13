@@ -1,8 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.exception.AccessControlObjectNotFoundException;
-import edu.stanford.protege.metaproject.api.exception.ProjectNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,19 +40,19 @@ public class ProjectManagerTest {
     }
 
     @Test
-    public void testGetProjectById() throws ProjectNotFoundException {
+    public void testGetProjectById() throws UnknownProjectIdException {
         assertThat(projectManager.getProject(project1.getId()), is(project1));
     }
 
     @Test
-    public void testRemoveProject() throws AccessControlObjectNotFoundException {
+    public void testRemoveProject() throws UnknownAccessControlObjectIdException {
         assertThat(projectManager.getProjects().contains(project4), is(true));
         projectManager.remove(project4);
         assertThat(projectManager.getProjects().contains(project4), is(false));
     }
 
     @Test
-    public void testAddProject() throws ProjectNotFoundException {
+    public void testAddProject() throws UnknownProjectIdException {
         Project project5 = Utils.getProject();
         assertThat(projectManager.getProjects().contains(project5), is(false));
 
@@ -62,28 +62,28 @@ public class ProjectManagerTest {
     }
 
     @Test
-    public void testChangeDescription() throws ProjectNotFoundException {
+    public void testChangeDescription() throws UnknownProjectIdException {
         Description newDescription = Utils.getDescription("new test description");
         projectManager.changeDescription(project2.getId(), newDescription);
         assertThat(projectManager.getProject(project2.getId()).getDescription(), is(newDescription));
     }
 
     @Test
-    public void testChangeName() throws ProjectNotFoundException {
+    public void testChangeName() throws UnknownProjectIdException {
         Name newName = Utils.getName("new test name");
         projectManager.changeName(project2.getId(), newName);
         assertThat(projectManager.getProject(project2.getId()).getName(), is(newName));
     }
 
     @Test
-    public void testChangeAddress() throws ProjectNotFoundException {
+    public void testChangeAddress() throws UnknownProjectIdException {
         Address newAddress = Utils.getAddress("new test address");
         projectManager.changeAddress(project2.getId(), newAddress);
         assertThat(projectManager.getProject(project2.getId()).getAddress(), is(newAddress));
     }
 
     @Test
-    public void testChangeOwner() throws ProjectNotFoundException {
+    public void testChangeOwner() throws UnknownProjectIdException {
         UserId newOwner = Utils.getUserId();
         projectManager.changeOwner(project2.getId(), newOwner);
         assertThat(projectManager.getProject(project2.getId()).getOwner(), is(newOwner));
@@ -97,7 +97,7 @@ public class ProjectManagerTest {
     }
 
     @Test
-    public void testAddAdministrator() throws ProjectNotFoundException {
+    public void testAddAdministrator() throws UnknownProjectIdException {
         UserId newAdmin = Utils.getUserId();
         assertThat(projectManager.getProject(project2.getId()).getAdministrators().contains(newAdmin), is(false));
 
@@ -106,7 +106,7 @@ public class ProjectManagerTest {
     }
 
     @Test
-    public void testRemoveAdministrator() throws ProjectNotFoundException {
+    public void testRemoveAdministrator() throws UnknownProjectIdException {
         UserId userId = project2.getAdministrators().iterator().next();
         projectManager.removeAdministrator(project2.getId(), userId);
         assertThat(projectManager.getProject(project2.getId()).getAdministrators().contains(userId), is(false));

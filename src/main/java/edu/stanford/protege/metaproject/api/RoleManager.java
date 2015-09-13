@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.RoleNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownRoleIdException;
 
 import java.util.Set;
 
@@ -52,62 +52,62 @@ public interface RoleManager extends Manager {
      *
      * @param roleId    Role identifier
      * @return Role instance
-     * @throws RoleNotFoundException    Role not found
+     * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    Role getRole(RoleId roleId) throws RoleNotFoundException;
+    Role getRole(RoleId roleId) throws UnknownRoleIdException;
 
     /**
      * Change the name of the given role to a new one
      *
      * @param roleId  Role identifier
      * @param roleName  New role name
-     * @throws RoleNotFoundException    Role not found
+     * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    void changeName(RoleId roleId, Name roleName) throws RoleNotFoundException;
+    void changeName(RoleId roleId, Name roleName) throws UnknownRoleIdException;
 
     /**
      * Change the description of the given role to a new one
      *
      * @param roleId  Role identifier
      * @param roleDescription   New role description
-     * @throws RoleNotFoundException    Role not found
+     * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    void changeDescription(RoleId roleId, Description roleDescription) throws RoleNotFoundException;
+    void changeDescription(RoleId roleId, Description roleDescription) throws UnknownRoleIdException;
 
     /**
      * Add one or more projects to the working projects of the given role
      *
      * @param roleId    Role identifier
      * @param projectIds Project identifier(s)
-     * @throws RoleNotFoundException    Role not found
+     * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    void addProject(RoleId roleId, ProjectId... projectIds) throws RoleNotFoundException;
+    void addProject(RoleId roleId, ProjectId... projectIds) throws UnknownRoleIdException;
 
     /**
      * Remove one or more projects from the working projects of the given role
      *
      * @param roleId    Role identifier
      * @param projectIds Project identifier(s)
-     * @throws RoleNotFoundException    Role not found
+     * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    void removeProject(RoleId roleId, ProjectId... projectIds) throws RoleNotFoundException;
+    void removeProject(RoleId roleId, ProjectId... projectIds) throws UnknownRoleIdException;
 
     /**
      * Add one or more operations to the permitted operations of the given role
      *
      * @param roleId    Role identifier
      * @param operationIds   Operation identifier(s)
-     * @throws RoleNotFoundException    Role not found
+     * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    void addOperation(RoleId roleId, OperationId... operationIds) throws RoleNotFoundException;
+    void addOperation(RoleId roleId, OperationId... operationIds) throws UnknownRoleIdException;
 
     /**
      * Remove one or more operations from the permitted operations of the given role
      *
      * @param roleId    Role identifier
      * @param operationIds   Operation identifier(s)
-     * @throws RoleNotFoundException    Role not found
+     * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    void removeOperation(RoleId roleId, OperationId... operationIds) throws RoleNotFoundException;
+    void removeOperation(RoleId roleId, OperationId... operationIds) throws UnknownRoleIdException;
 
 }

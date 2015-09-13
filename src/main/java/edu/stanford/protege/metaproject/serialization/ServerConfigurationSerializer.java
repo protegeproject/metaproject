@@ -20,13 +20,13 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
         Metaproject metaproject = context.deserialize(obj.getAsJsonObject("metaproject"), Metaproject.class);
         AuthenticationManager authenticationManager = context.deserialize(obj.get("authentication"), AuthenticationManager.class);
         Map<String,String> map = context.deserialize(obj.get("properties"), Map.class);
-        OntologyTermIdStatus status = context.deserialize(obj.get("termIdentifiers"), OntologyTermIdStatus.class);
+        EntityIriStatus status = context.deserialize(obj.get("entityIriStatus"), EntityIriStatus.class);
         return new ServerConfigurationImpl.Builder()
                 .setHost(host)
                 .setMetaproject(metaproject)
                 .setAuthenticationManager(authenticationManager)
                 .setPropertyMap(map)
-                .setOntologyTermIdStatus(status)
+                .setEntityIriStatus(status)
                 .createServerConfiguration();
     }
 
@@ -37,7 +37,7 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
         obj.add("metaproject", context.serialize(config.getMetaproject(), Metaproject.class));
         obj.add("authentication", context.serialize(config.getAuthenticationManager(), AuthenticationManager.class));
         obj.add("properties", context.serialize(config.getProperties().get(), Map.class));
-        obj.add("termIdentifiers", context.serialize(config.getOntologyTermIdStatus().get(), OntologyTermIdStatus.class));
+        obj.add("entityIriStatus", context.serialize(config.getOntologyTermIdStatus().get(), EntityIriStatus.class));
         return obj;
     }
 }

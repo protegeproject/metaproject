@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.Address;
+import edu.stanford.protege.metaproject.api.EmailAddress;
 import edu.stanford.protege.metaproject.api.Name;
 import edu.stanford.protege.metaproject.api.User;
 import edu.stanford.protege.metaproject.api.UserId;
@@ -23,7 +23,7 @@ public class UserSerializerTest {
 
     private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(diffIdStr);
     private static final Name userName = Utils.getName();
-    private static final Address userEmail = Utils.getAddress();
+    private static final EmailAddress userEmail = Utils.getEmailAddress();
 
     private String jsonUser, jsonOtherUser, jsonDiffUser;
     private User user, otherUser, diffUser;
@@ -91,6 +91,6 @@ public class UserSerializerTest {
 
     @Test
     public void testGetAddress() {
-        assertThat(gson.fromJson(jsonUser, User.class).getAddress(), is(userEmail));
+        assertThat(gson.fromJson(jsonUser, User.class).getEmailAddress(), is(userEmail));
     }
 }

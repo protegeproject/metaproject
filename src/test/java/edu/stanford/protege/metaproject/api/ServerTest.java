@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ServerTest {
     private static final String toStringHead = "Server";
     private static ServerConfiguration config = Utils.getServerConfiguration(), diffConfig = Utils.getServerConfiguration();
-    private static OntologyTermIdGenerator idGenerator = Utils.getOntologyTermUUIDGenerator();
+    private static EntityIriGenerator idGenerator = Utils.getUuidEntityIriGenerator(Utils.getEntityIriPrefix());
 
     private Server server, otherServer, diffServer;
 
@@ -39,7 +39,7 @@ public class ServerTest {
 
     @Test
     public void testGetOntologyTermIdGenerator() {
-        assertThat(server.getOntologyTermIdGenerator(), is(idGenerator));
+        assertThat(server.getEntityIriGenerator(), is(idGenerator));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class ServerTest {
 
     @Test
     public void testUpdateConfigurationTermStatus() {
-        OntologyTermIdStatus newStatus = Utils.getOntologyTermIdStatus();
+        EntityIriStatus newStatus = Utils.getEntityIriStatus();
         server.updateConfiguration(newStatus);
         assertThat(server.getConfiguration().getOntologyTermIdStatus(), is(Optional.of(newStatus)));
     }

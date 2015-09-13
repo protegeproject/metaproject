@@ -14,7 +14,7 @@ public class Utils {
     private static final int DEFAULT_SET_SIZE = 3;
     private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.READ;
     private static final OperationPrerequisite.Modifier DEFAULT_MODIFIER = OperationPrerequisite.Modifier.PRESENT;
-    private static final String iriBase = "http://protege.stanford.edu/test/";
+    private static final String IRI_PREFIX = "http://protege.stanford.edu/test/";
     private static final Random random = new Random();
     
     /*   access control object identifiers   */
@@ -52,30 +52,46 @@ public class Utils {
     }
 
 
-    /*   ontology term identifiers   */
+    /*   entity IRIs   */
 
-    public static OntologyTermIdPrefix getOntologyTermIdPrefix() {
-        return getOntologyTermIdPrefix("prefix" + newUUID());
+    public static EntityIriPrefix getEntityIriPrefix() {
+        return getEntityIriPrefix(IRI_PREFIX);
     }
 
-    public static OntologyTermIdPrefix getOntologyTermIdPrefix(String prefix) {
-        return new OntologyTermIdPrefixImpl(prefix);
+    public static EntityIriPrefix getEntityIriPrefix(String prefix) {
+        return new EntityIriPrefixImpl(prefix);
     }
 
-    public static OntologyTermIdSuffix getOntologyTermIdSuffix() {
-        return getOntologyTermIdSuffix("" + random.nextInt(Integer.SIZE - 1));
+    public static EntityNamePrefix getEntityNamePrefix() {
+        return getEntityNamePrefix("prefix" + newUUID());
     }
 
-    public static OntologyTermIdSuffix getOntologyTermIdSuffix(String suffix) {
-        return new OntologyTermIdSuffixImpl(suffix);
+    public static EntityNamePrefix getEntityNamePrefix(String prefix) {
+        return new EntityNamePrefixImpl(prefix);
     }
 
-    public static OntologyTermId getOntologyTermId() {
-        return getOntologyTermId(Utils.getOntologyTermIdPrefix(), Utils.getOntologyTermIdSuffix());
+    public static EntityNameSuffix getEntityNameSuffix() {
+        return getEntityNameSuffix("" + random.nextInt(Integer.SIZE - 1));
     }
 
-    public static OntologyTermId getOntologyTermId(OntologyTermIdPrefix prefix, OntologyTermIdSuffix suffix) {
-        return new OntologyTermIdImpl(prefix, suffix);
+    public static EntityNameSuffix getEntityNameSuffix(String suffix) {
+        return new EntityNameSuffixImpl(suffix);
+    }
+
+    public static EntityName getEntityName() {
+        return getEntityName(Utils.getEntityNamePrefix(), Utils.getEntityNameSuffix());
+    }
+
+    public static EntityName getEntityName(EntityNamePrefix prefix, EntityNameSuffix suffix) {
+        return new EntityNameImpl(prefix, suffix);
+    }
+
+    public static EntityIri getEntityIri() {
+        return getEntityIri(Utils.getEntityIriPrefix(), Utils.getEntityName());
+    }
+
+    public static EntityIri getEntityIri(EntityIriPrefix prefix, EntityName suffix) {
+        return new EntityIriImpl(prefix, suffix);
     }
 
 
@@ -98,11 +114,19 @@ public class Utils {
     }
 
     public static Address getAddress() {
-        return getAddress("address " + newUUID());
+        return getAddress("http://protege.stanford.edu/" + newUUID());
     }
 
     public static Address getAddress(String address) {
         return new AddressImpl(address);
+    }
+
+    public static EmailAddress getEmailAddress() {
+        return getEmailAddress(newUUID() + "@email.com");
+    }
+
+    public static EmailAddress getEmailAddress(String address) {
+        return new EmailAddressImpl(address);
     }
 
     public static OperationPrerequisite getOperationPrerequisite() {
@@ -118,7 +142,7 @@ public class Utils {
     }
 
     public static IRI getIRI() {
-        return getIRI(iriBase + newUUID());
+        return getIRI(IRI_PREFIX + newUUID());
     }
 
     public static IRI getIRI(String iri) {
@@ -172,12 +196,12 @@ public class Utils {
         return new SaltGeneratorImpl(byteSize);
     }
 
-    public static PasswordMaster getPasswordMaster() {
-        return new PBKDF2PasswordMaster.Builder().createPasswordMaster();
+    public static PasswordHandler getPasswordMaster() {
+        return new PBKDF2PasswordHandler.Builder().createPasswordMaster();
     }
 
-    public static PasswordMaster getPasswordMaster(int hashByteSize, int nrPBKDF2Iterations, SaltGenerator saltGenerator) {
-        return new PBKDF2PasswordMaster.Builder()
+    public static PasswordHandler getPasswordMaster(int hashByteSize, int nrPBKDF2Iterations, SaltGenerator saltGenerator) {
+        return new PBKDF2PasswordHandler.Builder()
                 .setHashByteSize(hashByteSize)
                 .setNrPBKDF2Iterations(nrPBKDF2Iterations)
                 .setSaltGenerator(saltGenerator)
@@ -238,7 +262,7 @@ public class Utils {
 
     /*   policy and server/client configurations   */
 
-    public static Server getServer(ServerConfiguration configuration, OntologyTermIdGenerator idGenerator) {
+    public static Server getServer(ServerConfiguration configuration, EntityIriGenerator idGenerator) {
         return new ServerImpl(configuration, idGenerator);
     }
 
@@ -247,16 +271,16 @@ public class Utils {
     }
 
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Utils.getHost(), Utils.getMetaproject(), Utils.getAuthenticationManager(), Utils.getStringPropertyMap(), Utils.getOntologyTermIdStatus());
+        return getServerConfiguration(Utils.getHost(), Utils.getMetaproject(), Utils.getAuthenticationManager(), Utils.getStringPropertyMap(), Utils.getEntityIriStatus());
     }
 
-    public static ServerConfiguration getServerConfiguration(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Map<String, String> properties, OntologyTermIdStatus idStatus) {
+    public static ServerConfiguration getServerConfiguration(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Map<String, String> properties, EntityIriStatus idStatus) {
         return new ServerConfigurationImpl.Builder()
                 .setHost(host)
                 .setMetaproject(metaproject)
                 .setAuthenticationManager(authenticationManager)
                 .setPropertyMap(properties)
-                .setOntologyTermIdStatus(idStatus)
+                .setEntityIriStatus(idStatus)
                 .createServerConfiguration();
     }
 
@@ -264,7 +288,7 @@ public class Utils {
         return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getStringPropertyMap());
     }
 
-    public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Set<GUIRestriction> disabledUIComponents, Map<String,String> propertyMap) {
+    public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Set<GuiRestriction> disabledUIComponents, Map<String,String> propertyMap) {
         return new ClientConfigurationImpl(metaproject, syncDelay, disabledUIComponents, propertyMap);
     }
 
@@ -348,10 +372,10 @@ public class Utils {
     }
 
     public static User getUser() {
-        return getUser(getUserId(), getName(), getAddress());
+        return getUser(getUserId(), getName(), getEmailAddress());
     }
 
-    public static User getUser(UserId userId, Name name, Address emailAddress) {
+    public static User getUser(UserId userId, Name name, EmailAddress emailAddress) {
         return new UserImpl(userId, name, emailAddress);
     }
 
@@ -544,101 +568,104 @@ public class Utils {
         return set;
     }
 
-    public static Set<GUIRestriction> getGUIRestrictionSet() {
-        Set<GUIRestriction> set = new HashSet<>();
+    public static Set<GuiRestriction> getGUIRestrictionSet() {
+        Set<GuiRestriction> set = new HashSet<>();
         for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
             set.add(Utils.getGUIRestriction());
         }
         return set;
     }
 
-    public static GUIRestriction getGUIRestriction() {
-        return getGUIRestriction("button" + newUUID(), GUIRestriction.Visibility.VISIBLE);
+    public static GuiRestriction getGUIRestriction() {
+        return getGUIRestriction("button" + newUUID(), GuiRestriction.Visibility.VISIBLE);
     }
 
-    public static GUIRestriction getGUIRestriction(String componentName, GUIRestriction.Visibility visibility) {
-        return new GUIRestrictionImpl(componentName, visibility);
+    public static GuiRestriction getGUIRestriction(String componentName, GuiRestriction.Visibility visibility) {
+        return new GuiRestrictionImpl(componentName, visibility);
     }
 
 
-    /*   ontology term identifier generation   */
+    /*   entity IRI generation   */
 
-    public static OntologyTermPrefixedUUIDGenerator getOntologyTermPrefixedUUIDGenerator(
-            OntologyTermIdPrefix classIdPrefix, OntologyTermIdPrefix objectPropertyIdPrefix, OntologyTermIdPrefix dataPropertyIdPrefix,
-            OntologyTermIdPrefix annotationPropertyIdPrefix, OntologyTermIdPrefix individualIdPrefix)
+    public static UuidPrefixedNameEntityIriGenerator getUuidPrefixedNameEntityIriGenerator(EntityIriPrefix iriPrefix,
+            EntityNamePrefix classIdPrefix, EntityNamePrefix objectPropertyIdPrefix, EntityNamePrefix dataPropertyIdPrefix,
+            EntityNamePrefix annotationPropertyIdPrefix, EntityNamePrefix individualIdPrefix)
     {
-        return new OntologyTermPrefixedUUIDGenerator.Builder()
-                .setClassIdPrefix(classIdPrefix)
-                .setObjectPropertyIdPrefix(objectPropertyIdPrefix)
-                .setDataPropertyIdPrefix(dataPropertyIdPrefix)
-                .setAnnotationPropertyIdPrefix(annotationPropertyIdPrefix)
-                .setIndividualIdPrefix(individualIdPrefix)
+        return new UuidPrefixedNameEntityIriGenerator.Builder()
+                .setEntityIriPrefix(iriPrefix)
+                .setClassNamePrefix(classIdPrefix)
+                .setObjectPropertyNamePrefix(objectPropertyIdPrefix)
+                .setDataPropertyNamePrefix(dataPropertyIdPrefix)
+                .setAnnotationPropertyNamePrefix(annotationPropertyIdPrefix)
+                .setIndividualNamePrefix(individualIdPrefix)
                 .createPrefixedUUIDGenerator();
     }
 
-    public static OntologyTermPrefixedSequentialIdGenerator getOntologyTermPrefixedSequentialIdGenerator(
-            OntologyTermIdPrefix classIdPrefix, OntologyTermIdPrefix objectPropertyIdPrefix, OntologyTermIdPrefix dataPropertyIdPrefix,
-            OntologyTermIdPrefix annotationPropertyIdPrefix, OntologyTermIdPrefix individualIdPrefix,
-            OntologyTermIdSuffix classIdSuffix, OntologyTermIdSuffix objPropSuffix, OntologyTermIdSuffix dataPropSuffix,
-            OntologyTermIdSuffix annPropSuffix, OntologyTermIdSuffix indSuffix)
+    public static SequentialPrefixedNameEntityIriGenerator getSequentialPrefixedNameEntityIriGenerator(EntityIriPrefix iriPrefix,
+            EntityNamePrefix classIdPrefix, EntityNamePrefix objectPropertyIdPrefix, EntityNamePrefix dataPropertyIdPrefix,
+            EntityNamePrefix annotationPropertyIdPrefix, EntityNamePrefix individualIdPrefix,
+            EntityNameSuffix classIdSuffix, EntityNameSuffix objPropSuffix, EntityNameSuffix dataPropSuffix,
+            EntityNameSuffix annPropSuffix, EntityNameSuffix indSuffix)
     {
-        return new OntologyTermPrefixedSequentialIdGenerator.Builder()
-                .setClassIdPrefix(classIdPrefix)
-                .setObjectPropertyIdPrefix(objectPropertyIdPrefix)
-                .setDataPropertyIdPrefix(dataPropertyIdPrefix)
-                .setAnnotationPropertyIdPrefix(annotationPropertyIdPrefix)
-                .setIndividualIdPrefix(individualIdPrefix)
-                .setClassIdSuffix(classIdSuffix)
-                .setObjectPropertyIdSuffix(objPropSuffix)
-                .setDataPropertyIdSuffix(dataPropSuffix)
-                .setAnnotationPropertyIdSuffix(annPropSuffix)
-                .setIndividualIdSuffix(indSuffix)
-                .createSequentialPrefixedIdGenerator();
+        return new SequentialPrefixedNameEntityIriGenerator.Builder()
+                .setEntityIriPrefix(iriPrefix)
+                .setClassNamePrefix(classIdPrefix)
+                .setObjectPropertyNamePrefix(objectPropertyIdPrefix)
+                .setDataPropertyNamePrefix(dataPropertyIdPrefix)
+                .setAnnotationPropertyNamePrefix(annotationPropertyIdPrefix)
+                .setIndividualNamePrefix(individualIdPrefix)
+                .setClassNameSuffix(classIdSuffix)
+                .setObjectPropertyNameSuffix(objPropSuffix)
+                .setDataPropertyNameSuffix(dataPropSuffix)
+                .setAnnotationPropertyNameSuffix(annPropSuffix)
+                .setIndividualNameSuffix(indSuffix)
+                .createSequentialPrefixedNameEntityIriGenerator();
     }
 
-    public static OntologyTermUUIDGenerator getOntologyTermUUIDGenerator() {
-        return OntologyTermUUIDGenerator.getInstance();
+    public static UuidEntityIriGenerator getUuidEntityIriGenerator(EntityIriPrefix iriPrefix) {
+        return new UuidEntityIriGenerator(iriPrefix);
     }
 
-    public static OntologyTermIdStatus getOntologyTermIdStatus() {
-        return getOntologyTermIdStatus(
-                Utils.getOntologyTermIdSuffix("" + random.nextInt()),
-                Utils.getOntologyTermIdSuffix("" + random.nextInt()),
-                Utils.getOntologyTermIdSuffix("" + random.nextInt()),
-                Utils.getOntologyTermIdSuffix("" + random.nextInt()),
-                Utils.getOntologyTermIdSuffix("" + random.nextInt()));
+    public static EntityIriStatus getEntityIriStatus() {
+        return getEntityIriStatus(Utils.getEntityIriPrefix(),
+                Utils.getEntityNamePrefix(), Utils.getEntityNamePrefix(), Utils.getEntityNamePrefix(), Utils.getEntityNamePrefix(), Utils.getEntityNamePrefix(),
+                Utils.getEntityNameSuffix(Integer.toString(random.nextInt())), Utils.getEntityNameSuffix(Integer.toString(random.nextInt())),
+                Utils.getEntityNameSuffix(Integer.toString(random.nextInt())), Utils.getEntityNameSuffix(Integer.toString(random.nextInt())),
+                Utils.getEntityNameSuffix(Integer.toString(random.nextInt())));
     }
 
-    public static OntologyTermIdStatus getOntologyTermIdStatus(OntologyTermIdSuffix classId, OntologyTermIdSuffix objPropId,
-                                                               OntologyTermIdSuffix dataPropId, OntologyTermIdSuffix annPropId, OntologyTermIdSuffix indId)
+    public static EntityIriStatus getEntityIriStatus(EntityIriPrefix iriPrefix, EntityNameSuffix classId, EntityNameSuffix objPropId,
+                                                     EntityNameSuffix dataPropId, EntityNameSuffix annPropId, EntityNameSuffix indId)
     {
-        return new OntologyTermIdStatusImpl.Builder()
-                .setClassIdPrefix(Utils.getOntologyTermIdPrefix("class"))
-                .setObjectPropertyIdPrefix(Utils.getOntologyTermIdPrefix("objprop"))
-                .setDataPropertyIdPrefix(Utils.getOntologyTermIdPrefix("dataprop"))
-                .setClassIdSuffix(classId)
-                .setObjectPropertyIdSuffix(objPropId)
-                .setDataPropertyIdSuffix(dataPropId)
-                .setAnnotationPropertyIdSuffix(annPropId)
-                .setIndividualIdSuffix(indId)
-                .createOntologyTermIdStatus();
+        return new EntityIriStatusImpl.Builder()
+                .setEntityIriPrefix(iriPrefix)
+                .setClassNamePrefix(Utils.getEntityNamePrefix("class"))
+                .setObjectPropertyNamePrefix(Utils.getEntityNamePrefix("objprop"))
+                .setDataPropertyNamePrefix(Utils.getEntityNamePrefix("dataprop"))
+                .setClassNameSuffix(classId)
+                .setObjectPropertyNameSuffix(objPropId)
+                .setDataPropertyNameSuffix(dataPropId)
+                .setAnnotationPropertyNameSuffix(annPropId)
+                .setIndividualNameSuffix(indId)
+                .createEntityIriStatus();
     }
 
-    public static OntologyTermIdStatus getOntologyTermIdStatus(OntologyTermIdPrefix classPrefix, OntologyTermIdPrefix objPropPrefix, OntologyTermIdPrefix dataPropPrefix,
-                                                               OntologyTermIdPrefix annPropPrefix, OntologyTermIdPrefix indPrefix, OntologyTermIdSuffix classId, OntologyTermIdSuffix objPropId,
-                                                               OntologyTermIdSuffix dataPropId, OntologyTermIdSuffix annPropId, OntologyTermIdSuffix indId)
+    public static EntityIriStatus getEntityIriStatus(EntityIriPrefix iriPrefix, EntityNamePrefix classPrefix, EntityNamePrefix objPropPrefix, EntityNamePrefix dataPropPrefix,
+                                                     EntityNamePrefix annPropPrefix, EntityNamePrefix indPrefix, EntityNameSuffix classId,
+                                                     EntityNameSuffix objPropId, EntityNameSuffix dataPropId, EntityNameSuffix annPropId, EntityNameSuffix indId)
     {
-        return new OntologyTermIdStatusImpl.Builder()
-                .setClassIdPrefix(classPrefix)
-                .setObjectPropertyIdPrefix(objPropPrefix)
-                .setDataPropertyIdPrefix(dataPropPrefix)
-                .setAnnotationPropertyIdPrefix(annPropPrefix)
-                .setIndividualIdPrefix(indPrefix)
-                .setClassIdSuffix(classId)
-                .setObjectPropertyIdSuffix(objPropId)
-                .setDataPropertyIdSuffix(dataPropId)
-                .setAnnotationPropertyIdSuffix(annPropId)
-                .setIndividualIdSuffix(indId)
-                .createOntologyTermIdStatus();
+        return new EntityIriStatusImpl.Builder()
+                .setEntityIriPrefix(iriPrefix)
+                .setClassNamePrefix(classPrefix)
+                .setObjectPropertyNamePrefix(objPropPrefix)
+                .setDataPropertyNamePrefix(dataPropPrefix)
+                .setAnnotationPropertyNamePrefix(annPropPrefix)
+                .setIndividualNamePrefix(indPrefix)
+                .setClassNameSuffix(classId)
+                .setObjectPropertyNameSuffix(objPropId)
+                .setDataPropertyNameSuffix(dataPropId)
+                .setAnnotationPropertyNameSuffix(annPropId)
+                .setIndividualNameSuffix(indId)
+                .createEntityIriStatus();
     }
 }

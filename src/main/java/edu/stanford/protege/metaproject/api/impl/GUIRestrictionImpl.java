@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.GUIRestriction;
+import edu.stanford.protege.metaproject.api.GuiRestriction;
 
 import java.io.Serializable;
 
@@ -12,8 +12,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class GUIRestrictionImpl implements GUIRestriction, Serializable {
-    private static final long serialVersionUID = -732167589486693327L;
+public final class GuiRestrictionImpl implements GuiRestriction, Serializable {
+    private static final long serialVersionUID = 3561087681025697407L;
     private final String component;
     private final Visibility visibility;
 
@@ -23,13 +23,13 @@ public final class GUIRestrictionImpl implements GUIRestriction, Serializable {
      * @param component Java swing component name
      * @param visibility  Type of restriction
      */
-    public GUIRestrictionImpl(String component, Visibility visibility) {
+    public GuiRestrictionImpl(String component, Visibility visibility) {
         this.component = checkNotNull(component);
         this.visibility = checkNotNull(visibility);
     }
 
     @Override
-    public String getGUIComponentName() {
+    public String getGuiComponentName() {
         return component;
     }
 
@@ -42,7 +42,7 @@ public final class GUIRestrictionImpl implements GUIRestriction, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GUIRestrictionImpl that = (GUIRestrictionImpl) o;
+        GuiRestrictionImpl that = (GuiRestrictionImpl) o;
         return Objects.equal(component, that.component) &&
                 Objects.equal(visibility, that.visibility);
     }

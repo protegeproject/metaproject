@@ -6,7 +6,7 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface User extends AccessControlObject, HasName, HasAddress, Comparable<User> {
+public interface User extends AccessControlObject, HasName, Comparable<User> {
 
     /**
      * Get user's identifier that is used for logging in
@@ -14,5 +14,12 @@ public interface User extends AccessControlObject, HasName, HasAddress, Comparab
      * @return User identifier
      */
     UserId getId();
+
+    /**
+     * Get user's email address
+     *
+     * @return Email address
+     */
+    EmailAddress getEmailAddress();
 
 }

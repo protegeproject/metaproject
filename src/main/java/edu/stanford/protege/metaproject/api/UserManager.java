@@ -1,8 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
-import edu.stanford.protege.metaproject.api.exception.UserNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
 
 import java.util.Set;
 
@@ -19,10 +19,10 @@ public interface UserManager extends Manager {
      * Add user(s)
      *
      * @param user  One or more users
-     * @throws UserAddressAlreadyInUseException Email address already in use by another user
-     * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
+     * @throws EmailAddressAlreadyInUseException Email address already in use by another user
+     * @throws UserIdAlreadyInUseException   Identifier of given user is already in use
      */
-    void add(User... user) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException;
+    void add(User... user) throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException;
 
     /**
      * Remove the given user(s)
@@ -76,30 +76,28 @@ public interface UserManager extends Manager {
      *
      * @param userId    User identifier
      * @return User instance
-     * @throws UserNotFoundException    User not found
+     * @throws UnknownUserIdException    User identifier is not recognized
      */
-    User getUser(UserId userId) throws UserNotFoundException;
+    User getUser(UserId userId) throws UnknownUserIdException;
 
     /**
      * Change the display name of the given user
      *
      * @param userId    User identifier
      * @param userName  New name
-     * @throws UserNotFoundException  User does not exist
-     * @throws UserAddressAlreadyInUseException Email address already in use by another user
-     * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
+     * @throws UnknownUserIdException  User identifier is not recognized
+     * @throws EmailAddressAlreadyInUseException Email address already in use by another user
      */
-    void changeName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException;
+    void changeName(UserId userId, Name userName) throws UnknownUserIdException, EmailAddressAlreadyInUseException;
 
     /**
      * Change the email address of a user
      *
      * @param userId  User identifier
      * @param emailAddress New email address
-     * @throws UserNotFoundException  User does not exist
-     * @throws UserAddressAlreadyInUseException Email address already in use by another user
-     * @throws UserAlreadyRegisteredException   Identifier of given user is already in use
+     * @throws UnknownUserIdException  User identifier is not recognized
+     * @throws EmailAddressAlreadyInUseException Email address already in use by another user
      */
-    void changeEmailAddress(UserId userId, Address emailAddress) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException;
+    void changeEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException, EmailAddressAlreadyInUseException;
 
 }

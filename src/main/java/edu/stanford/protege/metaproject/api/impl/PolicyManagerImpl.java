@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.api.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.api.AccessControlObjectId;
 import edu.stanford.protege.metaproject.api.PolicyManager;
 import edu.stanford.protege.metaproject.api.RoleId;
 import edu.stanford.protege.metaproject.api.UserId;
@@ -17,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class PolicyManagerImpl implements PolicyManager, Serializable {
-    private static final long serialVersionUID = -8363249880496153539L;
+    private static final long serialVersionUID = 8453361439240230284L;
     private Map<UserId, Set<RoleId>> userRoleMap = new HashMap<>();
 
     /**
@@ -104,10 +105,20 @@ public class PolicyManagerImpl implements PolicyManager, Serializable {
      */
     private void checkUserIsInPolicy(UserId... users) throws UserNotInPolicyException {
         for(UserId user : users) {
-            if (!userRoleMap.containsKey(user)) {
-                throw new UserNotInPolicyException("The specified user is not registered in the access control policy");
+            if (!contains(user)) {
+                throw new UserNotInPolicyException("The specified user (id: " + user.get() + ") is not registered in the access control policy");
             }
         }
+    }
+
+    @Override
+    public boolean contains(AccessControlObjectId id) {
+        for(UserId userId : userRoleMap.keySet()) {
+            if(userId.equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

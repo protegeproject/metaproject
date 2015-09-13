@@ -17,7 +17,7 @@ public class UserSerializer implements JsonDeserializer<User> {
         JsonObject obj = element.getAsJsonObject();
         UserId userId = new UserIdImpl(obj.getAsJsonPrimitive("id").getAsString());
         Name userName = new NameImpl(obj.getAsJsonPrimitive("name").getAsString());
-        Address email = new AddressImpl(obj.getAsJsonPrimitive("emailAddress").getAsString());
+        EmailAddress email = new EmailAddressImpl(obj.getAsJsonPrimitive("emailAddress").getAsString());
         return new UserImpl(userId, userName, email);
     }
 }

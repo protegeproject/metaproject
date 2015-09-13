@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ServerImpl implements Server {
     private ServerConfiguration configuration;
-    private OntologyTermIdGenerator idGenerator;
+    private EntityIriGenerator idGenerator;
 
     /**
      * Constructor
@@ -20,7 +20,7 @@ public class ServerImpl implements Server {
      * @param configuration Server configuration
      * @param idGenerator   Ontology term identifier generator
      */
-    public ServerImpl(ServerConfiguration configuration, OntologyTermIdGenerator idGenerator) {
+    public ServerImpl(ServerConfiguration configuration, EntityIriGenerator idGenerator) {
         this.configuration = checkNotNull(configuration);
         this.idGenerator = checkNotNull(idGenerator);
     }
@@ -31,7 +31,7 @@ public class ServerImpl implements Server {
     }
 
     @Override
-    public OntologyTermIdGenerator getOntologyTermIdGenerator() {
+    public EntityIriGenerator getEntityIriGenerator() {
         return idGenerator;
     }
 
@@ -41,17 +41,17 @@ public class ServerImpl implements Server {
                 .setHost(configuration.getHost())
                 .setMetaproject(checkNotNull(metaproject))
                 .setAuthenticationManager(configuration.getAuthenticationManager())
-                .setOntologyTermIdStatus(configuration.getOntologyTermIdStatus().get())
+                .setEntityIriStatus(configuration.getOntologyTermIdStatus().get())
                 .createServerConfiguration();
     }
 
     @Override
-    public void updateConfiguration(OntologyTermIdStatus ontologyTermIdStatus) {
+    public void updateConfiguration(EntityIriStatus entityIriStatus) {
         this.configuration = new ServerConfigurationImpl.Builder()
                 .setHost(configuration.getHost())
                 .setMetaproject(configuration.getMetaproject())
                 .setAuthenticationManager(configuration.getAuthenticationManager())
-                .setOntologyTermIdStatus(checkNotNull(ontologyTermIdStatus))
+                .setEntityIriStatus(checkNotNull(entityIriStatus))
                 .createServerConfiguration();
     }
 

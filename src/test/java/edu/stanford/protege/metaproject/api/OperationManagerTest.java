@@ -1,8 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.exception.AccessControlObjectNotFoundException;
-import edu.stanford.protege.metaproject.api.exception.OperationNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,19 +40,19 @@ public class OperationManagerTest {
     }
 
     @Test
-    public void testGetOperationById() throws OperationNotFoundException {
+    public void testGetOperationById() throws UnknownOperationIdException {
         assertThat(operationManager.getOperation(operation1.getId()), is(operation1));
     }
 
     @Test
-    public void testRemoveOperation() throws AccessControlObjectNotFoundException {
+    public void testRemoveOperation() throws UnknownAccessControlObjectIdException {
         assertThat(operationManager.getOperations().contains(operation4), is(true));
         operationManager.remove(operation4);
         assertThat(operationManager.getOperations().contains(operation4), is(false));
     }
 
     @Test
-    public void testAddOperation() throws OperationNotFoundException {
+    public void testAddOperation() throws UnknownOperationIdException {
         Operation operation5 = Utils.getOperation();
         assertThat(operationManager.getOperations().contains(operation5), is(false));
 
@@ -62,14 +62,14 @@ public class OperationManagerTest {
     }
 
     @Test
-    public void testChangeDescription() throws OperationNotFoundException {
+    public void testChangeDescription() throws UnknownOperationIdException {
         Description newDescription = Utils.getDescription("new test description");
         operationManager.changeDescription(operation2.getId(), newDescription);
         assertThat(operationManager.getOperation(operation2.getId()).getDescription(), is(newDescription));
     }
 
     @Test
-    public void testChangeName() throws OperationNotFoundException {
+    public void testChangeName() throws UnknownOperationIdException {
         Name newName = Utils.getName("new test name");
         operationManager.changeName(operation2.getId(), newName);
         assertThat(operationManager.getOperation(operation2.getId()).getName(), is(newName));
@@ -83,14 +83,14 @@ public class OperationManagerTest {
     }
 
     @Test
-    public void testAddPrerequisite() throws OperationNotFoundException {
+    public void testAddPrerequisite() throws UnknownOperationIdException {
         OperationPrerequisite prerequisite = Utils.getOperationPrerequisite();
         operationManager.addPrerequisite(operation2.getId(), prerequisite);
         assertThat(operationManager.getOperation(operation2.getId()).getPrerequisites().get().contains(prerequisite), is(true));
     }
 
     @Test
-    public void testRemovePrerequisite() throws OperationNotFoundException {
+    public void testRemovePrerequisite() throws UnknownOperationIdException {
         OperationPrerequisite prerequisite = operation2.getPrerequisites().get().iterator().next();
         operationManager.removePrerequisite(operation2.getId(), prerequisite);
 

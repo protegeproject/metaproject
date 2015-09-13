@@ -38,7 +38,7 @@ public interface ServerConfiguration extends Configuration {
      *
      * @return Ontology term identifier status instance
      */
-    Optional<OntologyTermIdStatus> getOntologyTermIdStatus();
+    Optional<EntityIriStatus> getOntologyTermIdStatus();
 
     /**
      * Get the key-value server configuration properties

@@ -3,9 +3,9 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
-import edu.stanford.protege.metaproject.api.exception.UserNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class UserManagerImpl implements UserManager, Serializable {
     private static final String GUEST_ID = "guest", GUEST_NAME = "guest user", GUEST_EMAIL = "";
-    private static final long serialVersionUID = -6991365562729428408L;
+    private static final long serialVersionUID = 1368309919320137722L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -39,15 +39,15 @@ public class UserManagerImpl implements UserManager, Serializable {
     public UserManagerImpl() { }
 
     @Override
-    public void add(User... users) throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+    public void add(User... users) throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException {
         checkNotNull(users);
         for(User user : users) {
             checkNotNull(user);
             if (contains(user.getId())) {
-                throw new UserAlreadyRegisteredException("The specified user identifier is already used by another user");
+                throw new UserIdAlreadyInUseException("The specified user identifier is already used by another user");
             }
-            if (isAddressUsed(user.getAddress())) {
-                throw new UserAddressAlreadyInUseException("The specified user address is already used by another user.");
+            if (isAddressUsed(user.getEmailAddress())) {
+                throw new EmailAddressAlreadyInUseException("The specified email address is already used by another user.");
             }
             this.users.add(user);
         }
@@ -64,7 +64,7 @@ public class UserManagerImpl implements UserManager, Serializable {
 
     @Override
     public User create(String userId, String userName, String emailAddress) {
-        return new UserImpl(new UserIdImpl(userId), new NameImpl(userName), new AddressImpl(emailAddress));
+        return new UserImpl(new UserIdImpl(userId), new NameImpl(userName), new EmailAddressImpl(emailAddress));
     }
 
     @Override
@@ -73,13 +73,13 @@ public class UserManagerImpl implements UserManager, Serializable {
     }
 
     @Override
-    public User getUser(UserId userId) throws UserNotFoundException {
+    public User getUser(UserId userId) throws UnknownUserIdException {
         Optional<User> user = getUserOptional(userId);
         if(user.isPresent()) {
             return user.get();
         }
         else {
-            throw new UserNotFoundException("The specified user identifier does not correspond to an existing user");
+            throw new UnknownUserIdException("The specified user identifier does not correspond to an existing user");
         }
     }
 
@@ -92,30 +92,38 @@ public class UserManagerImpl implements UserManager, Serializable {
     @Override
     public Set<User> getUsers(Address emailAddress) {
         checkNotNull(emailAddress);
-        return users.stream().filter(user -> user.getAddress().equals(emailAddress)).collect(Collectors.toSet());
+        return users.stream().filter(user -> user.getEmailAddress().equals(emailAddress)).collect(Collectors.toSet());
     }
 
     @Override
     public User getGuestUser() {
-        return new UserImpl(new UserIdImpl(GUEST_ID), new NameImpl(GUEST_NAME), new AddressImpl(GUEST_EMAIL));
+        return new UserImpl(new UserIdImpl(GUEST_ID), new NameImpl(GUEST_NAME), new EmailAddressImpl(GUEST_EMAIL));
     }
 
     @Override
-    public void changeName(UserId userId, Name userName) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+    public void changeName(UserId userId, Name userName) throws UnknownUserIdException, EmailAddressAlreadyInUseException {
         checkNotNull(userName);
         User user = getUser(userId);
         remove(user);
-        User newUser = new UserImpl(userId, userName, user.getAddress());
-        add(newUser);
+        User newUser = new UserImpl(userId, userName, user.getEmailAddress());
+        try {
+            add(newUser);
+        } catch (UserIdAlreadyInUseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void changeEmailAddress(UserId userId, Address emailAddress) throws UserNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+    public void changeEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException, EmailAddressAlreadyInUseException {
         checkNotNull(emailAddress);
         User user = getUser(userId);
         remove(user);
         User newUser = new UserImpl(userId, user.getName(), emailAddress);
-        add(newUser);
+        try {
+            add(newUser);
+        } catch (UserIdAlreadyInUseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -156,7 +164,7 @@ public class UserManagerImpl implements UserManager, Serializable {
     private boolean isAddressUsed(Address address) {
         checkNotNull(address);
         for(User u : users) {
-            if(u.getAddress().equals(address)) {
+            if(u.getEmailAddress().equals(address)) {
                 return true;
             }
         }

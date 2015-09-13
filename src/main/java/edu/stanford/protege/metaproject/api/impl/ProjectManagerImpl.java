@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.ProjectNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -55,7 +55,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
 
     @Override
     public Project create(String name, String description, String address, UserId ownerId, Set<UserId> admins) {
-        AccessControlObjectUUIDGenerator gen = AccessControlObjectUUIDGenerator.getInstance();
+        AccessControlObjectUuidGenerator gen = new AccessControlObjectUuidGenerator();
         return new ProjectImpl(gen.getProjectId(), new NameImpl(name), new DescriptionImpl(description), new AddressImpl(address), ownerId, admins);
     }
 
@@ -65,13 +65,13 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public Project getProject(ProjectId projectId) throws ProjectNotFoundException {
+    public Project getProject(ProjectId projectId) throws UnknownProjectIdException {
         Optional<Project> project = getProjectOptional(projectId);
         if(project.isPresent()) {
             return project.get();
         }
         else {
-            throw new ProjectNotFoundException("The specified project identifier does not correspond to an existing project");
+            throw new UnknownProjectIdException("The specified project identifier does not correspond to an existing project");
         }
     }
 
@@ -82,7 +82,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public void changeName(ProjectId projectId, Name projectName) throws ProjectNotFoundException {
+    public void changeName(ProjectId projectId, Name projectName) throws UnknownProjectIdException {
         checkNotNull(projectName);
         Project project = getProject(projectId);
         remove(project);
@@ -92,7 +92,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public void changeDescription(ProjectId projectId, Description projectDescription) throws ProjectNotFoundException {
+    public void changeDescription(ProjectId projectId, Description projectDescription) throws UnknownProjectIdException {
         checkNotNull(projectDescription);
         Project project = getProject(projectId);
         remove(project);
@@ -102,7 +102,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public void changeOwner(ProjectId projectId, UserId userId) throws ProjectNotFoundException {
+    public void changeOwner(ProjectId projectId, UserId userId) throws UnknownProjectIdException {
         checkNotNull(userId);
         Project project = getProject(projectId);
         remove(project);
@@ -112,7 +112,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public void changeAddress(ProjectId projectId, Address projectAddress) throws ProjectNotFoundException {
+    public void changeAddress(ProjectId projectId, Address projectAddress) throws UnknownProjectIdException {
         checkNotNull(projectAddress);
         Project project = getProject(projectId);
         remove(project);
@@ -122,7 +122,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public void addAdministrator(ProjectId projectId, UserId... userIds) throws ProjectNotFoundException {
+    public void addAdministrator(ProjectId projectId, UserId... userIds) throws UnknownProjectIdException {
         checkNotNull(userIds);
         Project project = getProject(projectId);
         remove(project);
@@ -135,7 +135,7 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public void removeAdministrator(ProjectId projectId, UserId... userIds) throws ProjectNotFoundException {
+    public void removeAdministrator(ProjectId projectId, UserId... userIds) throws UnknownProjectIdException {
         checkNotNull(userIds);
         Project project = getProject(projectId);
         remove(project);

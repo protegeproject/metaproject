@@ -46,9 +46,9 @@ public final class SimpleGsonSerializer {
                 // other objects
                 .registerTypeHierarchyAdapter(StringProperty.class, new StringPropertySerializer())
                 .registerTypeAdapter(OperationPrerequisite.class, new OperationPrerequisiteSerializer())
-                .registerTypeAdapter(OntologyTermIdStatus.class, new OntologyTermIdStatusSerializer())
+                .registerTypeAdapter(EntityIriStatus.class, new EntityIriStatusSerializer())
                 .registerTypeHierarchyAdapter(AuthenticationDetails.class, new AuthenticationDetailsSerializer())
-                .registerTypeAdapter(GUIRestriction.class, new GUIRestrictionSerializer())
+                .registerTypeAdapter(GuiRestriction.class, new GUIRestrictionSerializer())
 
                 .enableComplexMapKeySerialization()
                 .setPrettyPrinting()

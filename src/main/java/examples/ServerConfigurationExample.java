@@ -2,8 +2,8 @@ package examples;
 
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
+import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.impl.*;
 
 import java.io.FileNotFoundException;
@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class ServerConfigurationExample {
 
-    public static void main(String[] args) throws FileNotFoundException, UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+    public static void main(String[] args) throws FileNotFoundException, EmailAddressAlreadyInUseException, UserIdAlreadyInUseException {
         Metaproject metaproject = Utils.getMetaproject();
         Gson gson = Utils.getGson();
 
@@ -40,17 +40,18 @@ public class ServerConfigurationExample {
 
         // (optional) create identifier generator, in this case a prefixed sequential id generator.
         //  Note that not all suffixes are initialized; the missing ones are assumed to be 0.
-        OntologyTermPrefixedSequentialIdGenerator generator = new OntologyTermPrefixedSequentialIdGenerator.Builder()
-                .setClassIdPrefix(new OntologyTermIdPrefixImpl("class-"))
-                .setObjectPropertyIdPrefix(new OntologyTermIdPrefixImpl("oprop-"))
-                .setDataPropertyIdPrefix(new OntologyTermIdPrefixImpl("dprop-"))
-                .setAnnotationPropertyIdPrefix(new OntologyTermIdPrefixImpl("aprop-"))
-                .setIndividualIdPrefix(new OntologyTermIdPrefixImpl("ind-"))
-                .setObjectPropertyIdSuffix(new OntologyTermIdSuffixImpl("9"))
-                .setClassIdSuffix(new OntologyTermIdSuffixImpl("3"))
-                .createSequentialPrefixedIdGenerator();
+        SequentialPrefixedNameEntityIriGenerator generator = new SequentialPrefixedNameEntityIriGenerator.Builder()
+                .setEntityIriPrefix(new EntityIriPrefixImpl("http://protege.stanford.edu/"))
+                .setClassNamePrefix(new EntityNamePrefixImpl("class-"))
+                .setObjectPropertyNamePrefix(new EntityNamePrefixImpl("oprop-"))
+                .setDataPropertyNamePrefix(new EntityNamePrefixImpl("dprop-"))
+                .setAnnotationPropertyNamePrefix(new EntityNamePrefixImpl("aprop-"))
+                .setIndividualNamePrefix(new EntityNamePrefixImpl("ind-"))
+                .setObjectPropertyNameSuffix(new EntityNameSuffixImpl("9"))
+                .setClassNameSuffix(new EntityNameSuffixImpl("3"))
+                .createSequentialPrefixedNameEntityIriGenerator();
 
-        OntologyTermIdStatus idStatus = generator.getCurrentOntologyTermIdStatus().get();
+        EntityIriStatus idStatus = generator.getEntityIriStatus().get();
 
 
         // (optional) create map of properties
@@ -67,7 +68,7 @@ public class ServerConfigurationExample {
                 .setMetaproject(metaproject)
                 .setPropertyMap(map)
                 .setAuthenticationManager(authenticationManager)
-                .setOntologyTermIdStatus(idStatus)
+                .setEntityIriStatus(idStatus)
                 .createServerConfiguration();
 
 

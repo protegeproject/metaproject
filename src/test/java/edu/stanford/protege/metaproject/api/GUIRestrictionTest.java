@@ -11,11 +11,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class GUIRestrictionTest {
-    private static final String componentName = "buttonX1", diffComponentName = "buttonXY3", toStringHead = "GUIRestriction";
-    private static final GUIRestriction.Visibility visibility = GUIRestriction.Visibility.HIDDEN;
+public class GuiRestrictionTest {
+    private static final String componentName = "buttonX1", diffComponentName = "buttonXY3", toStringHead = "GuiRestriction";
+    private static final GuiRestriction.Visibility visibility = GuiRestriction.Visibility.HIDDEN;
 
-    private GUIRestriction restriction, otherRestriction, diffRestriction;
+    private GuiRestriction restriction, otherRestriction, diffRestriction;
 
     @Before
     public void setUp() {
@@ -31,7 +31,7 @@ public class GUIRestrictionTest {
 
     @Test
     public void testGetGUIComponentName() {
-        assertThat(restriction.getGUIComponentName(), is(componentName));
+        assertThat(restriction.getGuiComponentName(), is(componentName));
     }
 
     @Test

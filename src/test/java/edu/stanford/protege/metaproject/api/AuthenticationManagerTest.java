@@ -1,9 +1,9 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.exception.AccessControlObjectNotFoundException;
-import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class AuthenticationManagerTest {
     private AuthenticationManager authManager, otherAuthManager, diffAuthManager;
 
     @Before
-    public void setUp() throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException {
+    public void setUp() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException {
         authManager = Utils.getAuthenticationManager();
         authManager.add(userId1, passwd1);
         authManager.add(userId2, passwd2);
@@ -58,20 +58,20 @@ public class AuthenticationManagerTest {
     }
 
     @Test
-    public void testRemoveAuthentication() throws AccessControlObjectNotFoundException, UserNotRegisteredException {
+    public void testRemoveAuthentication() throws UnknownAccessControlObjectIdException, UserNotRegisteredException {
         assertThat(authManager.contains(userId3), is(true));
         authManager.remove(userId3);
         assertThat(authManager.contains(userId3), is(false));
     }
 
     @Test(expected=UserNotRegisteredException.class)
-    public void testGetAuthenticationException() throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException, UserNotRegisteredException {
+    public void testGetAuthenticationException() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException, UserNotRegisteredException {
         AuthenticationDetails authentication5 = Utils.getAuthenticationDetails();
         authManager.getAuthenticationDetails(authentication5.getUserId());
     }
 
     @Test
-    public void testAddAuthentication() throws UserAddressAlreadyInUseException, UserAlreadyRegisteredException, UserNotRegisteredException {
+    public void testAddAuthentication() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException, UserNotRegisteredException {
         AuthenticationDetails authentication5 = Utils.getAuthenticationDetails();
         authManager.add(authentication5.getUserId(), Utils.getPlainPassword());
         assertThat(authManager.getAuthenticationDetails(authentication5.getUserId()), is(not(equalTo(null))));

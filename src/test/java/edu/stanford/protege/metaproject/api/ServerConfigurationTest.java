@@ -18,7 +18,7 @@ public class ServerConfigurationTest {
     private static final String toStringHead = "ServerConfiguration";
     private static final Host host = Utils.getHost();
     private static final Metaproject metaproject = Utils.getMetaproject();
-    private static final OntologyTermIdStatus idStatus = Utils.getOntologyTermIdStatus();
+    private static final EntityIriStatus idStatus = Utils.getEntityIriStatus();
     private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
     private static Map<String,String> propertiesMap = Utils.getStringPropertyMap();
 

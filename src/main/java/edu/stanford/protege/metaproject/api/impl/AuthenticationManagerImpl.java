@@ -3,8 +3,8 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UserAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserAlreadyRegisteredException;
+import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
 import java.io.Serializable;
@@ -21,8 +21,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class AuthenticationManagerImpl implements AuthenticationManager, Serializable {
-    private static final long serialVersionUID = 6121384391913289619L;
-    private final PasswordMaster passwordMaster = new PBKDF2PasswordMaster.Builder().createPasswordMaster();
+    private static final long serialVersionUID = -348037684603511882L;
+    private final PasswordHandler passwordHandler = new PBKDF2PasswordHandler.Builder().createPasswordMaster();
     private Set<AuthenticationDetails> authenticationDetails = new HashSet<>();
 
     /**
@@ -50,7 +50,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
     @Override
     public boolean hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException {
         AuthenticationDetails userDetails = getAuthenticationDetails(userId);
-        return passwordMaster.validatePassword(password, userDetails.getPassword());
+        return passwordHandler.validatePassword(password, userDetails.getPassword());
     }
 
     /**
@@ -58,13 +58,13 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      *
      * @param userId  User identifier
      * @param password  Plain text password
-     * @throws UserAlreadyRegisteredException   User is already registered
-     * @throws UserAddressAlreadyInUseException Email address is already in use by another user
+     * @throws UserIdAlreadyInUseException   User is already registered
+     * @throws EmailAddressAlreadyInUseException Email address is already in use by another user
      */
     @Override
-    public void add(UserId userId, PlainPassword password) throws UserAlreadyRegisteredException, UserAddressAlreadyInUseException {
+    public void add(UserId userId, PlainPassword password) throws UserIdAlreadyInUseException, EmailAddressAlreadyInUseException {
         if(contains(userId)) {
-            throw new UserAlreadyRegisteredException("The specified user is already registered with the authentication protocol. Recover or change the password.");
+            throw new UserIdAlreadyInUseException("The specified user is already registered with the authentication protocol. Recover or change the password.");
         }
         authenticationDetails.add(getHashedAuthenticationDetails(userId, password));
     }
@@ -136,7 +136,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
      * @return Instance of UserAuthenticationDetails
      */
     private AuthenticationDetails getHashedAuthenticationDetails(UserId userId, PlainPassword password) {
-        SaltedPassword passwordHash = passwordMaster.createHash(password);
+        SaltedPassword passwordHash = passwordHandler.createHash(password);
         return new AuthenticationDetailsImpl(userId, passwordHash);
     }
 

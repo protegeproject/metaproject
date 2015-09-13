@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.RoleNotFoundException;
+import edu.stanford.protege.metaproject.api.exception.UnknownRoleIdException;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -54,7 +54,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
 
     @Override
     public Role create(String name, String description, Set<ProjectId> projects, Set<OperationId> operations) {
-        AccessControlObjectUUIDGenerator gen = AccessControlObjectUUIDGenerator.getInstance();
+        AccessControlObjectUuidGenerator gen = new AccessControlObjectUuidGenerator();
         return new RoleImpl(gen.getRoleId(), new NameImpl(name), new DescriptionImpl(description), projects, operations);
     }
 
@@ -64,18 +64,18 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public Role getRole(RoleId roleId) throws RoleNotFoundException {
+    public Role getRole(RoleId roleId) throws UnknownRoleIdException {
         Optional<Role> role = getRoleOptional(roleId);
         if(role.isPresent()) {
             return role.get();
         }
         else {
-            throw new RoleNotFoundException("The specified role identifier does not correspond to an existing role");
+            throw new UnknownRoleIdException("The specified role identifier does not correspond to an existing role");
         }
     }
 
     @Override
-    public void changeName(RoleId roleId, Name roleName) throws RoleNotFoundException {
+    public void changeName(RoleId roleId, Name roleName) throws UnknownRoleIdException {
         checkNotNull(roleName);
         Role role = getRole(roleId);
         remove(role);
@@ -84,7 +84,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void changeDescription(RoleId roleId, Description roleDescription) throws RoleNotFoundException {
+    public void changeDescription(RoleId roleId, Description roleDescription) throws UnknownRoleIdException {
         checkNotNull(roleDescription);
         Role role = getRole(roleId);
         remove(role);
@@ -93,7 +93,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void addProject(RoleId roleId, ProjectId... projectIds) throws RoleNotFoundException {
+    public void addProject(RoleId roleId, ProjectId... projectIds) throws UnknownRoleIdException {
         checkNotNull(projectIds);
         Role role = getRole(roleId);
         remove(role);
@@ -106,7 +106,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void removeProject(RoleId roleId, ProjectId... projectIds) throws RoleNotFoundException {
+    public void removeProject(RoleId roleId, ProjectId... projectIds) throws UnknownRoleIdException {
         checkNotNull(projectIds);
         Role role = getRole(roleId);
         remove(role);
@@ -121,7 +121,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void addOperation(RoleId roleId, OperationId... operationIds) throws RoleNotFoundException {
+    public void addOperation(RoleId roleId, OperationId... operationIds) throws UnknownRoleIdException {
         checkNotNull(operationIds);
         Role role = getRole(roleId);
         remove(role);
@@ -134,7 +134,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public void removeOperation(RoleId roleId, OperationId... operationIds) throws RoleNotFoundException {
+    public void removeOperation(RoleId roleId, OperationId... operationIds) throws UnknownRoleIdException {
         checkNotNull(operationIds);
         Role role = getRole(roleId);
         remove(role);

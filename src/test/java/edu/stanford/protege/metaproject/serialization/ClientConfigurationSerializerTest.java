@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.ClientConfiguration;
-import edu.stanford.protege.metaproject.api.GUIRestriction;
+import edu.stanford.protege.metaproject.api.GuiRestriction;
 import edu.stanford.protege.metaproject.api.Metaproject;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ClientConfigurationSerializerTest {
     private static final Map<String,String> propertyMap = Utils.getStringPropertyMap();
     private static final Metaproject metaproject = Utils.getMetaproject(), diffMetaproject = Utils.getMetaproject();
-    private static final Set<GUIRestriction> disabledUIElements = Utils.getGUIRestrictionSet();
+    private static final Set<GuiRestriction> disabledUIElements = Utils.getGUIRestrictionSet();
     private static final int syncDelay = 150;
 
     private String jsonClientConfiguration, jsonOtherClientConfiguration, jsonDiffClientConfiguration;
@@ -95,6 +95,6 @@ public class ClientConfigurationSerializerTest {
 
     @Test
     public void testGetDisabledUIElements() {
-        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getGUIRestrictions(), is(disabledUIElements));
+        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getGuiRestrictions(), is(disabledUIElements));
     }
 }

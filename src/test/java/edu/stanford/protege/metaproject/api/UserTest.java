@@ -21,7 +21,7 @@ public class UserTest {
 
     private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(otherIdStr);
     private static final Name userName = Utils.getName(userNameStr);
-    private static final Address userEmail = Utils.getAddress(userEmailStr);
+    private static final EmailAddress userEmail = Utils.getEmailAddress(userEmailStr);
 
     private User user, otherUser, diffUser;
 
@@ -49,7 +49,7 @@ public class UserTest {
 
     @Test
     public void testGetEmailAddress() {
-        assertThat(user.getAddress().get(), is(userEmailStr));
+        assertThat(user.getEmailAddress().get(), is(userEmailStr));
     }
 
     @Test

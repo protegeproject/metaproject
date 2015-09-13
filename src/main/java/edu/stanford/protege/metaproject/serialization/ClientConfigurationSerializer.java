@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.ClientConfiguration;
-import edu.stanford.protege.metaproject.api.GUIRestriction;
+import edu.stanford.protege.metaproject.api.GuiRestriction;
 import edu.stanford.protege.metaproject.api.Metaproject;
 import edu.stanford.protege.metaproject.api.impl.ClientConfigurationImpl;
 
@@ -22,7 +22,7 @@ public class ClientConfigurationSerializer implements JsonSerializer<ClientConfi
         JsonObject obj = element.getAsJsonObject();
         Metaproject metaproject = context.deserialize(obj.getAsJsonObject("metaproject"), Metaproject.class);
         int syncDelay = context.deserialize(obj.getAsJsonPrimitive("synchronisationDelay"), Integer.class);
-        Set<GUIRestriction> set = context.deserialize(obj.getAsJsonArray("guiRestrictions"), new TypeToken<Set<GUIRestriction>>(){}.getType());
+        Set<GuiRestriction> set = context.deserialize(obj.getAsJsonArray("guiRestrictions"), new TypeToken<Set<GuiRestriction>>(){}.getType());
         Map<String,String> map = context.deserialize(obj.get("properties"), Map.class);
         return new ClientConfigurationImpl(metaproject, syncDelay, set , map);
     }
@@ -32,7 +32,7 @@ public class ClientConfigurationSerializer implements JsonSerializer<ClientConfi
         JsonObject obj = new JsonObject();
         obj.add("metaproject", context.serialize(config.getMetaproject(), Metaproject.class));
         obj.add("synchronisationDelay", context.serialize(config.getSynchronisationDelay()));
-        obj.add("guiRestrictions", context.serialize(config.getGUIRestrictions()));
+        obj.add("guiRestrictions", context.serialize(config.getGuiRestrictions()));
         obj.add("properties", context.serialize(config.getProperties()));
         return obj;
     }

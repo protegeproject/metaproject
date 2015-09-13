@@ -8,14 +8,14 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface GUIRestriction {
+public interface GuiRestriction {
 
     /**
      * Get the GUI JComponent name that is being restricted
      *
      * @return JComponent
      */
-    String getGUIComponentName();
+    String getGuiComponentName();
 
     /**
      * Get the type of restriction of the GUI component
