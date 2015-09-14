@@ -48,7 +48,7 @@ public final class SimpleGsonSerializer {
                 .registerTypeAdapter(OperationPrerequisite.class, new OperationPrerequisiteSerializer())
                 .registerTypeAdapter(EntityIriStatus.class, new EntityIriStatusSerializer())
                 .registerTypeHierarchyAdapter(AuthenticationDetails.class, new AuthenticationDetailsSerializer())
-                .registerTypeAdapter(GuiRestriction.class, new GUIRestrictionSerializer())
+                .registerTypeAdapter(GuiRestriction.class, new GuiRestrictionSerializer())
 
                 .enableComplexMapKeySerialization()
                 .setPrettyPrinting()

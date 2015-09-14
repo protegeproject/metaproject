@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class GUIRestrictionSerializer implements JsonSerializer<GuiRestriction>, JsonDeserializer<GuiRestriction> {
+public class GuiRestrictionSerializer implements JsonSerializer<GuiRestriction>, JsonDeserializer<GuiRestriction> {
 
     @Override
     public GuiRestriction deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
