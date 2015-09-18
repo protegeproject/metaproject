@@ -21,6 +21,6 @@ public interface AuthenticationDetails extends Comparable<AuthenticationDetails>
      *
      * @return Salted password
      */
-    SaltedPassword getPassword();
+    SaltedPasswordDigest getPassword();
 
 }

@@ -1,4 +1,4 @@
-package examples;
+package edu.stanford.protege.metaproject.examples;
 
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;

@@ -3,22 +3,25 @@ package edu.stanford.protege.metaproject.api;
 import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
+@RunWith(MockitoJUnitRunner.class)
 public class EntityNameTest {
-    private static final String
-            nameSuffixStr = "testSuffix",
-            diffNameSuffixStr = "diffTestSuffix",
-            toStringHead = "EntityName";
+    private static final String toStringHead = EntityName.class.getSimpleName();
 
-    private EntityNamePrefix namePrefix = Utils.getEntityNamePrefix();
-    private EntityNameSuffix nameSuffix = Utils.getEntityNameSuffix(nameSuffixStr), otherNameSuffix = Utils.getEntityNameSuffix(diffNameSuffixStr);
+    @Mock private EntityNamePrefix namePrefix;
+    @Mock private EntityNameSuffix nameSuffix, otherNameSuffix;
+
     private EntityName entityName, otherEntityName, diffEntityName;
 
     @Before
@@ -35,7 +38,9 @@ public class EntityNameTest {
 
     @Test
     public void testGetName() {
-        assertThat(entityName.get(), is(namePrefix.get().concat(nameSuffixStr)));
+        when(namePrefix.get()).thenReturn("prefix");
+        when(nameSuffix.get()).thenReturn("suffix");
+        assertThat(entityName.get(), is(namePrefix.get().concat(nameSuffix.get())));
     }
 
     @Test

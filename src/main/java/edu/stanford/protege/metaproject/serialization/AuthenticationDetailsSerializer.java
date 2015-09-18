@@ -3,11 +3,11 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.AuthenticationDetails;
 import edu.stanford.protege.metaproject.api.Salt;
-import edu.stanford.protege.metaproject.api.SaltedPassword;
+import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
 import edu.stanford.protege.metaproject.api.UserId;
 import edu.stanford.protege.metaproject.api.impl.AuthenticationDetailsImpl;
 import edu.stanford.protege.metaproject.api.impl.SaltImpl;
-import edu.stanford.protege.metaproject.api.impl.SaltedPasswordImpl;
+import edu.stanford.protege.metaproject.api.impl.SaltedPasswordDigestImpl;
 import edu.stanford.protege.metaproject.api.impl.UserIdImpl;
 
 import java.lang.reflect.Type;
@@ -23,7 +23,7 @@ public class AuthenticationDetailsSerializer implements JsonSerializer<Authentic
         JsonObject obj = element.getAsJsonObject();
         UserId userId = new UserIdImpl(obj.getAsJsonPrimitive("userId").getAsString());
         Salt salt = new SaltImpl(obj.getAsJsonPrimitive("salt").getAsString());
-        SaltedPassword password = new SaltedPasswordImpl(obj.getAsJsonPrimitive("password").getAsString(), salt);
+        SaltedPasswordDigest password = new SaltedPasswordDigestImpl(obj.getAsJsonPrimitive("password").getAsString(), salt);
         return new AuthenticationDetailsImpl(userId, password);
     }
 

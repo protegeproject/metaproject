@@ -1,13 +1,13 @@
 package edu.stanford.protege.metaproject.api;
 
 /**
- * A representation of a salted password, consisting of the (string) hashed password,
+ * A representation of a hashed password, consisting of the password hash,
  * and the salt used to hash the password
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface SaltedPassword extends Password {
+public interface SaltedPasswordDigest extends Password {
 
     /**
      * Get the salt used in for hashing this password

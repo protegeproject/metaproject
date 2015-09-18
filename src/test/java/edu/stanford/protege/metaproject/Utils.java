@@ -156,11 +156,11 @@ public class Utils {
 
     /*   authentication   */
 
-    public static SaltedPassword getSaltedPassword() {
+    public static SaltedPasswordDigest getSaltedPassword() {
         return getSaltedPassword("testPassword" + random.nextInt(), getSalt());
     }
 
-    public static SaltedPassword getSaltedPassword(String password, Salt salt) {
+    public static SaltedPasswordDigest getSaltedPassword(String password, Salt salt) {
         return Utils.getPasswordMaster().createHash(new PlainPasswordImpl(password), salt);
     }
 
@@ -184,7 +184,7 @@ public class Utils {
         return getAuthenticationDetails(getUserId(), getSaltedPassword());
     }
 
-    public static AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPassword password) {
+    public static AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
         return new AuthenticationDetailsImpl(userId, password);
     }
 
@@ -196,16 +196,16 @@ public class Utils {
         return new SaltGeneratorImpl(byteSize);
     }
 
-    public static PasswordHandler getPasswordMaster() {
-        return new PBKDF2PasswordHandler.Builder().createPasswordMaster();
+    public static PasswordHasher getPasswordMaster() {
+        return new Pbkdf2PasswordHasher.Builder().createPasswordHasher();
     }
 
-    public static PasswordHandler getPasswordMaster(int hashByteSize, int nrPBKDF2Iterations, SaltGenerator saltGenerator) {
-        return new PBKDF2PasswordHandler.Builder()
+    public static PasswordHasher getPasswordMaster(int hashByteSize, int nrPBKDF2Iterations, SaltGenerator saltGenerator) {
+        return new Pbkdf2PasswordHasher.Builder()
                 .setHashByteSize(hashByteSize)
-                .setNrPBKDF2Iterations(nrPBKDF2Iterations)
+                .setNumberOfIterations(nrPBKDF2Iterations)
                 .setSaltGenerator(saltGenerator)
-                .createPasswordMaster();
+                .createPasswordHasher();
     }
 
 

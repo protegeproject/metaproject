@@ -8,7 +8,8 @@ import java.util.Set;
 
 /**
  * Manager for user authentication; handles the (modification of the) registration of users in the server, and the verification
- * of credentials for accessing the server. The AuthenticationManager maintains a collection of user authentication details
+ * of credentials for accessing the server. The AuthenticationManager maintains a collection of user authentication details, which
+ * map a user identifier to a (salted) password. Credential verification is done against the given password validator.
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -19,11 +20,11 @@ public interface AuthenticationManager extends Manager {
      * Register a user in the user registry
      *
      * @param userId  User identifier
-     * @param password  Plain text password
+     * @param password  Password
      * @throws UserIdAlreadyInUseException   User is already registered
      * @throws EmailAddressAlreadyInUseException Email address is already in use by another user
      */
-    void add(UserId userId, PlainPassword password) throws UserIdAlreadyInUseException, EmailAddressAlreadyInUseException;
+    void add(UserId userId, SaltedPasswordDigest password) throws UserIdAlreadyInUseException, EmailAddressAlreadyInUseException;
 
     /**
      * Remove user from the authentication registry (the user will not be able to login)
@@ -57,7 +58,7 @@ public interface AuthenticationManager extends Manager {
      * @return true if user and password are valid w.r.t. the authentication details, false otherwise
      * @throws UserNotRegisteredException   User is not registered
      */
-    boolean hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException;
+    boolean hasValidCredentials(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException;
 
     /**
      * Change password of a specified user to the given password
@@ -66,14 +67,6 @@ public interface AuthenticationManager extends Manager {
      * @param password  New password
      * @throws UserNotRegisteredException   User is not registered
      */
-    void changePassword(UserId userId, PlainPassword password) throws UserNotRegisteredException;
-
-    /**
-     * Change password of the user to the given password, based on the specified authentication details
-     *
-     * @param userDetails   User authentication details
-     * @param password  New password
-     */
-    void changePassword(AuthenticationDetails userDetails, PlainPassword password);
+    void changePassword(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException;
 
 }

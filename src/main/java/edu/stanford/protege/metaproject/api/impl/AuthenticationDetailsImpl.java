@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.AuthenticationDetails;
-import edu.stanford.protege.metaproject.api.SaltedPassword;
+import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
 import edu.stanford.protege.metaproject.api.UserId;
 
 import javax.annotation.Nonnull;
@@ -17,9 +17,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class AuthenticationDetailsImpl implements AuthenticationDetails, Serializable, Comparable<AuthenticationDetails> {
-    private static final long serialVersionUID = -4226255739793169878L;
+    private static final long serialVersionUID = 5343702467818633900L;
     private final UserId userId;
-    private final SaltedPassword password;
+    private final SaltedPasswordDigest password;
 
     /**
      * Constructor
@@ -27,13 +27,13 @@ public final class AuthenticationDetailsImpl implements AuthenticationDetails, S
      * @param userId    User identifier
      * @param password  Salted (hashed) password
      */
-    public AuthenticationDetailsImpl(UserId userId, SaltedPassword password) {
+    public AuthenticationDetailsImpl(UserId userId, SaltedPasswordDigest password) {
         this.userId = checkNotNull(userId);
         this.password = checkNotNull(password);
     }
 
     @Override
-    public SaltedPassword getPassword() {
+    public SaltedPasswordDigest getPassword() {
         return password;
     }
 

@@ -1,29 +1,35 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
+@RunWith(MockitoJUnitRunner.class)
 public class AuthenticationManagerTest {
+    private static final String toStringHead = AuthenticationManager.class.getSimpleName();
+
     private static final AuthenticationDetails auth1 = Utils.getAuthenticationDetails();
     private static final Set<AuthenticationDetails> authSet = Utils.getAuthenticationDetailsSet(auth1);
-    private static final String toStringHead = "AuthenticationManager";
-    private static final UserId userId1 = Utils.getUserId(), userId2 = Utils.getUserId(), userId3 = Utils.getUserId();
-    private static final PlainPassword passwd1 = Utils.getPlainPassword(), passwd2 = Utils.getPlainPassword(), passwd3 = Utils.getPlainPassword();
 
+    @Mock private UserId userId1, userId2, userId3;
+    @Mock private SaltedPasswordDigest passwd1, passwd2, passwd3;
 
     private AuthenticationManager authManager, otherAuthManager, diffAuthManager;
 
@@ -58,6 +64,13 @@ public class AuthenticationManagerTest {
     }
 
     @Test
+    public void testAddAuthentication() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException, UserNotRegisteredException {
+        AuthenticationDetails authentication5 = Utils.getAuthenticationDetails();
+        authManager.add(authentication5.getUserId(), authentication5.getPassword());
+        assertThat(authManager.getAuthenticationDetails(authentication5.getUserId()), is(authentication5));
+    }
+
+    @Test
     public void testRemoveAuthentication() throws UnknownAccessControlObjectIdException, UserNotRegisteredException {
         assertThat(authManager.contains(userId3), is(true));
         authManager.remove(userId3);
@@ -71,30 +84,19 @@ public class AuthenticationManagerTest {
     }
 
     @Test
-    public void testAddAuthentication() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException, UserNotRegisteredException {
-        AuthenticationDetails authentication5 = Utils.getAuthenticationDetails();
-        authManager.add(authentication5.getUserId(), Utils.getPlainPassword());
-        assertThat(authManager.getAuthenticationDetails(authentication5.getUserId()), is(not(equalTo(null))));
-    }
-
-    @Test
     public void testChangePassword() throws UserNotRegisteredException {
-        PlainPassword password = Utils.getPlainPassword();
+        SaltedPasswordDigest password = Utils.getSaltedPassword();
         authManager.changePassword(userId2, password);
         assertThat(authManager.hasValidCredentials(userId2, password), is(true));
     }
 
     @Test
-    public void testChangePasswordBasedOnAuthDetails() throws UserNotRegisteredException {
-        PlainPassword password = Utils.getPlainPassword();
-        authManager.changePassword(authManager.getAuthenticationDetails(userId2), password);
-        assertThat(authManager.hasValidCredentials(userId2, password), is(true));
-    }
-
-    @Test
     public void testHasValidCredentials() throws UserNotRegisteredException {
+        when(passwd1.getPassword()).thenReturn("password");
         assertThat(authManager.hasValidCredentials(userId1, passwd1), is(true));
-        assertThat(authManager.hasValidCredentials(userId1, Utils.getPlainPassword()), is(false));
+
+        when(passwd2.getPassword()).thenReturn("diffPassword");
+        assertThat(authManager.hasValidCredentials(userId1, passwd2), is(false));
     }
 
     @Test

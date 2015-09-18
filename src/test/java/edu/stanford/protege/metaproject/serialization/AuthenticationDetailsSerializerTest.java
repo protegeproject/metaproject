@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.AuthenticationDetails;
-import edu.stanford.protege.metaproject.api.SaltedPassword;
+import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
 import edu.stanford.protege.metaproject.api.UserId;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class AuthenticationDetailsSerializerTest {
     private static final UserId userId = Utils.getUserId(), diffUserId = Utils.getUserId();
-    private static final SaltedPassword password = Utils.getSaltedPassword(), diffPassword = Utils.getSaltedPassword();
+    private static final SaltedPasswordDigest password = Utils.getSaltedPassword(), diffPassword = Utils.getSaltedPassword();
 
     private String jsonAuthenticationDetails, jsonOtherAuthenticationDetails, jsonDiffAuthenticationDetails;
     private AuthenticationDetails authenticationDetails, otherAuthenticationDetails, diffAuthenticationDetails;

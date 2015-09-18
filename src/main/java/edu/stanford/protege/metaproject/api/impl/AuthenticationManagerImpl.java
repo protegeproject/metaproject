@@ -8,22 +8,17 @@ import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseExceptio
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Manager for user authentication; handles the (modification of the) registration of users in the server, and the verification
- * of credentials for accessing the server. The AuthenticationManager maintains a collection of user authentication details
- *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
 public class AuthenticationManagerImpl implements AuthenticationManager, Serializable {
-    private static final long serialVersionUID = -348037684603511882L;
-    private final PasswordHandler passwordHandler = new PBKDF2PasswordHandler.Builder().createPasswordMaster();
-    private Set<AuthenticationDetails> authenticationDetails = new HashSet<>();
+    private static final long serialVersionUID = 6714308634662458905L;
+    private Set<AuthenticationDetails> authenticationDetails;
 
     /**
      * Constructor
@@ -34,86 +29,34 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
         this.authenticationDetails = checkNotNull(authenticationDetails);
     }
 
-    /**
-     * No-arguments constructor for a new, empty policy
-     */
-    public AuthenticationManagerImpl() { }
-
-    /**
-     * Verify whether the given user-password pair is a valid (registered) one
-     *
-     * @param userId    User identifier
-     * @param password  Password
-     * @return true if user and password are valid w.r.t. the authentication details, false otherwise
-     * @throws UserNotRegisteredException   User is not registered
-     */
     @Override
-    public boolean hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException {
-        AuthenticationDetails userDetails = getAuthenticationDetails(userId);
-        return passwordHandler.validatePassword(password, userDetails.getPassword());
+    public boolean hasValidCredentials(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException {
+        SaltedPasswordDigest correctHash = getAuthenticationDetails(userId).getPassword();
+        return slowEquals(password.getPassword().getBytes(), correctHash.getPassword().getBytes());
     }
 
-    /**
-     * Register a user in the user registry
-     *
-     * @param userId  User identifier
-     * @param password  Plain text password
-     * @throws UserIdAlreadyInUseException   User is already registered
-     * @throws EmailAddressAlreadyInUseException Email address is already in use by another user
-     */
     @Override
-    public void add(UserId userId, PlainPassword password) throws UserIdAlreadyInUseException, EmailAddressAlreadyInUseException {
+    public void add(UserId userId, SaltedPasswordDigest password) throws UserIdAlreadyInUseException, EmailAddressAlreadyInUseException {
         if(contains(userId)) {
-            throw new UserIdAlreadyInUseException("The specified user is already registered with the authentication protocol. Recover or change the password.");
+            throw new UserIdAlreadyInUseException("The specified user is already registered with the authentication manager. Recover or change the password.");
         }
-        authenticationDetails.add(getHashedAuthenticationDetails(userId, password));
+        authenticationDetails.add(getAuthenticationDetails(userId, password));
     }
 
-    /**
-     * Remove user from the authentication registry (the user will not be able to login)
-     *
-     * @param userId  User identifier
-     * @throws UserNotRegisteredException   User is not registered
-     */
     @Override
     public void remove(UserId userId) throws UserNotRegisteredException {
         AuthenticationDetails toDelete = getAuthenticationDetails(userId);
         authenticationDetails.remove(toDelete);
     }
 
-    /**
-     * Change password of a specified user to the given password
-     *
-     * @param userId  User identifier
-     * @param password  New password
-     * @throws UserNotRegisteredException   User is not registered
-     */
     @Override
-    public void changePassword(UserId userId, PlainPassword password) throws UserNotRegisteredException {
-        AuthenticationDetails userDetails = getAuthenticationDetails(userId);
-        changePassword(userDetails, password);
-    }
-
-    /**
-     * Change password of the user to the given password, based on the specified authentication details
-     *
-     * @param userDetails   User authentication details
-     * @param password  New password
-     */
-    @Override
-    public void changePassword(AuthenticationDetails userDetails, PlainPassword password) {
-        authenticationDetails.remove(userDetails);
-        AuthenticationDetails newUserDetails = getHashedAuthenticationDetails(userDetails.getUserId(), password);
+    public void changePassword(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException {
+        authenticationDetails.remove(getAuthenticationDetails(userId));
+        AuthenticationDetails newUserDetails = getAuthenticationDetails(userId, password);
         authenticationDetails.add(newUserDetails);
     }
 
-    /**
-     * Get the authentication details of the user with the given user identifier
-     *
-     * @param userId    User identifier
-     * @return Authentication details of user
-     * @throws UserNotRegisteredException   User is not registered
-     */
+    @Override
     public AuthenticationDetails getAuthenticationDetails(UserId userId) throws UserNotRegisteredException {
         AuthenticationDetails details = null;
         for(AuthenticationDetails userDetails : authenticationDetails) {
@@ -123,28 +66,39 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
             }
         }
         if(details == null) {
-            throw new UserNotRegisteredException("The specified user identifier does not correspond to a registered user.");
+            throw new UserNotRegisteredException("The specified user identifier does not correspond to a user registered" +
+                    " with the authentication manager.");
         }
         return details;
     }
 
     /**
-     * Get an instance of UserAuthenticationDetails using the specified user identifier, password and salt
+     * Get an instance of UserAuthenticationDetails using the specified user identifier and password
      *
      * @param userId    User identifier
-     * @param password  Plain password
+     * @param password  Password
      * @return Instance of UserAuthenticationDetails
      */
-    private AuthenticationDetails getHashedAuthenticationDetails(UserId userId, PlainPassword password) {
-        SaltedPassword passwordHash = passwordHandler.createHash(password);
-        return new AuthenticationDetailsImpl(userId, passwordHash);
+    private AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
+        return new AuthenticationDetailsImpl(userId, password);
     }
 
     /**
-     * Get all entries of user authentication details
+     * Compares two byte arrays in length-constant time. This comparison method is used so that password hashes
+     * cannot be extracted from an on-line system using a timing attack and then attacked off-line
      *
-     * @return Set of user authentication details
+     * @param a First byte array
+     * @param b Second byte array
+     * @return true if both byte arrays are the same, false otherwise
      */
+    private boolean slowEquals(byte[] a, byte[] b) {
+        int diff = a.length ^ b.length;
+        for(int i = 0; i < a.length && i < b.length; i++) {
+            diff |= a[i] ^ b[i];
+        }
+        return diff == 0;
+    }
+
     @Override
     public Set<AuthenticationDetails> getAuthenticationDetails() {
         return authenticationDetails;
@@ -176,7 +130,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("userAuthenticationDetails", authenticationDetails)
+                .add("authenticationDetails", authenticationDetails)
                 .toString();
     }
 }

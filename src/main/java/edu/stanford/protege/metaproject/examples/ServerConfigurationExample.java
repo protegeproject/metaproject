@@ -1,13 +1,15 @@
-package examples;
+package edu.stanford.protege.metaproject.examples;
 
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 import edu.stanford.protege.metaproject.api.impl.*;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -24,11 +26,15 @@ public class ServerConfigurationExample {
         /*   Authentication   */
 
         // create an empty authentication manager
-        AuthenticationManager authenticationManager = new AuthenticationManagerImpl();
+        AuthenticationManager authenticationManager = new AuthenticationManagerImpl(new HashSet<>());
+
+        PasswordHasher hasher = new Pbkdf2PasswordHasher.Builder().createPasswordHasher();
 
         // register test users
-        authenticationManager.add(new UserIdImpl("user1"), new PlainPasswordImpl("password1"));
-        authenticationManager.add(new UserIdImpl("user2"), new PlainPasswordImpl("password2"));
+        UserId testUser1 = new UserIdImpl("user1"), testUser2 = new UserIdImpl("user2");
+        PlainPassword password1 = new PlainPasswordImpl("password1"), password2 = new PlainPasswordImpl("password2");
+        authenticationManager.add(testUser1, hasher.createHash(password1));
+        authenticationManager.add(testUser2, hasher.createHash(password2));
 
 
         /*   Host   */

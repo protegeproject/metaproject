@@ -3,31 +3,28 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.Salt;
-import edu.stanford.protege.metaproject.api.SaltedPassword;
+import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
 
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A representation of a salted password, consisting of the (string) hashed password,
- * and the salt used to hash the password
- *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class SaltedPasswordImpl implements SaltedPassword, Serializable {
-    private static final long serialVersionUID = 1956370831077820579L;
+public final class SaltedPasswordDigestImpl implements SaltedPasswordDigest, Serializable {
+    private static final long serialVersionUID = 1056253022644101150L;
     private final String password;
     private final Salt salt;
 
     /**
-     * Constructor
+     * Constructor for salted passwords
      *
-     * @param password    Password string
-     * @param salt  Salt
+     * @param password Password
+     * @param salt     Salt
      */
-    public SaltedPasswordImpl(String password, Salt salt) {
+    public SaltedPasswordDigestImpl(String password, Salt salt) {
         this.password = checkNotNull(password);
         this.salt = checkNotNull(salt);
     }
@@ -51,7 +48,7 @@ public final class SaltedPasswordImpl implements SaltedPassword, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SaltedPasswordImpl that = (SaltedPasswordImpl) o;
+        SaltedPasswordDigestImpl that = (SaltedPasswordDigestImpl) o;
         return Objects.equal(password, that.password) &&
                 Objects.equal(salt, that.salt);
     }

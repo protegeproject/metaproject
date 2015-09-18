@@ -3,6 +3,9 @@ package edu.stanford.protege.metaproject.api;
 import edu.stanford.protege.metaproject.Utils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,10 +14,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
+@RunWith(MockitoJUnitRunner.class)
 public class HostTest {
-    private static final Address hostAddress = Utils.getAddress("testHostId1"), diffHostAddress = Utils.getAddress("testHostId2");
+    private static final String toStringHead = Host.class.getSimpleName();
     private static final int port = 8080, diffPort = 8081;
-    private static final String toStringHead = "Host";
+
+    @Mock private Address hostAddress, diffHostAddress;
 
     private Host host, otherHost, diffHost;
 
