@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.examples;
 
 import com.google.gson.Gson;
-import edu.stanford.protege.metaproject.api.Metaproject;
+import edu.stanford.protege.metaproject.api.AccessControlPolicy;
 import edu.stanford.protege.metaproject.serialization.SimpleGsonSerializer;
 
 /**
@@ -15,7 +15,7 @@ public class Utils {
         return new SimpleGsonSerializer().getDefaultSerializer();
     }
 
-    public static Metaproject getMetaproject() {
+    public static AccessControlPolicy getAccessControlPolicy() {
         return new ExamplePolicy().getPolicy();
     }
 

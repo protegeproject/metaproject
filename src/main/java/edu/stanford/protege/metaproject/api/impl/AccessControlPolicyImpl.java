@@ -18,8 +18,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  *         Stanford Center for Biomedical Informatics Research
  */
-public class MetaprojectImpl implements Metaproject, Serializable {
-    private static final long serialVersionUID = 231539690194538811L;
+public class AccessControlPolicyImpl implements AccessControlPolicy, Serializable {
+    private static final long serialVersionUID = -7454608160273032483L;
     private PolicyManager policyManager;
     private RoleManager roleManager;
     private OperationManager operationManager;
@@ -31,7 +31,7 @@ public class MetaprojectImpl implements Metaproject, Serializable {
      *
      * @param policyManager Policy manager
      */
-    MetaprojectImpl(PolicyManager policyManager, RoleManager roleManager, OperationManager operationManager, UserManager userManager, ProjectManager projectManager) {
+    AccessControlPolicyImpl(PolicyManager policyManager, RoleManager roleManager, OperationManager operationManager, UserManager userManager, ProjectManager projectManager) {
         this.policyManager = checkNotNull(policyManager);
         this.roleManager = checkNotNull(roleManager);
         this.operationManager = checkNotNull(operationManager);
@@ -148,7 +148,7 @@ public class MetaprojectImpl implements Metaproject, Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MetaprojectImpl policy = (MetaprojectImpl) o;
+        AccessControlPolicyImpl policy = (AccessControlPolicyImpl) o;
         return Objects.equal(policyManager, policy.policyManager) &&
                 Objects.equal(roleManager, policy.roleManager) &&
                 Objects.equal(operationManager, policy.operationManager) &&
@@ -207,8 +207,8 @@ public class MetaprojectImpl implements Metaproject, Serializable {
             return this;
         }
 
-        public MetaprojectImpl createAccessControlPolicy() {
-            return new MetaprojectImpl(policyManager, roleManager, operationManager, userManager, projectManager);
+        public AccessControlPolicyImpl createAccessControlPolicy() {
+            return new AccessControlPolicyImpl(policyManager, roleManager, operationManager, userManager, projectManager);
         }
     }
 }

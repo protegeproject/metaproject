@@ -14,22 +14,22 @@ import java.util.*;
 public class MetaprojectExplorationExample {
 
     public static void main(String[] args) throws FileNotFoundException, EmailAddressAlreadyInUseException, UserIdAlreadyInUseException, UnknownUserIdException, UnknownOperationIdException, UnknownRoleIdException {
-        Metaproject metaproject = Utils.getMetaproject();
+        AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy();
         Gson gson = Utils.getGson();
 
 
-        /*   Serializing Metaproject   */
+        /*   Serializing access control policy   */
 
-        // convert metaproject object to a JSON representation
-        String jsonMetaproject = gson.toJson(metaproject, Metaproject.class);
+        // convert access control policy to its JSON representation
+        String jsonAccessControlPolicy = gson.toJson(accessControlPolicy, AccessControlPolicy.class);
 
         // print JSON representation
-        Utils.println(Utils.sep + "\nJSON representation of a sample metaproject\n" + Utils.sep + "\n\n" + jsonMetaproject);
+        Utils.println(Utils.sep + "\nJSON representation of a sample access control policy\n" + Utils.sep + "\n\n" + jsonAccessControlPolicy);
 
 
         /*   Users   */
 
-        UserManager userManager = metaproject.getUserManager();
+        UserManager userManager = accessControlPolicy.getUserManager();
         Utils.println("\n" + Utils.sep + "\nUsers\n" + Utils.sep);
 
         // get the known users (i.e., those registered with the user manager)
@@ -48,7 +48,7 @@ public class MetaprojectExplorationExample {
         /*   Projects   */
 
         Utils.println("\n" + Utils.sep + "\nProjects\n" + Utils.sep);
-        ProjectManager projectManager = metaproject.getProjectManager();
+        ProjectManager projectManager = accessControlPolicy.getProjectManager();
 
         // get the known projects (i.e., those registered with the project manager)
         Set<Project> projects = projectManager.getProjects();
@@ -69,7 +69,7 @@ public class MetaprojectExplorationExample {
         /*  Operations   */
 
         Utils.println("\n" + Utils.sep + "\nOperations\n" + Utils.sep);
-        OperationManager operationManager = metaproject.getOperationManager();
+        OperationManager operationManager = accessControlPolicy.getOperationManager();
 
         // get the known operations (i.e., those registered with the operation manager)
         Set<Operation> operations = operationManager.getOperations();
@@ -84,7 +84,7 @@ public class MetaprojectExplorationExample {
         /*   Roles   */
 
         Utils.println("\n" + Utils.sep + "\nRoles\n" + Utils.sep);
-        RoleManager roleManager = metaproject.getRoleManager();
+        RoleManager roleManager = accessControlPolicy.getRoleManager();
 
         // get the known roles (i.e., those registered with the role manager)
         Set<Role> roles = roleManager.getRoles();
@@ -108,7 +108,7 @@ public class MetaprojectExplorationExample {
         /*   Policy   */
 
         Utils.println("\n" + Utils.sep + "\nPolicy\n" + Utils.sep);
-        PolicyManager policyManager = metaproject.getPolicyManager();
+        PolicyManager policyManager = accessControlPolicy.getPolicyManager();
 
         Map<UserId, Set<RoleId>> policyMap = policyManager.getUserRoleMappings();
         for(UserId userId : policyMap.keySet()) {

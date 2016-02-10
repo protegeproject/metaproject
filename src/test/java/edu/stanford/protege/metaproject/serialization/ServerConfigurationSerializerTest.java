@@ -18,7 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ServerConfigurationSerializerTest {
     private static final Host host = Utils.getHost(), diffHost = Utils.getHost();
-    private static final Metaproject metaproject = Utils.getMetaproject();
+    private static final AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy();
     private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
     private static final Map<String,String> propertyMap = Utils.getStringPropertyMap();
     private static final EntityIriStatus idStatus = Utils.getEntityIriStatus();
@@ -31,9 +31,9 @@ public class ServerConfigurationSerializerTest {
     public void setUp() {
         gson = new SimpleGsonSerializer().getDefaultSerializer();
 
-        config = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertyMap, idStatus);
-        otherServerConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertyMap, idStatus);
-        diffServerConfiguration = Utils.getServerConfiguration(diffHost, metaproject, authenticationManager, propertyMap, idStatus);
+        config = Utils.getServerConfiguration(host, accessControlPolicy, authenticationManager, propertyMap, idStatus);
+        otherServerConfiguration = Utils.getServerConfiguration(host, accessControlPolicy, authenticationManager, propertyMap, idStatus);
+        diffServerConfiguration = Utils.getServerConfiguration(diffHost, accessControlPolicy, authenticationManager, propertyMap, idStatus);
 
         jsonServerConfiguration = gson.toJson(config, ServerConfiguration.class);
         jsonOtherServerConfiguration = gson.toJson(otherServerConfiguration, ServerConfiguration.class);
@@ -84,7 +84,7 @@ public class ServerConfigurationSerializerTest {
 
     @Test
     public void testGetPolicy() {
-        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getMetaproject(), is(metaproject));
+        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getAccessControlPolicy(), is(accessControlPolicy));
     }
 
     @Test

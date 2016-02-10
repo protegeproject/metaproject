@@ -271,13 +271,13 @@ public class Utils {
     }
 
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Utils.getHost(), Utils.getMetaproject(), Utils.getAuthenticationManager(), Utils.getStringPropertyMap(), Utils.getEntityIriStatus());
+        return getServerConfiguration(Utils.getHost(), Utils.getAccessControlPolicy(), Utils.getAuthenticationManager(), Utils.getStringPropertyMap(), Utils.getEntityIriStatus());
     }
 
-    public static ServerConfiguration getServerConfiguration(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Map<String, String> properties, EntityIriStatus idStatus) {
+    public static ServerConfiguration getServerConfiguration(Host host, AccessControlPolicy accessControlPolicy, AuthenticationManager authenticationManager, Map<String, String> properties, EntityIriStatus idStatus) {
         return new ServerConfigurationImpl.Builder()
                 .setHost(host)
-                .setMetaproject(metaproject)
+                .setAccessControlPolicy(accessControlPolicy)
                 .setAuthenticationManager(authenticationManager)
                 .setPropertyMap(properties)
                 .setEntityIriStatus(idStatus)
@@ -285,11 +285,11 @@ public class Utils {
     }
 
     public static ClientConfiguration getClientConfiguration() {
-        return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getStringPropertyMap());
+        return getClientConfiguration(Utils.getAccessControlPolicy(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getStringPropertyMap());
     }
 
-    public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Set<GuiRestriction> disabledUIComponents, Map<String,String> propertyMap) {
-        return new ClientConfigurationImpl(metaproject, syncDelay, disabledUIComponents, propertyMap);
+    public static ClientConfiguration getClientConfiguration(AccessControlPolicy accessControlPolicy, int syncDelay, Set<GuiRestriction> disabledUIComponents, Map<String,String> propertyMap) {
+        return new ClientConfigurationImpl(accessControlPolicy, syncDelay, disabledUIComponents, propertyMap);
     }
 
     public static Host getHost() {
@@ -300,17 +300,17 @@ public class Utils {
         return new HostImpl(address, port);
     }
 
-    public static Metaproject getPolicySample() {
+    public static AccessControlPolicy getPolicySample() {
         return new TestPolicy().getPolicy();
     }
 
-    public static Metaproject getMetaproject() {
-        return getMetaproject(Utils.getPolicyManager(Utils.getUserRoleMap()), Utils.getUserManager(Utils.getUserSet()),
+    public static AccessControlPolicy getAccessControlPolicy() {
+        return getAccessControlPolicy(Utils.getPolicyManager(Utils.getUserRoleMap()), Utils.getUserManager(Utils.getUserSet()),
                 Utils.getRoleManager(Utils.getRoleSet()), Utils.getOperationManager(Utils.getOperationSet()), Utils.getProjectManager(Utils.getProjectSet()));
     }
 
-    public static Metaproject getMetaproject(PolicyManager policyManager, UserManager userManager, RoleManager roleManager, OperationManager operationManager, ProjectManager projectManager) {
-        return new MetaprojectImpl.Builder()
+    public static AccessControlPolicy getAccessControlPolicy(PolicyManager policyManager, UserManager userManager, RoleManager roleManager, OperationManager operationManager, ProjectManager projectManager) {
+        return new AccessControlPolicyImpl.Builder()
                 .setPolicyManager(policyManager)
                 .setUserManager(userManager)
                 .setRoleManager(roleManager)

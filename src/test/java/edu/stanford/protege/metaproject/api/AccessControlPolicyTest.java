@@ -16,8 +16,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class MetaprojectTest {
-    private static final String toStringHead = "Metaproject";
+public class AccessControlPolicyTest {
+    private static final String toStringHead = AccessControlPolicy.class.getSimpleName();
     private static final User user1 = Utils.getUser(), user2 = Utils.getUser(), user3 = Utils.getUser();
     private static final UserManager userManager = Utils.getUserManager(Utils.getUserSet(user1, user2, user3));
 
@@ -36,105 +36,105 @@ public class MetaprojectTest {
 
     private static PolicyManager policyManager = Utils.getPolicyManager();
 
-    private Metaproject metaproject, otherMetaproject, diffMetaproject;
+    private AccessControlPolicy accessControlPolicy, otherAccessControlPolicy, diffAccessControlPolicy;
 
     @Before
     public void setUp() throws PolicyException {
         policyManager.add(user1.getId(), role1.getId(), role2.getId());
         policyManager.add(user3.getId(), role1.getId(), role2.getId());
 
-        metaproject = Utils.getMetaproject(policyManager, userManager, roleManager, operationManager, projectManager);
-        otherMetaproject = Utils.getMetaproject(policyManager, userManager, roleManager, operationManager, projectManager);
-        diffMetaproject = Utils.getMetaproject();
+        accessControlPolicy = Utils.getAccessControlPolicy(policyManager, userManager, roleManager, operationManager, projectManager);
+        otherAccessControlPolicy = Utils.getAccessControlPolicy(policyManager, userManager, roleManager, operationManager, projectManager);
+        diffAccessControlPolicy = Utils.getAccessControlPolicy();
     }
 
     @Test
     public void testNotNull() {
-        assertThat(metaproject, is(not(equalTo(null))));
+        assertThat(accessControlPolicy, is(not(equalTo(null))));
     }
 
     @Test
     public void testGetUserManager() {
-        assertThat(metaproject.getUserManager(), is(userManager));
+        assertThat(accessControlPolicy.getUserManager(), is(userManager));
     }
 
     @Test
     public void testGetRoleManager() {
-        assertThat(metaproject.getRoleManager(), is(roleManager));
+        assertThat(accessControlPolicy.getRoleManager(), is(roleManager));
     }
 
     @Test
     public void testGetProjectManager() {
-        assertThat(metaproject.getProjectManager(), is(projectManager));
+        assertThat(accessControlPolicy.getProjectManager(), is(projectManager));
     }
 
     @Test
     public void testGetOperationManager() {
-        assertThat(metaproject.getOperationManager(), is(operationManager));
+        assertThat(accessControlPolicy.getOperationManager(), is(operationManager));
     }
 
     @Test
     public void testGetPolicyManager() {
-        assertThat(metaproject.getPolicyManager(), is(policyManager));
+        assertThat(accessControlPolicy.getPolicyManager(), is(policyManager));
     }
 
     @Test
     public void testIsOperationAllowed() throws MetaprojectException {
-        assertThat(metaproject.getPolicyManager().getRoles(user1.getId()).contains(role1.getId()), is(true));
-        assertThat(metaproject.isOperationAllowed(operation1.getId(), project1.getId(), user1.getId()), is(true));
-        assertThat(metaproject.isOperationAllowed(operation3.getId(), project1.getId(), user1.getId()), is(false));
+        assertThat(accessControlPolicy.getPolicyManager().getRoles(user1.getId()).contains(role1.getId()), is(true));
+        assertThat(accessControlPolicy.isOperationAllowed(operation1.getId(), project1.getId(), user1.getId()), is(true));
+        assertThat(accessControlPolicy.isOperationAllowed(operation3.getId(), project1.getId(), user1.getId()), is(false));
     }
 
     @Test
     public void testGetOperationsInProject() throws MetaprojectException {
         Set<Operation> results = new HashSet<>(); results.add(operation1);
-        assertThat(metaproject.getOperationsInProject(user1.getId(), project1.getId()), is(results));
-        assertThat(metaproject.getOperationsInProject(user3.getId(), project3.getId()).isEmpty(), is(true));
+        assertThat(accessControlPolicy.getOperationsInProject(user1.getId(), project1.getId()), is(results));
+        assertThat(accessControlPolicy.getOperationsInProject(user3.getId(), project3.getId()).isEmpty(), is(true));
     }
 
     @Test
     public void testGetProjects() throws MetaprojectException {
         Set<Project> projects = new HashSet<>();
         projects.add(project1); projects.add(project2);
-        assertThat(metaproject.getProjects(user1.getId()), is(projects));
+        assertThat(accessControlPolicy.getProjects(user1.getId()), is(projects));
     }
 
     @Test
     public void testGetRoles() throws MetaprojectException {
         Set<Role> roles = new HashSet<>();
         roles.add(role1); roles.add(role2);
-        assertThat(metaproject.getRoles(user1.getId()), is(roles));
+        assertThat(accessControlPolicy.getRoles(user1.getId()), is(roles));
     }
 
     @Test
     public void testGetUsers() throws MetaprojectException {
         Set<User> users = new HashSet<>();
         users.add(user1); users.add(user3);
-        assertThat(metaproject.getUsers(project1.getId()), is(users));
+        assertThat(accessControlPolicy.getUsers(project1.getId()), is(users));
     }
 
     @Test
     public void testEqualToSelf() {
-        assertThat(metaproject, is(metaproject));
+        assertThat(accessControlPolicy, is(accessControlPolicy));
     }
 
     @Test
     public void testEquals() {
-        assertThat(metaproject, is(otherMetaproject));
+        assertThat(accessControlPolicy, is(otherAccessControlPolicy));
     }
 
     @Test
     public void testNotEquals() {
-        assertThat(metaproject, is(not(diffMetaproject)));
+        assertThat(accessControlPolicy, is(not(diffAccessControlPolicy)));
     }
 
     @Test
     public void testHashcode() {
-        assertThat(metaproject.hashCode(), is(otherMetaproject.hashCode()));
+        assertThat(accessControlPolicy.hashCode(), is(otherAccessControlPolicy.hashCode()));
     }
 
     @Test
     public void testToString() {
-        assertThat(metaproject.toString(), startsWith(toStringHead));
+        assertThat(accessControlPolicy.toString(), startsWith(toStringHead));
     }
 }

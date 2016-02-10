@@ -6,6 +6,13 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface PlainPassword extends Password {
+public interface PlainPassword {
+
+    /**
+     * Get the password
+     *
+     * @return Password string
+     */
+    String getPassword();
 
 }

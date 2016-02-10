@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.ClientConfiguration;
 import edu.stanford.protege.metaproject.api.GuiRestriction;
-import edu.stanford.protege.metaproject.api.Metaproject;
+import edu.stanford.protege.metaproject.api.AccessControlPolicy;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ClientConfigurationSerializerTest {
     private static final Map<String,String> propertyMap = Utils.getStringPropertyMap();
-    private static final Metaproject metaproject = Utils.getMetaproject(), diffMetaproject = Utils.getMetaproject();
+    private static final AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy(), diffAccessControlPolicy = Utils.getAccessControlPolicy();
     private static final Set<GuiRestriction> disabledUIElements = Utils.getGUIRestrictionSet();
     private static final int syncDelay = 150;
 
@@ -32,9 +32,9 @@ public class ClientConfigurationSerializerTest {
     public void setUp() {
         gson = new SimpleGsonSerializer().getDefaultSerializer();
 
-        config = Utils.getClientConfiguration(metaproject, syncDelay, disabledUIElements, propertyMap);
-        otherClientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, disabledUIElements, propertyMap);
-        diffClientConfiguration = Utils.getClientConfiguration(diffMetaproject, syncDelay, disabledUIElements, propertyMap);
+        config = Utils.getClientConfiguration(accessControlPolicy, syncDelay, disabledUIElements, propertyMap);
+        otherClientConfiguration = Utils.getClientConfiguration(accessControlPolicy, syncDelay, disabledUIElements, propertyMap);
+        diffClientConfiguration = Utils.getClientConfiguration(diffAccessControlPolicy, syncDelay, disabledUIElements, propertyMap);
 
         jsonClientConfiguration = gson.toJson(config);
         jsonOtherClientConfiguration = gson.toJson(otherClientConfiguration);
@@ -84,8 +84,8 @@ public class ClientConfigurationSerializerTest {
     }
 
     @Test
-    public void testGetMetaproject() {
-        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getMetaproject(), is(metaproject));
+    public void testGetAccessControlPolicy() {
+        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getAccessControlPolicy(), is(accessControlPolicy));
     }
 
     @Test

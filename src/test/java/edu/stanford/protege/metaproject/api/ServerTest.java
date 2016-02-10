@@ -44,9 +44,9 @@ public class ServerTest {
 
     @Test
     public void testUpdateConfigurationPolicy() {
-        Metaproject newMetaproject = Utils.getMetaproject();
-        server.updateConfiguration(newMetaproject);
-        assertThat(server.getConfiguration().getMetaproject(), is(newMetaproject));
+        AccessControlPolicy newAccessControlPolicy = Utils.getAccessControlPolicy();
+        server.updateConfiguration(newAccessControlPolicy);
+        assertThat(server.getConfiguration().getAccessControlPolicy(), is(newAccessControlPolicy));
     }
 
     @Test

@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.ClientConfiguration;
 import edu.stanford.protege.metaproject.api.GuiRestriction;
-import edu.stanford.protege.metaproject.api.Metaproject;
+import edu.stanford.protege.metaproject.api.AccessControlPolicy;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -19,8 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ClientConfigurationImpl implements ClientConfiguration, Serializable {
-    private static final long serialVersionUID = 6192317401431283814L;
-    private final Metaproject metaproject;
+    private static final long serialVersionUID = 92830488609615155L;
+    private final AccessControlPolicy accessControlPolicy;
     private final int synchronisationDelay;
     private final ImmutableSet<GuiRestriction> guiRestrictions;
     private final ImmutableMap<String,String> properties;
@@ -28,13 +28,13 @@ public final class ClientConfigurationImpl implements ClientConfiguration, Seria
     /**
      * Constructor
      *
-     * @param metaproject    Metaproject definition
+     * @param accessControlPolicy    Access control policy
      * @param synchronisationDelay  Synchronisation delay for configurations (in seconds)
      * @param guiRestrictions    Set of GUI restrictions
      * @param properties    Map of additional string properties
      */
-    public ClientConfigurationImpl(Metaproject metaproject, int synchronisationDelay, Set<GuiRestriction> guiRestrictions, Map<String,String> properties) {
-        this.metaproject = checkNotNull(metaproject);
+    public ClientConfigurationImpl(AccessControlPolicy accessControlPolicy, int synchronisationDelay, Set<GuiRestriction> guiRestrictions, Map<String,String> properties) {
+        this.accessControlPolicy = checkNotNull(accessControlPolicy);
         this.synchronisationDelay = checkNotNull(synchronisationDelay);
 
         ImmutableSet<GuiRestriction> disabledUIElementsCopy = new ImmutableSet.Builder<GuiRestriction>().addAll(checkNotNull(guiRestrictions)).build();
@@ -45,8 +45,8 @@ public final class ClientConfigurationImpl implements ClientConfiguration, Seria
     }
 
     @Override
-    public Metaproject getMetaproject() {
-        return metaproject;
+    public AccessControlPolicy getAccessControlPolicy() {
+        return accessControlPolicy;
     }
 
     @Override
@@ -70,20 +70,20 @@ public final class ClientConfigurationImpl implements ClientConfiguration, Seria
         if (o == null || getClass() != o.getClass()) return false;
         ClientConfigurationImpl that = (ClientConfigurationImpl) o;
         return Objects.equal(synchronisationDelay, that.synchronisationDelay) &&
-                Objects.equal(metaproject, that.metaproject) &&
+                Objects.equal(accessControlPolicy, that.accessControlPolicy) &&
                 Objects.equal(guiRestrictions, that.guiRestrictions) &&
                 Objects.equal(properties, that.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(metaproject, synchronisationDelay, guiRestrictions, properties);
+        return Objects.hashCode(accessControlPolicy, synchronisationDelay, guiRestrictions, properties);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("metaproject", metaproject)
+                .add("accessControlPolicy", accessControlPolicy)
                 .add("synchronisationDelay", synchronisationDelay)
                 .add("guiRestrictions", guiRestrictions)
                 .add("properties", properties)

@@ -36,10 +36,10 @@ public class ServerImpl implements Server {
     }
 
     @Override
-    public void updateConfiguration(Metaproject metaproject) {
+    public void updateConfiguration(AccessControlPolicy accessControlPolicy) {
         this.configuration = new ServerConfigurationImpl.Builder()
                 .setHost(configuration.getHost())
-                .setMetaproject(checkNotNull(metaproject))
+                .setAccessControlPolicy(checkNotNull(accessControlPolicy))
                 .setAuthenticationManager(configuration.getAuthenticationManager())
                 .setEntityIriStatus(configuration.getOntologyTermIdStatus().get())
                 .createServerConfiguration();
@@ -49,7 +49,7 @@ public class ServerImpl implements Server {
     public void updateConfiguration(EntityIriStatus entityIriStatus) {
         this.configuration = new ServerConfigurationImpl.Builder()
                 .setHost(configuration.getHost())
-                .setMetaproject(configuration.getMetaproject())
+                .setAccessControlPolicy(configuration.getAccessControlPolicy())
                 .setAuthenticationManager(configuration.getAuthenticationManager())
                 .setEntityIriStatus(checkNotNull(entityIriStatus))
                 .createServerConfiguration();

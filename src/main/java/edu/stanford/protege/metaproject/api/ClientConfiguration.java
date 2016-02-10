@@ -13,11 +13,11 @@ import java.util.Set;
 public interface ClientConfiguration extends Configuration {
 
     /**
-     * Get the metaproject definition in effect for the client
+     * Get the access control policy in effect for the client
      *
-     * @return Metaproject
+     * @return Access control policy
      */
-    Metaproject getMetaproject();
+    AccessControlPolicy getAccessControlPolicy();
 
     /**
      * Get the time (in seconds) between client-server synchronisation attempts

@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.examples;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.impl.MetaprojectImpl;
+import edu.stanford.protege.metaproject.api.impl.AccessControlPolicyImpl;
 import edu.stanford.protege.metaproject.api.impl.OperationPrerequisiteImpl;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -19,15 +19,15 @@ public class ExamplePolicy {
 
     public ExamplePolicy() {}
 
-    public Metaproject getPolicy() {
-        Metaproject metaproject = new MetaprojectImpl.Builder().createAccessControlPolicy();
+    public AccessControlPolicy getPolicy() {
+        AccessControlPolicy accessControlPolicy = new AccessControlPolicyImpl.Builder().createAccessControlPolicy();
 
         // access control object managers
-        UserManager userManager = metaproject.getUserManager();
-        ProjectManager projectManager = metaproject.getProjectManager();
-        OperationManager operationManager = metaproject.getOperationManager();
-        RoleManager roleManager = metaproject.getRoleManager();
-        PolicyManager policyManager = metaproject.getPolicyManager();
+        UserManager userManager = accessControlPolicy.getUserManager();
+        ProjectManager projectManager = accessControlPolicy.getProjectManager();
+        OperationManager operationManager = accessControlPolicy.getOperationManager();
+        RoleManager roleManager = accessControlPolicy.getRoleManager();
+        PolicyManager policyManager = accessControlPolicy.getPolicyManager();
 
         // create new user
         User user1 = userManager.create("user1", "user 1", "test_user_1@test.com");
@@ -89,7 +89,7 @@ public class ExamplePolicy {
         policyManager.add(user1.getId(), role2.getId());
         policyManager.add(user2.getId(), role2.getId());
 
-        return metaproject;
+        return accessControlPolicy;
     }
 }
 

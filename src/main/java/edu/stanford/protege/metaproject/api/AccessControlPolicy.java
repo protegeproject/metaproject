@@ -11,7 +11,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Metaproject {
+public interface AccessControlPolicy {
 
     /**
      * Check whether the specified operation is allowed for the given user

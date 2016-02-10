@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * A representation of a server configuration, composed of host information, the metaproject definition, the status of
+ * A representation of a server configuration, composed of host information, the access control policy, the status of
  * ontology term identifiers (i.e., last generated identifiers), and optional additional configuration properties
  *
  * @author Rafael Gonçalves <br>
@@ -20,11 +20,11 @@ public interface ServerConfiguration extends Configuration {
     Host getHost();
 
     /**
-     * Get the metaproject definition in effect on the server
+     * Get the access control policy in effect on the server
      *
-     * @return Metaproject
+     * @return Access control policy
      */
-    Metaproject getMetaproject();
+    AccessControlPolicy getAccessControlPolicy();
 
     /**
      * Get the user authentication manager

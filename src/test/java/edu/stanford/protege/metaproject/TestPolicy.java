@@ -18,15 +18,15 @@ public class TestPolicy {
 
     public TestPolicy() {}
 
-    public Metaproject getPolicy() {
-        Metaproject metaproject = new MetaprojectImpl.Builder().createAccessControlPolicy();
+    public AccessControlPolicy getPolicy() {
+        AccessControlPolicy accessControlPolicy = new AccessControlPolicyImpl.Builder().createAccessControlPolicy();
 
         // access control object managers
-        UserManager userManager = metaproject.getUserManager();
-        ProjectManager projectManager = metaproject.getProjectManager();
-        OperationManager operationManager = metaproject.getOperationManager();
-        RoleManager roleManager = metaproject.getRoleManager();
-        PolicyManager policyManager = metaproject.getPolicyManager();
+        UserManager userManager = accessControlPolicy.getUserManager();
+        ProjectManager projectManager = accessControlPolicy.getProjectManager();
+        OperationManager operationManager = accessControlPolicy.getOperationManager();
+        RoleManager roleManager = accessControlPolicy.getRoleManager();
+        PolicyManager policyManager = accessControlPolicy.getPolicyManager();
 
         // create new user
         User user1 = userManager.create("user1", "user 1", "test_user_1@test.com");
@@ -88,7 +88,7 @@ public class TestPolicy {
         policyManager.add(user1.getId(), role2.getId());
         policyManager.add(user2.getId(), role2.getId());
 
-        return metaproject;
+        return accessControlPolicy;
     }
 }
 

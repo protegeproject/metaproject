@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 import edu.stanford.protege.metaproject.api.impl.*;
 
 import java.io.FileNotFoundException;
@@ -19,7 +18,7 @@ import java.util.Map;
 public class ServerConfigurationExample {
 
     public static void main(String[] args) throws FileNotFoundException, EmailAddressAlreadyInUseException, UserIdAlreadyInUseException {
-        Metaproject metaproject = Utils.getMetaproject();
+        AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy();
         Gson gson = Utils.getGson();
 
 
@@ -71,7 +70,7 @@ public class ServerConfigurationExample {
         // create new server configuration instance with the above parameters
         ServerConfiguration config = new ServerConfigurationImpl.Builder()
                 .setHost(host)
-                .setMetaproject(metaproject)
+                .setAccessControlPolicy(accessControlPolicy)
                 .setPropertyMap(map)
                 .setAuthenticationManager(authenticationManager)
                 .setEntityIriStatus(idStatus)

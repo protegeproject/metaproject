@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ServerConfigurationTest {
     private static final String toStringHead = "ServerConfiguration";
     private static final Host host = Utils.getHost();
-    private static final Metaproject metaproject = Utils.getMetaproject();
+    private static final AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy();
     private static final EntityIriStatus idStatus = Utils.getEntityIriStatus();
     private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
     private static Map<String,String> propertiesMap = Utils.getStringPropertyMap();
@@ -26,8 +26,8 @@ public class ServerConfigurationTest {
 
     @Before
     public void setUp() {
-        serverConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertiesMap, idStatus);
-        otherServerConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertiesMap, idStatus);
+        serverConfiguration = Utils.getServerConfiguration(host, accessControlPolicy, authenticationManager, propertiesMap, idStatus);
+        otherServerConfiguration = Utils.getServerConfiguration(host, accessControlPolicy, authenticationManager, propertiesMap, idStatus);
         diffServerConfiguration = Utils.getServerConfiguration();
     }
 
@@ -43,7 +43,7 @@ public class ServerConfigurationTest {
 
     @Test
     public void testGetPolicy() {
-        assertThat(serverConfiguration.getMetaproject(), is(metaproject));
+        assertThat(serverConfiguration.getAccessControlPolicy(), is(accessControlPolicy));
     }
 
     @Test

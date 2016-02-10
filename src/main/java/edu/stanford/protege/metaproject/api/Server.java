@@ -23,11 +23,11 @@ public interface Server {
     EntityIriGenerator getEntityIriGenerator();
 
     /**
-     * Update the server configuration with a new metaproject definition
+     * Update the server configuration with a new access control policy
      *
-     * @param metaproject    New metaproject
+     * @param accessControlPolicy    New access control policy
      */
-    void updateConfiguration(Metaproject metaproject);
+    void updateConfiguration(AccessControlPolicy accessControlPolicy);
 
     /**
      * Update the server configuration with a new ontology term identifier status, i.e.,
