@@ -21,6 +21,7 @@
 
     <developers>
         <developer>
+            <id>rsgoncalves</id>
             <name>Rafael Gonçalves</name>
             <email>rafael.goncalves@stanford.edu</email>
         </developer>
@@ -37,7 +38,7 @@
         <dependency>
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-distribution</artifactId>
-            <version>4.1.0-RC2</version>
+            <version>4.1.4</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -47,7 +48,7 @@
         <dependency>
 	        <groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.3.1</version>
+			<version>2.5</version>
 		</dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -84,7 +85,6 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.7</version>
             </plugin>
-            <!-- include javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -98,7 +98,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- include sources -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
