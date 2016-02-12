@@ -79,14 +79,14 @@ public class TestPolicy {
         role2_projects.add(project1.getId());
 
         // create new roles
-        Role role1 = roleManager.create("role 1", "test role 1", role1_projects, role1_operations);
-        Role role2 = roleManager.create("role 2", "test role 2", role2_projects, role2_operations);
+        Role role1 = roleManager.create("role 1", "test role 1", role1_operations);
+        Role role2 = roleManager.create("role 2", "test role 2", role2_operations);
         roleManager.add(role1, role2);
 
-        // add pairs to policy
-        policyManager.add(user1.getId(), role1.getId());
-        policyManager.add(user1.getId(), role2.getId());
-        policyManager.add(user2.getId(), role2.getId());
+        // add restrictions to policy
+        policyManager.add(user1.getId(), project1.getId(), role1.getId());
+        policyManager.add(user1.getId(), project2.getId(), role2.getId());
+        policyManager.add(user2.getId(), project1.getId(), role2.getId());
 
         return accessControlPolicy;
     }

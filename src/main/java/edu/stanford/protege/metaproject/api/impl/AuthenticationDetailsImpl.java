@@ -7,7 +7,6 @@ import edu.stanford.protege.metaproject.api.AuthenticationDetails;
 import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
 import edu.stanford.protege.metaproject.api.UserId;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -65,7 +64,7 @@ public final class AuthenticationDetailsImpl implements AuthenticationDetails, S
     }
 
     @Override
-    public int compareTo(@Nonnull AuthenticationDetails that) {
+    public int compareTo(AuthenticationDetails that) {
         return ComparisonChain.start()
                 .compare(this.userId.get(), that.getUserId().get())
                 .result();

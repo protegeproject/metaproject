@@ -15,7 +15,7 @@ public interface OperationPrerequisite {
      *
      * @return IRI
      */
-    IRI getPrerequisiteIRI();
+    IRI getPrerequisiteIri();
 
     /**
      * Get the prerequisite modifier that determines whether, for example,

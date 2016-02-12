@@ -20,7 +20,7 @@ public class ServerConfigurationSerializerTest {
     private static final Host host = Utils.getHost(), diffHost = Utils.getHost();
     private static final AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy();
     private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
-    private static final Map<String,String> propertyMap = Utils.getStringPropertyMap();
+    private static final Map<String,String> propertyMap = Utils.getPropertyMap();
     private static final EntityIriStatus idStatus = Utils.getEntityIriStatus();
 
     private String jsonServerConfiguration, jsonOtherServerConfiguration, jsonDiffServerConfiguration;

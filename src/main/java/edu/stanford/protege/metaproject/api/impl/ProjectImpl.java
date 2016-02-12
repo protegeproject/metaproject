@@ -6,7 +6,6 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.*;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -151,7 +150,7 @@ public final class ProjectImpl implements Project, Serializable, Comparable<Proj
     }
 
     @Override
-    public int compareTo(@Nonnull Project that) {
+    public int compareTo(Project that) {
         return ComparisonChain.start()
                 .compare(this.id.get(), that.getId().get())
                 .result();

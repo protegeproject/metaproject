@@ -8,4 +8,8 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface OperationId extends AccessControlObjectId {
 
+    default AccessControlObjectType getType() {
+        return AccessControlObjectType.OPERATION;
+    }
+
 }

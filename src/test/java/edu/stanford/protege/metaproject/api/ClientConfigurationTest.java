@@ -19,7 +19,7 @@ public class ClientConfigurationTest {
     private static final AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy();
     private static final Set<GuiRestriction> disabledElements = Utils.getGUIRestrictionSet();
     private static final int syncDelay = 30;
-    private static final Map<String,String> propertiesMap = Utils.getStringPropertyMap();
+    private static final Map<String,String> propertiesMap = Utils.getPropertyMap();
 
     private ClientConfiguration clientConfiguration, otherClientConfiguration, diffClientConfiguration;
 

@@ -16,7 +16,7 @@ public class OperationPrerequisiteSerializer implements JsonSerializer<Operation
     @Override
     public JsonElement serialize(OperationPrerequisite prerequisite, Type type, JsonSerializationContext context) {
         JsonObject object = new JsonObject();
-        object.addProperty("prerequisite", prerequisite.getPrerequisiteIRI().toString());
+        object.addProperty("prerequisite", prerequisite.getPrerequisiteIri().toString());
         object.addProperty("modifier", prerequisite.getModifier().toString());
         return object;
     }

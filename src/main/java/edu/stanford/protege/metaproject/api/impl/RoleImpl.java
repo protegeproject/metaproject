@@ -6,7 +6,6 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.*;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -17,11 +16,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class RoleImpl implements Role, Serializable, Comparable<Role> {
-    private static final long serialVersionUID = -544403314517797020L;
+    private static final long serialVersionUID = 3776552344021170256L;
     private final RoleId id;
     private final Name name;
     private final Description description;
-    private final ImmutableSet<ProjectId> projects;
     private final ImmutableSet<OperationId> operations;
 
     /**
@@ -30,16 +28,12 @@ public final class RoleImpl implements Role, Serializable, Comparable<Role> {
      * @param id    Role identifier
      * @param name  Role name
      * @param description   Role description
-     * @param projects  Set of projects within which the specified operations can be performed
      * @param operations    Set of operations that can be performed on the given projects
      */
-    public RoleImpl(RoleId id, Name name, Description description, Set<ProjectId> projects, Set<OperationId> operations) {
+    public RoleImpl(RoleId id, Name name, Description description, Set<OperationId> operations) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
-
-        ImmutableSet<ProjectId> projectsCopy = new ImmutableSet.Builder<ProjectId>().addAll(checkNotNull(projects)).build();
-        this.projects = checkNotNull(projectsCopy);
 
         ImmutableSet<OperationId> operationsCopy = new ImmutableSet.Builder<OperationId>().addAll(checkNotNull(operations)).build();
         this.operations = checkNotNull(operationsCopy);
@@ -75,16 +69,6 @@ public final class RoleImpl implements Role, Serializable, Comparable<Role> {
     }
 
     /**
-     * Get all projects associated with this role
-     *
-     * @return Set of project identifiers
-     */
-    @Override
-    public Set<ProjectId> getProjects() {
-        return projects;
-    }
-
-    /**
      * Get the set of operations associated with this role
      *
      * @return Set of operations identifiers
@@ -102,13 +86,12 @@ public final class RoleImpl implements Role, Serializable, Comparable<Role> {
         return Objects.equal(id, role.id) &&
                 Objects.equal(name, role.name) &&
                 Objects.equal(description, role.description) &&
-                Objects.equal(projects, role.projects) &&
                 Objects.equal(operations, role.operations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, name, description, projects, operations);
+        return Objects.hashCode(id, name, description, operations);
     }
 
     @Override
@@ -117,13 +100,12 @@ public final class RoleImpl implements Role, Serializable, Comparable<Role> {
                 .add("id", id)
                 .add("name", name)
                 .add("description", description)
-                .add("projects", projects)
                 .add("operations", operations)
                 .toString();
     }
 
     @Override
-    public int compareTo(@Nonnull Role that) {
+    public int compareTo(Role that) {
         return ComparisonChain.start()
                 .compare(this.id.get(), that.getId().get())
                 .result();

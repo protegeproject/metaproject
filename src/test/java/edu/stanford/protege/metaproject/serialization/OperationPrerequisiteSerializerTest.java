@@ -74,7 +74,7 @@ public class OperationPrerequisiteSerializerTest {
 
     @Test
     public void testGetEntityIRI() {
-        assertThat(gson.fromJson(jsonPrerequisite, OperationPrerequisite.class).getPrerequisiteIRI(), is(iri));
+        assertThat(gson.fromJson(jsonPrerequisite, OperationPrerequisite.class).getPrerequisiteIri(), is(iri));
     }
 
     @Test

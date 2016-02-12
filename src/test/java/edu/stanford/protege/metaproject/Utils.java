@@ -20,7 +20,7 @@ public class Utils {
     /*   access control object identifiers   */
 
     public static UserId getUserId() {
-        return getUserId("userId" + newUUID());
+        return getUserId("userId-" + newUUID());
     }
 
     public static UserId getUserId(String userId) {
@@ -28,7 +28,7 @@ public class Utils {
     }
 
     public static RoleId getRoleId() {
-        return getRoleId("roleId" + newUUID());
+        return getRoleId("roleId-" + newUUID());
     }
 
     public static RoleId getRoleId(String roleId) {
@@ -36,7 +36,7 @@ public class Utils {
     }
 
     public static ProjectId getProjectId() {
-        return getProjectId("projectId" + newUUID());
+        return getProjectId("projectId-" + newUUID());
     }
 
     public static ProjectId getProjectId(String projectId) {
@@ -44,7 +44,7 @@ public class Utils {
     }
 
     public static OperationId getOperationId() {
-        return getOperationId("operationId" + newUUID());
+        return getOperationId("operationId-" + newUUID());
     }
 
     public static OperationId getOperationId(String operationId) {
@@ -215,7 +215,7 @@ public class Utils {
         return new PolicyManagerImpl();
     }
 
-    public static PolicyManager getPolicyManager(Map<UserId, Set<RoleId>> map) {
+    public static PolicyManager getPolicyManager(Map<UserId, Map<ProjectId,Set<RoleId>>> map) {
         return new PolicyManagerImpl(map);
     }
 
@@ -271,7 +271,7 @@ public class Utils {
     }
 
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Utils.getHost(), Utils.getAccessControlPolicy(), Utils.getAuthenticationManager(), Utils.getStringPropertyMap(), Utils.getEntityIriStatus());
+        return getServerConfiguration(Utils.getHost(), Utils.getAccessControlPolicy(), Utils.getAuthenticationManager(), Utils.getPropertyMap(), Utils.getEntityIriStatus());
     }
 
     public static ServerConfiguration getServerConfiguration(Host host, AccessControlPolicy accessControlPolicy, AuthenticationManager authenticationManager, Map<String, String> properties, EntityIriStatus idStatus) {
@@ -285,7 +285,7 @@ public class Utils {
     }
 
     public static ClientConfiguration getClientConfiguration() {
-        return getClientConfiguration(Utils.getAccessControlPolicy(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getStringPropertyMap());
+        return getClientConfiguration(Utils.getAccessControlPolicy(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getPropertyMap());
     }
 
     public static ClientConfiguration getClientConfiguration(AccessControlPolicy accessControlPolicy, int syncDelay, Set<GuiRestriction> disabledUIComponents, Map<String,String> propertyMap) {
@@ -319,15 +319,18 @@ public class Utils {
                 .createAccessControlPolicy();
     }
 
-    public static Map<UserId,Set<RoleId>> getUserRoleMap() {
-        Map<UserId,Set<RoleId>> map = new HashMap<>();
+    public static Map<UserId,Map<ProjectId, Set<RoleId>>> getUserRoleMap() {
+        Map<UserId, Map<ProjectId,Set<RoleId>>> map = new HashMap<>();
         for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
-            map.put(Utils.getUserId(), Utils.getRoleIdSet());
+            Map<ProjectId,Set<RoleId>> assignments = new HashMap<>();
+            assignments.put(Utils.getProjectId(), Utils.getRoleIdSet());
+            assignments.put(Utils.getProjectId(), Utils.getRoleIdSet());
+            map.put(Utils.getUserId(), assignments);
         }
         return map;
     }
 
-    public static Map<String,String> getStringPropertyMap() {
+    public static Map<String,String> getPropertyMap() {
         Map<String,String> map = new HashMap<>();
         map.put("prop1", "value1");
         map.put("prop2", "value2");
@@ -354,21 +357,18 @@ public class Utils {
     }
 
     public static Role getRole() {
-        return getRole(getRoleId(), getName(), getDescription(), getProjectIdSet(DEFAULT_SET_SIZE), getOperationIdSet(DEFAULT_SET_SIZE));
+        return getRole(getRoleId(), getName(), getDescription(), getOperationIdSet(DEFAULT_SET_SIZE));
     }
 
-    public static Role getRole(ProjectId project, OperationId operation) {
-        Set<ProjectId> projects = new HashSet<>();
-        projects.add(project);
-
+    public static Role getRole(OperationId operation) {
         Set<OperationId> operations = new HashSet<>();
         operations.add(operation);
 
-        return getRole(getRoleId(), getName(), getDescription(), projects, operations);
+        return getRole(getRoleId(), getName(), getDescription(), operations);
     }
 
-    public static Role getRole(RoleId id, Name name, Description description, Set<ProjectId> projects, Set<OperationId> operations) {
-        return new RoleImpl(id, name, description, projects, operations);
+    public static Role getRole(RoleId id, Name name, Description description, Set<OperationId> operations) {
+        return new RoleImpl(id, name, description, operations);
     }
 
     public static User getUser() {

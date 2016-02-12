@@ -20,8 +20,7 @@ public class RoleSerializer implements JsonDeserializer<Role> {
         RoleId operationId = new RoleIdImpl(obj.getAsJsonPrimitive("id").getAsString());
         Name operationName = new NameImpl(obj.getAsJsonPrimitive("name").getAsString());
         Description operationDescription = new DescriptionImpl(obj.getAsJsonPrimitive("description").getAsString());
-        Set<ProjectId> projects = context.deserialize(obj.getAsJsonArray("projects"), new TypeToken<Set<ProjectIdImpl>>(){}.getType());
         Set<OperationId> operations = context.deserialize(obj.getAsJsonArray("operations"), new TypeToken<Set<OperationIdImpl>>(){}.getType());
-        return new RoleImpl(operationId, operationName, operationDescription, projects, operations);
+        return new RoleImpl(operationId, operationName, operationDescription, operations);
     }
 }

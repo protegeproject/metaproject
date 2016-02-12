@@ -99,22 +99,6 @@ public class RoleManagerTest {
     }
 
     @Test
-    public void testAddProject() throws UnknownRoleIdException {
-        ProjectId projectId = Utils.getProjectId();
-        assertThat(roleManager.getRole(role2.getId()).getProjects().contains(projectId), is(false));
-
-        roleManager.addProject(role2.getId(), projectId);
-        assertThat(roleManager.getRole(role2.getId()).getProjects().contains(projectId), is(true));
-    }
-
-    @Test
-    public void testRemoveProject() throws UnknownRoleIdException {
-        ProjectId projectId = role2.getProjects().iterator().next();
-        roleManager.removeProject(role2.getId(), projectId);
-        assertThat(roleManager.getRole(role2.getId()).getProjects().contains(projectId), is(false));
-    }
-
-    @Test
     public void testEqualToSelf() {
         assertThat(roleManager, is(roleManager));
     }

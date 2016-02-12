@@ -33,7 +33,7 @@ public class OperationPrerequisiteTest {
 
     @Test
     public void testGetPrerequisiteIRI() {
-        assertThat(prerequisite.getPrerequisiteIRI(), is(iri));
+        assertThat(prerequisite.getPrerequisiteIri(), is(iri));
     }
 
     @Test

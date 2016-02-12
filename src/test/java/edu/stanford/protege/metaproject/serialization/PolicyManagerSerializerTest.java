@@ -3,6 +3,7 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.PolicyManager;
+import edu.stanford.protege.metaproject.api.ProjectId;
 import edu.stanford.protege.metaproject.api.RoleId;
 import edu.stanford.protege.metaproject.api.UserId;
 import org.junit.Before;
@@ -19,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class PolicyManagerSerializerTest {
-    private static final Map<UserId,Set<RoleId>> map1 = Utils.getUserRoleMap(), map2 = Utils.getUserRoleMap();
+    private static final Map<UserId,Map<ProjectId,Set<RoleId>>> map1 = Utils.getUserRoleMap(), map2 = Utils.getUserRoleMap();
 
     private String jsonPolicyManager, jsonOtherPolicyManager, jsonDiffPolicyManager;
     private PolicyManager policyManager, otherPolicyManager, diffPolicyManager;

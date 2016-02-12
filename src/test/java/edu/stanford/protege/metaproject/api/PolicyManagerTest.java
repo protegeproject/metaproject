@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.exception.PolicyException;
+import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
 import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,20 +22,25 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class PolicyManagerTest {
     private static final UserId user1 = Utils.getUserId(), user2 = Utils.getUserId();
     private static final RoleId role1 = Utils.getRoleId(), role2 = Utils.getRoleId(), role3 = Utils.getRoleId();
+    private static final ProjectId project1 = Utils.getProjectId(), project2 = Utils.getProjectId(), project3 = Utils.getProjectId();
     private static final String toStringHead = "PolicyManager";
 
-    private static Map<UserId,Set<RoleId>> map = new HashMap<>();
+    private static Map<UserId,Map<ProjectId, Set<RoleId>>> map = new HashMap<>();
     private static Set<RoleId> set1 = new HashSet<>(), set2 = new HashSet<>();
 
     private PolicyManager policyManager, otherPolicyManager, diffPolicyManager;
 
     @Before
     public void setUp() {
+        Map<ProjectId,Set<RoleId>> assignments1 = new HashMap<>();
         set1.add(role1); set1.add(role2);
-        map.put(user1, set1);
+        assignments1.put(project1, set1);
+        map.put(user1, assignments1);
 
+        Map<ProjectId,Set<RoleId>> assignments2 = new HashMap<>();
         set2.add(role2); set2.add(role3);
-        map.put(user2, set2);
+        assignments2.put(project2, set2);
+        map.put(user2, assignments2);
 
         policyManager = Utils.getPolicyManager(map);
         otherPolicyManager = Utils.getPolicyManager(map);
@@ -52,55 +58,57 @@ public class PolicyManagerTest {
     }
 
     @Test
-    public void testRemovePolicy() throws UserNotInPolicyException {
-        assertThat(policyManager.hasRole(user2, role2), is(true));
-        policyManager.remove(user2, role2);
-        assertThat(policyManager.hasRole(user2, role2), is(false));
+    public void testRemovePolicy() throws UserNotInPolicyException, ProjectNotInPolicyException {
+        assertThat(policyManager.hasRole(user2, project2, role2), is(true));
+
+        policyManager.remove(user2, project2, role2);
+        assertThat(policyManager.hasRole(user2, project2, role2), is(false));
+
+        policyManager.remove(user2, project2, role3);
+        assertThat(policyManager.hasRole(user2, project2, role3), is(false));
+
+        assertThat(policyManager.hasRoleAssignments(user2, project2), is(false));
     }
 
     @Test
-    public void testAddPolicy() throws UserNotInPolicyException {
+    public void testAddPolicy() throws UserNotInPolicyException, ProjectNotInPolicyException {
         RoleId roleId = Utils.getRoleId();
-        assertThat(policyManager.hasRole(user2, roleId), is(false));
+        assertThat(policyManager.hasRole(user2, project3, roleId), is(false));
 
-        policyManager.add(user2, roleId);
-        assertThat(policyManager.hasRole(user2, roleId), is(true));
-        assertThat(policyManager.getRoles(user2).contains(roleId), is(true));
+        policyManager.add(user2, project3, roleId);
+        assertThat(policyManager.hasRole(user2, project3, roleId), is(true));
+        assertThat(policyManager.getRoles(user2, project3).contains(roleId), is(true));
     }
     @Test
     public void testAddPolicyRoleBased() throws PolicyException {
-        assertThat(policyManager.getUserRoleMappings().get(user2).contains(role1), is(false));
+        assertThat(policyManager.getUserRoleMappings().get(user2).get(project2).contains(role1), is(false));
         UserId newUser = Utils.getUserId();
-        policyManager.add(role1, user2, newUser);
+        policyManager.add(role1, project2, user2, newUser);
 
         assertThat(policyManager.getUserRoleMappings().get(newUser), is(not(equalTo(null))));
-        assertThat(policyManager.hasRole(newUser, role1), is(true));
-        assertThat(policyManager.hasRole(user2, role1), is(true));
+        assertThat(policyManager.hasRole(newUser, project2, role1), is(true));
+        assertThat(policyManager.hasRole(user2, project2, role1), is(true));
     }
 
     @Test
     public void testHasRole() throws PolicyException {
-        assertThat(policyManager.hasRole(user1, role1), is(true));
-    }
-
-    @Test(expected=UserNotInPolicyException.class)
-    public void testHasRoleThrowsException() throws UserNotInPolicyException {
-        policyManager.hasRole(Utils.getUserId(), role3);
+        assertThat(policyManager.hasRole(user1, project1, role1), is(true));
+        assertThat(policyManager.hasRole(user1, project2, role1), is(false));
     }
 
     @Test
-    public void testGetRoles() throws UserNotInPolicyException {
-        assertThat(policyManager.getRoles(user1), is(set1));
+    public void testGetRoles() throws UserNotInPolicyException, ProjectNotInPolicyException {
+        assertThat(policyManager.getRoles(user1, project1), is(set1));
     }
 
     @Test(expected=UserNotInPolicyException.class)
-    public void testGetRolesThrowsException() throws UserNotInPolicyException {
-        policyManager.getRoles(Utils.getUserId());
+    public void testGetRolesThrowsException() throws UserNotInPolicyException, ProjectNotInPolicyException {
+        policyManager.getRoles(Utils.getUserId(), project1);
     }
 
     @Test
     public void testHasRoleAssignments() {
-        assertThat(policyManager.hasRoleAssignments(user1), is(true));
+        assertThat(policyManager.hasRoleAssignments(user1, project1), is(true));
     }
 
     @Test

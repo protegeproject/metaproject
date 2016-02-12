@@ -1,8 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.exception.MetaprojectException;
-import edu.stanford.protege.metaproject.api.exception.PolicyException;
+import edu.stanford.protege.metaproject.api.exception.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,9 +27,9 @@ public class AccessControlPolicyTest {
     private static final ProjectManager projectManager = Utils.getProjectManager(Utils.getProjectSet(project1, project2, project3));
 
     private static final Role
-            role1 = Utils.getRole(project1.getId(), operation1.getId()),
-            role2 = Utils.getRole(project2.getId(), operation2.getId()),
-            role3 = Utils.getRole(project3.getId(), operation3.getId());
+            role1 = Utils.getRole(operation1.getId()),
+            role2 = Utils.getRole(operation2.getId()),
+            role3 = Utils.getRole(operation3.getId());
 
     private static final RoleManager roleManager = Utils.getRoleManager(Utils.getRoleSet(role1, role2, role3));
 
@@ -40,8 +39,8 @@ public class AccessControlPolicyTest {
 
     @Before
     public void setUp() throws PolicyException {
-        policyManager.add(user1.getId(), role1.getId(), role2.getId());
-        policyManager.add(user3.getId(), role1.getId(), role2.getId());
+        policyManager.add(user1.getId(), project1.getId(), role1.getId(), role2.getId());
+        policyManager.add(user3.getId(), project2.getId(), role1.getId(), role2.getId());
 
         accessControlPolicy = Utils.getAccessControlPolicy(policyManager, userManager, roleManager, operationManager, projectManager);
         otherAccessControlPolicy = Utils.getAccessControlPolicy(policyManager, userManager, roleManager, operationManager, projectManager);
@@ -79,37 +78,42 @@ public class AccessControlPolicyTest {
     }
 
     @Test
-    public void testIsOperationAllowed() throws MetaprojectException {
-        assertThat(accessControlPolicy.getPolicyManager().getRoles(user1.getId()).contains(role1.getId()), is(true));
+    public void testIsOperationAllowed() throws ProjectNotInPolicyException, UnknownAccessControlObjectIdException, UserNotInPolicyException {
+        assertThat(accessControlPolicy.getPolicyManager().getRoles(user1.getId(), project1.getId()).contains(role1.getId()), is(true));
         assertThat(accessControlPolicy.isOperationAllowed(operation1.getId(), project1.getId(), user1.getId()), is(true));
         assertThat(accessControlPolicy.isOperationAllowed(operation3.getId(), project1.getId(), user1.getId()), is(false));
     }
 
     @Test
-    public void testGetOperationsInProject() throws MetaprojectException {
-        Set<Operation> results = new HashSet<>(); results.add(operation1);
+    public void testGetOperationsInProject() throws UserNotInPolicyException, ProjectNotInPolicyException {
+        Set<Operation> results = new HashSet<>();
+        results.add(operation1); results.add(operation2);
         assertThat(accessControlPolicy.getOperationsInProject(user1.getId(), project1.getId()), is(results));
+    }
+
+    @Test(expected=ProjectNotInPolicyException.class)
+    public void testGetOperationsInProjectThrowsException() throws UserNotInPolicyException, ProjectNotInPolicyException {
         assertThat(accessControlPolicy.getOperationsInProject(user3.getId(), project3.getId()).isEmpty(), is(true));
     }
 
     @Test
-    public void testGetProjects() throws MetaprojectException {
+    public void testGetProjects() throws UserNotInPolicyException {
         Set<Project> projects = new HashSet<>();
-        projects.add(project1); projects.add(project2);
+        projects.add(project1);
         assertThat(accessControlPolicy.getProjects(user1.getId()), is(projects));
     }
 
     @Test
-    public void testGetRoles() throws MetaprojectException {
+    public void testGetRoles() throws UserNotInPolicyException, ProjectNotInPolicyException {
         Set<Role> roles = new HashSet<>();
         roles.add(role1); roles.add(role2);
-        assertThat(accessControlPolicy.getRoles(user1.getId()), is(roles));
+        assertThat(accessControlPolicy.getRoles(user1.getId(), project1.getId()), is(roles));
     }
 
     @Test
     public void testGetUsers() throws MetaprojectException {
         Set<User> users = new HashSet<>();
-        users.add(user1); users.add(user3);
+        users.add(user1);
         assertThat(accessControlPolicy.getUsers(project1.getId()), is(users));
     }
 

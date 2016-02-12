@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.api.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.MetaprojectException;
+import edu.stanford.protege.metaproject.api.exception.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *         Stanford Center for Biomedical Informatics Research
  */
 public class AccessControlPolicyImpl implements AccessControlPolicy, Serializable {
-    private static final long serialVersionUID = -7454608160273032483L;
+    private static final long serialVersionUID = -1099420881565213895L;
     private PolicyManager policyManager;
     private RoleManager roleManager;
     private OperationManager operationManager;
@@ -40,14 +40,14 @@ public class AccessControlPolicyImpl implements AccessControlPolicy, Serializabl
     }
 
     @Override
-    public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) throws MetaprojectException {
+    public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) throws UnknownAccessControlObjectIdException, UserNotInPolicyException, ProjectNotInPolicyException {
         checkExistence(operationManager, operationId);
         checkExistence(projectManager, projectId);
 
-        Set<RoleId> roles = policyManager.getRoles(userId);
+        Set<RoleId> roles = policyManager.getRoles(userId, projectId);
         for (RoleId role : roles) {
             Role r = roleManager.getRole(role);
-            if (r.getProjects().contains(projectId) && r.getOperations().contains(operationId)) {
+            if (r.getOperations().contains(operationId)) {
                 return true;
             }
         }
@@ -55,13 +55,15 @@ public class AccessControlPolicyImpl implements AccessControlPolicy, Serializabl
     }
 
     @Override
-    public Set<Operation> getOperationsInProject(UserId userId, ProjectId projectId) throws MetaprojectException {
+    public Set<Operation> getOperationsInProject(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException {
         Set<Operation> operations = new HashSet<>();
-        Set<Role> roles = getRoles(userId);
-        for(Role role : roles) {
-            if(role.getProjects().contains(projectId)) {
-                for(OperationId operationId : role.getOperations()) {
+        Set<Role> roles = getRoles(userId, projectId);
+        for (Role role : roles) {
+            for (OperationId operationId : role.getOperations()) {
+                try {
                     operations.add(operationManager.getOperation(operationId));
+                } catch (UnknownOperationIdException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -69,34 +71,47 @@ public class AccessControlPolicyImpl implements AccessControlPolicy, Serializabl
     }
 
     @Override
-    public Set<Project> getProjects(UserId userId) throws MetaprojectException {
+    public Set<Project> getProjects(UserId userId) throws UserNotInPolicyException {
         Set<Project> projects = new HashSet<>();
-        Set<Role> roles = getRoles(userId);
-        for (Role role : roles) {
-            for (ProjectId p : role.getProjects()) {
+        Set<ProjectId> projectIds = policyManager.getProjects(userId);
+        for (ProjectId p : projectIds) {
+            try {
                 projects.add(projectManager.getProject(p));
+            } catch (UnknownProjectIdException e) {
+                e.printStackTrace();
             }
         }
         return projects;
     }
 
     @Override
-    public Set<Role> getRoles(UserId userId) throws MetaprojectException {
+    public Set<Role> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException {
         Set<Role> roles = new HashSet<>();
-        for (RoleId roleId : policyManager.getRoles(userId)) {
-            roles.add(roleManager.getRole(roleId));
+        for (RoleId roleId : policyManager.getRoles(userId, projectId)) {
+            try {
+                roles.add(roleManager.getRole(roleId));
+            } catch (UnknownRoleIdException e) {
+                e.printStackTrace();
+            }
         }
         return roles;
     }
 
     @Override
-    public Set<User> getUsers(ProjectId projectId) throws MetaprojectException {
+    public Set<User> getUsers(ProjectId projectId) throws UnknownAccessControlObjectIdException {
+        checkExistence(projectManager, projectId);
         Set<User> users = new HashSet<>();
         for (UserId userId : policyManager.getUserRoleMappings().keySet()) {
-            for(Role role : getRoles(userId)) {
-                if(role.getProjects().contains(projectId)) {
-                    users.add(userManager.getUser(userId));
+            try {
+                if(policyManager.getProjects(userId).contains(projectId)) {
+                    try {
+                        users.add(userManager.getUser(userId));
+                    } catch (UnknownUserIdException e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (UserNotInPolicyException e) {
+                e.printStackTrace();
             }
         }
         return users;
@@ -132,14 +147,14 @@ public class AccessControlPolicyImpl implements AccessControlPolicy, Serializabl
      *
      * @param manager Manager for given access control object
      * @param objects One or more access control object identifiers
-     * @throws MetaprojectException Metaproject exception
+     * @throws UnknownAccessControlObjectIdException Unknown access control object identifier exception
      */
-    private void checkExistence(Manager manager, AccessControlObjectId... objects) throws MetaprojectException {
+    private void checkExistence(Manager manager, AccessControlObjectId... objects) throws UnknownAccessControlObjectIdException {
         for (AccessControlObjectId obj : objects) {
             checkNotNull(obj);
             if (!manager.contains(obj)) {
-                throw new MetaprojectException("The specified access control object does not correspond to a known one. " +
-                        "It may not have been registered with the appropriate manager");
+                throw new UnknownAccessControlObjectIdException("The specified access control object identifier " + obj.get() + ", of type " + obj.getType() +
+                        ", does not correspond to a known one. It may not have been registered with the appropriate manager.");
             }
         }
     }

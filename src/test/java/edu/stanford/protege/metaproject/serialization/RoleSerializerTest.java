@@ -20,7 +20,6 @@ public class RoleSerializerTest {
     private static final RoleId roleId = Utils.getRoleId(roleIdStr), diffRoleId = Utils.getRoleId(diffIdStr);
     private static final Name roleName = Utils.getName();
     private static final Description roleDescription = Utils.getDescription();
-    private static final Set<ProjectId> projects = Utils.getProjectIdSet(3);
     private static final Set<OperationId> operations = Utils.getOperationIdSet(3);
 
     private String jsonRole, jsonOtherRole, jsonDiffRole;
@@ -31,9 +30,9 @@ public class RoleSerializerTest {
     public void setUp() {
         gson = new SimpleGsonSerializer().getDefaultSerializer();
 
-        role = Utils.getRole(roleId, roleName, roleDescription, projects, operations);
-        otherRole = Utils.getRole(roleId, roleName, roleDescription, projects, operations);
-        diffRole = Utils.getRole(diffRoleId, roleName, roleDescription, projects, operations);
+        role = Utils.getRole(roleId, roleName, roleDescription, operations);
+        otherRole = Utils.getRole(roleId, roleName, roleDescription, operations);
+        diffRole = Utils.getRole(diffRoleId, roleName, roleDescription, operations);
 
         jsonRole = gson.toJson(role);
         jsonOtherRole = gson.toJson(otherRole);
@@ -95,10 +94,5 @@ public class RoleSerializerTest {
     @Test
     public void testGetOperations() {
         assertThat(gson.fromJson(jsonRole, Role.class).getOperations(), is(operations));
-    }
-
-    @Test
-    public void testGetProjects() {
-        assertThat(gson.fromJson(jsonRole, Role.class).getProjects(), is(projects));
     }
 }

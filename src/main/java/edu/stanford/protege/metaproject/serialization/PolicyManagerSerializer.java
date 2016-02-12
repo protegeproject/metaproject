@@ -3,9 +3,11 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.PolicyManager;
+import edu.stanford.protege.metaproject.api.ProjectId;
 import edu.stanford.protege.metaproject.api.RoleId;
 import edu.stanford.protege.metaproject.api.UserId;
 import edu.stanford.protege.metaproject.api.impl.PolicyManagerImpl;
+import edu.stanford.protege.metaproject.api.impl.ProjectIdImpl;
 import edu.stanford.protege.metaproject.api.impl.RoleIdImpl;
 import edu.stanford.protege.metaproject.api.impl.UserIdImpl;
 
@@ -21,7 +23,7 @@ public class PolicyManagerSerializer implements JsonSerializer<PolicyManager>, J
 
     @Override
     public PolicyManager deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        Map<UserId, Set<RoleId>> map = context.deserialize(element, new TypeToken<Map<UserIdImpl,Set<RoleIdImpl>>>() {}.getType());
+        Map<UserId, Map<ProjectId, Set<RoleId>>> map = context.deserialize(element, new TypeToken<Map<UserIdImpl,Map<ProjectIdImpl,Set<RoleIdImpl>>>>() {}.getType());
         return new PolicyManagerImpl(map);
     }
 

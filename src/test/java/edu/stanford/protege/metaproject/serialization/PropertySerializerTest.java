@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class StringPropertySerializerTest {
+public class PropertySerializerTest {
     private static final String propStr = "testString1", diffPropStr = "testString2";
     private String jsonProp, jsonOtherProp, jsonDiffProp;
     private Name prop, otherProp, diffProp;

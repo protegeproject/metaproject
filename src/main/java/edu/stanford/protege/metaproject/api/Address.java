@@ -6,6 +6,6 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Address extends StringProperty {
+public interface Address extends Property {
 
 }

@@ -20,7 +20,7 @@ public class ServerConfigurationTest {
     private static final AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy();
     private static final EntityIriStatus idStatus = Utils.getEntityIriStatus();
     private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
-    private static Map<String,String> propertiesMap = Utils.getStringPropertyMap();
+    private static Map<String,String> propertiesMap = Utils.getPropertyMap();
 
     private ServerConfiguration serverConfiguration, otherServerConfiguration, diffServerConfiguration;
 

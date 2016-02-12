@@ -31,7 +31,7 @@ public final class OperationPrerequisiteImpl implements OperationPrerequisite, S
         this.modifier = checkNotNull(modifier);
     }
 
-    public IRI getPrerequisiteIRI() {
+    public IRI getPrerequisiteIri() {
         return prerequisite;
     }
 

@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ClientConfigurationSerializerTest {
-    private static final Map<String,String> propertyMap = Utils.getStringPropertyMap();
+    private static final Map<String,String> propertyMap = Utils.getPropertyMap();
     private static final AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy(), diffAccessControlPolicy = Utils.getAccessControlPolicy();
     private static final Set<GuiRestriction> disabledUIElements = Utils.getGUIRestrictionSet();
     private static final int syncDelay = 150;

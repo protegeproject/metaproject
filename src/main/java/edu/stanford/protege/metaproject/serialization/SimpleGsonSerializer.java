@@ -44,7 +44,7 @@ public final class SimpleGsonSerializer {
                 .registerTypeAdapter(AuthenticationManager.class, new AuthenticationManagerSerializer())
 
                 // other objects
-                .registerTypeHierarchyAdapter(StringProperty.class, new StringPropertySerializer())
+                .registerTypeHierarchyAdapter(Property.class, new PropertySerializer())
                 .registerTypeAdapter(OperationPrerequisite.class, new OperationPrerequisiteSerializer())
                 .registerTypeAdapter(EntityIriStatus.class, new EntityIriStatusSerializer())
                 .registerTypeHierarchyAdapter(AuthenticationDetails.class, new AuthenticationDetailsSerializer())

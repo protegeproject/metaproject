@@ -6,7 +6,6 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.*;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.Optional;
 import java.util.Set;
@@ -122,7 +121,7 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
     }
 
     @Override
-    public int compareTo(@Nonnull Operation that) {
+    public int compareTo(Operation that) {
         return ComparisonChain.start()
                 .compare(this.id.get(), that.getId().get())
                 .result();

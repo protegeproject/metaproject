@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class RoleManagerImpl implements RoleManager, Serializable {
-    private static final long serialVersionUID = 3450780586872286800L;
+    private static final long serialVersionUID = 7856274800871421233L;
     private Set<Role> roles = new HashSet<>();
 
     /**
@@ -53,9 +53,9 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public Role create(String name, String description, Set<ProjectId> projects, Set<OperationId> operations) {
+    public Role create(String name, String description, Set<OperationId> operations) {
         AccessControlObjectUuidGenerator gen = new AccessControlObjectUuidGenerator();
-        return new RoleImpl(gen.getRoleId(), new NameImpl(name), new DescriptionImpl(description), projects, operations);
+        return new RoleImpl(gen.getRoleId(), new NameImpl(name), new DescriptionImpl(description), operations);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
         checkNotNull(roleName);
         Role role = getRole(roleId);
         remove(role);
-        Role newRole = new RoleImpl(role.getId(), roleName, role.getDescription(), role.getProjects(), role.getOperations());
+        Role newRole = new RoleImpl(role.getId(), roleName, role.getDescription(), role.getOperations());
         add(newRole);
     }
 
@@ -88,35 +88,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
         checkNotNull(roleDescription);
         Role role = getRole(roleId);
         remove(role);
-        Role newRole = new RoleImpl(role.getId(), role.getName(), roleDescription, role.getProjects(), role.getOperations());
-        add(newRole);
-    }
-
-    @Override
-    public void addProject(RoleId roleId, ProjectId... projectIds) throws UnknownRoleIdException {
-        checkNotNull(projectIds);
-        Role role = getRole(roleId);
-        remove(role);
-
-        Set<ProjectId> projects = new HashSet<>(role.getProjects());
-        Collections.addAll(projects, projectIds);
-
-        Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), projects, role.getOperations());
-        add(newRole);
-    }
-
-    @Override
-    public void removeProject(RoleId roleId, ProjectId... projectIds) throws UnknownRoleIdException {
-        checkNotNull(projectIds);
-        Role role = getRole(roleId);
-        remove(role);
-
-        Set<ProjectId> projects = new HashSet<>(role.getProjects());
-        for(ProjectId projectId : projectIds) {
-            projects.remove(checkNotNull(projectId));
-        }
-
-        Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), projects, role.getOperations());
+        Role newRole = new RoleImpl(role.getId(), role.getName(), roleDescription, role.getOperations());
         add(newRole);
     }
 
@@ -129,7 +101,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
         Set<OperationId> operations = new HashSet<>(role.getOperations());
         Collections.addAll(operations, operationIds);
 
-        Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), role.getProjects(), operations);
+        Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), operations);
         add(newRole);
     }
 
@@ -144,7 +116,7 @@ public class RoleManagerImpl implements RoleManager, Serializable {
             operations.remove(checkNotNull(operationId));
         }
 
-        Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), role.getProjects(), operations);
+        Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), operations);
         add(newRole);
     }
 

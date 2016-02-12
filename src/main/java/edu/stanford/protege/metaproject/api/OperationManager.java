@@ -8,8 +8,6 @@ import java.util.Set;
 /**
  * A manager for accessing, adding, removing or editing existing operations
  *
- * The operation manager follows the singleton pattern; only one instance of this manager may exist.
- *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */

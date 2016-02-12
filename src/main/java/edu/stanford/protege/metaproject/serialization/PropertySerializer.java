@@ -11,10 +11,10 @@ import java.lang.reflect.Type;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class StringPropertySerializer<E extends Property<String>> implements JsonSerializer<Property<String>>, JsonDeserializer<E> {
+public class PropertySerializer<E extends Property> implements JsonSerializer<Property>, JsonDeserializer<E> {
 
     @Override
-    public JsonElement serialize(Property<String> property, Type type, JsonSerializationContext context) {
+    public JsonElement serialize(Property property, Type type, JsonSerializationContext context) {
         return new JsonPrimitive(property.get());
     }
 

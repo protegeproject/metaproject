@@ -25,15 +25,14 @@ public class RoleTest {
     private static final Name roleName = Utils.getName(roleNameStr);
     private static final Description roleDescription = Utils.getDescription(roleDescriptionStr);
     private static final Set<OperationId> operations = Utils.getOperationIdSet("testOperationId1", "testOperationId2");
-    private static final Set<ProjectId> projects = Utils.getProjectIdSet("testProjectId1", "testProjectId2");
 
     private Role role, otherRole, diffRole;
 
     @Before
     public void setUp() {
-        role = Utils.getRole(roleId, roleName, roleDescription, projects, operations);
-        otherRole = Utils.getRole(roleId, roleName, roleDescription, projects, operations);
-        diffRole = Utils.getRole(diffRoleId, roleName, roleDescription, projects, operations);
+        role = Utils.getRole(roleId, roleName, roleDescription, operations);
+        otherRole = Utils.getRole(roleId, roleName, roleDescription, operations);
+        diffRole = Utils.getRole(diffRoleId, roleName, roleDescription, operations);
     }
 
     @Test
@@ -54,11 +53,6 @@ public class RoleTest {
     @Test
     public void testGetDescription() {
         assertThat(role.getDescription().get(), is(roleDescriptionStr));
-    }
-
-    @Test
-    public void testGetProjects() {
-        assertThat(role.getProjects(), is(projects));
     }
 
     @Test

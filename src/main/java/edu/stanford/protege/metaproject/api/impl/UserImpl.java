@@ -8,7 +8,6 @@ import edu.stanford.protege.metaproject.api.Name;
 import edu.stanford.protege.metaproject.api.User;
 import edu.stanford.protege.metaproject.api.UserId;
 
-import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -93,7 +92,7 @@ public final class UserImpl implements User, Serializable, Comparable<User> {
     }
 
     @Override
-    public int compareTo(@Nonnull User that) {
+    public int compareTo(User that) {
         return ComparisonChain.start()
                 .compare(this.id.get(), that.getId().get())
                 .result();
