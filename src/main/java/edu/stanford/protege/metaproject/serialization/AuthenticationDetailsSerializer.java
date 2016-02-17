@@ -5,10 +5,10 @@ import edu.stanford.protege.metaproject.api.AuthenticationDetails;
 import edu.stanford.protege.metaproject.api.Salt;
 import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
 import edu.stanford.protege.metaproject.api.UserId;
-import edu.stanford.protege.metaproject.api.impl.AuthenticationDetailsImpl;
-import edu.stanford.protege.metaproject.api.impl.SaltImpl;
-import edu.stanford.protege.metaproject.api.impl.SaltedPasswordDigestImpl;
-import edu.stanford.protege.metaproject.api.impl.UserIdImpl;
+import edu.stanford.protege.metaproject.impl.AuthenticationDetailsImpl;
+import edu.stanford.protege.metaproject.impl.SaltImpl;
+import edu.stanford.protege.metaproject.impl.SaltedPasswordDigestImpl;
+import edu.stanford.protege.metaproject.impl.UserIdImpl;
 
 import java.lang.reflect.Type;
 

@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.impl.*;
+import edu.stanford.protege.metaproject.impl.*;
 
 import java.lang.reflect.Type;
 import java.util.Set;

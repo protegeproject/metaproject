@@ -3,8 +3,8 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.Address;
 import edu.stanford.protege.metaproject.api.Host;
-import edu.stanford.protege.metaproject.api.impl.AddressImpl;
-import edu.stanford.protege.metaproject.api.impl.HostImpl;
+import edu.stanford.protege.metaproject.impl.AddressImpl;
+import edu.stanford.protege.metaproject.impl.HostImpl;
 
 import java.lang.reflect.Type;
 

@@ -1,7 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
-
 import java.util.Optional;
 import java.util.Set;
 

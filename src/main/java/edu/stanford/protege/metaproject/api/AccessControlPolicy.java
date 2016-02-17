@@ -1,10 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.MetaprojectException;
-import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
-import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
-
 import java.util.Set;
 
 /**

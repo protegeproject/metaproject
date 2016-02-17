@@ -8,8 +8,8 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface ProjectId extends AccessControlObjectId {
 
-    default AccessControlObjectType getType() {
-        return AccessControlObjectType.PROJECT;
+    default AccessControlObjectIdType getType() {
+        return AccessControlObjectIdType.PROJECT;
     }
 
 }

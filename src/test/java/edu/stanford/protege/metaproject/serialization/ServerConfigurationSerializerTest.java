@@ -29,7 +29,7 @@ public class ServerConfigurationSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         config = Utils.getServerConfiguration(host, accessControlPolicy, authenticationManager, propertyMap, idStatus);
         otherServerConfiguration = Utils.getServerConfiguration(host, accessControlPolicy, authenticationManager, propertyMap, idStatus);

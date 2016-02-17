@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.impl.*;
+import edu.stanford.protege.metaproject.impl.AccessControlPolicyImpl;
+import edu.stanford.protege.metaproject.impl.OperationPrerequisiteImpl;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.HashSet;

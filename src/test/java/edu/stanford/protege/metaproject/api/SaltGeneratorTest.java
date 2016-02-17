@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.impl.SaltGeneratorImpl;
+import edu.stanford.protege.metaproject.impl.SaltGeneratorImpl;
 import org.junit.Before;
 import org.junit.Test;
 

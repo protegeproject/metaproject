@@ -25,7 +25,7 @@ public class ProjectManagerSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         projectManager = Utils.getProjectManager(projectSet);
         otherProjectManager = Utils.getProjectManager(projectSet);

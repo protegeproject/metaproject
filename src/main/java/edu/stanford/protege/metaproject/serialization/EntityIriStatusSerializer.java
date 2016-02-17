@@ -5,10 +5,10 @@ import edu.stanford.protege.metaproject.api.EntityIriPrefix;
 import edu.stanford.protege.metaproject.api.EntityIriStatus;
 import edu.stanford.protege.metaproject.api.EntityNamePrefix;
 import edu.stanford.protege.metaproject.api.EntityNameSuffix;
-import edu.stanford.protege.metaproject.api.impl.EntityIriPrefixImpl;
-import edu.stanford.protege.metaproject.api.impl.EntityIriStatusImpl;
-import edu.stanford.protege.metaproject.api.impl.EntityNamePrefixImpl;
-import edu.stanford.protege.metaproject.api.impl.EntityNameSuffixImpl;
+import edu.stanford.protege.metaproject.impl.EntityIriPrefixImpl;
+import edu.stanford.protege.metaproject.impl.EntityIriStatusImpl;
+import edu.stanford.protege.metaproject.impl.EntityNamePrefixImpl;
+import edu.stanford.protege.metaproject.impl.EntityNameSuffixImpl;
 
 import java.lang.reflect.Type;
 

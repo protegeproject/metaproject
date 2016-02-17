@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.impl.*;
+import edu.stanford.protege.metaproject.impl.*;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.*;

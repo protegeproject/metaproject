@@ -25,7 +25,7 @@ public class AuthenticationManagerSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         authenticationManager = Utils.getAuthenticationManager(authenticationSet);
         otherAuthenticationManager = Utils.getAuthenticationManager(authenticationSet);

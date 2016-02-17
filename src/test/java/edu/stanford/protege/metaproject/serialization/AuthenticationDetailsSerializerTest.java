@@ -25,7 +25,7 @@ public class AuthenticationDetailsSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         authenticationDetails = Utils.getAuthenticationDetails(userId, password);
         otherAuthenticationDetails = Utils.getAuthenticationDetails(userId, password);

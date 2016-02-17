@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.exception.*;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,9 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
-
 import java.util.Set;
 
 /**

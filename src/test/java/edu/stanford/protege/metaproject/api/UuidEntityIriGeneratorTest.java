@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.impl.UuidEntityIriGenerator;
+import edu.stanford.protege.metaproject.impl.UuidEntityIriGenerator;
 import org.junit.Before;
 import org.junit.Test;
 

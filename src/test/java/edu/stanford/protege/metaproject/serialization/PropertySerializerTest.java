@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.impl.NameImpl;
+import edu.stanford.protege.metaproject.impl.NameImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class PropertySerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         prop = Utils.getName(propStr);
         otherProp = Utils.getName(propStr);

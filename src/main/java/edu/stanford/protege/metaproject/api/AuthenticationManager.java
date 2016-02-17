@@ -1,9 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
-
 import java.util.Set;
 
 /**
@@ -22,9 +18,8 @@ public interface AuthenticationManager extends Manager {
      * @param userId  User identifier
      * @param password  Password
      * @throws UserIdAlreadyInUseException   User is already registered
-     * @throws EmailAddressAlreadyInUseException Email address is already in use by another user
      */
-    void add(UserId userId, SaltedPasswordDigest password) throws UserIdAlreadyInUseException, EmailAddressAlreadyInUseException;
+    void add(UserId userId, SaltedPasswordDigest password) throws UserIdAlreadyInUseException;
 
     /**
      * Remove user from the authentication registry (the user will not be able to login)

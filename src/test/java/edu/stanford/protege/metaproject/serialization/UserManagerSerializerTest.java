@@ -25,7 +25,7 @@ public class UserManagerSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         userManager = Utils.getUserManager(userSet);
         otherUserManager = Utils.getUserManager(userSet);

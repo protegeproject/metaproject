@@ -1,8 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
-import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -36,9 +33,8 @@ public interface PolicyManager extends Manager {
      * @param userId    User identifier
      * @param projectId    Project identifier
      * @param roleId    Role identifier
-     * @throws UserNotInPolicyException    User not registered in the access control policy
      */
-    void remove(UserId userId, ProjectId projectId, RoleId roleId) throws UserNotInPolicyException;
+    void remove(UserId userId, ProjectId projectId, RoleId roleId);
 
     /**
      * Check if a given user has the specified role

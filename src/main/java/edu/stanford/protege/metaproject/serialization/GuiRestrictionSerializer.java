@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.GuiRestriction;
-import edu.stanford.protege.metaproject.api.impl.GuiRestrictionImpl;
+import edu.stanford.protege.metaproject.impl.GuiRestrictionImpl;
 
 import java.lang.reflect.Type;
 

@@ -1,7 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
-
 import java.util.Set;
 
 /**

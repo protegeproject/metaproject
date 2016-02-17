@@ -13,27 +13,27 @@ public interface AccessControlObjectIdGenerator {
      *
      * @return New user identifier
      */
-    UserId getUserId();
+    UserId createUserId();
 
     /**
      * Get a new role identifier
      *
      * @return New role identifier
      */
-    RoleId getRoleId();
+    RoleId createRoleId();
 
     /**
      * Get a new project identifier
      *
      * @return New project identifier
      */
-    ProjectId getProjectId();
+    ProjectId createProjectId();
 
     /**
      * Get a new operation identifier
      *
      * @return New operation identifier
      */
-    OperationId getOperationId();
+    OperationId createOperationId();
 
 }

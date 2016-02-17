@@ -24,7 +24,7 @@ public class HostSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         host = Utils.getHost(hostAddress, port);
         otherHost = Utils.getHost(hostAddress, port);

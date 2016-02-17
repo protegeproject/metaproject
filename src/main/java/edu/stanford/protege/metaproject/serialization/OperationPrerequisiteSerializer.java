@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.OperationPrerequisite;
-import edu.stanford.protege.metaproject.api.impl.OperationPrerequisiteImpl;
+import edu.stanford.protege.metaproject.impl.OperationPrerequisiteImpl;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.lang.reflect.Type;

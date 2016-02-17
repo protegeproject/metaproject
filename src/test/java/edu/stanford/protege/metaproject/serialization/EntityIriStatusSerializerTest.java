@@ -25,7 +25,7 @@ public class EntityIriStatusSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         termStatus = Utils.getEntityIriStatus(iriPrefix, classId, objPropId, dataPropId, annPropId, indId);
         otherTermStatus = Utils.getEntityIriStatus(iriPrefix, classId, objPropId, dataPropId, annPropId, indId);

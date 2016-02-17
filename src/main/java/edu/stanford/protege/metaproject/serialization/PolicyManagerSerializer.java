@@ -6,10 +6,10 @@ import edu.stanford.protege.metaproject.api.PolicyManager;
 import edu.stanford.protege.metaproject.api.ProjectId;
 import edu.stanford.protege.metaproject.api.RoleId;
 import edu.stanford.protege.metaproject.api.UserId;
-import edu.stanford.protege.metaproject.api.impl.PolicyManagerImpl;
-import edu.stanford.protege.metaproject.api.impl.ProjectIdImpl;
-import edu.stanford.protege.metaproject.api.impl.RoleIdImpl;
-import edu.stanford.protege.metaproject.api.impl.UserIdImpl;
+import edu.stanford.protege.metaproject.impl.PolicyManagerImpl;
+import edu.stanford.protege.metaproject.impl.ProjectIdImpl;
+import edu.stanford.protege.metaproject.impl.RoleIdImpl;
+import edu.stanford.protege.metaproject.impl.UserIdImpl;
 
 import java.lang.reflect.Type;
 import java.util.Map;

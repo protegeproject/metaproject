@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.impl.AccessControlPolicyImpl;
+import edu.stanford.protege.metaproject.impl.AccessControlPolicyImpl;
 
 import java.lang.reflect.Type;
 

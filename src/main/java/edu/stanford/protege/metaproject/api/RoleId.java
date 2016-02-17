@@ -8,8 +8,8 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface RoleId extends AccessControlObjectId {
 
-    default AccessControlObjectType getType() {
-        return AccessControlObjectType.ROLE;
+    default AccessControlObjectIdType getType() {
+        return AccessControlObjectIdType.ROLE;
     }
 
 }

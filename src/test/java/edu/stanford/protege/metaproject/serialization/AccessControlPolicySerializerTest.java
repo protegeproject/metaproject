@@ -26,7 +26,7 @@ public class AccessControlPolicySerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         accessControlPolicy = Utils.getAccessControlPolicy(policyManager, userManager, roleManager, operationManager, projectManager);
         otherAccessControlPolicy = Utils.getAccessControlPolicy(policyManager, userManager, roleManager, operationManager, projectManager);

@@ -30,7 +30,7 @@ public class ClientConfigurationSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         config = Utils.getClientConfiguration(accessControlPolicy, syncDelay, disabledUIElements, propertyMap);
         otherClientConfiguration = Utils.getClientConfiguration(accessControlPolicy, syncDelay, disabledUIElements, propertyMap);

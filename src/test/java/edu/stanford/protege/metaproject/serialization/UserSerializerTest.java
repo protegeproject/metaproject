@@ -31,7 +31,7 @@ public class UserSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         user = Utils.getUser(userId, userName, userEmail);
         otherUser = Utils.getUser(userId, userName, userEmail);

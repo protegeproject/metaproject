@@ -25,7 +25,7 @@ public class RoleManagerSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         roleManager = Utils.getRoleManager(roleSet);
         otherRoleManager = Utils.getRoleManager(roleSet);

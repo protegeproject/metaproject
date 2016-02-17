@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
 
-import edu.stanford.protege.metaproject.api.impl.Pbkdf2PasswordHasher;
+import edu.stanford.protege.metaproject.impl.Pbkdf2PasswordHasher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

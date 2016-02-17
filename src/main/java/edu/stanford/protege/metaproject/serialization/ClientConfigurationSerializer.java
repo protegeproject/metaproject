@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.ClientConfiguration;
 import edu.stanford.protege.metaproject.api.GuiRestriction;
 import edu.stanford.protege.metaproject.api.AccessControlPolicy;
-import edu.stanford.protege.metaproject.api.impl.ClientConfigurationImpl;
+import edu.stanford.protege.metaproject.impl.ClientConfigurationImpl;
 
 import java.lang.reflect.Type;
 import java.util.Map;

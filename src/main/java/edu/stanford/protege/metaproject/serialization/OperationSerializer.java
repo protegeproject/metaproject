@@ -3,10 +3,10 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.impl.DescriptionImpl;
-import edu.stanford.protege.metaproject.api.impl.NameImpl;
-import edu.stanford.protege.metaproject.api.impl.OperationIdImpl;
-import edu.stanford.protege.metaproject.api.impl.OperationImpl;
+import edu.stanford.protege.metaproject.impl.DescriptionImpl;
+import edu.stanford.protege.metaproject.impl.NameImpl;
+import edu.stanford.protege.metaproject.impl.OperationIdImpl;
+import edu.stanford.protege.metaproject.impl.OperationImpl;
 
 import java.lang.reflect.Type;
 import java.util.Optional;

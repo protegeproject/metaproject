@@ -28,7 +28,7 @@ public class PolicyManagerSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         policyManager = Utils.getPolicyManager(map1);
         otherPolicyManager = Utils.getPolicyManager(map1);

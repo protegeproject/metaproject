@@ -25,7 +25,7 @@ public class OperationManagerSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new SimpleGsonSerializer().getDefaultSerializer();
+        gson = new DefaultGsonSerializer().getDefaultSerializer();
 
         operationManager = Utils.getOperationManager(operationSet);
         otherOperationManager = Utils.getOperationManager(operationSet);

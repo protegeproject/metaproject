@@ -4,7 +4,7 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.User;
 import edu.stanford.protege.metaproject.api.UserManager;
-import edu.stanford.protege.metaproject.api.impl.UserManagerImpl;
+import edu.stanford.protege.metaproject.impl.UserManagerImpl;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

@@ -8,8 +8,8 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface UserId extends AccessControlObjectId {
 
-    default AccessControlObjectType getType() {
-        return AccessControlObjectType.USER;
+    default AccessControlObjectIdType getType() {
+        return AccessControlObjectIdType.USER;
     }
 
 }

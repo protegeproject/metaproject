@@ -8,6 +8,11 @@ package edu.stanford.protege.metaproject.api;
  */
 public interface AccessControlObjectId extends Property {
 
-    AccessControlObjectType getType();
+    /**
+     * Get the type of access control object
+     *
+     * @return Type of access control object
+     */
+    AccessControlObjectIdType getType();
 
 }
