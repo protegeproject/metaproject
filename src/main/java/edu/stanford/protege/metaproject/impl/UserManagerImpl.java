@@ -60,11 +60,6 @@ public class UserManagerImpl implements UserManager, Serializable {
     }
 
     @Override
-    public User create(String userId, String userName, String emailAddress) {
-        return new UserImpl(new UserIdImpl(userId), new NameImpl(userName), new EmailAddressImpl(emailAddress));
-    }
-
-    @Override
     public Set<User> getUsers() {
         return users;
     }

@@ -26,17 +26,6 @@ public interface OperationManager extends Manager {
     void remove(Operation... operation);
 
     /**
-     * Create a new operation
-     *
-     * @param name  Operation name
-     * @param description   Operation description
-     * @param operationType Operation type
-     * @param prerequisites Set of operation prerequisites
-     * @return New operation instance
-     */
-    Operation create(String name, String description, OperationType operationType, Optional<Set<OperationPrerequisite>> prerequisites);
-
-    /**
      * Get all known operations
      *
      * @return Set of operations

@@ -52,12 +52,6 @@ public class RoleManagerImpl implements RoleManager, Serializable {
     }
 
     @Override
-    public Role create(String name, String description, Set<OperationId> operations) {
-        AccessControlObjectUuidGenerator gen = new AccessControlObjectUuidGenerator();
-        return new RoleImpl(gen.createRoleId(), new NameImpl(name), new DescriptionImpl(description), operations);
-    }
-
-    @Override
     public Set<Role> getRoles() {
         return roles;
     }

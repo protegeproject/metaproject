@@ -53,12 +53,6 @@ public class ProjectManagerImpl implements ProjectManager, Serializable {
     }
 
     @Override
-    public Project create(String name, String description, String address, UserId ownerId, Set<UserId> admins) {
-        AccessControlObjectUuidGenerator gen = new AccessControlObjectUuidGenerator();
-        return new ProjectImpl(gen.createProjectId(), new NameImpl(name), new DescriptionImpl(description), new AddressImpl(address), ownerId, admins);
-    }
-
-    @Override
     public Set<Project> getProjects() {
         return projects;
     }

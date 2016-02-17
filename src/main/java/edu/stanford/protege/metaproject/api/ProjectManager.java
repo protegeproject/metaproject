@@ -25,18 +25,6 @@ public interface ProjectManager extends Manager {
     void remove(Project... project);
 
     /**
-     * Create a new project
-     *
-     * @param name  Project name
-     * @param description   Project description
-     * @param address   Project location
-     * @param ownerId   Project owner user identifier
-     * @param admins    Set of user identifiers of administrators
-     * @return New Project instance
-     */
-    Project create(String name, String description, String address, UserId ownerId, Set<UserId> admins);
-
-    /**
      * Get the set of all projects
      *
      * @return Set of projects

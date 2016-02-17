@@ -300,10 +300,6 @@ public class Utils {
         return new HostImpl(address, port);
     }
 
-    public static AccessControlPolicy getPolicySample() {
-        return new TestPolicy().getPolicy();
-    }
-
     public static AccessControlPolicy getAccessControlPolicy() {
         return getAccessControlPolicy(Utils.getPolicyManager(Utils.getUserRoleMap()), Utils.getUserManager(Utils.getUserSet()),
                 Utils.getRoleManager(Utils.getRoleSet()), Utils.getOperationManager(Utils.getOperationSet()), Utils.getProjectManager(Utils.getProjectSet()));

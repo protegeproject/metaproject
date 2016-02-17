@@ -27,16 +27,6 @@ public interface UserManager extends Manager {
     void remove(User... user);
 
     /**
-     * Create a user with the given user identifier, name and email address
-     *
-     * @param userId    User identifier
-     * @param userName  User name
-     * @param emailAddress  User email address
-     * @return A user instance
-     */
-    User create(String userId, String userName, String emailAddress);
-
-    /**
      * Get all users
      *
      * @return Set of all users

@@ -52,12 +52,6 @@ public class OperationManagerImpl implements OperationManager, Serializable {
     }
 
     @Override
-    public Operation create(String name, String description, OperationType operationType, Optional<Set<OperationPrerequisite>> prerequisites) {
-        AccessControlObjectUuidGenerator gen = new AccessControlObjectUuidGenerator();
-        return new OperationImpl(gen.createOperationId(), new NameImpl(name), new DescriptionImpl(description), operationType, prerequisites);
-    }
-
-    @Override
     public Set<Operation> getOperations() {
         return operations;
     }

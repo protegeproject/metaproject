@@ -25,16 +25,6 @@ public interface RoleManager extends Manager {
     void remove(Role... roles);
 
     /**
-     * Create a new role
-     *
-     * @param name  Role name
-     * @param description   Role description
-     * @param operations    Set of operations
-     * @return New role instance
-     */
-    Role create(String name, String description, Set<OperationId> operations);
-
-    /**
      * Get the set of all roles
      *
      * @return Set of existing roles
