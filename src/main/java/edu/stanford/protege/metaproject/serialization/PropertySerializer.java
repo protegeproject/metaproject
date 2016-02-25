@@ -15,7 +15,7 @@ public class PropertySerializer<E extends Property> implements JsonSerializer<Pr
 
     @Override
     public JsonElement serialize(Property property, Type type, JsonSerializationContext context) {
-        return new JsonPrimitive(property.get());
+        return new JsonPrimitive(property.get().toString());
     }
 
     @Override

@@ -15,7 +15,7 @@ public class ProjectIdTest {
     private static final String
             projectIdStr = "testProjectId1",
             diffIdStr = "testProjectId2",
-            toStringHead = "ProjectId";
+            toStringHead = ProjectId.class.getSimpleName();
 
     private ProjectId projectId, otherProjectId, diffProjectId;
 

@@ -20,11 +20,11 @@ public interface ServerConfiguration extends Configuration {
     Host getHost();
 
     /**
-     * Get the access control policy in effect on the server
+     * Get the manager of the access control policy in effect on the server
      *
-     * @return Access control policy
+     * @return Metaproject
      */
-    AccessControlPolicy getAccessControlPolicy();
+    Metaproject getMetaproject();
 
     /**
      * Get the user authentication manager
@@ -32,6 +32,13 @@ public interface ServerConfiguration extends Configuration {
      * @return Authentication manager
      */
     AuthenticationManager getAuthenticationManager();
+
+    /**
+     * Get the server conflict manager
+     *
+     * @return Conflict manager
+     */
+    Optional<ConflictManager> getConflictManager();
 
     /**
      * Get the ontology term identifier status, which contains the last generated identifiers and/or their prefixes

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.ClientConfiguration;
 import edu.stanford.protege.metaproject.api.GuiRestriction;
-import edu.stanford.protege.metaproject.api.AccessControlPolicy;
+import edu.stanford.protege.metaproject.api.Metaproject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,8 +20,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ClientConfigurationSerializerTest {
     private static final Map<String,String> propertyMap = Utils.getPropertyMap();
-    private static final AccessControlPolicy accessControlPolicy = Utils.getAccessControlPolicy(), diffAccessControlPolicy = Utils.getAccessControlPolicy();
-    private static final Set<GuiRestriction> disabledUIElements = Utils.getGUIRestrictionSet();
+    private static final Metaproject metaproject = Utils.getMetaproject(), diffMetaproject = Utils.getMetaproject();
+    private static final Set<GuiRestriction> disabledUiElements = Utils.getGUIRestrictionSet();
     private static final int syncDelay = 150;
 
     private String jsonClientConfiguration, jsonOtherClientConfiguration, jsonDiffClientConfiguration;
@@ -30,11 +30,11 @@ public class ClientConfigurationSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultGsonSerializer().getDefaultSerializer();
+        gson = new DefaultJsonSerializer().getInstance();
 
-        config = Utils.getClientConfiguration(accessControlPolicy, syncDelay, disabledUIElements, propertyMap);
-        otherClientConfiguration = Utils.getClientConfiguration(accessControlPolicy, syncDelay, disabledUIElements, propertyMap);
-        diffClientConfiguration = Utils.getClientConfiguration(diffAccessControlPolicy, syncDelay, disabledUIElements, propertyMap);
+        config = Utils.getClientConfiguration(metaproject, syncDelay, disabledUiElements, propertyMap);
+        otherClientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, disabledUiElements, propertyMap);
+        diffClientConfiguration = Utils.getClientConfiguration(diffMetaproject, syncDelay, disabledUiElements, propertyMap);
 
         jsonClientConfiguration = gson.toJson(config);
         jsonOtherClientConfiguration = gson.toJson(otherClientConfiguration);
@@ -85,7 +85,7 @@ public class ClientConfigurationSerializerTest {
 
     @Test
     public void testGetAccessControlPolicy() {
-        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getAccessControlPolicy(), is(accessControlPolicy));
+        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getMetaproject(), is(metaproject));
     }
 
     @Test
@@ -95,6 +95,6 @@ public class ClientConfigurationSerializerTest {
 
     @Test
     public void testGetDisabledUIElements() {
-        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getGuiRestrictions(), is(disabledUIElements));
+        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getGuiRestrictions(), is(disabledUiElements));
     }
 }

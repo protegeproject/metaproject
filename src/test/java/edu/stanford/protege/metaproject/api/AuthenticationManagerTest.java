@@ -1,6 +1,10 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +28,7 @@ public class AuthenticationManagerTest {
     private static final AuthenticationDetails auth1 = Utils.getAuthenticationDetails();
     private static final Set<AuthenticationDetails> authSet = Utils.getAuthenticationDetailsSet(auth1);
 
+    @Mock private Salt salt;
     @Mock private UserId userId1, userId2, userId3;
     @Mock private SaltedPasswordDigest passwd1, passwd2, passwd3;
 
@@ -35,6 +40,8 @@ public class AuthenticationManagerTest {
         authManager.add(userId1, passwd1);
         authManager.add(userId2, passwd2);
         authManager.add(userId3, passwd3);
+
+        when(passwd1.getSalt()).thenReturn(salt);
 
         otherAuthManager = Utils.getAuthenticationManager();
         otherAuthManager.add(userId1, passwd1);
@@ -93,6 +100,11 @@ public class AuthenticationManagerTest {
 
         when(passwd2.getPassword()).thenReturn("diffPassword");
         assertThat(authManager.hasValidCredentials(userId1, passwd2), is(false));
+    }
+
+    @Test
+    public void testGetSalt() throws UserNotRegisteredException {
+        assertThat(authManager.getSalt(userId1), is(salt));
     }
 
     @Test

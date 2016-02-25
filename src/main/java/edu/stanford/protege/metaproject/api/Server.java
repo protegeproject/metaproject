@@ -25,9 +25,9 @@ public interface Server {
     /**
      * Update the server configuration with a new access control policy
      *
-     * @param accessControlPolicy    New access control policy
+     * @param metaproject    New access control policy
      */
-    void updateConfiguration(AccessControlPolicy accessControlPolicy);
+    void updateConfiguration(Metaproject metaproject);
 
     /**
      * Update the server configuration with a new ontology term identifier status, i.e.,

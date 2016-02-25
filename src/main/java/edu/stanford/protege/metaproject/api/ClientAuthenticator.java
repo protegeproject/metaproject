@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
+
 /**
  * A client-side authenticator that relies on a plain password and user identifier.
  * The given details are validated against the specified user authenticator.

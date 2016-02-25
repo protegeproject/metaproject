@@ -11,20 +11,21 @@ import java.lang.reflect.Type;
  * Stanford Center for Biomedical Informatics Research
  */
 public class GuiRestrictionSerializer implements JsonSerializer<GuiRestriction>, JsonDeserializer<GuiRestriction> {
-
+    private final String COMPONENT = "component", VISIBILITY = "visibility";
+    
     @Override
     public GuiRestriction deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = element.getAsJsonObject();
-        String componentName = obj.get("component").getAsString();
-        GuiRestriction.Visibility restrictionVisibility = GuiRestriction.Visibility.valueOf(obj.getAsJsonPrimitive("visibility").getAsString());
+        String componentName = obj.get(COMPONENT).getAsString();
+        GuiRestriction.Visibility restrictionVisibility = GuiRestriction.Visibility.valueOf(obj.getAsJsonPrimitive(VISIBILITY).getAsString());
         return new GuiRestrictionImpl(componentName, restrictionVisibility);
     }
 
     @Override
     public JsonElement serialize(GuiRestriction restriction, Type type, JsonSerializationContext context) {
         JsonObject obj = new JsonObject();
-        obj.add("component", context.serialize(restriction.getGuiComponentName()));
-        obj.add("visibility", context.serialize(restriction.getVisibility()));
+        obj.add(COMPONENT, context.serialize(restriction.getGuiComponentName()));
+        obj.add(VISIBILITY, context.serialize(restriction.getVisibility()));
         return obj;
     }
 }

@@ -211,44 +211,44 @@ public class Utils {
 
     /*   access control policy managers   */
 
-    public static PolicyManager getPolicyManager() {
-        return new PolicyManagerImpl();
+    public static Policy getPolicyManager() {
+        return new PolicyImpl();
     }
 
-    public static PolicyManager getPolicyManager(Map<UserId, Map<ProjectId,Set<RoleId>>> map) {
-        return new PolicyManagerImpl(map);
+    public static Policy getPolicyManager(Map<UserId, Map<ProjectId,Set<RoleId>>> map) {
+        return new PolicyImpl(map);
     }
 
-    public static UserManager getUserManager() {
-        return new UserManagerImpl();
+    public static UserRegistry getUserManager() {
+        return new UserRegistryImpl();
     }
 
-    public static UserManager getUserManager(Set<User> users) {
-        return new UserManagerImpl(users);
+    public static UserRegistry getUserManager(Set<User> users) {
+        return new UserRegistryImpl(users);
     }
 
-    public static RoleManager getRoleManager() {
-        return new RoleManagerImpl();
+    public static RoleRegistry getRoleManager() {
+        return new RoleRegistryImpl();
     }
 
-    public static RoleManager getRoleManager(Set<Role> roles) {
-        return new RoleManagerImpl(roles);
+    public static RoleRegistry getRoleManager(Set<Role> roles) {
+        return new RoleRegistryImpl(roles);
     }
 
-    public static OperationManager getOperationManager() {
-        return new OperationManagerImpl();
+    public static OperationRegistry getOperationManager() {
+        return new OperationRegistryImpl();
     }
 
-    public static OperationManager getOperationManager(Set<Operation> operations) {
-        return new OperationManagerImpl(operations);
+    public static OperationRegistry getOperationManager(Set<Operation> operations) {
+        return new OperationRegistryImpl(operations);
     }
 
-    public static ProjectManager getProjectManager() {
-        return new ProjectManagerImpl();
+    public static ProjectRegistry getProjectManager() {
+        return new ProjectRegistryImpl();
     }
 
-    public static ProjectManager getProjectManager(Set<Project> projects) {
-        return new ProjectManagerImpl(projects);
+    public static ProjectRegistry getProjectManager(Set<Project> projects) {
+        return new ProjectRegistryImpl(projects);
     }
 
     public static AuthenticationManager getAuthenticationManager() {
@@ -271,13 +271,13 @@ public class Utils {
     }
 
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Utils.getHost(), Utils.getAccessControlPolicy(), Utils.getAuthenticationManager(), Utils.getPropertyMap(), Utils.getEntityIriStatus());
+        return getServerConfiguration(Utils.getHost(), Utils.getMetaproject(), Utils.getAuthenticationManager(), Utils.getPropertyMap(), Utils.getEntityIriStatus());
     }
 
-    public static ServerConfiguration getServerConfiguration(Host host, AccessControlPolicy accessControlPolicy, AuthenticationManager authenticationManager, Map<String, String> properties, EntityIriStatus idStatus) {
+    public static ServerConfiguration getServerConfiguration(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Map<String, String> properties, EntityIriStatus idStatus) {
         return new ServerConfigurationImpl.Builder()
                 .setHost(host)
-                .setAccessControlPolicy(accessControlPolicy)
+                .setMetaproject(metaproject)
                 .setAuthenticationManager(authenticationManager)
                 .setPropertyMap(properties)
                 .setEntityIriStatus(idStatus)
@@ -285,34 +285,42 @@ public class Utils {
     }
 
     public static ClientConfiguration getClientConfiguration() {
-        return getClientConfiguration(Utils.getAccessControlPolicy(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getPropertyMap());
+        return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getPropertyMap());
     }
 
-    public static ClientConfiguration getClientConfiguration(AccessControlPolicy accessControlPolicy, int syncDelay, Set<GuiRestriction> disabledUIComponents, Map<String,String> propertyMap) {
-        return new ClientConfigurationImpl(accessControlPolicy, syncDelay, disabledUIComponents, propertyMap);
+    public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Set<GuiRestriction> disabledUIComponents, Map<String,String> propertyMap) {
+        return new ClientConfigurationImpl(metaproject, syncDelay, disabledUIComponents, propertyMap);
     }
 
     public static Host getHost() {
-        return getHost(Utils.getAddress(), random.nextInt());
+        return getHost(Utils.getAddress(), getPort(random.nextInt()), getRegistryPort(random.nextInt()));
     }
 
-    public static Host getHost(Address address, int port) {
-        return new HostImpl(address, port);
+    public static Host getHost(Address address, Port port, RegistryPort registryPort) {
+        return new HostImpl(address, port, registryPort);
     }
 
-    public static AccessControlPolicy getAccessControlPolicy() {
-        return getAccessControlPolicy(Utils.getPolicyManager(Utils.getUserRoleMap()), Utils.getUserManager(Utils.getUserSet()),
+    public static Port getPort(int port) {
+        return new PortImpl(port);
+    }
+
+    public static RegistryPort getRegistryPort(int port) {
+        return new RegistryPortImpl(port);
+    }
+
+    public static Metaproject getMetaproject() {
+        return getMetaproject(Utils.getPolicyManager(Utils.getUserRoleMap()), Utils.getUserManager(Utils.getUserSet()),
                 Utils.getRoleManager(Utils.getRoleSet()), Utils.getOperationManager(Utils.getOperationSet()), Utils.getProjectManager(Utils.getProjectSet()));
     }
 
-    public static AccessControlPolicy getAccessControlPolicy(PolicyManager policyManager, UserManager userManager, RoleManager roleManager, OperationManager operationManager, ProjectManager projectManager) {
-        return new AccessControlPolicyImpl.Builder()
-                .setPolicyManager(policyManager)
-                .setUserManager(userManager)
-                .setRoleManager(roleManager)
-                .setOperationManager(operationManager)
-                .setProjectManager(projectManager)
-                .createAccessControlPolicy();
+    public static Metaproject getMetaproject(Policy policy, UserRegistry userRegistry, RoleRegistry roleRegistry, OperationRegistry operationRegistry, ProjectRegistry projectRegistry) {
+        return new MetaprojectImpl.Builder()
+                .setPolicy(policy)
+                .setUserRegistry(userRegistry)
+                .setRoleRegistry(roleRegistry)
+                .setOperationRegistry(operationRegistry)
+                .setProjectRegistry(projectRegistry)
+                .createMetaproject();
     }
 
     public static Map<UserId,Map<ProjectId, Set<RoleId>>> getUserRoleMap() {

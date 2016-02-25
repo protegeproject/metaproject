@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
 /**
- * A generator of identifiers for access control objects, such as users, projects, operations,...
+ * A generator of identifiers for access control objects: users, projects, operations, and roles
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research

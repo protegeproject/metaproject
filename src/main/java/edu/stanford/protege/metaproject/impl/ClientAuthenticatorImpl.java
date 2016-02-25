@@ -5,7 +5,7 @@ import edu.stanford.protege.metaproject.api.ClientAuthenticator;
 import edu.stanford.protege.metaproject.api.PlainPassword;
 import edu.stanford.protege.metaproject.api.UserAuthenticator;
 import edu.stanford.protege.metaproject.api.UserId;
-import edu.stanford.protege.metaproject.api.UserNotRegisteredException;
+import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
 /**
  * @author Rafael Gonçalves <br>

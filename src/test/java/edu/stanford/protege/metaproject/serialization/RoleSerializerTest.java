@@ -28,7 +28,7 @@ public class RoleSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultGsonSerializer().getDefaultSerializer();
+        gson = new DefaultJsonSerializer().getInstance();
 
         role = Utils.getRole(roleId, roleName, roleDescription, operations);
         otherRole = Utils.getRole(roleId, roleName, roleDescription, operations);

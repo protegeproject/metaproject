@@ -15,7 +15,7 @@ public class RoleIdTest {
     private static final String
             roleIdStr = "testRoleId1",
             diffIdStr = "testRoleId2",
-            toStringHead = "RoleId";
+            toStringHead = RoleId.class.getSimpleName();
 
     private RoleId roleId, otherRoleId, diffRoleId;
 

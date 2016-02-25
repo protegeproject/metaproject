@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class UuidPrefixedNameEntityIriGeneratorTest {
-    private static final String toStringHead = "UuidPrefixedNameEntityIriGenerator";
+    private static final String toStringHead = UuidPrefixedNameEntityIriGenerator.class.getSimpleName();
     private static final EntityIriPrefix iriPrefix = Utils.getEntityIriPrefix();
     private static final EntityNamePrefix
             classIdPrefix = Utils.getEntityNamePrefix(),

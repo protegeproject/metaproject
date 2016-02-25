@@ -19,7 +19,7 @@ public class ProjectTest {
             otherIdStr = "testProjectId2",
             projectNameStr = "test project name",
             projectDescriptionStr = "test project description",
-            toStringHead = "Project";
+            toStringHead = Project.class.getSimpleName();
 
     private static final ProjectId projectId = Utils.getProjectId(projectIdStr), diffProjectId = Utils.getProjectId(otherIdStr);
     private static final Name projectName = Utils.getName(projectNameStr);

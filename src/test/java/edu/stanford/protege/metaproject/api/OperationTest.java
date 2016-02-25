@@ -20,7 +20,7 @@ public class OperationTest {
             otherIdStr = "testOperationId2",
             operationNameStr = "test operation name",
             operationDescriptionStr = "test operation description",
-            toStringHead = "Operation";
+            toStringHead = Operation.class.getSimpleName();
 
     private static final OperationId operationId = Utils.getOperationId(operationIdStr), diffOperationId = Utils.getOperationId(otherIdStr);
     private static final Name operationName = Utils.getName(operationNameStr);

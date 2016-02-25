@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class SaltGeneratorTest {
-    private static final String toStringHead = "SaltGenerator";
+    private static final String toStringHead = SaltGenerator.class.getSimpleName();
     private static final int nrBytes = 16;
 
     private SaltGenerator saltGenerator, otherSaltGenerator, diffSalt;

@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.Address;
 import edu.stanford.protege.metaproject.api.Host;
+import edu.stanford.protege.metaproject.api.Port;
+import edu.stanford.protege.metaproject.api.RegistryPort;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +18,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class HostSerializerTest {
     private static final Address hostAddress = Utils.getAddress("testHostId1"), diffHostAddress = Utils.getAddress("testHostId2");
-    private static final int port = 8080, diffPort = 8081;
+    private static final Port port = Utils.getPort(8080), diffPort = Utils.getPort(8081);
+    private static final RegistryPort registryPort = Utils.getRegistryPort(5100);
 
     private String jsonHost, jsonOtherHost, jsonDiffHost;
     private Host host, otherHost, diffHost;
@@ -24,11 +27,11 @@ public class HostSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultGsonSerializer().getDefaultSerializer();
+        gson = new DefaultJsonSerializer().getInstance();
 
-        host = Utils.getHost(hostAddress, port);
-        otherHost = Utils.getHost(hostAddress, port);
-        diffHost = Utils.getHost(diffHostAddress, diffPort);
+        host = Utils.getHost(hostAddress, port, registryPort);
+        otherHost = Utils.getHost(hostAddress, port, registryPort);
+        diffHost = Utils.getHost(diffHostAddress, diffPort, registryPort);
 
         jsonHost = gson.toJson(host);
         jsonOtherHost = gson.toJson(otherHost);

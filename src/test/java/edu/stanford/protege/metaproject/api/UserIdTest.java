@@ -15,7 +15,7 @@ public class UserIdTest {
     private static final String
             userIdStr = "testUserId1",
             diffIdStr = "testUserId2",
-            toStringHead = "UserId";
+            toStringHead = UserId.class.getSimpleName();
 
     private UserId userId, otherUserId, diffUserId;
 

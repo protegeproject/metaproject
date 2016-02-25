@@ -1,5 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
+
 import java.util.Set;
 
 /**
@@ -10,7 +13,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface AuthenticationManager extends Manager {
+public interface AuthenticationManager {
 
     /**
      * Register a user in the user registry
@@ -46,6 +49,15 @@ public interface AuthenticationManager extends Manager {
     AuthenticationDetails getAuthenticationDetails(UserId userId) throws UserNotRegisteredException;
 
     /**
+     * Get the cryptographic salt used for hashing the given user's password
+     *
+     * @param userId    User identifier
+     * @return Salt
+     * @throws UserNotRegisteredException   User is not registered
+     */
+    Salt getSalt(UserId userId) throws UserNotRegisteredException;
+
+    /**
      * Verify whether the given user-password pair is a valid (registered) one
      *
      * @param userId    User identifier
@@ -63,5 +75,13 @@ public interface AuthenticationManager extends Manager {
      * @throws UserNotRegisteredException   User is not registered
      */
     void changePassword(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException;
+
+    /**
+     * Verify whether the user with the given identifier exists in the registry
+     *
+     * @param userId    User identifier
+     * @return true if the identifier corresponds to an existing, registered user, false otherwise
+     */
+    boolean contains(UserId userId);
 
 }

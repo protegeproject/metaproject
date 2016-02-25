@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class AccessControlObjectUuidGeneratorTest {
-    private static final String toStringHead = "AccessControlObjectUuidGenerator";
+    private static final String toStringHead = AccessControlObjectUuidGenerator.class.getSimpleName();
 
     private AccessControlObjectUuidGenerator gen;
 

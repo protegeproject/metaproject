@@ -22,7 +22,7 @@ public class PropertySerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultGsonSerializer().getDefaultSerializer();
+        gson = new DefaultJsonSerializer().getInstance();
 
         prop = Utils.getName(propStr);
         otherProp = Utils.getName(propStr);

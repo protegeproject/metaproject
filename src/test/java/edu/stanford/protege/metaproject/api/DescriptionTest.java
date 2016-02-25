@@ -15,7 +15,7 @@ public class DescriptionTest {
     private static final String
             descriptionStr = "testDescription",
             diffDescriptionStr = "diffTestDescription",
-            toStringHead = "Description";
+            toStringHead = Description.class.getSimpleName();
 
     private Description description, otherDescription, diffDescription;
 

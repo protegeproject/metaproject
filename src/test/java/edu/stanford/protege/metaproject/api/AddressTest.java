@@ -15,7 +15,7 @@ public class AddressTest {
     private static final String
             addressStr = "testAddress",
             diffAddressStr = "diffTestAddress",
-            toStringHead = "Address";
+            toStringHead = Address.class.getSimpleName();
 
     private Address address, otherAddress, diffAddress;
 

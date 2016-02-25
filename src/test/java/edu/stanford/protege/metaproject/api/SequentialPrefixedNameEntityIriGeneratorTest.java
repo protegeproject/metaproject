@@ -15,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class SequentialPrefixedNameEntityIriGeneratorTest {
-    private static final String toStringHead = "SequentialPrefixedNameEntityIriGenerator";
+    private static final String toStringHead = SequentialPrefixedNameEntityIriGenerator.class.getSimpleName();
     private static final EntityNamePrefix
             classNamePrefix = Utils.getEntityNamePrefix(),
             objPropPrefix = Utils.getEntityNamePrefix(),

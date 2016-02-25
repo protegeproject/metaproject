@@ -17,17 +17,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class HostTest {
     private static final String toStringHead = Host.class.getSimpleName();
-    private static final int port = 8080, diffPort = 8081;
 
+    @Mock private Port port, diffPort;
+    @Mock private RegistryPort registryPort;
     @Mock private Address hostAddress, diffHostAddress;
 
     private Host host, otherHost, diffHost;
 
     @Before
     public void setUp() {
-        host = Utils.getHost(hostAddress, port);
-        otherHost = Utils.getHost(hostAddress, port);
-        diffHost = Utils.getHost(diffHostAddress, diffPort);
+        host = Utils.getHost(hostAddress, port, registryPort);
+        otherHost = Utils.getHost(hostAddress, port, registryPort);
+        diffHost = Utils.getHost(diffHostAddress, diffPort, registryPort);
     }
 
     @Test
@@ -43,6 +44,11 @@ public class HostTest {
     @Test
     public void testGetPort() {
         assertThat(host.getPort(), is(port));
+    }
+
+    @Test
+    public void getRegistryPort() {
+        assertThat(host.getRegistryPort(), is(registryPort));
     }
 
     @Test

@@ -24,7 +24,7 @@ public class OperationPrerequisiteSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultGsonSerializer().getDefaultSerializer();
+        gson = new DefaultJsonSerializer().getInstance();
 
         prerequisite = Utils.getOperationPrerequisite(iri, modifier);
         otherPrerequisite = Utils.getOperationPrerequisite(iri, modifier);

@@ -19,7 +19,7 @@ public class RoleTest {
             otherIdStr = "testRoleId2",
             roleNameStr = "test role name",
             roleDescriptionStr = "test role description",
-            toStringHead = "Role";
+            toStringHead = Role.class.getSimpleName();
 
     private static final RoleId roleId = Utils.getRoleId(roleIdStr), diffRoleId = Utils.getRoleId(otherIdStr);
     private static final Name roleName = Utils.getName(roleNameStr);

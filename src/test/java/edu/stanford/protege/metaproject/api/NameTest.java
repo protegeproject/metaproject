@@ -15,7 +15,7 @@ public class NameTest {
     private static final String
             nameStr = "testName",
             diffNameStr = "diffTestName",
-            toStringHead = "Name";
+            toStringHead = Name.class.getSimpleName();
 
     private Name name, otherName, diffName;
 

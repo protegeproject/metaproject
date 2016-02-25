@@ -14,7 +14,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ServerTest {
-    private static final String toStringHead = "Server";
+    private static final String toStringHead = Server.class.getSimpleName();
     private static ServerConfiguration config = Utils.getServerConfiguration(), diffConfig = Utils.getServerConfiguration();
     private static EntityIriGenerator idGenerator = Utils.getUuidEntityIriGenerator(Utils.getEntityIriPrefix());
 
@@ -44,9 +44,9 @@ public class ServerTest {
 
     @Test
     public void testUpdateConfigurationPolicy() {
-        AccessControlPolicy newAccessControlPolicy = Utils.getAccessControlPolicy();
-        server.updateConfiguration(newAccessControlPolicy);
-        assertThat(server.getConfiguration().getAccessControlPolicy(), is(newAccessControlPolicy));
+        Metaproject newMetaproject = Utils.getMetaproject();
+        server.updateConfiguration(newMetaproject);
+        assertThat(server.getConfiguration().getMetaproject(), is(newMetaproject));
     }
 
     @Test

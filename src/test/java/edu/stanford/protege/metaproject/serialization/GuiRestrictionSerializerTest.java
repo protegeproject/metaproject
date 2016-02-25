@@ -23,7 +23,7 @@ public class GuiRestrictionSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultGsonSerializer().getDefaultSerializer();
+        gson = new DefaultJsonSerializer().getInstance();
 
         restriction = Utils.getGUIRestriction(componentName, visibility);
         otherRestriction = Utils.getGUIRestriction(componentName, visibility);

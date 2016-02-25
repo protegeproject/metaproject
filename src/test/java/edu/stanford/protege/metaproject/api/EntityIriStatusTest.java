@@ -25,7 +25,7 @@ public class EntityIriStatusTest {
             dataPropSuffix = Utils.getEntityNameSuffix(),
             annPropSuffix = Utils.getEntityNameSuffix();
     private static final EntityIriPrefix iriPrefix = Utils.getEntityIriPrefix();
-    private static final String toStringHead = "EntityIriStatus";
+    private static final String toStringHead = EntityIriStatus.class.getSimpleName();
 
     private EntityIriStatus termId, otherTermId, diffTermId;
 

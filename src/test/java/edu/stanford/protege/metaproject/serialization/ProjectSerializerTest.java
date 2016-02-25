@@ -30,7 +30,7 @@ public class ProjectSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultGsonSerializer().getDefaultSerializer();
+        gson = new DefaultJsonSerializer().getInstance();
 
         project = Utils.getProject(projectId, projectName, projectDescription, projectAddress, owner, admins);
         otherProject = Utils.getProject(projectId, projectName, projectDescription, projectAddress, owner, admins);

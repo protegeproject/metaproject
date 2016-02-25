@@ -6,7 +6,7 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface AccessControlObjectId extends Property {
+public interface AccessControlObjectId extends TextProperty {
 
     /**
      * Get the type of access control object

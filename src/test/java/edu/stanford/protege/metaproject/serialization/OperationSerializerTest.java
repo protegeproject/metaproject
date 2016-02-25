@@ -30,7 +30,7 @@ public class OperationSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultGsonSerializer().getDefaultSerializer();
+        gson = new DefaultJsonSerializer().getInstance();
 
         operation = Utils.getOperation(operationId, operationName, operationDescription, type, Optional.of(prerequisites));
         otherOperation = Utils.getOperation(operationId, operationName, operationDescription, type, Optional.of(prerequisites));

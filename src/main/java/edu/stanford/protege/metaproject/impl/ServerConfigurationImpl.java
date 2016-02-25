@@ -16,9 +16,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = 7053198252560302214L;
+    private static final long serialVersionUID = 1761331791223501549L;
     private final Host host;
-    private final AccessControlPolicy accessControlPolicy;
+    private final Metaproject metaproject;
     private final AuthenticationManager authenticationManager;
     private final Map<String,String> properties;
     private final EntityIriStatus termIdentifiers;
@@ -27,14 +27,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
      * Package-private constructor; use builder
      *
      * @param host    Host
-     * @param accessControlPolicy    Access control policy
+     * @param metaproject    Metaproject
      * @param authenticationManager Authentication manager
      * @param properties   Map of simple configuration properties
      * @param termIdentifiers  Ontology term identifier status
      */
-    ServerConfigurationImpl(Host host, AccessControlPolicy accessControlPolicy, AuthenticationManager authenticationManager, Optional<Map<String,String>> properties, Optional<EntityIriStatus> termIdentifiers) {
+    ServerConfigurationImpl(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Optional<Map<String,String>> properties, Optional<EntityIriStatus> termIdentifiers) {
         this.host = checkNotNull(host);
-        this.accessControlPolicy = checkNotNull(accessControlPolicy);
+        this.metaproject = checkNotNull(metaproject);
         this.authenticationManager = checkNotNull(authenticationManager);
         this.properties = (properties.isPresent() ? checkNotNull(properties.get()) : null);
         this.termIdentifiers = (termIdentifiers.isPresent() ? checkNotNull(termIdentifiers.get()) : null);
@@ -45,14 +45,18 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         return host;
     }
 
-    @Override
-    public AccessControlPolicy getAccessControlPolicy() {
-        return accessControlPolicy;
+    public Metaproject getMetaproject() {
+        return metaproject;
     }
 
     @Override
     public AuthenticationManager getAuthenticationManager() {
         return authenticationManager;
+    }
+
+    @Override
+    public Optional<ConflictManager> getConflictManager() {
+        return Optional.empty();
     }
 
     @Override
@@ -71,7 +75,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         if (o == null || getClass() != o.getClass()) return false;
         ServerConfigurationImpl that = (ServerConfigurationImpl) o;
         return Objects.equal(host, that.host) &&
-                Objects.equal(accessControlPolicy, that.accessControlPolicy) &&
+                Objects.equal(metaproject, that.metaproject) &&
                 Objects.equal(authenticationManager, that.authenticationManager) &&
                 Objects.equal(properties, that.properties) &&
                 Objects.equal(termIdentifiers, that.termIdentifiers);
@@ -79,14 +83,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(host, accessControlPolicy, authenticationManager, properties, termIdentifiers);
+        return Objects.hashCode(host, metaproject, authenticationManager, properties, termIdentifiers);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("host", host)
-                .add("accessControlPolicy", accessControlPolicy)
+                .add("metaproject", metaproject)
                 .add("authenticationManager", authenticationManager)
                 .add("properties", properties)
                 .add("termIdentifiers", termIdentifiers)
@@ -98,8 +102,8 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
      */
     public static class Builder {
         private Host host;
-        private AccessControlPolicy accessControlPolicy;
-        private AuthenticationManager authenticationManager;
+        private Metaproject metaproject = new MetaprojectImpl.Builder().createMetaproject();
+        private AuthenticationManager authenticationManager = new AuthenticationManagerImpl();
         private Map<String,String> properties = new HashMap<>();
         private EntityIriPrefix defaultIri = new EntityIriPrefixImpl("http://www.semanticweb.org/");
         private EntityIriStatus entityIriStatus = new EntityIriStatusImpl.Builder().setEntityIriPrefix(defaultIri).createEntityIriStatus();
@@ -109,8 +113,8 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
             return this;
         }
 
-        public Builder setAccessControlPolicy(AccessControlPolicy accessControlPolicy) {
-            this.accessControlPolicy = accessControlPolicy;
+        public Builder setMetaproject(Metaproject metaproject) {
+            this.metaproject = metaproject;
             return this;
         }
 
@@ -130,7 +134,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         }
 
         public ServerConfigurationImpl createServerConfiguration() {
-            return new ServerConfigurationImpl(host, accessControlPolicy, authenticationManager, Optional.ofNullable(properties), Optional.ofNullable(entityIriStatus));
+            return new ServerConfigurationImpl(host, metaproject, authenticationManager, Optional.ofNullable(properties), Optional.ofNullable(entityIriStatus));
         }
     }
 }

@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
+
 /**
  * A user authenticator that verifies whether the given username and password are valid.
  *

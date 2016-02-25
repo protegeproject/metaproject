@@ -17,7 +17,7 @@ public class UserTest {
             otherIdStr = "testUserId2",
             userNameStr = "testUserName",
             userEmailStr = "test@EmailAddress",
-            toStringHead = "User";
+            toStringHead = User.class.getSimpleName();
 
     private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(otherIdStr);
     private static final Name userName = Utils.getName(userNameStr);

@@ -15,9 +15,9 @@ public interface ClientConfiguration extends Configuration {
     /**
      * Get the access control policy in effect for the client
      *
-     * @return Access control policy
+     * @return Metaproject
      */
-    AccessControlPolicy getAccessControlPolicy();
+    Metaproject getMetaproject();
 
     /**
      * Get the time (in seconds) between client-server synchronisation attempts

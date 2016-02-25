@@ -15,7 +15,7 @@ public class SaltTest {
     private static final String
             saltStr = "testSalt1",
             diffSaltStr = "testSalt2",
-            toStringHead = "Salt";
+            toStringHead = Salt.class.getSimpleName();
 
     private Salt salt, otherSalt, diffSalt;
 

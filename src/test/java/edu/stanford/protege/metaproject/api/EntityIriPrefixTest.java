@@ -15,7 +15,7 @@ public class EntityIriPrefixTest {
     private static final String
             idPrefixStr = "testIdPrefix",
             diffIdPrefixStr = "diffTestIdPrefix",
-            toStringHead = "EntityIriPrefix";
+            toStringHead = EntityIriPrefix.class.getSimpleName();
 
     private EntityIriPrefix idPrefix, otherIdPrefix, diffIdPrefix;
 

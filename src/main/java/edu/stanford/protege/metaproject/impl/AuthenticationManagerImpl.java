@@ -3,8 +3,11 @@ package edu.stanford.protege.metaproject.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -15,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AuthenticationManagerImpl implements AuthenticationManager, Serializable {
     private static final long serialVersionUID = 1554528655640993462L;
-    private Set<AuthenticationDetails> authenticationDetails;
+    private Set<AuthenticationDetails> authenticationDetails = new HashSet<>();
 
     /**
      * Constructor
@@ -25,6 +28,11 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
     public AuthenticationManagerImpl(Set<AuthenticationDetails> authenticationDetails) {
         this.authenticationDetails = checkNotNull(authenticationDetails);
     }
+
+    /**
+     * No-args constructor
+     */
+    public AuthenticationManagerImpl() { }
 
     @Override
     public boolean hasValidCredentials(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException {
@@ -69,6 +77,11 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
         return details;
     }
 
+    @Override
+    public Salt getSalt(UserId userId) throws UserNotRegisteredException {
+        return getAuthenticationDetails(userId).getPassword().getSalt();
+    }
+
     /**
      * Get an instance of UserAuthenticationDetails using the specified user identifier and password
      *
@@ -102,7 +115,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
     }
 
     @Override
-    public boolean contains(AccessControlObjectId userId) {
+    public boolean contains(UserId userId) {
         for(AuthenticationDetails userDetails : authenticationDetails) {
             if(userDetails.getUserId().equals(userId)) {
                 return true;

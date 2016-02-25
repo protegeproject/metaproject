@@ -13,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationPrerequisiteTest {
-    private static final String toStringHead = "OperationPrerequisite";
+    private static final String toStringHead = OperationPrerequisite.class.getSimpleName();
     private static final IRI iri = Utils.getIRI(), diffIri = Utils.getIRI();
     private static final OperationPrerequisite.Modifier mod = OperationPrerequisite.Modifier.ABSENT;
 

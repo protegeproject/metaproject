@@ -15,7 +15,7 @@ public class PlainPasswordTest {
     private static final String
             passwordStr = "testPassword1",
             diffPasswordStr = "testPassword2",
-            toStringHead = "PlainPassword";
+            toStringHead = PlainPassword.class.getSimpleName();
 
     private PlainPassword password, otherPassword, diffPassword;
 

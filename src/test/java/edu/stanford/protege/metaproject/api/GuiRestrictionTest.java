@@ -12,7 +12,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class GuiRestrictionTest {
-    private static final String componentName = "buttonX1", diffComponentName = "buttonXY3", toStringHead = "GuiRestriction";
+    private static final String
+            componentName = "button1",
+            diffComponentName = "button2",
+            toStringHead = GuiRestriction.class.getSimpleName();
     private static final GuiRestriction.Visibility visibility = GuiRestriction.Visibility.HIDDEN;
 
     private GuiRestriction restriction, otherRestriction, diffRestriction;

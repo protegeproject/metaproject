@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.api.Metaproject;
 import edu.stanford.protege.metaproject.api.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -36,10 +37,10 @@ public class ServerImpl implements Server {
     }
 
     @Override
-    public void updateConfiguration(AccessControlPolicy accessControlPolicy) {
+    public void updateConfiguration(Metaproject metaproject) {
         this.configuration = new ServerConfigurationImpl.Builder()
                 .setHost(configuration.getHost())
-                .setAccessControlPolicy(checkNotNull(accessControlPolicy))
+                .setMetaproject(checkNotNull(metaproject))
                 .setAuthenticationManager(configuration.getAuthenticationManager())
                 .setEntityIriStatus(configuration.getOntologyTermIdStatus().get())
                 .createServerConfiguration();
@@ -49,7 +50,7 @@ public class ServerImpl implements Server {
     public void updateConfiguration(EntityIriStatus entityIriStatus) {
         this.configuration = new ServerConfigurationImpl.Builder()
                 .setHost(configuration.getHost())
-                .setAccessControlPolicy(configuration.getAccessControlPolicy())
+                .setMetaproject(configuration.getMetaproject())
                 .setAuthenticationManager(configuration.getAuthenticationManager())
                 .setEntityIriStatus(checkNotNull(entityIriStatus))
                 .createServerConfiguration();

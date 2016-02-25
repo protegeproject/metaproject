@@ -15,7 +15,7 @@ public class OperationIdTest {
     private static final String
             operationIdStr = "testOperationId1",
             diffIdStr = "testOperationId2",
-            toStringHead = "OperationId";
+            toStringHead = OperationId.class.getSimpleName();
 
     private OperationId operationId, otherOperationId, diffOperationId;
 

@@ -3,6 +3,7 @@ package edu.stanford.protege.metaproject.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.MalformedInputException;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ClientTest {
-    private static final String toStringHead = "Client";
+    private static final String toStringHead = Client.class.getSimpleName();
     private static ClientConfiguration config = Utils.getClientConfiguration(), diffConfig = Utils.getClientConfiguration();
 
     private Client client, otherClient, diffClient;
