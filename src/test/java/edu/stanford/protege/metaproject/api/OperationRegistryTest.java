@@ -83,19 +83,19 @@ public class OperationRegistryTest {
     }
 
     @Test
-    public void testAddPrerequisite() throws UnknownOperationIdException {
-        OperationPrerequisite prerequisite = Utils.getOperationPrerequisite();
-        operationRegistry.addPrerequisite(operation2.getId(), prerequisite);
-        assertThat(operationRegistry.getOperation(operation2.getId()).getPrerequisites().get().contains(prerequisite), is(true));
+    public void testAddRestriction() throws UnknownOperationIdException {
+        OperationRestriction restriction = Utils.getOperationRestriction();
+        operationRegistry.addRestriction(operation2.getId(), restriction);
+        assertThat(operationRegistry.getOperation(operation2.getId()).getRestrictions().get().contains(restriction), is(true));
     }
 
     @Test
-    public void testRemovePrerequisite() throws UnknownOperationIdException {
-        OperationPrerequisite prerequisite = operation2.getPrerequisites().get().iterator().next();
-        operationRegistry.removePrerequisite(operation2.getId(), prerequisite);
+    public void testRemoveRestriction() throws UnknownOperationIdException {
+        OperationRestriction restriction = operation2.getRestrictions().get().iterator().next();
+        operationRegistry.removeRestriction(operation2.getId(), restriction);
 
         Operation op = operationRegistry.getOperation(operation2.getId());
-        assertThat(op.getPrerequisites().get().contains(prerequisite), is(false));
+        assertThat(op.getRestrictions().get().contains(restriction), is(false));
     }
 
     @Test

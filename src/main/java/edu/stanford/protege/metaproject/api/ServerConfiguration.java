@@ -10,7 +10,7 @@ import java.util.Optional;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ServerConfiguration extends Configuration {
+public interface ServerConfiguration {
 
     /**
      * Get the server host

@@ -2,10 +2,11 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectTypeException;
-import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.AxiomType;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -41,12 +42,12 @@ public class FactoryImpl implements Factory {
     }
 
     @Override
-    public Operation createOperation(OperationId operationId, Name name, Description description, OperationType operationType, Optional<Set<OperationPrerequisite>> prerequisites) {
+    public Operation createOperation(OperationId operationId, Name name, Description description, OperationType operationType, Optional<Set<OperationRestriction>> restrictions) {
         checkNotNull(operationId, "Operation identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
         checkNotNull(description, "Description cannot be null");
         checkNotNull(operationType, "Operation type cannot be null");
-        return new OperationImpl(operationId, name, description, operationType, prerequisites);
+        return new OperationImpl(operationId, name, description, operationType, restrictions);
     }
 
     @Override
@@ -58,10 +59,28 @@ public class FactoryImpl implements Factory {
     }
 
     @Override
-    public OperationPrerequisite createOperationPrerequisite(IRI prerequisite, OperationPrerequisite.Modifier modifier) {
-        checkNotNull(prerequisite, "Prerequisite IRI cannot be null");
-        checkNotNull(modifier, "Operation prerequisite modifier cannot be null");
-        return new OperationPrerequisiteImpl(prerequisite, modifier);
+    public OperationRestriction createAxiomTypeOperationRestriction(AxiomType axiomType, Modality modality) {
+        checkNotNull(axiomType, "Restriction type cannot be null");
+        checkNotNull(modality, "Restriction modality cannot be null");
+        return new AxiomTypeRestriction(axiomType, modality);
+    }
+
+    @Override
+    public AuthenticationDetails createAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
+        checkNotNull(userId, "User identifier cannot be null");
+        checkNotNull(password, "Password cannot be null");
+        return new AuthenticationDetailsImpl(userId, password);
+    }
+
+    @Override
+    public Salt createSalt(String salt) {
+        checkNotNull(salt, "Salt must not be null");
+        return new SaltImpl(salt);
+    }
+
+    @Override
+    public SaltedPasswordDigest createSaltedPasswordDigest(String password, Salt salt) {
+        return new SaltedPasswordDigestImpl(password, salt);
     }
 
     @Override
@@ -141,5 +160,49 @@ public class FactoryImpl implements Factory {
     public OperationId createOperationId(String operationId) {
         checkNotNull(operationId, "Operation identifier cannot be null");
         return new OperationIdImpl(operationId);
+    }
+
+    @Override
+    public UserId createUserUuid() {
+        return new UserIdImpl(getNewUuid());
+    }
+
+    @Override
+    public RoleId createRoleUuid() {
+        return new RoleIdImpl(getNewUuid());
+    }
+
+    @Override
+    public ProjectId createProjectUuid() {
+        return new ProjectIdImpl(getNewUuid());
+    }
+
+    @Override
+    public OperationId createOperationUuid() {
+        return new OperationIdImpl(getNewUuid());
+    }
+
+    private String getNewUuid() {
+        return UUID.randomUUID().toString();
+    }
+
+    @Override
+    public Port createPort(Integer portNr) {
+        return new PortImpl(portNr);
+    }
+
+    @Override
+    public RegistryPort createRegistryPort(Integer portNr) {
+        return new RegistryPortImpl(portNr);
+    }
+
+    @Override
+    public Host createHost(Address address, Port port, RegistryPort registryPort) {
+        return new HostImpl(address, port, registryPort);
+    }
+
+    @Override
+    public OperationRestriction createRestriction(AxiomType axiomType, Modality modality) {
+        return new AxiomTypeRestriction(axiomType, modality);
     }
 }

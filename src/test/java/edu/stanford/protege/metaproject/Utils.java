@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.impl.*;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.util.*;
@@ -12,8 +13,8 @@ import java.util.*;
  */
 public class Utils {
     private static final int DEFAULT_SET_SIZE = 3;
-    private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.READ;
-    private static final OperationPrerequisite.Modifier DEFAULT_MODIFIER = OperationPrerequisite.Modifier.PRESENT;
+    private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.METAPROJECT;
+    private static final Modality DEFAULT_MODIFIER = Modality.AxiomChange.ADDITION;
     private static final String IRI_PREFIX = "http://protege.stanford.edu/test/";
     private static final Random random = new Random();
     
@@ -129,16 +130,16 @@ public class Utils {
         return new EmailAddressImpl(address);
     }
 
-    public static OperationPrerequisite getOperationPrerequisite() {
-        return getOperationPrerequisite(DEFAULT_MODIFIER);
+    public static OperationRestriction getOperationRestriction() {
+        return getOperationRestriction(DEFAULT_MODIFIER);
     }
 
-    public static OperationPrerequisite getOperationPrerequisite(OperationPrerequisite.Modifier modifier) {
-        return getOperationPrerequisite(getIRI(), modifier);
+    public static OperationRestriction getOperationRestriction(Modality modality) {
+        return getOperationRestriction(AxiomType.ANNOTATION_ASSERTION, modality);
     }
 
-    public static OperationPrerequisite getOperationPrerequisite(IRI iri, OperationPrerequisite.Modifier modifier) {
-        return new OperationPrerequisiteImpl(iri, modifier);
+    public static OperationRestriction getOperationRestriction(AxiomType type, Modality modality) {
+        return new AxiomTypeRestriction(type, modality);
     }
 
     public static IRI getIRI() {
@@ -353,11 +354,11 @@ public class Utils {
     }
 
     public static Operation getOperation() {
-        return getOperation(getOperationId(), getName(), getDescription(), DEFAULT_OPERATION_TYPE, Optional.of(getOperationPrerequisiteSet(getOperationPrerequisite())));
+        return getOperation(getOperationId(), getName(), getDescription(), DEFAULT_OPERATION_TYPE, Optional.of(getOperationRestrictionSet(getOperationRestriction())));
     }
 
-    public static Operation getOperation(OperationId id, Name operationName, Description description, OperationType type, Optional<Set<OperationPrerequisite>> prerequisites) {
-        return new OperationImpl(id, operationName, description, type, prerequisites);
+    public static Operation getOperation(OperationId id, Name operationName, Description description, OperationType type, Optional<Set<OperationRestriction>> restrictions) {
+        return new OperationImpl(id, operationName, description, type, restrictions);
     }
 
     public static Role getRole() {
@@ -548,10 +549,10 @@ public class Utils {
 
     /*   sets of other things   */
 
-    public static Set<OperationPrerequisite> getOperationPrerequisiteSet(OperationPrerequisite... operationPrerequisites) {
-        Set<OperationPrerequisite> operationPrerequisiteSet = new HashSet<>();
-        Collections.addAll(operationPrerequisiteSet, operationPrerequisites);
-        return operationPrerequisiteSet;
+    public static Set<OperationRestriction> getOperationRestrictionSet(OperationRestriction... operationRestrictions) {
+        Set<OperationRestriction> operationRestrictionSet = new HashSet<>();
+        Collections.addAll(operationRestrictionSet, operationRestrictions);
+        return operationRestrictionSet;
     }
 
     public static Set<AuthenticationDetails> getAuthenticationDetailsSet() {

@@ -1,14 +1,8 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
-import edu.stanford.protege.metaproject.api.Address;
-import edu.stanford.protege.metaproject.api.Host;
-import edu.stanford.protege.metaproject.api.Port;
-import edu.stanford.protege.metaproject.api.RegistryPort;
-import edu.stanford.protege.metaproject.impl.AddressImpl;
-import edu.stanford.protege.metaproject.impl.HostImpl;
-import edu.stanford.protege.metaproject.impl.PortImpl;
-import edu.stanford.protege.metaproject.impl.RegistryPortImpl;
+import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.api.*;
 
 import java.lang.reflect.Type;
 
@@ -20,11 +14,12 @@ public class HostSerializer implements JsonSerializer<Host>, JsonDeserializer<Ho
 
     @Override
     public Host deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+        Factory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
-        Address address = new AddressImpl(obj.getAsJsonPrimitive("address").getAsString());
-        Port port = new PortImpl(obj.getAsJsonPrimitive("port").getAsInt());
-        RegistryPort registryPort = new RegistryPortImpl(obj.getAsJsonPrimitive("registryPort").getAsInt());
-        return new HostImpl(address, port, registryPort);
+        Address address = factory.createAddress(obj.getAsJsonPrimitive("address").getAsString());
+        Port port = factory.createPort(obj.getAsJsonPrimitive("port").getAsInt());
+        RegistryPort registryPort = factory.createRegistryPort(obj.getAsJsonPrimitive("registryPort").getAsInt());
+        return factory.createHost(address, port, registryPort);
     }
 
     @Override

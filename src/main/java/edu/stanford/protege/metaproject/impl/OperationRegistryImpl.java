@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
 
@@ -73,7 +74,7 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
         checkNotNull(operationName);
         Operation operation = getOperation(operationId);
         remove(operation);
-        Operation newOperation = new OperationImpl(operation.getId(), operationName, operation.getDescription(), operation.getType(), operation.getPrerequisites());
+        Operation newOperation = getOperation(operation.getId(), operationName, operation.getDescription(), operation.getType(), operation.getRestrictions());
         add(newOperation);
     }
 
@@ -82,37 +83,37 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
         checkNotNull(operationDescription);
         Operation operation = getOperation(operationId);
         remove(operation);
-        Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operationDescription, operation.getType(), operation.getPrerequisites());
+        Operation newOperation = getOperation(operation.getId(), operation.getName(), operationDescription, operation.getType(), operation.getRestrictions());
         add(newOperation);
     }
 
     @Override
-    public void addPrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws UnknownOperationIdException {
-        checkNotNull(prerequisites);
-        if(prerequisites.length > 0) {
+    public void addRestriction(OperationId operationId, OperationRestriction... restrictions) throws UnknownOperationIdException {
+        checkNotNull(restrictions);
+        if(restrictions.length > 0) {
             Operation operation = getOperation(operationId);
-            Set<OperationPrerequisite> newPrerequisites = (operation.getPrerequisites().isPresent() ? new HashSet<>(operation.getPrerequisites().get()) : new HashSet<>());
-            Collections.addAll(newPrerequisites, prerequisites);
+            Set<OperationRestriction> newRestrictions = (operation.getRestrictions().isPresent() ? new HashSet<>(operation.getRestrictions().get()) : new HashSet<>());
+            Collections.addAll(newRestrictions, restrictions);
             remove(operation);
-            Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.of(newPrerequisites));
+            Operation newOperation = getOperation(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.of(newRestrictions));
             add(newOperation);
         }
     }
 
     @Override
-    public void removePrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws UnknownOperationIdException {
-        checkNotNull(prerequisites);
-        if(prerequisites.length > 0) {
+    public void removeRestriction(OperationId operationId, OperationRestriction... restrictions) throws UnknownOperationIdException {
+        checkNotNull(restrictions);
+        if(restrictions.length > 0) {
             Operation operation = getOperation(operationId);
             remove(operation);
-            Set<OperationPrerequisite> prerequisiteSet = null;
-            if(operation.getPrerequisites().isPresent()) {
-                prerequisiteSet = new HashSet<>(operation.getPrerequisites().get());
-                for(OperationPrerequisite op : prerequisites) {
-                    prerequisiteSet.remove(checkNotNull(op));
+            Set<OperationRestriction> restrictionSet = null;
+            if(operation.getRestrictions().isPresent()) {
+                restrictionSet = new HashSet<>(operation.getRestrictions().get());
+                for(OperationRestriction op : restrictions) {
+                    restrictionSet.remove(checkNotNull(op));
                 }
             }
-            Operation newOperation = new OperationImpl(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.ofNullable(prerequisiteSet));
+            Operation newOperation = getOperation(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.ofNullable(restrictionSet));
             add(newOperation);
         }
     }
@@ -126,6 +127,10 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
             }
         }
         return false;
+    }
+
+    private Operation getOperation(OperationId id, Name name, Description description, OperationType type, Optional<Set<OperationRestriction>> restrictions) {
+        return Manager.getFactory().createOperation(id, name, description, type, restrictions);
     }
 
     /**

@@ -25,16 +25,16 @@ public class OperationTest {
     private static final OperationId operationId = Utils.getOperationId(operationIdStr), diffOperationId = Utils.getOperationId(otherIdStr);
     private static final Name operationName = Utils.getName(operationNameStr);
     private static final Description operationDescription = Utils.getDescription(operationDescriptionStr);
-    private static final OperationType operationType = OperationType.POLICY;
-    private static final OperationPrerequisite prerequisite = Utils.getOperationPrerequisite(OperationPrerequisite.Modifier.ABSENT);
-    private static final Set<OperationPrerequisite> prerequisites = Utils.getOperationPrerequisiteSet(prerequisite);
+    private static final OperationType operationType = OperationType.METAPROJECT;
+    private static final OperationRestriction restriction = Utils.getOperationRestriction(Modality.AxiomChange.REMOVAL);
+    private static final Set<OperationRestriction> restrictions = Utils.getOperationRestrictionSet(restriction);
     private Operation operation, otherOperation, diffOperation;
 
     @Before
     public void setUp() {
-        operation = Utils.getOperation(operationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
-        otherOperation = Utils.getOperation(operationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
-        diffOperation = Utils.getOperation(diffOperationId, operationName, operationDescription, operationType, Optional.of(prerequisites));
+        operation = Utils.getOperation(operationId, operationName, operationDescription, operationType, Optional.of(restrictions));
+        otherOperation = Utils.getOperation(operationId, operationName, operationDescription, operationType, Optional.of(restrictions));
+        diffOperation = Utils.getOperation(diffOperationId, operationName, operationDescription, operationType, Optional.of(restrictions));
     }
 
     @Test
@@ -63,8 +63,8 @@ public class OperationTest {
     }
 
     @Test
-    public void testGetPrerequisites() {
-        assertThat(operation.getPrerequisites().get(), is(prerequisites));
+    public void testGetRestrictions() {
+        assertThat(operation.getRestrictions().get(), is(restrictions));
     }
 
     @Test

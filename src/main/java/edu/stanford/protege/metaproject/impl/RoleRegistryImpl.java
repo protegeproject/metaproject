@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UnknownRoleIdException;
 
@@ -73,7 +74,7 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
         checkNotNull(roleName);
         Role role = getRole(roleId);
         remove(role);
-        Role newRole = new RoleImpl(role.getId(), roleName, role.getDescription(), role.getOperations());
+        Role newRole = getRole(role.getId(), roleName, role.getDescription(), role.getOperations());
         add(newRole);
     }
 
@@ -82,7 +83,7 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
         checkNotNull(roleDescription);
         Role role = getRole(roleId);
         remove(role);
-        Role newRole = new RoleImpl(role.getId(), role.getName(), roleDescription, role.getOperations());
+        Role newRole = getRole(role.getId(), role.getName(), roleDescription, role.getOperations());
         add(newRole);
     }
 
@@ -95,7 +96,7 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
         Set<OperationId> operations = new HashSet<>(role.getOperations());
         Collections.addAll(operations, operationIds);
 
-        Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), operations);
+        Role newRole = getRole(role.getId(), role.getName(), role.getDescription(), operations);
         add(newRole);
     }
 
@@ -110,7 +111,7 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
             operations.remove(checkNotNull(operationId));
         }
 
-        Role newRole = new RoleImpl(role.getId(), role.getName(), role.getDescription(), operations);
+        Role newRole = getRole(role.getId(), role.getName(), role.getDescription(), operations);
         add(newRole);
     }
 
@@ -123,6 +124,10 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
             }
         }
         return false;
+    }
+
+    private Role getRole(RoleId id, Name name, Description description, Set<OperationId> operations) {
+        return Manager.getFactory().createRole(id, name, description, operations);
     }
 
     /**

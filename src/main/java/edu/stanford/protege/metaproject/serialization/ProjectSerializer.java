@@ -2,8 +2,9 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.impl.*;
+import edu.stanford.protege.metaproject.impl.UserIdImpl;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -16,13 +17,14 @@ public class ProjectSerializer implements JsonDeserializer<Project> {
 
     @Override
     public Project deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+        Factory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
-        ProjectId projectId = new ProjectIdImpl(obj.getAsJsonPrimitive("id").getAsString());
-        Name projectName = new NameImpl(obj.getAsJsonPrimitive("name").getAsString());
-        Description projectDescription = new DescriptionImpl(obj.getAsJsonPrimitive("description").getAsString());
-        Address projectLocation = new AddressImpl(obj.getAsJsonPrimitive("address").getAsString());
-        UserId owner = new UserIdImpl(obj.getAsJsonPrimitive("owner").getAsString());
+        ProjectId projectId = factory.createProjectId(obj.getAsJsonPrimitive("id").getAsString());
+        Name projectName = factory.createName(obj.getAsJsonPrimitive("name").getAsString());
+        Description projectDescription = factory.createDescription(obj.getAsJsonPrimitive("description").getAsString());
+        Address projectLocation = factory.createAddress(obj.getAsJsonPrimitive("address").getAsString());
+        UserId owner = factory.createUserId(obj.getAsJsonPrimitive("owner").getAsString());
         Set<UserId> administrators = context.deserialize(obj.get("administrators"), new TypeToken<Set<UserIdImpl>>(){}.getType());
-        return new ProjectImpl(projectId, projectName, projectDescription, projectLocation, owner, administrators);
+        return factory.createProject(projectId, projectName, projectDescription, projectLocation, owner, administrators);
     }
 }

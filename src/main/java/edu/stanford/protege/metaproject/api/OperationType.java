@@ -7,5 +7,5 @@ package edu.stanford.protege.metaproject.api;
  * Stanford Center for Biomedical Informatics Research
  */
 public enum OperationType {
-    READ, WRITE, SERVER, POLICY
+    ONTOLOGY, METAPROJECT, SERVER
 }

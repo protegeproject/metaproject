@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectTypeException;
-import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.AxiomType;
 
 import java.util.Optional;
 import java.util.Set;
@@ -43,10 +43,10 @@ public interface Factory {
      * @param name  Operation name
      * @param description   Operation description
      * @param operationType Operation type
-     * @param prerequisites Set of operation prerequisites
+     * @param restrictions Set of operation restrictions
      * @return New operation instance
      */
-    Operation createOperation(OperationId operationId, Name name, Description description, OperationType operationType, Optional<Set<OperationPrerequisite>> prerequisites);
+    Operation createOperation(OperationId operationId, Name name, Description description, OperationType operationType, Optional<Set<OperationRestriction>> restrictions);
 
     /**
      * Create a user with the given user identifier, name and email address
@@ -59,13 +59,40 @@ public interface Factory {
     User createUser(UserId userId, Name userName, EmailAddress emailAddress);
 
     /**
-     * Create an operation prerequisite given the prerequisite IRI and the modifier
+     * Create an axiom type operation restriction given the axiom type and modality, that is, whether the
+     * axiom type can be added, removed, or both
      *
-     * @param prerequisite  Operation prerequisite IRI
-     * @param modifier  Prerequisite presence modifier
-     * @return Operation prerequisie instance
+     * @param axiomType  Axiom type
+     * @param modality  Restriction modality
+     * @return Operation restriction instance
      */
-    OperationPrerequisite createOperationPrerequisite(IRI prerequisite, OperationPrerequisite.Modifier modifier);
+    OperationRestriction createAxiomTypeOperationRestriction(AxiomType axiomType, Modality modality);
+
+    /**
+     * Create an instance of authentication details
+     *
+     * @param userId    User identifier
+     * @param password  Salted password digest
+     * @return Authentication details
+     */
+    AuthenticationDetails createAuthenticationDetails(UserId userId, SaltedPasswordDigest password);
+
+    /**
+     * Create an instance of crypto salt
+     *
+     * @param salt  Salt string
+     * @return Salt instance
+     */
+    Salt createSalt(String salt);
+
+    /**
+     * Create an instance of salted password
+     *
+     * @param password  Password string
+     * @param salt  Salt
+     * @return Salted password digest
+     */
+    SaltedPasswordDigest createSaltedPasswordDigest(String password, Salt salt);
 
     /**
      * Create a name for an access control object
@@ -164,5 +191,68 @@ public interface Factory {
      * @return Operation identifier instance
      */
     OperationId createOperationId(String operationId);
+
+    /**
+     * Get a user ID that is a randomly generated UUID
+     *
+     * @return New user UUID
+     */
+    UserId createUserUuid();
+
+    /**
+     * Get a new role ID that is a randomly generated UUID
+     *
+     * @return New role UUID
+     */
+    RoleId createRoleUuid();
+
+    /**
+     * Get a new project ID that is a randomly generated UUID
+     *
+     * @return New project ID that is a randomly generated UUID
+     */
+    ProjectId createProjectUuid();
+
+    /**
+     * Get a new operation ID that is a randomly generated UUID
+     *
+     * @return New operation UUID
+     */
+    OperationId createOperationUuid();
+
+    /**
+     * Create an instance of Port
+     *
+     * @param portNr    Port number
+     * @return Port instance
+     */
+    Port createPort(Integer portNr);
+
+    /**
+     * Create an instance of an RMI registry port
+     *
+     * @param portNr    Port number
+     * @return Registry Port instance
+     */
+    RegistryPort createRegistryPort(Integer portNr);
+
+    /**
+     * Create an instance of a Host
+     *
+     * @param address   Host address
+     * @param port  Port
+     * @param registryPort  Registry port
+     * @return Host instance
+     */
+    Host createHost(Address address, Port port, RegistryPort registryPort);
+
+    /**
+     * Create an instance of an operation restriction
+     *
+     * @param axiomType Axiom type
+     * @param modality  Restriction modality
+     * @return Operation restriction
+     */
+    OperationRestriction createRestriction(AxiomType axiomType, Modality modality);
 
 }

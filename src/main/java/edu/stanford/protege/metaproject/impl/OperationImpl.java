@@ -14,18 +14,18 @@ import java.util.Set;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A representation of an operation consisting of a unique identifier, a natural language description, and operation prerequisites
+ * A representation of an operation consisting of a unique identifier, a natural language description, and operation restrictions
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
 public final class OperationImpl implements Operation, Serializable, Comparable<Operation> {
-    private static final long serialVersionUID = 2430492438933347390L;
+    private static final long serialVersionUID = -4829381651925382871L;
     private final OperationId id;
     private final Name name;
     private final Description description;
     private final OperationType type;
-    private final ImmutableSet<OperationPrerequisite> prerequisites;
+    private final ImmutableSet<OperationRestriction> restrictions;
 
     /**
      * Constructor
@@ -33,14 +33,14 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
      * @param name Operation name
      * @param description  Operation description
      * @param type Operation type
-     * @param prerequisites Operation prerequisites
+     * @param restrictions Operation restrictions
      */
-    public OperationImpl(OperationId id, Name name, Description description, OperationType type, Optional<Set<OperationPrerequisite>> prerequisites) {
+    public OperationImpl(OperationId id, Name name, Description description, OperationType type, Optional<Set<OperationRestriction>> restrictions) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
         this.type = checkNotNull(type);
-        this.prerequisites = (prerequisites.isPresent() ? new ImmutableSet.Builder<OperationPrerequisite>().addAll(checkNotNull(prerequisites.get())).build() : null);
+        this.restrictions = (restrictions.isPresent() ? new ImmutableSet.Builder<OperationRestriction>().addAll(checkNotNull(restrictions.get())).build() : null);
     }
 
     /**
@@ -84,13 +84,12 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
     }
 
     /**
-     * Get the set of prerequisites for the operation
+     * Get the set of restrictions for the operation
      *
-     * @return Set of operation prerequisites
+     * @return Set of operation restrictions
      */
-    @Override
-    public Optional<Set<OperationPrerequisite>> getPrerequisites() {
-        return Optional.ofNullable(prerequisites);
+    public Optional<Set<OperationRestriction>> getRestrictions() {
+        return Optional.ofNullable(restrictions);
     }
 
     @Override
@@ -102,12 +101,12 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
                 Objects.equal(name, operation.name) &&
                 Objects.equal(description, operation.description) &&
                 Objects.equal(type, operation.type) &&
-                Objects.equal(prerequisites, operation.prerequisites);
+                Objects.equal(restrictions, operation.restrictions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, name, description, type, prerequisites);
+        return Objects.hashCode(id, name, description, type, restrictions);
     }
 
     @Override
@@ -117,7 +116,7 @@ public final class OperationImpl implements Operation, Serializable, Comparable<
                 .add("name", name)
                 .add("description", description)
                 .add("type", type)
-                .add("prerequisites", prerequisites)
+                .add("restrictions", restrictions)
                 .toString();
     }
 

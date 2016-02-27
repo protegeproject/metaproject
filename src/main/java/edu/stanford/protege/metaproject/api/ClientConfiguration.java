@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ClientConfiguration extends Configuration {
+public interface ClientConfiguration {
 
     /**
      * Get the access control policy in effect for the client

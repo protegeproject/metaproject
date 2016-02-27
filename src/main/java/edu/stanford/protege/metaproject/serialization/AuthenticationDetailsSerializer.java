@@ -1,14 +1,8 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
-import edu.stanford.protege.metaproject.api.AuthenticationDetails;
-import edu.stanford.protege.metaproject.api.Salt;
-import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
-import edu.stanford.protege.metaproject.api.UserId;
-import edu.stanford.protege.metaproject.impl.AuthenticationDetailsImpl;
-import edu.stanford.protege.metaproject.impl.SaltImpl;
-import edu.stanford.protege.metaproject.impl.SaltedPasswordDigestImpl;
-import edu.stanford.protege.metaproject.impl.UserIdImpl;
+import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.api.*;
 
 import java.lang.reflect.Type;
 
@@ -21,11 +15,12 @@ public class AuthenticationDetailsSerializer implements JsonSerializer<Authentic
     
     @Override
     public AuthenticationDetails deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+        Factory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
-        UserId userId = new UserIdImpl(obj.getAsJsonPrimitive(USER_ID).getAsString());
-        Salt salt = new SaltImpl(obj.getAsJsonPrimitive(SALT).getAsString());
-        SaltedPasswordDigest password = new SaltedPasswordDigestImpl(obj.getAsJsonPrimitive(PASSWORD).getAsString(), salt);
-        return new AuthenticationDetailsImpl(userId, password);
+        UserId userId = factory.createUserId(obj.getAsJsonPrimitive(USER_ID).getAsString());
+        Salt salt = factory.createSalt(obj.getAsJsonPrimitive(SALT).getAsString());
+        SaltedPasswordDigest password = factory.createSaltedPasswordDigest(obj.getAsJsonPrimitive(PASSWORD).getAsString(), salt);
+        return factory.createAuthenticationDetails(userId, password);
     }
 
     @Override

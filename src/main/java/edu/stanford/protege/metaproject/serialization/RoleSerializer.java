@@ -2,8 +2,9 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.impl.*;
+import edu.stanford.protege.metaproject.impl.OperationIdImpl;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -16,11 +17,12 @@ public class RoleSerializer implements JsonDeserializer<Role> {
 
     @Override
     public Role deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
+        Factory factory = Manager.getFactory();
         JsonObject obj = jsonElement.getAsJsonObject();
-        RoleId operationId = new RoleIdImpl(obj.getAsJsonPrimitive("id").getAsString());
-        Name operationName = new NameImpl(obj.getAsJsonPrimitive("name").getAsString());
-        Description operationDescription = new DescriptionImpl(obj.getAsJsonPrimitive("description").getAsString());
+        RoleId operationId = factory.createRoleId(obj.getAsJsonPrimitive("id").getAsString());
+        Name operationName = factory.createName(obj.getAsJsonPrimitive("name").getAsString());
+        Description operationDescription = factory.createDescription(obj.getAsJsonPrimitive("description").getAsString());
         Set<OperationId> operations = context.deserialize(obj.getAsJsonArray("operations"), new TypeToken<Set<OperationIdImpl>>(){}.getType());
-        return new RoleImpl(operationId, operationName, operationDescription, operations);
+        return factory.createRole(operationId, operationName, operationDescription, operations);
     }
 }

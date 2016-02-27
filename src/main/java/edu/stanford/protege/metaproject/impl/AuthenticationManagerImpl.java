@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
@@ -17,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class AuthenticationManagerImpl implements AuthenticationManager, Serializable {
-    private static final long serialVersionUID = 1554528655640993462L;
+    private static final long serialVersionUID = -4733524645219932174L;
     private Set<AuthenticationDetails> authenticationDetails = new HashSet<>();
 
     /**
@@ -82,15 +83,8 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
         return getAuthenticationDetails(userId).getPassword().getSalt();
     }
 
-    /**
-     * Get an instance of UserAuthenticationDetails using the specified user identifier and password
-     *
-     * @param userId    User identifier
-     * @param password  Password
-     * @return Instance of UserAuthenticationDetails
-     */
     private AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
-        return new AuthenticationDetailsImpl(userId, password);
+        return Manager.getFactory().createAuthenticationDetails(userId, password);
     }
 
     /**

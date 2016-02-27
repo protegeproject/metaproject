@@ -21,8 +21,8 @@ public class OperationSerializerTest {
     private static final OperationId operationId = Utils.getOperationId(operationIdStr), diffOperationId = Utils.getOperationId(diffIdStr);
     private static final Name operationName = Utils.getName();
     private static final Description operationDescription = Utils.getDescription();
-    private static final OperationType type = OperationType.READ;
-    private static final Set<OperationPrerequisite> prerequisites = Utils.getOperationPrerequisiteSet(Utils.getOperationPrerequisite());
+    private static final OperationType type = OperationType.ONTOLOGY;
+    private static final Set<OperationRestriction> restrictions = Utils.getOperationRestrictionSet(Utils.getOperationRestriction());
 
     private String jsonOperation, jsonOtherOperation, jsonDiffOperation;
     private Operation operation, otherOperation, diffOperation;
@@ -32,9 +32,9 @@ public class OperationSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        operation = Utils.getOperation(operationId, operationName, operationDescription, type, Optional.of(prerequisites));
-        otherOperation = Utils.getOperation(operationId, operationName, operationDescription, type, Optional.of(prerequisites));
-        diffOperation = Utils.getOperation(diffOperationId, operationName, operationDescription, type, Optional.of(prerequisites));
+        operation = Utils.getOperation(operationId, operationName, operationDescription, type, Optional.of(restrictions));
+        otherOperation = Utils.getOperation(operationId, operationName, operationDescription, type, Optional.of(restrictions));
+        diffOperation = Utils.getOperation(diffOperationId, operationName, operationDescription, type, Optional.of(restrictions));
 
         jsonOperation = gson.toJson(operation);
         jsonOtherOperation = gson.toJson(otherOperation);
@@ -99,7 +99,7 @@ public class OperationSerializerTest {
     }
 
     @Test
-    public void testGetPrerequisites() {
-        assertThat(gson.fromJson(jsonOperation, Operation.class).getPrerequisites().get(), is(prerequisites));
+    public void testGetRestrictions() {
+        assertThat(gson.fromJson(jsonOperation, Operation.class).getRestrictions().get(), is(restrictions));
     }
 }

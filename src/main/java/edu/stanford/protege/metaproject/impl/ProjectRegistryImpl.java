@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 
@@ -81,7 +82,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = new ProjectImpl(project.getId(), projectName, project.getDescription(), project.getAddress(), project.getOwner(), project.getAdministrators());
+        Project newProject = getProject(project.getId(), projectName, project.getDescription(), project.getAddress(), project.getOwner(), project.getAdministrators());
         add(newProject);
     }
 
@@ -91,7 +92,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), projectDescription, project.getAddress(), project.getOwner(), project.getAdministrators());
+        Project newProject = getProject(project.getId(), project.getName(), projectDescription, project.getAddress(), project.getOwner(), project.getAdministrators());
         add(newProject);
     }
 
@@ -101,7 +102,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), userId, project.getAdministrators());
+        Project newProject = getProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), userId, project.getAdministrators());
         add(newProject);
     }
 
@@ -111,7 +112,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), projectAddress, project.getOwner(), project.getAdministrators());
+        Project newProject = getProject(project.getId(), project.getName(), project.getDescription(), projectAddress, project.getOwner(), project.getAdministrators());
         add(newProject);
     }
 
@@ -124,7 +125,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Set<UserId> administrators = new HashSet<>(project.getAdministrators());
         Collections.addAll(administrators, userIds);
 
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
+        Project newProject = getProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
         add(newProject);
     }
 
@@ -139,7 +140,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
             administrators.remove(checkNotNull(userId));
         }
 
-        Project newProject = new ProjectImpl(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
+        Project newProject = getProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
         add(newProject);
     }
 
@@ -152,6 +153,10 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
             }
         }
         return false;
+    }
+
+    private Project getProject(ProjectId id, Name name, Description description, Address address, UserId owner, Set<UserId> administrators) {
+        return Manager.getFactory().createProject(id, name, description, address, owner, administrators);
     }
 
     /**

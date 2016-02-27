@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * A representation of an operation consisting of a unique identifier, a natural language description, and operation prerequisites
+ * A representation of an operation consisting of a unique identifier, a natural language description, and operation restrictions
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -26,10 +26,10 @@ public interface Operation extends AccessControlObject, HasName, HasDescription,
     OperationType getType();
 
     /**
-     * Get the set of prerequisites for the operation
+     * Get the set of restrictions for the operation
      *
-     * @return Set of operation prerequisites
+     * @return Set of operation restrictions
      */
-    Optional<Set<OperationPrerequisite>> getPrerequisites();
+    Optional<Set<OperationRestriction>> getRestrictions();
 
 }

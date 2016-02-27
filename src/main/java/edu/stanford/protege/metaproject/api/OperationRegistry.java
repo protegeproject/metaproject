@@ -61,21 +61,21 @@ public interface OperationRegistry extends Registry {
     void changeDescription(OperationId operationId, Description operationDescription) throws UnknownOperationIdException;
 
     /**
-     * Add one or more operation prerequisites to the specified operation
+     * Add one or more operation restrictions to the specified operation
      *
      * @param operationId   Operation identifier
-     * @param prerequisites  Operation prerequisite(s)
+     * @param restrictions  Operation restriction(s)
      * @throws UnknownOperationIdException  Operation identifier is not recognized
      */
-    void addPrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws UnknownOperationIdException;
+    void addRestriction(OperationId operationId, OperationRestriction... restrictions) throws UnknownOperationIdException;
 
     /**
-     * Remove one or more operation prerequisites from the specified operation
+     * Remove one or more operation restrictions from the specified operation
      *
      * @param operationId   Operation identifier
-     * @param prerequisites  Operation prerequisite(s)
+     * @param restrictions  Operation restriction(s)
      * @throws UnknownOperationIdException  Operation identifier is not recognized
      */
-    void removePrerequisite(OperationId operationId, OperationPrerequisite... prerequisites) throws UnknownOperationIdException;
+    void removeRestriction(OperationId operationId, OperationRestriction... restrictions) throws UnknownOperationIdException;
 
 }
