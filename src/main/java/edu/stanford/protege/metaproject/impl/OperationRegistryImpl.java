@@ -7,10 +7,7 @@ import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -19,7 +16,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationRegistryImpl implements OperationRegistry, Serializable {
-    private static final long serialVersionUID = 8314684954441845447L;
+    private static final long serialVersionUID = 8791281806269239612L;
     private Set<Operation> operations = new HashSet<>();
 
     /**
@@ -29,12 +26,22 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
      */
     public OperationRegistryImpl(Set<Operation> operations) {
         this.operations = checkNotNull(operations);
+        initOperations();
     }
 
     /**
      * No-arguments constructor
      */
-    public OperationRegistryImpl() { }
+    public OperationRegistryImpl() {
+        initOperations();
+    }
+
+    private void initOperations() {
+        List<Operation> defaultOperations = Operations.getDefaultOperations();
+        if(!operations.containsAll(defaultOperations)) {
+            this.operations.addAll(defaultOperations);
+        }
+    }
 
     @Override
     public void add(Operation... operations) {

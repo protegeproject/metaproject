@@ -34,10 +34,12 @@ public final class AxiomTypeRestriction implements OperationRestriction<AxiomTyp
         this.modality = checkNotNull(modality);
     }
 
+    @Override
     public AxiomType getRestriction() {
         return axiomType;
     }
 
+    @Override
     public Modality getModality() {
         return modality;
     }

@@ -1,7 +1,10 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.*;
+import edu.stanford.protege.metaproject.api.exception.MetaprojectNotLoadedException;
+import edu.stanford.protege.metaproject.api.exception.ObjectConversionException;
+import edu.stanford.protege.metaproject.api.exception.ServerConfigurationNotLoadedException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
 import edu.stanford.protege.metaproject.impl.FactoryImpl;
 import edu.stanford.protege.metaproject.serialization.DefaultJsonSerializer;
 
@@ -17,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Manager {
     private static final DefaultJsonSerializer serializer = new DefaultJsonSerializer();
     private static ServerConfiguration serverConfiguration;
-    private static ClientConfiguration clientConfiguration;
     private static Metaproject metaproject;
     private static Factory factory;
 
@@ -55,8 +57,7 @@ public class Manager {
      * @throws ObjectConversionException   JSON object could not be converted to a Java object
      */
     public static ClientConfiguration loadClientConfiguration(File f) throws FileNotFoundException, ObjectConversionException {
-        clientConfiguration = serializer.parseClientConfiguration(f);
-        return clientConfiguration;
+        return serializer.parseClientConfiguration(f);
     }
 
     /**
@@ -84,19 +85,6 @@ public class Manager {
             throw new ServerConfigurationNotLoadedException("No server configuration has been loaded.");
         }
         return serverConfiguration;
-    }
-
-    /**
-     * Get the client configuration loaded by this manager
-     *
-     * @return Client configuration
-     * @throws ClientConfigurationNotLoadedException    Client configuration has not been loaded
-     */
-    public static ClientConfiguration getClientConfiguration() throws ClientConfigurationNotLoadedException {
-        if(clientConfiguration == null) {
-            throw new ClientConfigurationNotLoadedException("No client configuration has been loaded.");
-        }
-        return clientConfiguration;
     }
 
     /**
