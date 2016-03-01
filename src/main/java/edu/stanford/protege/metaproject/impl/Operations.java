@@ -94,22 +94,57 @@ public final class Operations {
      */
 
     // Stop server
-    public static final Operation stopServer = factory.createOperation(
+    public static final Operation STOP_SERVER = factory.createOperation(
             factory.createOperationId("stop-server"), factory.createName("Stop the server"),
             factory.createDescription("Stop the execution of the server"),
             OperationType.SERVER, Optional.empty());
 
     // Restart server
-    public static final Operation restartServer = factory.createOperation(
+    public static final Operation RESTART_SERVER = factory.createOperation(
             factory.createOperationId("restart-server"), factory.createName("Restart the server"),
             factory.createDescription("Restart the execution of the server"),
             OperationType.SERVER, Optional.empty());
 
     // Modify server configuration
-    public static final Operation modifyServerConfig = factory.createOperation(
+    public static final Operation MODIFY_SERVER_CONFIG = factory.createOperation(
             factory.createOperationId("modify-config"), factory.createName("Modify server configuration"),
             factory.createDescription("Make changes to the configuration of the server"),
             OperationType.SERVER, Optional.empty());
+
+
+    /**
+     * OWL ontology operations
+     */
+
+    // Add ontology annotation
+    public static final Operation ADD_ONTOLOGY_ANNOTATION = factory.createOperation(
+            factory.createOperationId("add-ontology-annotation"), factory.createName("Add ontology annotation"),
+            factory.createDescription("Add an annotation to the ontology"),
+            OperationType.ONTOLOGY, Optional.empty());
+
+    // Remove ontology annotation
+    public static final Operation REMOVE_ONTOLOGY_ANNOTATION = factory.createOperation(
+            factory.createOperationId("remove-ontology-annotation"), factory.createName("Remove ontology annotation"),
+            factory.createDescription("Remove an annotation from the ontology"),
+            OperationType.ONTOLOGY, Optional.empty());
+
+    // Add import
+    public static final Operation ADD_IMPORT = factory.createOperation(
+            factory.createOperationId("add-import"), factory.createName("Add ontology import"),
+            factory.createDescription("Add an imported ontology to the ontology"),
+            OperationType.ONTOLOGY, Optional.empty());
+
+    // Remove import
+    public static final Operation REMOVE_IMPORT = factory.createOperation(
+            factory.createOperationId("remove-import"), factory.createName("Remove ontology import"),
+            factory.createDescription("Remove an imported ontology from the ontology"),
+            OperationType.ONTOLOGY, Optional.empty());
+
+    // Modify ontology IRI
+    public static final Operation MODIFY_ONTOLOGY_IRI = factory.createOperation(
+            factory.createOperationId("modify-ontology-iri"), factory.createName("Modify the ontology IRI"),
+            factory.createDescription("Modify the IRI of the ontology"),
+            OperationType.ONTOLOGY, Optional.empty());
 
 
     /**
@@ -136,5 +171,4 @@ public final class Operations {
     public static List<Operation> getDefaultOperations() {
         return defaultOperations;
     }
-
 }

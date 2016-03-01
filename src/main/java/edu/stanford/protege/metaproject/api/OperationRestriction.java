@@ -21,6 +21,13 @@ public interface OperationRestriction<T> {
      *
      * @return Operation restriction modality
      */
-    Modality getModality();
+    ChangeModality getModality();
+
+    /**
+     * Verify whether this restriction represents an axiom (type) restriction
+     *
+     * @return true if restriction constrains axiom type(s), false otherwise
+     */
+    boolean isAxiomRestriction();
 
 }

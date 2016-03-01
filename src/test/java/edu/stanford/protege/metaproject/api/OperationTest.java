@@ -1,6 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.impl.AxiomChangeModality;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,7 +27,7 @@ public class OperationTest {
     private static final Name operationName = Utils.getName(operationNameStr);
     private static final Description operationDescription = Utils.getDescription(operationDescriptionStr);
     private static final OperationType operationType = OperationType.METAPROJECT;
-    private static final OperationRestriction restriction = Utils.getOperationRestriction(Modality.AxiomChange.REMOVAL);
+    private static final OperationRestriction restriction = Utils.getOperationRestriction(AxiomChangeModality.REMOVAL);
     private static final Set<OperationRestriction> restrictions = Utils.getOperationRestrictionSet(restriction);
     private Operation operation, otherOperation, diffOperation;
 

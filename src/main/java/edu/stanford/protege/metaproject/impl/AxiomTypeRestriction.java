@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.Modality;
+import edu.stanford.protege.metaproject.api.ChangeModality;
 import edu.stanford.protege.metaproject.api.OperationRestriction;
 import org.semanticweb.owlapi.model.AxiomType;
 
@@ -19,9 +19,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class AxiomTypeRestriction implements OperationRestriction<AxiomType>, Serializable {
-    private static final long serialVersionUID = 5229986507230895733L;
+    private static final long serialVersionUID = 1986282697837261393L;
     private final AxiomType axiomType;
-    private final Modality modality;
+    private final ChangeModality modality;
 
     /**
      * Constructor
@@ -29,7 +29,7 @@ public final class AxiomTypeRestriction implements OperationRestriction<AxiomTyp
      * @param axiomType  Axiom type
      * @param modality  Restriction modality
      */
-    public AxiomTypeRestriction(AxiomType axiomType, Modality modality) {
+    public AxiomTypeRestriction(AxiomType axiomType, ChangeModality modality) {
         this.axiomType = checkNotNull(axiomType);
         this.modality = checkNotNull(modality);
     }
@@ -40,8 +40,13 @@ public final class AxiomTypeRestriction implements OperationRestriction<AxiomTyp
     }
 
     @Override
-    public Modality getModality() {
+    public ChangeModality getModality() {
         return modality;
+    }
+
+    @Override
+    public boolean isAxiomRestriction() {
+        return true;
     }
 
     @Override
@@ -62,7 +67,7 @@ public final class AxiomTypeRestriction implements OperationRestriction<AxiomTyp
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("axiomType", axiomType)
-                .add("modifier", modality)
+                .add("modality", modality)
                 .toString();
     }
 }

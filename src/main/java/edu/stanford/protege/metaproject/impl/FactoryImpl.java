@@ -59,7 +59,7 @@ public class FactoryImpl implements Factory {
     }
 
     @Override
-    public OperationRestriction createAxiomTypeOperationRestriction(AxiomType axiomType, Modality modality) {
+    public OperationRestriction createAxiomTypeOperationRestriction(AxiomType axiomType, ChangeModality modality) {
         checkNotNull(axiomType, "Restriction type cannot be null");
         checkNotNull(modality, "Restriction modality cannot be null");
         return new AxiomTypeRestriction(axiomType, modality);
@@ -199,10 +199,5 @@ public class FactoryImpl implements Factory {
     @Override
     public Host createHost(Address address, Port port, RegistryPort registryPort) {
         return new HostImpl(address, port, registryPort);
-    }
-
-    @Override
-    public OperationRestriction createRestriction(AxiomType axiomType, Modality modality) {
-        return new AxiomTypeRestriction(axiomType, modality);
     }
 }

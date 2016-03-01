@@ -2,8 +2,9 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.Modality;
+import edu.stanford.protege.metaproject.api.ChangeModality;
 import edu.stanford.protege.metaproject.api.OperationRestriction;
+import edu.stanford.protege.metaproject.impl.AxiomChangeModality;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -17,9 +18,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class OperationRestrictionSerializerTest {
     private static final AxiomType axType = AxiomType.ANNOTATION_ASSERTION, diffAxType = AxiomType.CLASS_ASSERTION;
-    private static final Modality
-            modifier = Modality.AxiomChange.ADDITION,
-            diffModifier = Modality.AxiomChange.REMOVAL;
+    private static final ChangeModality
+            modifier = AxiomChangeModality.ADDITION,
+            diffModifier = AxiomChangeModality.REMOVAL;
 
     private String jsonRestriction, jsonOtherRestriction, jsonDiffRestriction;
     private OperationRestriction restriction, otherRestriction, diffRestriction;

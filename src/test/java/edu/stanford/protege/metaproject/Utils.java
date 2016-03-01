@@ -14,7 +14,7 @@ import java.util.*;
 public class Utils {
     private static final int DEFAULT_SET_SIZE = 3;
     private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.METAPROJECT;
-    private static final Modality DEFAULT_MODIFIER = Modality.AxiomChange.ADDITION;
+    private static final ChangeModality DEFAULT_MODIFIER = AxiomChangeModality.ADDITION;
     private static final String IRI_PREFIX = "http://protege.stanford.edu/test/";
     private static final Random random = new Random();
     
@@ -134,11 +134,11 @@ public class Utils {
         return getOperationRestriction(DEFAULT_MODIFIER);
     }
 
-    public static OperationRestriction getOperationRestriction(Modality modality) {
+    public static OperationRestriction getOperationRestriction(ChangeModality modality) {
         return getOperationRestriction(AxiomType.ANNOTATION_ASSERTION, modality);
     }
 
-    public static OperationRestriction getOperationRestriction(AxiomType type, Modality modality) {
+    public static OperationRestriction getOperationRestriction(AxiomType type, ChangeModality modality) {
         return new AxiomTypeRestriction(type, modality);
     }
 

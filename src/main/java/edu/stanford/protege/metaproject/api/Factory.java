@@ -60,13 +60,13 @@ public interface Factory {
 
     /**
      * Create an axiom type operation restriction given the axiom type and modality, that is, whether the
-     * axiom type can be added, removed, or both
+     * axiom type can be added or removed
      *
      * @param axiomType  Axiom type
      * @param modality  Restriction modality
      * @return Operation restriction instance
      */
-    OperationRestriction createAxiomTypeOperationRestriction(AxiomType axiomType, Modality modality);
+    OperationRestriction createAxiomTypeOperationRestriction(AxiomType axiomType, ChangeModality modality);
 
     /**
      * Create an instance of authentication details
@@ -245,14 +245,5 @@ public interface Factory {
      * @return Host instance
      */
     Host createHost(Address address, Port port, RegistryPort registryPort);
-
-    /**
-     * Create an instance of an operation restriction
-     *
-     * @param axiomType Axiom type
-     * @param modality  Restriction modality
-     * @return Operation restriction
-     */
-    OperationRestriction createRestriction(AxiomType axiomType, Modality modality);
 
 }

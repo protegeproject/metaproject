@@ -1,6 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.impl.AxiomChangeModality;
 import edu.stanford.protege.metaproject.impl.AxiomTypeRestriction;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class AxiomTypeOperationRestrictionTest {
     private static final String toStringHead = AxiomTypeRestriction.class.getSimpleName();
     private static final AxiomType axType = AxiomType.ANNOTATION_ASSERTION, diffAxType = AxiomType.CLASS_ASSERTION;
-    private static final Modality mod = Modality.AxiomChange.REMOVAL;
+    private static final ChangeModality mod = AxiomChangeModality.REMOVAL;
 
     private OperationRestriction restriction, otherRestriction, diffRestriction;
 

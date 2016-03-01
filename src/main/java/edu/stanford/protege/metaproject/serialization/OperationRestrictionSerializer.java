@@ -2,8 +2,9 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.Manager;
-import edu.stanford.protege.metaproject.api.Modality;
+import edu.stanford.protege.metaproject.api.ChangeModality;
 import edu.stanford.protege.metaproject.api.OperationRestriction;
+import edu.stanford.protege.metaproject.impl.AxiomChangeModality;
 import org.semanticweb.owlapi.model.AxiomType;
 
 import java.lang.reflect.Type;
@@ -27,7 +28,7 @@ public class OperationRestrictionSerializer implements JsonSerializer<OperationR
     public OperationRestriction deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = element.getAsJsonObject();
         AxiomType t = AxiomType.getAxiomType(object.getAsJsonPrimitive(AXIOM_TYPE).getAsString());
-        Modality modality = Modality.AxiomChange.valueOf(object.getAsJsonPrimitive(MODALITY).getAsString());
+        ChangeModality modality = AxiomChangeModality.valueOf(object.getAsJsonPrimitive(MODALITY).getAsString());
         return Manager.getFactory().createAxiomTypeOperationRestriction(t, modality);
     }
 }

@@ -4,7 +4,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.OperationForChangeNotFoundException;
 import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
+import org.semanticweb.owlapi.model.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -16,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationRegistryImpl implements OperationRegistry, Serializable {
-    private static final long serialVersionUID = 8791281806269239612L;
+    private static final long serialVersionUID = 7864971444673547999L;
     private Set<Operation> operations = new HashSet<>();
 
     /**
@@ -74,6 +76,60 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
         else {
             throw new UnknownOperationIdException("The specified operation identifier does not correspond to an existing operation");
         }
+    }
+
+    @Override
+    public Operation getOperationForChange(OWLOntologyChange change) throws OperationForChangeNotFoundException {
+        Operation operation = null;
+        if (change.isAxiomChange()) {
+            ChangeModality modality = null;
+            if (change.isAddAxiom()) {
+                modality = AxiomChangeModality.ADDITION;
+            } else if (change.isRemoveAxiom()) {
+                modality = AxiomChangeModality.REMOVAL;
+            }
+            operation = getOperationForChange(change.getAxiom().getAxiomType(), modality);
+        } else if (change.isImportChange()) {
+            if (change instanceof AddImport) {
+                operation = Operations.ADD_IMPORT;
+            } else if (change instanceof RemoveImport) {
+                operation = Operations.REMOVE_IMPORT;
+            }
+        } else if (change instanceof AnnotationChange) {
+            if (change instanceof AddOntologyAnnotation) {
+                operation = Operations.ADD_ONTOLOGY_ANNOTATION;
+            } else if (change instanceof RemoveOntologyAnnotation) {
+                operation = Operations.REMOVE_ONTOLOGY_ANNOTATION;
+            }
+        } else if (change instanceof SetOntologyID) {
+            operation = Operations.MODIFY_ONTOLOGY_IRI;
+        }
+        if(operation==null) {
+            throw new OperationForChangeNotFoundException("There is no operation defined for the given ontology change");
+        }
+        return operation;
+    }
+
+    /**
+     * Given the axiom type and the modality of a change, get the operation
+     *
+     * @param axiomType Axiom type
+     * @param modality  Change modality (add or remove)
+     * @return Operation for the given change type
+     * @throws OperationForChangeNotFoundException  There is no operation involving the given axiom type and modality
+     */
+    private Operation getOperationForChange(AxiomType axiomType, ChangeModality modality) throws OperationForChangeNotFoundException {
+        for(Operation op : operations) {
+            if(op.getRestrictions().isPresent()) {
+                for(OperationRestriction r : op.getRestrictions().get()) {
+                    if(r.isAxiomRestriction() && r.getRestriction().equals(axiomType) && r.getModality().equals(modality)) {
+                        return op;
+                    }
+                }
+            }
+        }
+        throw new OperationForChangeNotFoundException("There is no operation involving axioms of the specified type ("
+                + axiomType.getName() + ") and with the given modality (" + modality.get() + ")");
     }
 
     @Override

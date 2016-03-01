@@ -1,6 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
+import edu.stanford.protege.metaproject.api.exception.OperationForChangeNotFoundException;
 import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
+import org.semanticweb.owlapi.model.OWLOntologyChange;
 
 import java.util.Set;
 
@@ -41,6 +43,15 @@ public interface OperationRegistry extends Registry {
      * @throws UnknownOperationIdException    Operation identifier is not recognized
      */
     Operation getOperation(OperationId operationId) throws UnknownOperationIdException;
+
+    /**
+     * Get the operation corresponding to the specified ontology change
+     *
+     * @param change    OWL ontology change
+     * @return Operation for the specified change
+     * @throws OperationForChangeNotFoundException  There is no operation involving the given change type
+     */
+    Operation getOperationForChange(OWLOntologyChange change) throws OperationForChangeNotFoundException;
 
     /**
      * Change the name of the given operation
