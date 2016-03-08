@@ -4,7 +4,8 @@ import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException
 
 /**
  * A client-side authenticator that relies on a plain password and user identifier.
- * The given details are validated against the specified user authenticator.
+ * The given details are validated against the specified user authenticator, which
+ * may be the default user authenticator or another such as LDAP.
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -18,8 +19,8 @@ public interface ClientAuthenticator {
      * @param password  Plain password
      * @param userAuthenticator Credential authenticator
      * @throws UserNotRegisteredException  User is not registered
-     * @return true if user credentials are valid, false otherwise
+     * @return Authorisation token that represents the state of user credential verification
      */
-    boolean hasValidCredentials(UserId userId, PlainPassword password, UserAuthenticator userAuthenticator) throws UserNotRegisteredException;
+    AuthToken hasValidCredentials(UserId userId, PlainPassword password, UserAuthenticator userAuthenticator) throws UserNotRegisteredException;
 
 }

@@ -6,9 +6,7 @@ import edu.stanford.protege.metaproject.api.Operation;
 import edu.stanford.protege.metaproject.api.OperationType;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Rafael Gonçalves <br>
@@ -16,7 +14,7 @@ import java.util.Optional;
  */
 public final class Operations {
     private static Factory factory = Manager.getFactory();
-    private final static List<Operation> defaultOperations = new ArrayList<>();
+    private final static Set<Operation> defaultOperations = new HashSet<>();
 
     /**
      * Metaproject operations
@@ -164,11 +162,11 @@ public final class Operations {
     }
 
     /**
-     * Get a list of all the default operations
+     * Get a set of all the default operations
      *
      * @return List of operations
      */
-    public static List<Operation> getDefaultOperations() {
+    public static Set<Operation> getDefaultOperations() {
         return defaultOperations;
     }
 }

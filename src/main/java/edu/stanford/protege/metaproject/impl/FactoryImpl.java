@@ -79,7 +79,15 @@ public class FactoryImpl implements Factory {
     }
 
     @Override
+    public PlainPassword createPlainPassword(String password) {
+        checkNotNull(password, "Password must not be null");
+        return new PlainPasswordImpl(password);
+    }
+
+    @Override
     public SaltedPasswordDigest createSaltedPasswordDigest(String password, Salt salt) {
+        checkNotNull(password, "Password must not be null");
+        checkNotNull(salt, "Salt must not be null");
         return new SaltedPasswordDigestImpl(password, salt);
     }
 
@@ -188,16 +196,31 @@ public class FactoryImpl implements Factory {
 
     @Override
     public Port createPort(Integer portNr) {
+        checkNotNull(portNr, "Port number must not be null");
         return new PortImpl(portNr);
     }
 
     @Override
     public RegistryPort createRegistryPort(Integer portNr) {
+        checkNotNull(portNr, "Port number must not be null");
         return new RegistryPortImpl(portNr);
     }
 
     @Override
     public Host createHost(Address address, Port port, RegistryPort registryPort) {
+        checkNotNull(address, "Host address must not be null");
+        checkNotNull(port, "Host port must not be null");
+        checkNotNull(registryPort, "Registry port must not be null");
         return new HostImpl(address, port, registryPort);
+    }
+
+    @Override
+    public SaltGenerator createSaltGenerator() {
+        return new SaltGeneratorImpl();
+    }
+
+    @Override
+    public PasswordHasher createPasswordHasher() {
+        return new Pbkdf2PasswordHasher();
     }
 }

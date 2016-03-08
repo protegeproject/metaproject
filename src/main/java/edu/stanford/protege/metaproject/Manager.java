@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Manager {
     private static final DefaultJsonSerializer serializer = new DefaultJsonSerializer();
     private static ServerConfiguration serverConfiguration;
-    private static Metaproject metaproject;
     private static Factory factory;
 
     /**
@@ -36,6 +35,15 @@ public class Manager {
     }
 
     /**
+     * Set the server configuration
+     *
+     * @param serverConfig  Server configuration
+     */
+    public static void setServerConfiguration(ServerConfiguration serverConfig) {
+        serverConfiguration = checkNotNull(serverConfig, "Server configuration must not be null");
+    }
+
+    /**
      * Load a server configuration from a file
      *
      * @param f Server configuration file
@@ -44,6 +52,7 @@ public class Manager {
      * @throws ObjectConversionException   JSON object could not be converted to a Java object
      */
     public static ServerConfiguration loadServerConfiguration(File f) throws FileNotFoundException, ObjectConversionException {
+        checkNotNull(f, "Configuration file must not be null");
         serverConfiguration = serializer.parseServerConfiguration(f);
         return serverConfiguration;
     }
@@ -57,21 +66,8 @@ public class Manager {
      * @throws ObjectConversionException   JSON object could not be converted to a Java object
      */
     public static ClientConfiguration loadClientConfiguration(File f) throws FileNotFoundException, ObjectConversionException {
+        checkNotNull(f, "Configuration file must not be null");
         return serializer.parseClientConfiguration(f);
-    }
-
-    /**
-     * Load a metaproject definition from a file
-     *
-     * @param f Metaproject file
-     * @return Metaproject
-     * @throws FileNotFoundException    File specified was not found
-     * @throws ObjectConversionException   JSON object could not be converted to a Java object
-     */
-    public static Metaproject loadMetaproject(File f) throws FileNotFoundException, ObjectConversionException {
-        checkNotNull(f);
-        metaproject = serializer.parseMetaproject(f);
-        return metaproject;
     }
 
     /**
@@ -92,19 +88,23 @@ public class Manager {
      *
      * @return Metaproject
      * @throws MetaprojectNotLoadedException    Metaproject definition has not been loaded
+     * @throws ServerConfigurationNotLoadedException    Server configuration has not been loaded
      */
-    public static Metaproject getMetaproject() throws MetaprojectNotLoadedException {
-        if(metaproject == null) {
+    public static Metaproject getMetaproject() throws MetaprojectNotLoadedException, ServerConfigurationNotLoadedException {
+        if (serverConfiguration == null) {
+            throw new ServerConfigurationNotLoadedException("No server configuration has been loaded.");
+        }
+        if (serverConfiguration.getMetaproject() == null) {
             throw new MetaprojectNotLoadedException("No metaproject definition has been loaded.");
         }
-        return metaproject;
+        return serverConfiguration.getMetaproject();
     }
 
     /**
-     * Verify whether access control object(s) are registered with the given manager
+     * Verify whether access control object(s) are registered with the given registry
      *
-     * @param registry Manager for given access control object
-     * @param objects One or more access control object identifiers
+     * @param registry  Registry for given access control object
+     * @param objects   One or more access control object identifiers
      * @throws UnknownAccessControlObjectIdException Unknown access control object identifier exception
      */
     public static void checkExistence(Registry registry, AccessControlObjectId... objects) throws UnknownAccessControlObjectIdException {

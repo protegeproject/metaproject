@@ -33,22 +33,27 @@ public class MetaprojectImpl implements Metaproject, Serializable {
         this.projectRegistry = checkNotNull(projectRegistry);
     }
 
+    @Override
     public Policy getPolicy() {
         return policy;
     }
 
+    @Override
     public RoleRegistry getRoleRegistry() {
         return roleRegistry;
     }
 
+    @Override
     public OperationRegistry getOperationRegistry() {
         return operationRegistry;
     }
 
+    @Override
     public UserRegistry getUserRegistry() {
         return userRegistry;
     }
 
+    @Override
     public ProjectRegistry getProjectRegistry() {
         return projectRegistry;
     }

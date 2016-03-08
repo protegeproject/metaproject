@@ -2,7 +2,10 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -16,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = 1761331791223501549L;
+    private static final long serialVersionUID = -739668161645371885L;
     private final Host host;
     private final Metaproject metaproject;
     private final AuthenticationManager authenticationManager;
@@ -67,6 +70,27 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     @Override
     public Optional<EntityIriStatus> getOntologyTermIdStatus() {
         return Optional.ofNullable(termIdentifiers);
+    }
+
+    @Override
+    public void enableGuestUser(boolean enableGuestUser) throws UserIdAlreadyInUseException {
+        UserRegistry userRegistry = metaproject.getUserRegistry();
+        User guestUser = userRegistry.getGuestUser();
+        if(enableGuestUser && !authenticationManager.contains(guestUser.getId())) {
+            final String guestPassword = "guest";
+            final Factory f = Manager.getFactory();
+            PasswordHasher hasher = f.createPasswordHasher();
+            SaltGenerator saltGenerator = f.createSaltGenerator();
+            SaltedPasswordDigest passwordDigest = hasher.hash(f.createPlainPassword(guestPassword), saltGenerator.generate());
+            authenticationManager.add(guestUser.getId(), passwordDigest);
+            userRegistry.add(guestUser);
+        }
+        else if(!enableGuestUser) {
+            userRegistry.remove(guestUser);
+            try {
+                authenticationManager.remove(guestUser.getId());
+            } catch (UserNotRegisteredException e) { /* no-op */ }
+        }
     }
 
     @Override

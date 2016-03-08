@@ -20,8 +20,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class Pbkdf2PasswordHasherTest {
     private static final String toStringHead = Pbkdf2PasswordHasher.class.getSimpleName();
-    private static final int hashByteSize = 16, saltByteSize = 24, nrIterations = 1500;
-    private static final SaltGenerator saltGenerator = Utils.getSaltGenerator(saltByteSize);
+    private static final int hashByteSize = 16, nrIterations = 1500;
+    private static final SaltGenerator saltGenerator = Utils.getSaltGenerator();
 
     @Mock private PlainPassword testPassword;
 
@@ -29,9 +29,9 @@ public class Pbkdf2PasswordHasherTest {
 
     @Before
     public void setUp() {
-        passwordHasher = Utils.getPasswordMaster(hashByteSize, nrIterations, saltGenerator);
-        otherPasswordHasher = Utils.getPasswordMaster(hashByteSize, nrIterations, saltGenerator);
-        diffPasswordHasher = Utils.getPasswordMaster();
+        passwordHasher = Utils.getPasswordHasher(hashByteSize, nrIterations);
+        otherPasswordHasher = Utils.getPasswordHasher(hashByteSize, nrIterations);
+        diffPasswordHasher = Utils.getPasswordHasher();
 
         when(testPassword.getPassword()).thenReturn("testPassword");
     }
@@ -42,32 +42,12 @@ public class Pbkdf2PasswordHasherTest {
     }
 
     @Test
-    public void testCreateHash() {
+    public void testHash() {
         Salt salt = saltGenerator.generate();
-        SaltedPasswordDigest hashedPassword = passwordHasher.createHash(testPassword, salt);
+        SaltedPasswordDigest hashedPassword = passwordHasher.hash(testPassword, salt);
         assertThat(hashedPassword, is(not(equalTo(null))));
         assertThat(hashedPassword.getPassword(), is(not(equalTo(null))));
-        assertThat(hashedPassword, is(passwordHasher.createHash(testPassword, salt)));
-    }
-
-    @Test
-    public void testHash() {
-        String password = "testPassword";
-        Salt salt = saltGenerator.generate();
-        byte[] hash = passwordHasher.hash(password, salt.getBytes(), nrIterations, hashByteSize);
-        assertThat(hash, is(not(equalTo(null))));
-        assertThat(hash.length, is(not(equalTo(0))));
-        assertThat(hash, is(passwordHasher.hash(password, salt.getBytes(), nrIterations, hashByteSize)));
-    }
-
-    @Test
-    public void testGetHashByteSize() {
-        assertThat(passwordHasher.getHashByteSize(), is(hashByteSize));
-    }
-
-    @Test
-    public void testGetNumberOfIterations() {
-        assertThat(passwordHasher.getNumberOfIterations(), is(nrIterations));
+        assertThat(hashedPassword, is(passwordHasher.hash(testPassword, salt)));
     }
 
     @Test

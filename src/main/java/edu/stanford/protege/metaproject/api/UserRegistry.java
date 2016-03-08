@@ -1,6 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 
@@ -18,10 +17,9 @@ public interface UserRegistry extends Registry {
      * Add user(s)
      *
      * @param user  One or more users
-     * @throws EmailAddressAlreadyInUseException Email address already in use by another user
      * @throws UserIdAlreadyInUseException   Identifier of given user is already in use
      */
-    void add(User... user) throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException;
+    void add(User... user) throws UserIdAlreadyInUseException;
 
     /**
      * Remove the given user(s)
@@ -75,9 +73,8 @@ public interface UserRegistry extends Registry {
      * @param userId    User identifier
      * @param userName  New name
      * @throws UnknownUserIdException  User identifier is not recognized
-     * @throws EmailAddressAlreadyInUseException Email address already in use by another user
      */
-    void changeName(UserId userId, Name userName) throws UnknownUserIdException, EmailAddressAlreadyInUseException;
+    void changeName(UserId userId, Name userName) throws UnknownUserIdException;
 
     /**
      * Change the email address of a user
@@ -85,8 +82,7 @@ public interface UserRegistry extends Registry {
      * @param userId  User identifier
      * @param emailAddress New email address
      * @throws UnknownUserIdException  User identifier is not recognized
-     * @throws EmailAddressAlreadyInUseException Email address already in use by another user
      */
-    void changeEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException, EmailAddressAlreadyInUseException;
+    void changeEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException;
 
 }

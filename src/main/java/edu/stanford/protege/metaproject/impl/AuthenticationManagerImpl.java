@@ -46,7 +46,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
         if(contains(userId)) {
             throw new UserIdAlreadyInUseException("The specified user is already registered with the authentication manager. Recover or change the password.");
         }
-        authenticationDetails.add(getAuthenticationDetails(userId, password));
+        authenticationDetails.add(createAuthenticationDetails(userId, password));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
     @Override
     public void changePassword(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException {
         authenticationDetails.remove(getAuthenticationDetails(userId));
-        AuthenticationDetails newUserDetails = getAuthenticationDetails(userId, password);
+        AuthenticationDetails newUserDetails = createAuthenticationDetails(userId, password);
         authenticationDetails.add(newUserDetails);
     }
 
@@ -83,7 +83,10 @@ public class AuthenticationManagerImpl implements AuthenticationManager, Seriali
         return getAuthenticationDetails(userId).getPassword().getSalt();
     }
 
-    private AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
+    /**
+     * Create an instance of Authentication details
+     */
+    private AuthenticationDetails createAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
         return Manager.getFactory().createAuthenticationDetails(userId, password);
     }
 

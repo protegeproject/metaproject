@@ -38,8 +38,11 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
         initOperations();
     }
 
+    /**
+     * Initialize operations set with the default operations
+     */
     private void initOperations() {
-        List<Operation> defaultOperations = Operations.getDefaultOperations();
+        Set<Operation> defaultOperations = Operations.getDefaultOperations();
         if(!operations.containsAll(defaultOperations)) {
             this.operations.addAll(defaultOperations);
         }
@@ -137,7 +140,7 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
         checkNotNull(operationName);
         Operation operation = getOperation(operationId);
         remove(operation);
-        Operation newOperation = getOperation(operation.getId(), operationName, operation.getDescription(), operation.getType(), operation.getRestrictions());
+        Operation newOperation = createOperation(operation.getId(), operationName, operation.getDescription(), operation.getType(), operation.getRestrictions());
         add(newOperation);
     }
 
@@ -146,7 +149,7 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
         checkNotNull(operationDescription);
         Operation operation = getOperation(operationId);
         remove(operation);
-        Operation newOperation = getOperation(operation.getId(), operation.getName(), operationDescription, operation.getType(), operation.getRestrictions());
+        Operation newOperation = createOperation(operation.getId(), operation.getName(), operationDescription, operation.getType(), operation.getRestrictions());
         add(newOperation);
     }
 
@@ -158,7 +161,7 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
             Set<OperationRestriction> newRestrictions = (operation.getRestrictions().isPresent() ? new HashSet<>(operation.getRestrictions().get()) : new HashSet<>());
             Collections.addAll(newRestrictions, restrictions);
             remove(operation);
-            Operation newOperation = getOperation(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.of(newRestrictions));
+            Operation newOperation = createOperation(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.of(newRestrictions));
             add(newOperation);
         }
     }
@@ -176,7 +179,7 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
                     restrictionSet.remove(checkNotNull(op));
                 }
             }
-            Operation newOperation = getOperation(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.ofNullable(restrictionSet));
+            Operation newOperation = createOperation(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.ofNullable(restrictionSet));
             add(newOperation);
         }
     }
@@ -192,7 +195,10 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
         return false;
     }
 
-    private Operation getOperation(OperationId id, Name name, Description description, OperationType type, Optional<Set<OperationRestriction>> restrictions) {
+    /**
+     * Create an instance of an operation
+     */
+    private Operation createOperation(OperationId id, Name name, Description description, OperationType type, Optional<Set<OperationRestriction>> restrictions) {
         return Manager.getFactory().createOperation(id, name, description, type, restrictions);
     }
 

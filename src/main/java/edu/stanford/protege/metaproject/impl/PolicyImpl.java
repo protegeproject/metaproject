@@ -131,7 +131,7 @@ public class PolicyImpl implements Policy, Serializable {
     private Optional<Metaproject> fetchMetaproject() {
         try {
             return Optional.of(Manager.getMetaproject());
-        } catch (MetaprojectNotLoadedException e) {
+        } catch (MetaprojectNotLoadedException | ServerConfigurationNotLoadedException e) {
             e.printStackTrace();
         }
         return Optional.empty();

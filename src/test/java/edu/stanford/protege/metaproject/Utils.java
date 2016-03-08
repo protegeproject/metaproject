@@ -162,7 +162,7 @@ public class Utils {
     }
 
     public static SaltedPasswordDigest getSaltedPassword(String password, Salt salt) {
-        return Utils.getPasswordMaster().createHash(new PlainPasswordImpl(password), salt);
+        return Utils.getPasswordHasher().hash(new PlainPasswordImpl(password), salt);
     }
 
     public static PlainPassword getPlainPassword() {
@@ -193,20 +193,12 @@ public class Utils {
         return new SaltGeneratorImpl();
     }
 
-    public static SaltGenerator getSaltGenerator(int byteSize) {
-        return new SaltGeneratorImpl(byteSize);
+    public static PasswordHasher getPasswordHasher() {
+        return new Pbkdf2PasswordHasher();
     }
 
-    public static PasswordHasher getPasswordMaster() {
-        return new Pbkdf2PasswordHasher.Builder().createPasswordHasher();
-    }
-
-    public static PasswordHasher getPasswordMaster(int hashByteSize, int nrPBKDF2Iterations, SaltGenerator saltGenerator) {
-        return new Pbkdf2PasswordHasher.Builder()
-                .setHashByteSize(hashByteSize)
-                .setNumberOfIterations(nrPBKDF2Iterations)
-                .setSaltGenerator(saltGenerator)
-                .createPasswordHasher();
+    public static PasswordHasher getPasswordHasher(int hashByteSize, int nrPBKDF2Iterations) {
+        return new Pbkdf2PasswordHasher(hashByteSize, nrPBKDF2Iterations);
     }
 
 

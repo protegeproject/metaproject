@@ -12,15 +12,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class SaltGeneratorTest {
-    private static final String toStringHead = SaltGenerator.class.getSimpleName();
-    private static final int nrBytes = 16;
-
     private SaltGenerator saltGenerator, otherSaltGenerator, diffSalt;
 
     @Before
     public void setUp() {
-        saltGenerator = new SaltGeneratorImpl(nrBytes);
-        otherSaltGenerator = new SaltGeneratorImpl(nrBytes);
+        saltGenerator = new SaltGeneratorImpl();
+        otherSaltGenerator = new SaltGeneratorImpl();
         diffSalt = new SaltGeneratorImpl();
     }
 
@@ -41,7 +38,7 @@ public class SaltGeneratorTest {
 
     @Test
     public void testGetByteLength() {
-        assertThat(saltGenerator.getByteLength(), is(nrBytes));
+        assertThat(saltGenerator.getByteLength(), is(otherSaltGenerator.getByteLength()));
     }
 
     @Test
@@ -50,22 +47,7 @@ public class SaltGeneratorTest {
     }
 
     @Test
-    public void testEquals() {
-        assertThat(saltGenerator, is(otherSaltGenerator));
-    }
-
-    @Test
     public void testNotEquals() {
         assertThat(saltGenerator, is(not(diffSalt)));
-    }
-
-    @Test
-    public void testHashCode() {
-        assertThat(saltGenerator.hashCode(), is(otherSaltGenerator.hashCode()));
-    }
-
-    @Test
-    public void testToString() {
-        assertThat(saltGenerator.toString(), startsWith(toStringHead));
     }
 }

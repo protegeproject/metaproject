@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
 import org.apache.commons.codec.binary.Hex;
 
@@ -20,36 +21,32 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class Pbkdf2PasswordHasher implements PasswordHasher {
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
-    private final SaltGenerator saltGenerator;
-    private final int hashByteSize, nrIterations;
+    private int hashByteSize = 24, nrIterations = 10000; // initialize with default values
 
     /**
-     * Package-private constructor; use builder
+     * Constructor
      *
-     * @param saltGenerator Salt generator
      * @param hashByteSize  Hash byte size
      * @param nrIterations    Number of iterations
      */
-    Pbkdf2PasswordHasher(SaltGenerator saltGenerator, int hashByteSize, int nrIterations) {
-        this.saltGenerator = checkNotNull(saltGenerator);
+    public Pbkdf2PasswordHasher(int hashByteSize, int nrIterations) {
         this.hashByteSize = checkNotNull(hashByteSize);
         this.nrIterations = checkNotNull(nrIterations);
     }
 
-    @Override
-    public SaltedPasswordDigest createHash(PlainPassword password) {
-        return createHash(password, saltGenerator.generate());
-    }
+    /**
+     * No-arguments constructor that uses default hash byte size and number of key stretching iterations
+     */
+    public Pbkdf2PasswordHasher() { }
 
     @Override
-    public SaltedPasswordDigest createHash(PlainPassword password, Salt salt) {
+    public SaltedPasswordDigest hash(PlainPassword password, Salt salt) {
         byte[] saltBytes = salt.getBytes();
         byte[] hash = hash(password.getPassword(), saltBytes, nrIterations, hashByteSize);
-        return new SaltedPasswordDigestImpl(Hex.encodeHexString(hash), salt);
+        return Manager.getFactory().createSaltedPasswordDigest(Hex.encodeHexString(hash), salt);
     }
 
-    @Override
-    public byte[] hash(String password, byte[] salt, int iterations, int bytes) {
+    private byte[] hash(String password, byte[] salt, int iterations, int bytes) {
         byte[] output = null;
         try {
             output = hash(password.toCharArray(), salt, iterations, bytes);
@@ -66,7 +63,6 @@ public final class Pbkdf2PasswordHasher implements PasswordHasher {
      * @param salt  Salt
      * @param iterations    Iteration count (slowness factor)
      * @param bytes Length of the hash to compute
-     * @return The PBDKF2 hash of the password
      * @throws NoSuchAlgorithmException Cryptographic algorithm not available in this environment
      * @throws InvalidKeySpecException  Invalid key specification
      */
@@ -77,65 +73,24 @@ public final class Pbkdf2PasswordHasher implements PasswordHasher {
     }
 
     @Override
-    public int getHashByteSize() {
-        return hashByteSize;
-    }
-
-    @Override
-    public int getNumberOfIterations() {
-        return nrIterations;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pbkdf2PasswordHasher that = (Pbkdf2PasswordHasher) o;
         return Objects.equal(hashByteSize, that.hashByteSize) &&
-                Objects.equal(nrIterations, that.nrIterations) &&
-                Objects.equal(saltGenerator, that.saltGenerator);
+                Objects.equal(nrIterations, that.nrIterations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(saltGenerator, hashByteSize, nrIterations);
+        return Objects.hashCode(hashByteSize, nrIterations);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("saltGenerator", saltGenerator)
                 .add("hashByteSize", hashByteSize)
                 .add("nrIterations", nrIterations)
                 .toString();
-    }
-
-    /**
-     * @author Rafael Gonçalves <br>
-     * Stanford Center for Biomedical Informatics Research
-     */
-    public static class Builder {
-        private int hashByteSize = 24;
-        private int nrIterations = 1000;
-        private SaltGenerator saltGenerator = new SaltGeneratorImpl();
-
-        public Builder setSaltGenerator(SaltGenerator saltGenerator) {
-            this.saltGenerator = saltGenerator;
-            return this;
-        }
-
-        public Builder setHashByteSize(int hashByteSize) {
-            this.hashByteSize = hashByteSize;
-            return this;
-        }
-
-        public Builder setNumberOfIterations(int nrIterations) {
-            this.nrIterations = nrIterations;
-            return this;
-        }
-
-        public Pbkdf2PasswordHasher createPasswordHasher() {
-            return new Pbkdf2PasswordHasher(saltGenerator, hashByteSize, nrIterations);
-        }
     }
 }

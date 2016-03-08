@@ -16,8 +16,8 @@ public interface UserAuthenticator {
      * @param userId    User identifier
      * @param password  Password
      * @throws UserNotRegisteredException  User is not registered
-     * @return true if credentials are valid, false otherwise
+     * @return Authorisation token that represents the state of user credential verification
      */
-    boolean hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException;
+    AuthToken hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException;
 
 }

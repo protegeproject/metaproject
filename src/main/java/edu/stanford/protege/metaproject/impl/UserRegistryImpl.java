@@ -2,8 +2,8 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 
@@ -20,7 +20,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class UserRegistryImpl implements UserRegistry, Serializable {
-    private static final String GUEST_ID = "guest", GUEST_NAME = "guest user", GUEST_EMAIL = "";
     private static final long serialVersionUID = 2811390077306421170L;
     private Set<User> users = new HashSet<>();
 
@@ -39,15 +38,12 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     public UserRegistryImpl() { }
 
     @Override
-    public void add(User... users) throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException {
+    public void add(User... users) throws UserIdAlreadyInUseException {
         checkNotNull(users);
         for(User user : users) {
             checkNotNull(user);
             if (contains(user.getId())) {
                 throw new UserIdAlreadyInUseException("The specified user identifier is already used by another user");
-            }
-            if (isAddressUsed(user.getEmailAddress())) {
-                throw new EmailAddressAlreadyInUseException("The specified email address is already used by another user.");
             }
             this.users.add(user);
         }
@@ -92,15 +88,17 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
 
     @Override
     public User getGuestUser() {
-        return new UserImpl(new UserIdImpl(GUEST_ID), new NameImpl(GUEST_NAME), new EmailAddressImpl(GUEST_EMAIL));
+        final String id = "guest", name = "Guest user", email = "";
+        Factory f = Manager.getFactory();
+        return createUser(f.createUserId(id), f.createName(name), f.createEmailAddress(email));
     }
 
     @Override
-    public void changeName(UserId userId, Name userName) throws UnknownUserIdException, EmailAddressAlreadyInUseException {
+    public void changeName(UserId userId, Name userName) throws UnknownUserIdException {
         checkNotNull(userName);
         User user = getUser(userId);
         remove(user);
-        User newUser = new UserImpl(userId, userName, user.getEmailAddress());
+        User newUser = createUser(userId, userName, user.getEmailAddress());
         try {
             add(newUser);
         } catch (UserIdAlreadyInUseException e) {
@@ -109,11 +107,11 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     }
 
     @Override
-    public void changeEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException, EmailAddressAlreadyInUseException {
+    public void changeEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException {
         checkNotNull(emailAddress);
         User user = getUser(userId);
         remove(user);
-        User newUser = new UserImpl(userId, user.getName(), emailAddress);
+        User newUser = createUser(userId, user.getName(), emailAddress);
         try {
             add(newUser);
         } catch (UserIdAlreadyInUseException e) {
@@ -130,6 +128,13 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
             }
         }
         return false;
+    }
+
+    /**
+     * Create an instance of a user
+     */
+    private User createUser(UserId userId, Name name, EmailAddress emailAddress) {
+        return Manager.getFactory().createUser(userId, name, emailAddress);
     }
 
     /**

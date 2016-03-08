@@ -86,6 +86,14 @@ public interface Factory {
     Salt createSalt(String salt);
 
     /**
+     * Create an instance of plain password
+     *
+     * @param password  Password string
+     * @return Plain password
+     */
+    PlainPassword createPlainPassword(String password);
+
+    /**
      * Create an instance of salted password
      *
      * @param password  Password string
@@ -245,5 +253,19 @@ public interface Factory {
      * @return Host instance
      */
     Host createHost(Address address, Port port, RegistryPort registryPort);
+
+    /**
+     * Create an instance of a salt generator
+     *
+     * @return Salt generator
+     */
+    SaltGenerator createSaltGenerator();
+
+    /**
+     * Create an instance of a password hasher
+     *
+     * @return Password hasher
+     */
+    PasswordHasher createPasswordHasher();
 
 }

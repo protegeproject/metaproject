@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class SaltedPasswordDigestTest {
     private static final String toStringHead = SaltedPasswordDigest.class.getSimpleName();
 
-    private static final PasswordHasher passwordHasher = new Pbkdf2PasswordHasher.Builder().createPasswordHasher();
+    private static final PasswordHasher passwordHasher = new Pbkdf2PasswordHasher();
 
     @Mock private Salt salt, diffSalt;
     @Mock private PlainPassword plain, diffPlain;
@@ -41,9 +41,9 @@ public class SaltedPasswordDigestTest {
         when(plain.getPassword()).thenReturn("testPassword");
         when(diffPlain.getPassword()).thenReturn("diffTestPassword");
 
-        password = passwordHasher.createHash(plain, salt);
-        otherPassword = passwordHasher.createHash(plain, salt);
-        diffPassword = passwordHasher.createHash(diffPlain, diffSalt);
+        password = passwordHasher.hash(plain, salt);
+        otherPassword = passwordHasher.hash(plain, salt);
+        diffPassword = passwordHasher.hash(diffPlain, diffSalt);
     }
 
     @Test
@@ -53,10 +53,10 @@ public class SaltedPasswordDigestTest {
 
     @Test
     public void testGetPassword() {
-        SaltedPasswordDigest origPassword = passwordHasher.createHash(plain, salt);
+        SaltedPasswordDigest origPassword = passwordHasher.hash(plain, salt);
         assertThat(password.getPassword().equals(origPassword.getPassword()), is(true));
 
-        SaltedPasswordDigest origPasswordWrong = passwordHasher.createHash(diffPlain, salt);
+        SaltedPasswordDigest origPasswordWrong = passwordHasher.hash(diffPlain, salt);
         assertThat(password.getPassword().equals(origPasswordWrong.getPassword()), is(false));
     }
 

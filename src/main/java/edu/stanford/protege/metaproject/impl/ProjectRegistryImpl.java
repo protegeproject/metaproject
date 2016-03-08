@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
-    private static final long serialVersionUID = -3204696327513123400L;
+    private static final long serialVersionUID = -2463359008767625820L;
     private Set<Project> projects = new HashSet<>();
 
     /**
@@ -82,7 +82,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = getProject(project.getId(), projectName, project.getDescription(), project.getAddress(), project.getOwner(), project.getAdministrators());
+        Project newProject = createProject(project.getId(), projectName, project.getDescription(), project.getAddress(), project.getOwner(), project.getAdministrators());
         add(newProject);
     }
 
@@ -92,7 +92,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = getProject(project.getId(), project.getName(), projectDescription, project.getAddress(), project.getOwner(), project.getAdministrators());
+        Project newProject = createProject(project.getId(), project.getName(), projectDescription, project.getAddress(), project.getOwner(), project.getAdministrators());
         add(newProject);
     }
 
@@ -102,7 +102,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = getProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), userId, project.getAdministrators());
+        Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), userId, project.getAdministrators());
         add(newProject);
     }
 
@@ -112,7 +112,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = getProject(project.getId(), project.getName(), project.getDescription(), projectAddress, project.getOwner(), project.getAdministrators());
+        Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), projectAddress, project.getOwner(), project.getAdministrators());
         add(newProject);
     }
 
@@ -125,7 +125,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Set<UserId> administrators = new HashSet<>(project.getAdministrators());
         Collections.addAll(administrators, userIds);
 
-        Project newProject = getProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
+        Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
         add(newProject);
     }
 
@@ -140,7 +140,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
             administrators.remove(checkNotNull(userId));
         }
 
-        Project newProject = getProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
+        Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(), project.getOwner(), administrators);
         add(newProject);
     }
 
@@ -155,7 +155,10 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         return false;
     }
 
-    private Project getProject(ProjectId id, Name name, Description description, Address address, UserId owner, Set<UserId> administrators) {
+    /**
+     * Create an instance of a project
+     */
+    private Project createProject(ProjectId id, Name name, Description description, Address address, UserId owner, Set<UserId> administrators) {
         return Manager.getFactory().createProject(id, name, description, address, owner, administrators);
     }
 

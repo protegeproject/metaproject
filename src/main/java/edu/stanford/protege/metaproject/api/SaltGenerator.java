@@ -9,14 +9,22 @@ package edu.stanford.protege.metaproject.api;
 public interface SaltGenerator {
 
     /**
-     * Generate a salt
+     * Generate salt using default byte length
      *
      * @return Salt
      */
     Salt generate();
 
     /**
-     * Get the byte length used for generating a salt
+     * Generate salt using the specified byte length
+     *
+     * @param nrBytes   Byte length
+     * @return Salt
+     */
+    Salt generate(int nrBytes);
+
+    /**
+     * Get the default byte length used for generating a salt
      *
      * @return Number of bytes
      */
