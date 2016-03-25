@@ -1,7 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
-
 /**
  * A user authenticator that verifies whether the given username and password are valid.
  *
@@ -15,9 +13,8 @@ public interface UserAuthenticator {
      *
      * @param userId    User identifier
      * @param password  Password
-     * @throws UserNotRegisteredException  User is not registered
      * @return Authorisation token that represents the state of user credential verification
      */
-    AuthToken hasValidCredentials(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException;
+    AuthToken hasValidCredentials(UserId userId, PlainPassword password) throws Exception;
 
 }
