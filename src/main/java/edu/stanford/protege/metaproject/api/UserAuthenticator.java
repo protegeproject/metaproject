@@ -18,6 +18,6 @@ public interface UserAuthenticator {
      * @throws UserNotRegisteredException  User is not registered
      * @return Authorisation token that represents the state of user credential verification
      */
-    AuthToken hasValidCredentials(UserId userId, PlainPassword password) throws UserNotRegisteredException;
+    AuthToken hasValidCredentials(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException;
 
 }
