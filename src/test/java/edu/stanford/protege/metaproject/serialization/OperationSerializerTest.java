@@ -6,9 +6,6 @@ import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
-import java.util.Set;
-
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -21,8 +18,7 @@ public class OperationSerializerTest {
     private static final OperationId operationId = Utils.getOperationId(operationIdStr), diffOperationId = Utils.getOperationId(diffIdStr);
     private static final Name operationName = Utils.getName();
     private static final Description operationDescription = Utils.getDescription();
-    private static final OperationType type = OperationType.ONTOLOGY;
-    private static final Set<OperationRestriction> restrictions = Utils.getOperationRestrictionSet(Utils.getOperationRestriction());
+    private static final OperationType type = OperationType.READ;
 
     private String jsonOperation, jsonOtherOperation, jsonDiffOperation;
     private Operation operation, otherOperation, diffOperation;
@@ -32,9 +28,9 @@ public class OperationSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        operation = Utils.getOperation(operationId, operationName, operationDescription, type, Optional.of(restrictions));
-        otherOperation = Utils.getOperation(operationId, operationName, operationDescription, type, Optional.of(restrictions));
-        diffOperation = Utils.getOperation(diffOperationId, operationName, operationDescription, type, Optional.of(restrictions));
+        operation = Utils.getServerOperation(operationId, operationName, operationDescription, type);
+        otherOperation = Utils.getServerOperation(operationId, operationName, operationDescription, type);
+        diffOperation = Utils.getServerOperation(diffOperationId, operationName, operationDescription, type);
 
         jsonOperation = gson.toJson(operation);
         jsonOtherOperation = gson.toJson(otherOperation);
@@ -96,10 +92,5 @@ public class OperationSerializerTest {
     @Test
     public void testGetOperationType() {
         assertThat(gson.fromJson(jsonOperation, Operation.class).getType(), is(type));
-    }
-
-    @Test
-    public void testGetRestrictions() {
-        assertThat(gson.fromJson(jsonOperation, Operation.class).getRestrictions().get(), is(restrictions));
     }
 }

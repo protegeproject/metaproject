@@ -4,12 +4,12 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.OperationForChangeNotFoundException;
 import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
-import org.semanticweb.owlapi.model.*;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationRegistryImpl implements OperationRegistry, Serializable {
-    private static final long serialVersionUID = 7864971444673547999L;
+    private static final long serialVersionUID = 924879919250231146L;
     private Set<Operation> operations = new HashSet<>();
 
     /**
@@ -28,24 +28,6 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
      */
     public OperationRegistryImpl(Set<Operation> operations) {
         this.operations = checkNotNull(operations);
-        initOperations();
-    }
-
-    /**
-     * No-arguments constructor
-     */
-    public OperationRegistryImpl() {
-        initOperations();
-    }
-
-    /**
-     * Initialize operations set with the default operations
-     */
-    private void initOperations() {
-        Set<Operation> defaultOperations = Operations.getDefaultOperations();
-        if(!operations.containsAll(defaultOperations)) {
-            this.operations.addAll(defaultOperations);
-        }
     }
 
     @Override
@@ -82,110 +64,25 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
     }
 
     @Override
-    public Operation getOperationForChange(OWLOntologyChange change) throws OperationForChangeNotFoundException {
-        Operation operation = null;
-        if (change.isAxiomChange()) {
-            ChangeModality modality = null;
-            if (change.isAddAxiom()) {
-                modality = AxiomChangeModality.ADDITION;
-            } else if (change.isRemoveAxiom()) {
-                modality = AxiomChangeModality.REMOVAL;
-            }
-            operation = getOperationForChange(change.getAxiom().getAxiomType(), modality);
-        } else if (change.isImportChange()) {
-            if (change instanceof AddImport) {
-                operation = Operations.ADD_IMPORT;
-            } else if (change instanceof RemoveImport) {
-                operation = Operations.REMOVE_IMPORT;
-            }
-        } else if (change instanceof AnnotationChange) {
-            if (change instanceof AddOntologyAnnotation) {
-                operation = Operations.ADD_ONTOLOGY_ANNOTATION;
-            } else if (change instanceof RemoveOntologyAnnotation) {
-                operation = Operations.REMOVE_ONTOLOGY_ANNOTATION;
-            }
-        } else if (change instanceof SetOntologyID) {
-            operation = Operations.MODIFY_ONTOLOGY_IRI;
-        }
-        if(operation==null) {
-            throw new OperationForChangeNotFoundException("There is no operation defined for the given ontology change");
-        }
-        return operation;
-    }
-
-    /**
-     * Given the axiom type and the modality of a change, get the operation
-     *
-     * @param axiomType Axiom type
-     * @param modality  Change modality (add or remove)
-     * @return Operation for the given change type
-     * @throws OperationForChangeNotFoundException  There is no operation involving the given axiom type and modality
-     */
-    private Operation getOperationForChange(AxiomType axiomType, ChangeModality modality) throws OperationForChangeNotFoundException {
-        for(Operation op : operations) {
-            if(op.getRestrictions().isPresent()) {
-                for(OperationRestriction r : op.getRestrictions().get()) {
-                    if(r.isAxiomRestriction() && r.getRestriction().equals(axiomType) && r.getModality().equals(modality)) {
-                        return op;
-                    }
-                }
-            }
-        }
-        throw new OperationForChangeNotFoundException("There is no operation involving axioms of the specified type ("
-                + axiomType.getName() + ") and with the given modality (" + modality.get() + ")");
-    }
-
-    @Override
-    public void changeName(OperationId operationId, Name operationName) throws UnknownOperationIdException {
+    public void setName(OperationId operationId, Name operationName) throws UnknownOperationIdException {
         checkNotNull(operationName);
         Operation operation = getOperation(operationId);
         remove(operation);
-        Operation newOperation = createOperation(operation.getId(), operationName, operation.getDescription(), operation.getType(), operation.getRestrictions());
+        Operation newOperation = createOperation(operation.getId(), operationName, operation.getDescription(), operation.getType());
         add(newOperation);
     }
 
     @Override
-    public void changeDescription(OperationId operationId, Description operationDescription) throws UnknownOperationIdException {
+    public void setDescription(OperationId operationId, Description operationDescription) throws UnknownOperationIdException {
         checkNotNull(operationDescription);
         Operation operation = getOperation(operationId);
         remove(operation);
-        Operation newOperation = createOperation(operation.getId(), operation.getName(), operationDescription, operation.getType(), operation.getRestrictions());
+        Operation newOperation = createOperation(operation.getId(), operation.getName(), operationDescription, operation.getType());
         add(newOperation);
     }
 
     @Override
-    public void addRestriction(OperationId operationId, OperationRestriction... restrictions) throws UnknownOperationIdException {
-        checkNotNull(restrictions);
-        if(restrictions.length > 0) {
-            Operation operation = getOperation(operationId);
-            Set<OperationRestriction> newRestrictions = (operation.getRestrictions().isPresent() ? new HashSet<>(operation.getRestrictions().get()) : new HashSet<>());
-            Collections.addAll(newRestrictions, restrictions);
-            remove(operation);
-            Operation newOperation = createOperation(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.of(newRestrictions));
-            add(newOperation);
-        }
-    }
-
-    @Override
-    public void removeRestriction(OperationId operationId, OperationRestriction... restrictions) throws UnknownOperationIdException {
-        checkNotNull(restrictions);
-        if(restrictions.length > 0) {
-            Operation operation = getOperation(operationId);
-            remove(operation);
-            Set<OperationRestriction> restrictionSet = null;
-            if(operation.getRestrictions().isPresent()) {
-                restrictionSet = new HashSet<>(operation.getRestrictions().get());
-                for(OperationRestriction op : restrictions) {
-                    restrictionSet.remove(checkNotNull(op));
-                }
-            }
-            Operation newOperation = createOperation(operation.getId(), operation.getName(), operation.getDescription(), operation.getType(), Optional.ofNullable(restrictionSet));
-            add(newOperation);
-        }
-    }
-
-    @Override
-    public boolean contains(AccessControlObjectId operationId) {
+    public boolean contains(OperationId operationId) {
         checkNotNull(operationId);
         for(Operation operation : operations) {
             if(operation.getId().equals(operationId)) {
@@ -198,8 +95,8 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
     /**
      * Create an instance of an operation
      */
-    private Operation createOperation(OperationId id, Name name, Description description, OperationType type, Optional<Set<OperationRestriction>> restrictions) {
-        return Manager.getFactory().createOperation(id, name, description, type, restrictions);
+    private Operation createOperation(OperationId id, Name name, Description description, OperationType type) {
+        return Manager.getFactory().getServerOperation(id, name, description, type);
     }
 
     /**

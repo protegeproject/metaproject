@@ -3,8 +3,12 @@ package edu.stanford.protege.metaproject.impl;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
+import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -13,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class MetaprojectImpl implements Metaproject, Serializable {
-    private static final long serialVersionUID = 6530049898256408956L;
+    private static final long serialVersionUID = -6074836114963155970L;
     private Policy policy;
     private RoleRegistry roleRegistry;
     private OperationRegistry operationRegistry;
@@ -21,16 +25,34 @@ public class MetaprojectImpl implements Metaproject, Serializable {
     private ProjectRegistry projectRegistry;
 
     /**
-     * Package-private constructor; use builder
+     * Package-private constructor; use {@link MetaprojectBuilder}
      *
-     * @param policy Policy manager
+     * @param policy    Policy
+     * @param roleRegistry  Role registry
+     * @param operationRegistry Operation registry
+     * @param userRegistry  User registry
+     * @param projectRegistry   Project registry
      */
-    MetaprojectImpl(Policy policy, RoleRegistry roleRegistry, OperationRegistry operationRegistry, UserRegistry userRegistry, ProjectRegistry projectRegistry) {
+    MetaprojectImpl(Policy policy, RoleRegistry roleRegistry, OperationRegistry operationRegistry, UserRegistry
+            userRegistry, ProjectRegistry projectRegistry) {
         this.policy = checkNotNull(policy);
         this.roleRegistry = checkNotNull(roleRegistry);
         this.operationRegistry = checkNotNull(operationRegistry);
         this.userRegistry = checkNotNull(userRegistry);
         this.projectRegistry = checkNotNull(projectRegistry);
+    }
+
+    @Override
+    public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId)
+            throws UnknownAccessControlObjectIdException, UserNotInPolicyException, ProjectNotInPolicyException {
+        Set<RoleId> roles = getPolicy().getRoles(userId, projectId);
+        for (RoleId role : roles) {
+            Role r = getRoleRegistry().getRole(role);
+            if (r.getOperations().contains(operationId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -84,45 +106,5 @@ public class MetaprojectImpl implements Metaproject, Serializable {
                 .add("userRegistry", userRegistry)
                 .add("projectRegistry", projectRegistry)
                 .toString();
-    }
-
-    /**
-     * Builder
-     */
-    public static class Builder {
-        private Policy policy = new PolicyImpl();
-        private RoleRegistry roleRegistry = new RoleRegistryImpl();
-        private OperationRegistry operationRegistry = new OperationRegistryImpl();
-        private UserRegistry userRegistry = new UserRegistryImpl();
-        private ProjectRegistry projectRegistry = new ProjectRegistryImpl();
-
-        public Builder setPolicy(Policy policy) {
-            this.policy = policy;
-            return this;
-        }
-
-        public Builder setRoleRegistry(RoleRegistry roleRegistry) {
-            this.roleRegistry = roleRegistry;
-            return this;
-        }
-
-        public Builder setOperationRegistry(OperationRegistry operationRegistry) {
-            this.operationRegistry = operationRegistry;
-            return this;
-        }
-
-        public Builder setUserRegistry(UserRegistry userRegistry) {
-            this.userRegistry = userRegistry;
-            return this;
-        }
-
-        public Builder setProjectRegistry(ProjectRegistry projectRegistry) {
-            this.projectRegistry = projectRegistry;
-            return this;
-        }
-
-        public Metaproject createMetaproject() {
-            return new MetaprojectImpl(policy, roleRegistry, operationRegistry, userRegistry, projectRegistry);
-        }
     }
 }

@@ -2,9 +2,9 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.User;
 import edu.stanford.protege.metaproject.api.UserRegistry;
-import edu.stanford.protege.metaproject.impl.UserRegistryImpl;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -28,6 +28,6 @@ public class UserManagerSerializer implements JsonSerializer<UserRegistry>, Json
     @Override
     public UserRegistry deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         Set<User> users = context.deserialize(element.getAsJsonArray(), new TypeToken<Set<User>>(){}.getType());
-        return new UserRegistryImpl(users);
+        return Manager.getFactory().getUserRegistry(users);
     }
 }

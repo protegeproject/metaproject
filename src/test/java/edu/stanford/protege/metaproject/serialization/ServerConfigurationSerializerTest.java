@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,9 +19,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ServerConfigurationSerializerTest {
     private static final Host host = Utils.getHost(), diffHost = Utils.getHost();
     private static final Metaproject metaproject = Utils.getMetaproject();
-    private static final AuthenticationManager authenticationManager = Utils.getAuthenticationManager();
+    private static final AuthenticationRegistry authenticationRegistry = Utils.getAuthenticationRegistry();
     private static final Map<String,String> propertyMap = Utils.getPropertyMap();
-    private static final EntityIriStatus idStatus = Utils.getEntityIriStatus();
+    private static Map<UserId,Set<GuiRestriction>> userGuiRestrictions = Utils.getUserGuiRestrictionsMap();
 
     private String jsonServerConfiguration, jsonOtherServerConfiguration, jsonDiffServerConfiguration;
     private ServerConfiguration config, otherServerConfiguration, diffServerConfiguration;
@@ -31,9 +31,9 @@ public class ServerConfigurationSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        config = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertyMap, idStatus);
-        otherServerConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationManager, propertyMap, idStatus);
-        diffServerConfiguration = Utils.getServerConfiguration(diffHost, metaproject, authenticationManager, propertyMap, idStatus);
+        config = Utils.getServerConfiguration(host, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
+        otherServerConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
+        diffServerConfiguration = Utils.getServerConfiguration(diffHost, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
 
         jsonServerConfiguration = gson.toJson(config, ServerConfiguration.class);
         jsonOtherServerConfiguration = gson.toJson(otherServerConfiguration, ServerConfiguration.class);
@@ -89,11 +89,6 @@ public class ServerConfigurationSerializerTest {
 
     @Test
     public void testGetProperties() {
-        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getProperties(), is(Optional.of(propertyMap)));
-    }
-
-    @Test
-    public void testGetOntologyTermIdStatus() {
-        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getOntologyTermIdStatus(), is(Optional.of(idStatus)));
+        assertThat(gson.fromJson(jsonServerConfiguration, ServerConfiguration.class).getProperties(), is(propertyMap));
     }
 }

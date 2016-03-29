@@ -8,9 +8,8 @@ import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseExceptio
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -18,29 +17,29 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = -739668161645371885L;
+public class ServerConfigurationImpl implements ServerConfiguration, Serializable {
+    private static final long serialVersionUID = -4990750341522902706L;
     private final Host host;
     private final Metaproject metaproject;
-    private final AuthenticationManager authenticationManager;
-    private final Map<String,String> properties;
-    private final EntityIriStatus termIdentifiers;
+    private final AuthenticationRegistry authenticationRegistry;
+    private Map<String,String> properties;
+    private Map<UserId, Set<GuiRestriction>> userGuiRestrictions;
 
     /**
-     * Package-private constructor; use builder
+     * Package-private constructor; use {@link ServerConfigurationBuilder}
      *
      * @param host    Host
      * @param metaproject    Metaproject
-     * @param authenticationManager Authentication manager
-     * @param properties   Map of simple configuration properties
-     * @param termIdentifiers  Ontology term identifier status
+     * @param authenticationRegistry Authentication manager
+     * @param properties   Map of custom configuration properties
+     * @param userGuiRestrictions   Map of user identifiers to their correspondings sets of GUI restrictions
      */
-    ServerConfigurationImpl(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Optional<Map<String,String>> properties, Optional<EntityIriStatus> termIdentifiers) {
+    ServerConfigurationImpl(Host host, Metaproject metaproject, AuthenticationRegistry authenticationRegistry, Map<String,String> properties, Map<UserId, Set<GuiRestriction>> userGuiRestrictions) {
         this.host = checkNotNull(host);
         this.metaproject = checkNotNull(metaproject);
-        this.authenticationManager = checkNotNull(authenticationManager);
-        this.properties = (properties.isPresent() ? checkNotNull(properties.get()) : null);
-        this.termIdentifiers = (termIdentifiers.isPresent() ? checkNotNull(termIdentifiers.get()) : null);
+        this.authenticationRegistry = checkNotNull(authenticationRegistry);
+        this.properties = checkNotNull(properties);
+        this.userGuiRestrictions = checkNotNull(userGuiRestrictions);
     }
 
     @Override
@@ -48,49 +47,54 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         return host;
     }
 
+    @Override
     public Metaproject getMetaproject() {
         return metaproject;
     }
 
-    @Override
-    public AuthenticationManager getAuthenticationManager() {
-        return authenticationManager;
+    public AuthenticationRegistry getAuthenticationRegistry() {
+        return authenticationRegistry;
     }
 
     @Override
-    public Optional<ConflictManager> getConflictManager() {
-        return Optional.empty();
+    public Map<String,String> getProperties() {
+        return properties;
     }
 
     @Override
-    public Optional<Map<String, String>> getProperties() {
-        return Optional.ofNullable(properties);
+    public void addProperty(String key, String value) {
+        properties.put(checkNotNull(key), checkNotNull(value));
     }
 
     @Override
-    public Optional<EntityIriStatus> getOntologyTermIdStatus() {
-        return Optional.ofNullable(termIdentifiers);
+    public void removeProperty(String key) {
+        properties.remove(checkNotNull(key));
     }
 
     @Override
     public void enableGuestUser(boolean enableGuestUser) throws UserIdAlreadyInUseException {
         UserRegistry userRegistry = metaproject.getUserRegistry();
         User guestUser = userRegistry.getGuestUser();
-        if(enableGuestUser && !authenticationManager.contains(guestUser.getId())) {
+        if(enableGuestUser && !authenticationRegistry.contains(guestUser.getId())) {
             final String guestPassword = "guest";
             final Factory f = Manager.getFactory();
-            PasswordHasher hasher = f.createPasswordHasher();
-            SaltGenerator saltGenerator = f.createSaltGenerator();
-            SaltedPasswordDigest passwordDigest = hasher.hash(f.createPlainPassword(guestPassword), saltGenerator.generate());
-            authenticationManager.add(guestUser.getId(), passwordDigest);
+            PasswordHasher hasher = f.getPasswordHasher();
+            SaltGenerator saltGenerator = f.getSaltGenerator();
+            SaltedPasswordDigest passwordDigest = hasher.hash(f.getPlainPassword(guestPassword), saltGenerator.generate());
+            authenticationRegistry.add(guestUser.getId(), passwordDigest);
             userRegistry.add(guestUser);
         }
         else if(!enableGuestUser) {
             userRegistry.remove(guestUser);
             try {
-                authenticationManager.remove(guestUser.getId());
+                authenticationRegistry.remove(guestUser.getId());
             } catch (UserNotRegisteredException e) { /* no-op */ }
         }
+    }
+
+    @Override
+    public Map<UserId, Set<GuiRestriction>> getUserGuiRestrictions() {
+        return userGuiRestrictions;
     }
 
     @Override
@@ -100,14 +104,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         ServerConfigurationImpl that = (ServerConfigurationImpl) o;
         return Objects.equal(host, that.host) &&
                 Objects.equal(metaproject, that.metaproject) &&
-                Objects.equal(authenticationManager, that.authenticationManager) &&
+                Objects.equal(authenticationRegistry, that.authenticationRegistry) &&
                 Objects.equal(properties, that.properties) &&
-                Objects.equal(termIdentifiers, that.termIdentifiers);
+                Objects.equal(userGuiRestrictions, that.userGuiRestrictions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(host, metaproject, authenticationManager, properties, termIdentifiers);
+        return Objects.hashCode(host, metaproject, authenticationRegistry, properties, userGuiRestrictions);
     }
 
     @Override
@@ -115,50 +119,9 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         return MoreObjects.toStringHelper(this)
                 .add("host", host)
                 .add("metaproject", metaproject)
-                .add("authenticationManager", authenticationManager)
+                .add("authenticationRegistry", authenticationRegistry)
                 .add("properties", properties)
-                .add("termIdentifiers", termIdentifiers)
+                .add("userGuiRestrictions", userGuiRestrictions)
                 .toString();
-    }
-
-    /**
-     * Access control server configuration builder
-     */
-    public static class Builder {
-        private Host host;
-        private Metaproject metaproject = new MetaprojectImpl.Builder().createMetaproject();
-        private AuthenticationManager authenticationManager = new AuthenticationManagerImpl();
-        private Map<String,String> properties = new HashMap<>();
-        private EntityIriPrefix defaultIri = new EntityIriPrefixImpl("http://www.semanticweb.org/");
-        private EntityIriStatus entityIriStatus = new EntityIriStatusImpl.Builder().setEntityIriPrefix(defaultIri).createEntityIriStatus();
-
-        public Builder setHost(Host host) {
-            this.host = host;
-            return this;
-        }
-
-        public Builder setMetaproject(Metaproject metaproject) {
-            this.metaproject = metaproject;
-            return this;
-        }
-
-        public Builder setAuthenticationManager(AuthenticationManager authenticationManager) {
-            this.authenticationManager = authenticationManager;
-            return this;
-        }
-
-        public Builder setPropertyMap(Map<String,String> propertyMap) {
-            this.properties = propertyMap;
-            return this;
-        }
-
-        public Builder setEntityIriStatus(EntityIriStatus entityIriStatus) {
-            this.entityIriStatus = entityIriStatus;
-            return this;
-        }
-
-        public ServerConfigurationImpl createServerConfiguration() {
-            return new ServerConfigurationImpl(host, metaproject, authenticationManager, Optional.ofNullable(properties), Optional.ofNullable(entityIriStatus));
-        }
     }
 }

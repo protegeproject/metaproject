@@ -1,30 +1,44 @@
 package edu.stanford.protege.metaproject.serialization;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.impl.UserIdImpl;
 
 import java.lang.reflect.Type;
-import java.util.Set;
+import java.util.Optional;
 
 /**
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class ProjectSerializer implements JsonDeserializer<Project> {
+public class ProjectSerializer implements JsonDeserializer<Project>, JsonSerializer<Project> {
+    private final String ID = "id", NAME = "name", DESCRIPTION = "description", ADDRESS = "address", OWNER = "owner",
+            OPTIONS = "options";
+
+    @Override
+    public JsonElement serialize(Project project, Type type, JsonSerializationContext context) {
+        JsonObject obj = new JsonObject();
+        obj.add(ID, context.serialize(project.getId()));
+        obj.add(NAME, context.serialize(project.getName()));
+        obj.add(DESCRIPTION, context.serialize(project.getDescription()));
+        obj.add(ADDRESS, context.serialize(project.getAddress()));
+        obj.add(OWNER, context.serialize(project.getOwner()));
+        if(project.getOptions().isPresent()) {
+            obj.add(OPTIONS, context.serialize(project.getOptions().get(), ProjectOptions.class));
+        }
+        return obj;
+    }
 
     @Override
     public Project deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         Factory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
-        ProjectId projectId = factory.createProjectId(obj.getAsJsonPrimitive("id").getAsString());
-        Name projectName = factory.createName(obj.getAsJsonPrimitive("name").getAsString());
-        Description projectDescription = factory.createDescription(obj.getAsJsonPrimitive("description").getAsString());
-        Address projectLocation = factory.createAddress(obj.getAsJsonPrimitive("address").getAsString());
-        UserId owner = factory.createUserId(obj.getAsJsonPrimitive("owner").getAsString());
-        Set<UserId> administrators = context.deserialize(obj.get("administrators"), new TypeToken<Set<UserIdImpl>>(){}.getType());
-        return factory.createProject(projectId, projectName, projectDescription, projectLocation, owner, administrators);
+        ProjectId projectId = factory.getProjectId(obj.getAsJsonPrimitive(ID).getAsString());
+        Name projectName = factory.getName(obj.getAsJsonPrimitive(NAME).getAsString());
+        Description projectDescription = factory.getDescription(obj.getAsJsonPrimitive(DESCRIPTION).getAsString());
+        Address projectLocation = factory.getAddress(obj.getAsJsonPrimitive(ADDRESS).getAsString());
+        UserId owner = factory.getUserId(obj.getAsJsonPrimitive(OWNER).getAsString());
+        ProjectOptions projectOptions = context.deserialize(obj.getAsJsonObject(OPTIONS), ProjectOptions.class);
+        return factory.getProject(projectId, projectName, projectDescription, projectLocation, owner, Optional.ofNullable(projectOptions));
     }
 }

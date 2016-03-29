@@ -6,10 +6,6 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ProjectId extends AccessControlObjectId {
-
-    default AccessControlObjectIdType getType() {
-        return AccessControlObjectIdType.PROJECT;
-    }
+public interface ProjectId extends TextProperty {
 
 }

@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class Pbkdf2PasswordHasher implements PasswordHasher {
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
-    private int hashByteSize = 24, nrIterations = 10000; // initialize with default values
+    private final int hashByteSize, nrIterations;
 
     /**
      * Constructor
@@ -34,16 +34,11 @@ public final class Pbkdf2PasswordHasher implements PasswordHasher {
         this.nrIterations = checkNotNull(nrIterations);
     }
 
-    /**
-     * No-arguments constructor that uses default hash byte size and number of key stretching iterations
-     */
-    public Pbkdf2PasswordHasher() { }
-
     @Override
     public SaltedPasswordDigest hash(PlainPassword password, Salt salt) {
         byte[] saltBytes = salt.getBytes();
         byte[] hash = hash(password.getPassword(), saltBytes, nrIterations, hashByteSize);
-        return Manager.getFactory().createSaltedPasswordDigest(Hex.encodeHexString(hash), salt);
+        return Manager.getFactory().getSaltedPasswordDigest(Hex.encodeHexString(hash), salt);
     }
 
     private byte[] hash(String password, byte[] salt, int iterations, int bytes) {

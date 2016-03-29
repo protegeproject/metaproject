@@ -21,7 +21,7 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
     private Gson gson;
 
     /**
-     * Constructor
+     * No-args constructor
      */
     public DefaultJsonSerializer() { }
 
@@ -48,20 +48,19 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
                     .registerTypeAdapter(Host.class, new HostSerializer())
 
                     // access control object managers
-                    .registerTypeAdapter(Policy.class, new PolicyManagerSerializer())
-                    .registerTypeAdapter(OperationRegistry.class, new OperationManagerSerializer())
+                    .registerTypeAdapter(Policy.class, new PolicySerializer())
+                    .registerTypeAdapter(OperationRegistry.class, new OperationRegistrySerializer())
                     .registerTypeAdapter(ProjectRegistry.class, new ProjectManagerSerializer())
                     .registerTypeAdapter(RoleRegistry.class, new RoleManagerSerializer())
                     .registerTypeAdapter(UserRegistry.class, new UserManagerSerializer())
-                    .registerTypeAdapter(AuthenticationManager.class, new AuthenticationManagerSerializer())
+                    .registerTypeAdapter(AuthenticationRegistry.class, new AuthenticationRegistrySerializer())
 
                     // other objects
                     .registerTypeHierarchyAdapter(TextProperty.class, new PropertySerializer())
                     .registerTypeHierarchyAdapter(NumericProperty.class, new PropertySerializer())
-                    .registerTypeAdapter(OperationRestriction.class, new OperationRestrictionSerializer())
-                    .registerTypeAdapter(EntityIriStatus.class, new EntityIriStatusSerializer())
                     .registerTypeHierarchyAdapter(AuthenticationDetails.class, new AuthenticationDetailsSerializer())
                     .registerTypeAdapter(GuiRestriction.class, new GuiRestrictionSerializer())
+                    .registerTypeAdapter(ProjectOptions.class, new ProjectOptionsSerializer())
 
                     .enableComplexMapKeySerialization()
                     .setPrettyPrinting()
@@ -81,18 +80,6 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
                     "the file does not match the Java object structure required for instantiating the object.");
         }
         return obj;
-    }
-
-    public ServerConfiguration parseServerConfiguration(File f) throws FileNotFoundException, ObjectConversionException {
-        return parse(f, ServerConfiguration.class);
-    }
-
-    public ClientConfiguration parseClientConfiguration(File f) throws FileNotFoundException, ObjectConversionException {
-        return parse(f, ClientConfiguration.class);
-    }
-
-    public Metaproject parseMetaproject(File f) throws FileNotFoundException, ObjectConversionException {
-        return parse(f, Metaproject.class);
     }
 
     @Override

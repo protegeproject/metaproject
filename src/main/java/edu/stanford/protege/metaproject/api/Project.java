@@ -1,15 +1,16 @@
 package edu.stanford.protege.metaproject.api;
 
-import java.util.Set;
+import java.util.Optional;
 
 /**
  * A representation of a project, consisting of a unique (internal) identifier, a (display) name, and a
- * description. A project is owned by a single user, and can have multiple administrators.
+ * description. A project is owned by a single user; unless altered, the owner is the creator. A project may
+ * also have some options associated with it.
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Project extends AccessControlObject, HasName, HasDescription, HasAddress, Comparable<Project> {
+public interface Project extends HasName, HasDescription, HasAddress, Comparable<Project> {
 
     /**
      * Get the identifier of the project
@@ -26,18 +27,10 @@ public interface Project extends AccessControlObject, HasName, HasDescription, H
     UserId getOwner();
 
     /**
-     * Get the administrators of the project
+     * Get the options for this project
      *
-     * @return Set of users that administrate the project
+     * @return Project options
      */
-    Set<UserId> getAdministrators();
-
-    /**
-     * Check whether the specified user is an administrator of the project
-     *
-     * @param userId  User identifier
-     * @return true if user is an administrator of this project, false otherwise
-     */
-    boolean hasAdministrator(UserId userId);
+    Optional<ProjectOptions> getOptions();
 
 }

@@ -1,8 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectTypeException;
-import org.semanticweb.owlapi.model.AxiomType;
-
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,10 +18,10 @@ public interface Factory {
      * @param description   Project description
      * @param address   Project location
      * @param ownerId   Project owner user identifier
-     * @param admins    Set of user identifiers of administrators
+     * @param options   Project options
      * @return New Project instance
      */
-    Project createProject(ProjectId projectId, Name name, Description description, Address address, UserId ownerId, Set<UserId> admins);
+    Project getProject(ProjectId projectId, Name name, Description description, Address address, UserId ownerId, Optional<ProjectOptions> options);
 
     /**
      * Create a new role
@@ -34,19 +32,40 @@ public interface Factory {
      * @param operations    Set of operations
      * @return New role instance
      */
-    Role createRole(RoleId roleId, Name name, Description description, Set<OperationId> operations);
+    Role getRole(RoleId roleId, Name name, Description description, Set<OperationId> operations);
 
     /**
-     * Create a new operation
+     * Create a new read operation
      *
      * @param operationId   Operation identifier
      * @param name  Operation name
      * @param description   Operation description
      * @param operationType Operation type
-     * @param restrictions Set of operation restrictions
      * @return New operation instance
      */
-    Operation createOperation(OperationId operationId, Name name, Description description, OperationType operationType, Optional<Set<OperationRestriction>> restrictions);
+    Operation getServerOperation(OperationId operationId, Name name, Description description, OperationType operationType);
+
+    /**
+     * Create a new write operation
+     *
+     * @param operationId   Operation identifier
+     * @param name  Operation name
+     * @param description   Operation description
+     * @param operationType Operation type
+     * @return New operation instance
+     */
+    Operation getOntologyOperation(OperationId operationId, Name name, Description description, OperationType operationType);
+
+    /**
+     * Create a new execute operation
+     *
+     * @param operationId   Operation identifier
+     * @param name  Operation name
+     * @param description   Operation description
+     * @param operationType Operation type
+     * @return New operation instance
+     */
+    Operation getMetaprojectOperation(OperationId operationId, Name name, Description description, OperationType operationType);
 
     /**
      * Create a user with the given user identifier, name and email address
@@ -56,17 +75,7 @@ public interface Factory {
      * @param emailAddress  User email address
      * @return A user instance
      */
-    User createUser(UserId userId, Name userName, EmailAddress emailAddress);
-
-    /**
-     * Create an axiom type operation restriction given the axiom type and modality, that is, whether the
-     * axiom type can be added or removed
-     *
-     * @param axiomType  Axiom type
-     * @param modality  Restriction modality
-     * @return Operation restriction instance
-     */
-    OperationRestriction createAxiomTypeOperationRestriction(AxiomType axiomType, ChangeModality modality);
+    User getUser(UserId userId, Name userName, EmailAddress emailAddress);
 
     /**
      * Create an instance of authentication details
@@ -75,7 +84,7 @@ public interface Factory {
      * @param password  Salted password digest
      * @return Authentication details
      */
-    AuthenticationDetails createAuthenticationDetails(UserId userId, SaltedPasswordDigest password);
+    AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password);
 
     /**
      * Create an instance of crypto salt
@@ -83,7 +92,7 @@ public interface Factory {
      * @param salt  Salt string
      * @return Salt instance
      */
-    Salt createSalt(String salt);
+    Salt getSalt(String salt);
 
     /**
      * Create an instance of plain password
@@ -91,7 +100,7 @@ public interface Factory {
      * @param password  Password string
      * @return Plain password
      */
-    PlainPassword createPlainPassword(String password);
+    PlainPassword getPlainPassword(String password);
 
     /**
      * Create an instance of salted password
@@ -100,7 +109,7 @@ public interface Factory {
      * @param salt  Salt
      * @return Salted password digest
      */
-    SaltedPasswordDigest createSaltedPasswordDigest(String password, Salt salt);
+    SaltedPasswordDigest getSaltedPasswordDigest(String password, Salt salt);
 
     /**
      * Create a name for an access control object
@@ -108,7 +117,7 @@ public interface Factory {
      * @param name  Name
      * @return Name instance
      */
-    Name createName(String name);
+    Name getName(String name);
 
     /**
      * Create a description for an access control object
@@ -116,7 +125,7 @@ public interface Factory {
      * @param description   Description
      * @return Description instance
      */
-    Description createDescription(String description);
+    Description getDescription(String description);
 
     /**
      * Create an address for an access control object
@@ -124,7 +133,7 @@ public interface Factory {
      * @param address   Address
      * @return Address instance
      */
-    Address createAddress(String address);
+    Address getAddress(String address);
 
     /**
      * Create an email address name for an access control object
@@ -132,41 +141,7 @@ public interface Factory {
      * @param emailAddress  Email address
      * @return Email address instance
      */
-    EmailAddress createEmailAddress(String emailAddress);
-
-    /**
-     * Create an entity IRI prefix
-     *
-     * @param entityIriPrefix   Entity IRI prefix
-     * @return Entity IRI prefix
-     */
-    EntityIriPrefix createEntityIriPrefix(String entityIriPrefix);
-
-    /**
-     * Create a suffix for entity names
-     *
-     * @param suffix    Entity name suffix
-     * @return Entity name suffix instance
-     */
-    EntityNameSuffix createEntityNameSuffix(String suffix);
-
-    /**
-     * Create a prefix for entity names
-     *
-     * @param prefix    Entity name prefix
-     * @return Entity name prefix instance
-     */
-    EntityNamePrefix createEntityNamePrefix(String prefix);
-
-    /**
-     * Create an identifier for an access control object
-     *
-     * @param id    Access control object identifier
-     * @param type  Access control object type
-     * @return Access control object identifier instance
-     * @throws UnknownAccessControlObjectTypeException  Unknown access control object type
-     */
-    AccessControlObjectId createAccessControlObjectId(String id, AccessControlObjectIdType type) throws UnknownAccessControlObjectTypeException;
+    EmailAddress getEmailAddress(String emailAddress);
 
     /**
      * Create a new identifier for a role
@@ -174,7 +149,7 @@ public interface Factory {
      * @param roleId    Role identifier
      * @return Role identifier instance
      */
-    RoleId createRoleId(String roleId);
+    RoleId getRoleId(String roleId);
 
     /**
      * Create a new identifier for a user
@@ -182,7 +157,7 @@ public interface Factory {
      * @param userId    User identifier
      * @return User identifier instance
      */
-    UserId createUserId(String userId);
+    UserId getUserId(String userId);
 
     /**
      * Create a new identifier for a project
@@ -190,7 +165,7 @@ public interface Factory {
      * @param projectId Project identifier
      * @return Project identifier instance
      */
-    ProjectId createProjectId(String projectId);
+    ProjectId getProjectId(String projectId);
 
     /**
      * Create a new identifier for an operation
@@ -198,35 +173,35 @@ public interface Factory {
      * @param operationId   Operation identifier
      * @return Operation identifier instance
      */
-    OperationId createOperationId(String operationId);
+    OperationId getOperationId(String operationId);
 
     /**
      * Get a user ID that is a randomly generated UUID
      *
      * @return New user UUID
      */
-    UserId createUserUuid();
+    UserId getUserUuid();
 
     /**
      * Get a new role ID that is a randomly generated UUID
      *
      * @return New role UUID
      */
-    RoleId createRoleUuid();
+    RoleId getRoleUuid();
 
     /**
      * Get a new project ID that is a randomly generated UUID
      *
      * @return New project ID that is a randomly generated UUID
      */
-    ProjectId createProjectUuid();
+    ProjectId getProjectUuid();
 
     /**
      * Get a new operation ID that is a randomly generated UUID
      *
      * @return New operation UUID
      */
-    OperationId createOperationUuid();
+    OperationId getOperationUuid();
 
     /**
      * Create an instance of Port
@@ -234,7 +209,7 @@ public interface Factory {
      * @param portNr    Port number
      * @return Port instance
      */
-    Port createPort(Integer portNr);
+    Port getPort(Integer portNr);
 
     /**
      * Create an instance of an RMI registry port
@@ -242,7 +217,7 @@ public interface Factory {
      * @param portNr    Port number
      * @return Registry Port instance
      */
-    RegistryPort createRegistryPort(Integer portNr);
+    RegistryPort getRegistryPort(Integer portNr);
 
     /**
      * Create an instance of a Host
@@ -252,20 +227,162 @@ public interface Factory {
      * @param registryPort  Registry port
      * @return Host instance
      */
-    Host createHost(Address address, Port port, RegistryPort registryPort);
+    Host getHost(Address address, Port port, RegistryPort registryPort);
+
+    /**
+     * Create an instance of a GUI restriction
+     *
+     * @param component Component to be hidden represented by a string
+     * @param visibility    Visibility of component (visible or hidden)
+     * @return GUI restriction
+     */
+    GuiRestriction getGuiRestriction(String component, GuiRestriction.Visibility visibility);
 
     /**
      * Create an instance of a salt generator
      *
      * @return Salt generator
      */
-    SaltGenerator createSaltGenerator();
+    SaltGenerator getSaltGenerator();
 
     /**
      * Create an instance of a password hasher
      *
      * @return Password hasher
      */
-    PasswordHasher createPasswordHasher();
+    PasswordHasher getPasswordHasher();
+
+    /**
+     * Create an instance of a password hasher with the given hash byte size
+     * and number of key-stretching iterations.
+     *
+     * @param hashByteSize  Hash byte size
+     * @param nrIterations  Number of key-stretching iterations
+     * @return Password hasher
+     */
+    PasswordHasher getPasswordHasher(int hashByteSize, int nrIterations);
+
+    /**
+     * Create an instance of an empty user registry
+     *
+     * @return User registry
+     */
+    UserRegistry getUserRegistry();
+
+    /**
+     * Create an instance of a user registry with the given users
+     *
+     * @param users Set of users
+     * @return User registry
+     */
+    UserRegistry getUserRegistry(Set<User> users);
+
+    /**
+     * Create an instance of an empty project registry
+     *
+     * @return Project registry
+     */
+    ProjectRegistry getProjectRegistry();
+
+    /**
+     * Create an instance of a project registry with the given projects
+     *
+     * @param projects  Set of projects
+     * @return Project registry
+     */
+    ProjectRegistry getProjectRegistry(Set<Project> projects);
+
+    /**
+     * Create an instance of an operation registry that contains default operations
+     *
+     * @return Operation registry
+     */
+    OperationRegistry getOperationRegistry();
+
+    /**
+     * Create an instance of an operation registry with the given operations
+     *
+     * @param operations    Set of operations
+     * @return Operation registry
+     */
+    OperationRegistry getOperationRegistry(Set<Operation> operations);
+
+    /**
+     * Create an instance of an empty role registry
+     *
+     * @return Role registry
+     */
+    RoleRegistry getRoleRegistry();
+
+    /**
+     * Create an instance of a role registry with the given roles
+     *
+     * @param roles Set of roles
+     * @return Role registry
+     */
+    RoleRegistry getRoleRegistry(Set<Role> roles);
+
+    /**
+     * Create an instance of an empty authentication manager
+     *
+     * @return Authentication manager
+     */
+    AuthenticationRegistry getAuthenticationRegistry();
+
+    /**
+     * Create an instance of an authentication manager with the given authentication credentials
+     *
+     * @param authenticationDetails   Set of authentication details
+     * @return Authentication manager
+     */
+    AuthenticationRegistry getAuthenticationRegistry(Set<AuthenticationDetails> authenticationDetails);
+
+    /**
+     * Create an instance of an empty policy
+     *
+     * @return Policy
+     */
+    Policy getPolicy();
+
+    /**
+     * Create an instance of a policy with the given map of users to role associations within projects
+     *
+     * @param userRoleMap   Map of users to maps of projects to assigned roles
+     * @return Policy
+     */
+    Policy getPolicy(Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap);
+
+    /**
+     * Get an authentication token that reflects a successful authentication attempt
+     *
+     * @param userId    User identifier
+     * @return Authentication token
+     */
+    AuthToken getAuthorizedUserToken(UserId userId);
+
+    /**
+     * Get an authentication token that reflects an unsuccessful authentication attempt
+     *
+     * @param userId    User identifier
+     * @return Authentication token
+     */
+    AuthToken getUnauthorizedUserToken(UserId userId);
+
+    /**
+     * Create an instance of project options
+     *
+     * @param requiredAnnotationsMap    Map of entities to the sets of annotation properties that must
+     *                                  accompany each entity's addition to the ontology signature
+     * @param optionalAnnotationsMap    Map of entities to the sets of annotation properties that can
+     *                                  (optionally) accompany each entity's addition to the ontology signature
+     * @param complexAnnotations    Set of complex annotations
+     * @param immutableAnnotations  Set of annotation properties whose value cannot be modified
+     * @param requiredEntities  Set of entities that must exist in the ontology's signature in order
+     *                          to perform some operation within the project with these options.
+     * @param customProperties  Map of custom properties for the project
+     * @return Project options
+     */
+    ProjectOptions getProjectOptions(Map<String,Set<String>> requiredAnnotationsMap, Map<String,Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
+                                     Set<String> immutableAnnotations, Set<String> requiredEntities, Map<String, String> customProperties);
 
 }

@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class UserRegistryImpl implements UserRegistry, Serializable {
-    private static final long serialVersionUID = 2811390077306421170L;
+    private static final long serialVersionUID = -1485344104008068717L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -31,11 +31,6 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     public UserRegistryImpl(Set<User> users) {
         this.users = checkNotNull(users);
     }
-
-    /**
-     * No-arguments constructor
-     */
-    public UserRegistryImpl() { }
 
     @Override
     public void add(User... users) throws UserIdAlreadyInUseException {
@@ -90,11 +85,11 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     public User getGuestUser() {
         final String id = "guest", name = "Guest user", email = "";
         Factory f = Manager.getFactory();
-        return createUser(f.createUserId(id), f.createName(name), f.createEmailAddress(email));
+        return createUser(f.getUserId(id), f.getName(name), f.getEmailAddress(email));
     }
 
     @Override
-    public void changeName(UserId userId, Name userName) throws UnknownUserIdException {
+    public void setName(UserId userId, Name userName) throws UnknownUserIdException {
         checkNotNull(userName);
         User user = getUser(userId);
         remove(user);
@@ -107,7 +102,7 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     }
 
     @Override
-    public void changeEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException {
+    public void setEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException {
         checkNotNull(emailAddress);
         User user = getUser(userId);
         remove(user);
@@ -120,7 +115,18 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     }
 
     @Override
-    public boolean contains(AccessControlObjectId userId) {
+    public boolean isEmailAddressInUse(EmailAddress address) {
+        checkNotNull(address);
+        for(User u : users) {
+            if(u.getEmailAddress().equals(address)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean contains(UserId userId) {
         checkNotNull(userId);
         for(User user : users) {
             if(user.getId().equals(userId)) {
@@ -134,7 +140,7 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
      * Create an instance of a user
      */
     private User createUser(UserId userId, Name name, EmailAddress emailAddress) {
-        return Manager.getFactory().createUser(userId, name, emailAddress);
+        return Manager.getFactory().getUser(userId, name, emailAddress);
     }
 
     /**
@@ -153,22 +159,6 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
             }
         }
         return Optional.ofNullable(userFound);
-    }
-
-    /**
-     * Verify whether the email address of the given user is already being used by another user
-     *
-     * @param address   User address
-     * @return true if email address is used by some other user, false otherwise
-     */
-    private boolean isAddressUsed(Address address) {
-        checkNotNull(address);
-        for(User u : users) {
-            if(u.getEmailAddress().equals(address)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

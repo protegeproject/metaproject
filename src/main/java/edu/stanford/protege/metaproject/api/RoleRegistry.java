@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface RoleRegistry extends Registry {
+public interface RoleRegistry {
 
     /**
      * Add the specified role(s)
@@ -49,7 +49,7 @@ public interface RoleRegistry extends Registry {
      * @param roleName  New role name
      * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    void changeName(RoleId roleId, Name roleName) throws UnknownRoleIdException;
+    void setName(RoleId roleId, Name roleName) throws UnknownRoleIdException;
 
     /**
      * Change the description of the given role to a new one
@@ -58,7 +58,7 @@ public interface RoleRegistry extends Registry {
      * @param roleDescription   New role description
      * @throws UnknownRoleIdException    Role identifier is not recognized
      */
-    void changeDescription(RoleId roleId, Description roleDescription) throws UnknownRoleIdException;
+    void setDescription(RoleId roleId, Description roleDescription) throws UnknownRoleIdException;
 
     /**
      * Add one or more operations to the permitted operations of the given role
@@ -77,5 +77,13 @@ public interface RoleRegistry extends Registry {
      * @throws UnknownRoleIdException    Role identifier is not recognized
      */
     void removeOperation(RoleId roleId, OperationId... operationIds) throws UnknownRoleIdException;
+
+    /**
+     * Check whether the role registry contains a role with the given identifier
+     *
+     * @param roleId    Role identifier
+     * @return true if there is a role with the specified identifier, false otherwise
+     */
+    boolean contains(RoleId roleId);
 
 }

@@ -12,8 +12,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RegistryPortImpl implements RegistryPort, Serializable {
-    private static final long serialVersionUID = 5491727352411673714L;
+public final class RegistryPortImpl implements RegistryPort, Serializable {
+    private static final long serialVersionUID = 164314375755974083L;
     private final Integer registryPort;
 
     /**

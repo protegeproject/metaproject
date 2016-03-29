@@ -14,10 +14,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class MetaprojectSerializerTest {
-    private static final Policy POLICY = Utils.getPolicyManager(Utils.getUserRoleMap());
-    private static final UserRegistry USER_REGISTRY = Utils.getUserManager(Utils.getUserSet());
+    private static final Policy POLICY = Utils.getPolicy(Utils.getUserRoleMap());
+    private static final UserRegistry USER_REGISTRY = Utils.getUserRegistry(Utils.getUserSet());
     private static final RoleRegistry ROLE_REGISTRY = Utils.getRoleManager(Utils.getRoleSet());
-    private static final ProjectRegistry PROJECT_REGISTRY = Utils.getProjectManager(Utils.getProjectSet());
+    private static final ProjectRegistry PROJECT_REGISTRY = Utils.getProjectRegistry(Utils.getProjectSet());
     private static final OperationRegistry OPERATION_REGISTRY = Utils.getOperationManager(Utils.getOperationSet());
 
     private String jsonPolicy, jsonOtherPolicy, jsonDiffPolicy;

@@ -6,7 +6,7 @@ import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Set;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,7 +22,7 @@ public class ProjectSerializerTest {
     private static final Description projectDescription = Utils.getDescription();
     private static final Address projectAddress = Utils.getAddress();
     private static final UserId owner = Utils.getUserId();
-    private static final Set<UserId> admins = Utils.getUserIdSet(2);
+    private static final ProjectOptions projectOptions = Utils.getProjectOptions();
 
     private String jsonProject, jsonOtherProject, jsonDiffProject;
     private Project project, otherProject, diffProject;
@@ -32,9 +32,12 @@ public class ProjectSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        project = Utils.getProject(projectId, projectName, projectDescription, projectAddress, owner, admins);
-        otherProject = Utils.getProject(projectId, projectName, projectDescription, projectAddress, owner, admins);
-        diffProject = Utils.getProject(diffProjectId, projectName, projectDescription, projectAddress, owner, admins);
+        project = Utils.getProject(projectId, projectName, projectDescription, projectAddress, owner,
+                Optional.of(projectOptions));
+        otherProject = Utils.getProject(projectId, projectName, projectDescription, projectAddress, owner,
+                Optional.of(projectOptions));
+        diffProject = Utils.getProject(diffProjectId, projectName, projectDescription, projectAddress, owner,
+                Optional.of(projectOptions));
 
         jsonProject = gson.toJson(project);
         jsonOtherProject = gson.toJson(otherProject);
@@ -104,7 +107,7 @@ public class ProjectSerializerTest {
     }
 
     @Test
-    public void testGetAdministrators() {
-        assertThat(gson.fromJson(jsonProject, Project.class).getAdministrators(), is(admins));
+    public void testGetOptions() {
+        assertThat(gson.fromJson(jsonProject, Project.class).getOptions(), is(Optional.of(projectOptions)));
     }
 }

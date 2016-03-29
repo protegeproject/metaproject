@@ -1,6 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ClientConfiguration {
+public interface ClientConfiguration extends HasProperties {
 
     /**
      * Get the access control policy in effect for the client
@@ -32,12 +31,5 @@ public interface ClientConfiguration {
      * @return Set of GUI restrictions
      */
     Set<GuiRestriction> getGuiRestrictions();
-
-    /**
-     * Get the map of client configuration properties
-     *
-     * @return Map of string properties
-     */
-    Map<String,String> getProperties();
 
 }

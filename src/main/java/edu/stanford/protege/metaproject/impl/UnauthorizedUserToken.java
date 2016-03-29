@@ -15,8 +15,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UnauthorizedUserToken implements AuthToken, Serializable {
-    private static final long serialVersionUID = -3753360956708178259L;
+public final class UnauthorizedUserToken implements AuthToken, Serializable {
+    private static final long serialVersionUID = -3070260723936558419L;
     private final UserId userId;
 
     /**

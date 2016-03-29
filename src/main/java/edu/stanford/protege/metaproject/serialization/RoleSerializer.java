@@ -19,10 +19,10 @@ public class RoleSerializer implements JsonDeserializer<Role> {
     public Role deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
         Factory factory = Manager.getFactory();
         JsonObject obj = jsonElement.getAsJsonObject();
-        RoleId operationId = factory.createRoleId(obj.getAsJsonPrimitive("id").getAsString());
-        Name operationName = factory.createName(obj.getAsJsonPrimitive("name").getAsString());
-        Description operationDescription = factory.createDescription(obj.getAsJsonPrimitive("description").getAsString());
+        RoleId operationId = factory.getRoleId(obj.getAsJsonPrimitive("id").getAsString());
+        Name operationName = factory.getName(obj.getAsJsonPrimitive("name").getAsString());
+        Description operationDescription = factory.getDescription(obj.getAsJsonPrimitive("description").getAsString());
         Set<OperationId> operations = context.deserialize(obj.getAsJsonArray("operations"), new TypeToken<Set<OperationIdImpl>>(){}.getType());
-        return factory.createRole(operationId, operationName, operationDescription, operations);
+        return factory.getRole(operationId, operationName, operationDescription, operations);
     }
 }

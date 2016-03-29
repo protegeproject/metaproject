@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
-import edu.stanford.protege.metaproject.impl.MetaprojectImpl;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.Metaproject;
+import edu.stanford.protege.metaproject.impl.MetaprojectBuilder;
 
 import java.lang.reflect.Type;
 
@@ -33,7 +32,7 @@ public class MetaprojectSerializer implements JsonSerializer<Metaproject>, JsonD
         ProjectRegistry projectRegistry = context.deserialize(obj.getAsJsonArray(PROJECTS), ProjectRegistry.class);
         OperationRegistry operationRegistry = context.deserialize(obj.getAsJsonArray(OPERATIONS), OperationRegistry.class);
         RoleRegistry roleRegistry = context.deserialize(obj.getAsJsonArray(ROLES), RoleRegistry.class);
-        return new MetaprojectImpl.Builder()
+        return new MetaprojectBuilder()
                 .setPolicy(policy)
                 .setUserRegistry(userRegistry)
                 .setProjectRegistry(projectRegistry)

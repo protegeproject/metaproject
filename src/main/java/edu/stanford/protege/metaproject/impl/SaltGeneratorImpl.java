@@ -28,7 +28,7 @@ public final class SaltGeneratorImpl implements SaltGenerator {
     public Salt generate(int nrBytes) {
         byte[] bytes = new byte[nrBytes];
         new SecureRandom().nextBytes(bytes);
-        return Manager.getFactory().createSalt(Hex.encodeHexString(bytes));
+        return Manager.getFactory().getSalt(Hex.encodeHexString(bytes));
     }
 
     @Override

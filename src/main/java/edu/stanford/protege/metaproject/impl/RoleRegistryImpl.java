@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class RoleRegistryImpl implements RoleRegistry, Serializable {
-    private static final long serialVersionUID = 7880887203950063916L;
+    private static final long serialVersionUID = -1117872269784523476L;
     private Set<Role> roles = new HashSet<>();
 
     /**
@@ -30,11 +30,6 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
     public RoleRegistryImpl(Set<Role> roles) {
         this.roles = checkNotNull(roles);
     }
-
-    /**
-     * No-arguments constructor
-     */
-    public RoleRegistryImpl() { }
 
     @Override
     public void add(Role... roles) {
@@ -70,7 +65,7 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
     }
 
     @Override
-    public void changeName(RoleId roleId, Name roleName) throws UnknownRoleIdException {
+    public void setName(RoleId roleId, Name roleName) throws UnknownRoleIdException {
         checkNotNull(roleName);
         Role role = getRole(roleId);
         remove(role);
@@ -79,7 +74,7 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
     }
 
     @Override
-    public void changeDescription(RoleId roleId, Description roleDescription) throws UnknownRoleIdException {
+    public void setDescription(RoleId roleId, Description roleDescription) throws UnknownRoleIdException {
         checkNotNull(roleDescription);
         Role role = getRole(roleId);
         remove(role);
@@ -116,7 +111,7 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
     }
 
     @Override
-    public boolean contains(AccessControlObjectId roleId) {
+    public boolean contains(RoleId roleId) {
         checkNotNull(roleId);
         for(Role role : roles) {
             if(role.getId().equals(roleId)) {
@@ -130,7 +125,7 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
      * Create an instance of a role
      */
     private Role createRole(RoleId id, Name name, Description description, Set<OperationId> operations) {
-        return Manager.getFactory().createRole(id, name, description, operations);
+        return Manager.getFactory().getRole(id, name, description, operations);
     }
 
     /**

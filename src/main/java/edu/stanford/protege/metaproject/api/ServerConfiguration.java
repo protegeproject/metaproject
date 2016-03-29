@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.api;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 
 /**
  * A representation of a server configuration, composed of host information, the access control policy, the status of
@@ -12,7 +12,7 @@ import java.util.Optional;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ServerConfiguration {
+public interface ServerConfiguration extends HasProperties {
 
     /**
      * Get the server host
@@ -33,28 +33,7 @@ public interface ServerConfiguration {
      *
      * @return Authentication manager
      */
-    AuthenticationManager getAuthenticationManager();
-
-    /**
-     * Get the server conflict manager
-     *
-     * @return Conflict manager
-     */
-    Optional<ConflictManager> getConflictManager();
-
-    /**
-     * Get the ontology term identifier status, which contains the last generated identifiers and/or their prefixes
-     *
-     * @return Ontology term identifier status instance
-     */
-    Optional<EntityIriStatus> getOntologyTermIdStatus();
-
-    /**
-     * Get the key-value server configuration properties
-     *
-     * @return Server configuration properties (aside from policy, host, and term identifiers status)
-     */
-    Optional<Map<String,String>> getProperties();
+    AuthenticationRegistry getAuthenticationRegistry();
 
     /**
      * Enable the guest user with the usual guest credentials
@@ -63,5 +42,12 @@ public interface ServerConfiguration {
      * @throws UserIdAlreadyInUseException  Guest user identifier is already taken by another user
      */
     void enableGuestUser(boolean enableGuestUser) throws UserIdAlreadyInUseException;
+
+    /**
+     * Get the map of user identifiers to their corresponding sets of GUI restrictions
+     *
+     * @return Map of user identifiers to sets of GUI restrictions
+     */
+    Map<UserId,Set<GuiRestriction>> getUserGuiRestrictions();
 
 }

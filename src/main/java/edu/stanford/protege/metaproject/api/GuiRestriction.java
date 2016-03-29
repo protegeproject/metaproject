@@ -25,7 +25,7 @@ public interface GuiRestriction {
     Visibility getVisibility();
 
     /**
-     * Types of user interface component restrictions
+     * Visibility of user interface components
      */
     enum Visibility {
         HIDDEN, VISIBLE

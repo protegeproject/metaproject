@@ -27,9 +27,9 @@ public class ProjectRegistrySerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        projectRegistry = Utils.getProjectManager(projectSet);
-        otherProjectRegistry = Utils.getProjectManager(projectSet);
-        diffProjectRegistry = Utils.getProjectManager(diffProjectSet);
+        projectRegistry = Utils.getProjectRegistry(projectSet);
+        otherProjectRegistry = Utils.getProjectRegistry(projectSet);
+        diffProjectRegistry = Utils.getProjectRegistry(diffProjectSet);
 
         jsonProjectManager = gson.toJson(projectRegistry, ProjectRegistry.class);
         jsonOtherProjectManager = gson.toJson(otherProjectRegistry, ProjectRegistry.class);

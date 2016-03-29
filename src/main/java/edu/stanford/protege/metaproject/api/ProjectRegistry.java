@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ProjectRegistry extends Registry {
+public interface ProjectRegistry {
 
     /**
      * Add the given project(s) to the project registry
@@ -57,7 +57,7 @@ public interface ProjectRegistry extends Registry {
      * @param projectName   New project name
      * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void changeName(ProjectId projectId, Name projectName) throws UnknownProjectIdException;
+    void setName(ProjectId projectId, Name projectName) throws UnknownProjectIdException;
 
     /**
      * Change the description of the given project
@@ -66,7 +66,7 @@ public interface ProjectRegistry extends Registry {
      * @param projectDescription    New project description
      * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void changeDescription(ProjectId projectId, Description projectDescription) throws UnknownProjectIdException;
+    void setDescription(ProjectId projectId, Description projectDescription) throws UnknownProjectIdException;
 
     /**
      * Change the owner of the specified project
@@ -75,7 +75,7 @@ public interface ProjectRegistry extends Registry {
      * @param userId    New owner user identifier
      * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void changeOwner(ProjectId projectId, UserId userId) throws UnknownProjectIdException;
+    void setOwner(ProjectId projectId, UserId userId) throws UnknownProjectIdException;
 
     /**
      * Change the location of the specified project
@@ -84,24 +84,23 @@ public interface ProjectRegistry extends Registry {
      * @param projectAddress   Project address
      * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void changeAddress(ProjectId projectId, Address projectAddress) throws UnknownProjectIdException;
+    void setAddress(ProjectId projectId, Address projectAddress) throws UnknownProjectIdException;
 
     /**
-     * Add one or more administrator users to the specified project
+     * Set the options for this project
      *
-     * @param projectId   Project identifier
-     * @param userId    User identifier(s) of administrator(s) to be added
+     * @param projectId Project identifier
+     * @param projectOptions    Project options
      * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void addAdministrator(ProjectId projectId, UserId... userId) throws UnknownProjectIdException;
+    void setOptions(ProjectId projectId, ProjectOptions projectOptions) throws UnknownProjectIdException;
 
     /**
-     * Remove one or more administrator users from the specified project
+     * Check whether the project registry contains a projectwith the given identifier
      *
-     * @param projectId   Project identifier
-     * @param userId    User identifier(s) of administrator(s) to be removed
-     * @throws UnknownProjectIdException    Project identifier is not recognized
+     * @param projectId    Project identifier
+     * @return true if there is a project with the specified identifier, false otherwise
      */
-    void removeAdministrator(ProjectId projectId, UserId... userId) throws UnknownProjectIdException;
+    boolean contains(ProjectId projectId);
 
 }

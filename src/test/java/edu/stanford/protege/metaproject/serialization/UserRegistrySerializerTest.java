@@ -27,9 +27,9 @@ public class UserRegistrySerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        userRegistry = Utils.getUserManager(userSet);
-        otherUserRegistry = Utils.getUserManager(userSet);
-        diffUserRegistry = Utils.getUserManager(diffUserSet);
+        userRegistry = Utils.getUserRegistry(userSet);
+        otherUserRegistry = Utils.getUserRegistry(userSet);
+        diffUserRegistry = Utils.getUserRegistry(diffUserSet);
 
         jsonUserManager = gson.toJson(userRegistry, UserRegistry.class);
         jsonOtherUserManager = gson.toJson(otherUserRegistry, UserRegistry.class);

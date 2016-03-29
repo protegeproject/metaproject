@@ -1,9 +1,10 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.impl.*;
-import org.semanticweb.owlapi.model.AxiomType;
-import org.semanticweb.owlapi.model.IRI;
+import edu.stanford.protege.metaproject.impl.ClientConfigurationBuilder;
+import edu.stanford.protege.metaproject.impl.MetaprojectBuilder;
+import edu.stanford.protege.metaproject.impl.ProjectOptionsBuilder;
+import edu.stanford.protege.metaproject.impl.ServerConfigurationBuilder;
 
 import java.util.*;
 
@@ -13,10 +14,9 @@ import java.util.*;
  */
 public class Utils {
     private static final int DEFAULT_SET_SIZE = 3;
-    private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.METAPROJECT;
-    private static final ChangeModality DEFAULT_MODIFIER = AxiomChangeModality.ADDITION;
-    private static final String IRI_PREFIX = "http://protege.stanford.edu/test/";
+    private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WRITE;
     private static final Random random = new Random();
+    private static Factory f = Manager.getFactory();
     
     /*   access control object identifiers   */
 
@@ -25,7 +25,7 @@ public class Utils {
     }
 
     public static UserId getUserId(String userId) {
-        return new UserIdImpl(userId);
+        return f.getUserId(userId);
     }
 
     public static RoleId getRoleId() {
@@ -33,7 +33,7 @@ public class Utils {
     }
 
     public static RoleId getRoleId(String roleId) {
-        return new RoleIdImpl(roleId);
+        return f.getRoleId(roleId);
     }
 
     public static ProjectId getProjectId() {
@@ -41,7 +41,7 @@ public class Utils {
     }
 
     public static ProjectId getProjectId(String projectId) {
-        return new ProjectIdImpl(projectId);
+        return f.getProjectId(projectId);
     }
 
     public static OperationId getOperationId() {
@@ -49,50 +49,7 @@ public class Utils {
     }
 
     public static OperationId getOperationId(String operationId) {
-        return new OperationIdImpl(operationId);
-    }
-
-
-    /*   entity IRIs   */
-
-    public static EntityIriPrefix getEntityIriPrefix() {
-        return getEntityIriPrefix(IRI_PREFIX);
-    }
-
-    public static EntityIriPrefix getEntityIriPrefix(String prefix) {
-        return new EntityIriPrefixImpl(prefix);
-    }
-
-    public static EntityNamePrefix getEntityNamePrefix() {
-        return getEntityNamePrefix("prefix" + newUUID());
-    }
-
-    public static EntityNamePrefix getEntityNamePrefix(String prefix) {
-        return new EntityNamePrefixImpl(prefix);
-    }
-
-    public static EntityNameSuffix getEntityNameSuffix() {
-        return getEntityNameSuffix("" + random.nextInt(Integer.SIZE - 1));
-    }
-
-    public static EntityNameSuffix getEntityNameSuffix(String suffix) {
-        return new EntityNameSuffixImpl(suffix);
-    }
-
-    public static EntityName getEntityName() {
-        return getEntityName(Utils.getEntityNamePrefix(), Utils.getEntityNameSuffix());
-    }
-
-    public static EntityName getEntityName(EntityNamePrefix prefix, EntityNameSuffix suffix) {
-        return new EntityNameImpl(prefix, suffix);
-    }
-
-    public static EntityIri getEntityIri() {
-        return getEntityIri(Utils.getEntityIriPrefix(), Utils.getEntityName());
-    }
-
-    public static EntityIri getEntityIri(EntityIriPrefix prefix, EntityName suffix) {
-        return new EntityIriImpl(prefix, suffix);
+        return f.getOperationId(operationId);
     }
 
 
@@ -103,7 +60,7 @@ public class Utils {
     }
 
     public static Name getName(String name) {
-        return new NameImpl(name);
+        return f.getName(name);
     }
 
     public static Description getDescription() {
@@ -111,7 +68,7 @@ public class Utils {
     }
 
     public static Description getDescription(String description) {
-        return new DescriptionImpl(description);
+        return f.getDescription(description);
     }
 
     public static Address getAddress() {
@@ -119,7 +76,7 @@ public class Utils {
     }
 
     public static Address getAddress(String address) {
-        return new AddressImpl(address);
+        return f.getAddress(address);
     }
 
     public static EmailAddress getEmailAddress() {
@@ -127,27 +84,7 @@ public class Utils {
     }
 
     public static EmailAddress getEmailAddress(String address) {
-        return new EmailAddressImpl(address);
-    }
-
-    public static OperationRestriction getOperationRestriction() {
-        return getOperationRestriction(DEFAULT_MODIFIER);
-    }
-
-    public static OperationRestriction getOperationRestriction(ChangeModality modality) {
-        return getOperationRestriction(AxiomType.ANNOTATION_ASSERTION, modality);
-    }
-
-    public static OperationRestriction getOperationRestriction(AxiomType type, ChangeModality modality) {
-        return new AxiomTypeRestriction(type, modality);
-    }
-
-    public static IRI getIRI() {
-        return getIRI(IRI_PREFIX + newUUID());
-    }
-
-    public static IRI getIRI(String iri) {
-        return IRI.create(iri);
+        return f.getEmailAddress(address);
     }
 
     public static String newUUID() {
@@ -162,7 +99,7 @@ public class Utils {
     }
 
     public static SaltedPasswordDigest getSaltedPassword(String password, Salt salt) {
-        return Utils.getPasswordHasher().hash(new PlainPasswordImpl(password), salt);
+        return Utils.getPasswordHasher().hash(getPlainPassword(password), salt);
     }
 
     public static PlainPassword getPlainPassword() {
@@ -170,7 +107,7 @@ public class Utils {
     }
 
     public static PlainPassword getPlainPassword(String password) {
-        return new PlainPasswordImpl(password);
+        return f.getPlainPassword(password);
     }
 
     public static Salt getSalt() {
@@ -178,7 +115,7 @@ public class Utils {
     }
 
     public static Salt getSalt(String s) {
-        return new SaltImpl(s);
+        return f.getSalt(s);
     }
 
     public static AuthenticationDetails getAuthenticationDetails() {
@@ -186,103 +123,97 @@ public class Utils {
     }
 
     public static AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
-        return new AuthenticationDetailsImpl(userId, password);
+        return f.getAuthenticationDetails(userId, password);
     }
 
     public static SaltGenerator getSaltGenerator() {
-        return new SaltGeneratorImpl();
+        return f.getSaltGenerator();
     }
 
     public static PasswordHasher getPasswordHasher() {
-        return new Pbkdf2PasswordHasher();
+        return f.getPasswordHasher();
     }
 
     public static PasswordHasher getPasswordHasher(int hashByteSize, int nrPBKDF2Iterations) {
-        return new Pbkdf2PasswordHasher(hashByteSize, nrPBKDF2Iterations);
+        return f.getPasswordHasher(hashByteSize, nrPBKDF2Iterations);
     }
 
 
     /*   access control policy managers   */
 
-    public static Policy getPolicyManager() {
-        return new PolicyImpl();
+    public static Policy getPolicy() {
+        return getPolicy(new HashMap<>());
     }
 
-    public static Policy getPolicyManager(Map<UserId, Map<ProjectId,Set<RoleId>>> map) {
-        return new PolicyImpl(map);
+    public static Policy getPolicy(Map<UserId, Map<ProjectId,Set<RoleId>>> map) {
+        return f.getPolicy(map);
     }
 
-    public static UserRegistry getUserManager() {
-        return new UserRegistryImpl();
+    public static UserRegistry getUserRegistry() {
+        return getUserRegistry(new HashSet<>());
     }
 
-    public static UserRegistry getUserManager(Set<User> users) {
-        return new UserRegistryImpl(users);
+    public static UserRegistry getUserRegistry(Set<User> users) {
+        return f.getUserRegistry(users);
     }
 
     public static RoleRegistry getRoleManager() {
-        return new RoleRegistryImpl();
+        return getRoleManager(new HashSet<>());
     }
 
     public static RoleRegistry getRoleManager(Set<Role> roles) {
-        return new RoleRegistryImpl(roles);
+        return f.getRoleRegistry(roles);
     }
 
     public static OperationRegistry getOperationManager() {
-        return new OperationRegistryImpl();
+        return getOperationManager(new HashSet<>());
     }
 
     public static OperationRegistry getOperationManager(Set<Operation> operations) {
-        return new OperationRegistryImpl(operations);
+        return f.getOperationRegistry(operations);
     }
 
-    public static ProjectRegistry getProjectManager() {
-        return new ProjectRegistryImpl();
+    public static ProjectRegistry getProjectRegistry() {
+        return getProjectRegistry(new HashSet<>());
     }
 
-    public static ProjectRegistry getProjectManager(Set<Project> projects) {
-        return new ProjectRegistryImpl(projects);
+    public static ProjectRegistry getProjectRegistry(Set<Project> projects) {
+        return f.getProjectRegistry(projects);
     }
 
-    public static AuthenticationManager getAuthenticationManager() {
-        return new AuthenticationManagerImpl(Utils.getAuthenticationDetailsSet());
+    public static AuthenticationRegistry getAuthenticationRegistry() {
+        return f.getAuthenticationRegistry(Utils.getAuthenticationDetailsSet());
     }
 
-    public static AuthenticationManager getAuthenticationManager(Set<AuthenticationDetails> authDetails) {
-        return new AuthenticationManagerImpl(authDetails);
+    public static AuthenticationRegistry getAuthenticationRegistry(Set<AuthenticationDetails> authDetails) {
+        return f.getAuthenticationRegistry(authDetails);
     }
 
 
     /*   policy and server/client configurations   */
 
-    public static Server getServer(ServerConfiguration configuration, EntityIriGenerator idGenerator) {
-        return new ServerImpl(configuration, idGenerator);
-    }
-
-    public static Client getClient(ClientConfiguration configuration) {
-        return new ClientImpl(configuration);
-    }
-
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Utils.getHost(), Utils.getMetaproject(), Utils.getAuthenticationManager(), Utils.getPropertyMap(), Utils.getEntityIriStatus());
+        return getServerConfiguration(Utils.getHost(), Utils.getMetaproject(), Utils.getAuthenticationRegistry(),
+                Utils.getPropertyMap(), getUserGuiRestrictionsMap());
     }
 
-    public static ServerConfiguration getServerConfiguration(Host host, Metaproject metaproject, AuthenticationManager authenticationManager, Map<String, String> properties, EntityIriStatus idStatus) {
-        return new ServerConfigurationImpl.Builder()
+    public static ServerConfiguration getServerConfiguration(Host host, Metaproject metaproject, AuthenticationRegistry authenticationRegistry,
+                                                             Map<String, String> properties, Map<UserId, Set<GuiRestriction>> userGuiRestrictions) {
+        return new ServerConfigurationBuilder()
                 .setHost(host)
                 .setMetaproject(metaproject)
-                .setAuthenticationManager(authenticationManager)
+                .setAuthenticationRegistry(authenticationRegistry)
                 .setPropertyMap(properties)
-                .setEntityIriStatus(idStatus)
+                .setUserGuiRestrictions(userGuiRestrictions)
                 .createServerConfiguration();
     }
 
     public static ClientConfiguration getClientConfiguration() {
-        return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getGUIRestrictionSet(), Utils.getPropertyMap());
+        return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getGuiRestrictionSet(), Utils.getPropertyMap());
     }
 
     public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Set<GuiRestriction> disabledUIComponents, Map<String,String> propertyMap) {
-        return new ClientConfigurationImpl(metaproject, syncDelay, disabledUIComponents, propertyMap);
+        return new ClientConfigurationBuilder().setMetaproject(metaproject).setSynchronisationDelay(syncDelay).setGuiRestrictions(disabledUIComponents).setProperties(propertyMap).createClientConfiguration();
     }
 
     public static Host getHost() {
@@ -290,24 +221,24 @@ public class Utils {
     }
 
     public static Host getHost(Address address, Port port, RegistryPort registryPort) {
-        return new HostImpl(address, port, registryPort);
+        return f.getHost(address, port, registryPort);
     }
 
     public static Port getPort(int port) {
-        return new PortImpl(port);
+        return f.getPort(port);
     }
 
     public static RegistryPort getRegistryPort(int port) {
-        return new RegistryPortImpl(port);
+        return f.getRegistryPort(port);
     }
 
     public static Metaproject getMetaproject() {
-        return getMetaproject(Utils.getPolicyManager(Utils.getUserRoleMap()), Utils.getUserManager(Utils.getUserSet()),
-                Utils.getRoleManager(Utils.getRoleSet()), Utils.getOperationManager(Utils.getOperationSet()), Utils.getProjectManager(Utils.getProjectSet()));
+        return getMetaproject(Utils.getPolicy(Utils.getUserRoleMap()), Utils.getUserRegistry(Utils.getUserSet()),
+                Utils.getRoleManager(Utils.getRoleSet()), Utils.getOperationManager(Utils.getOperationSet()), Utils.getProjectRegistry(Utils.getProjectSet()));
     }
 
     public static Metaproject getMetaproject(Policy policy, UserRegistry userRegistry, RoleRegistry roleRegistry, OperationRegistry operationRegistry, ProjectRegistry projectRegistry) {
-        return new MetaprojectImpl.Builder()
+        return new MetaprojectBuilder()
                 .setPolicy(policy)
                 .setUserRegistry(userRegistry)
                 .setRoleRegistry(roleRegistry)
@@ -329,8 +260,15 @@ public class Utils {
 
     public static Map<String,String> getPropertyMap() {
         Map<String,String> map = new HashMap<>();
-        map.put("prop1", "value1");
-        map.put("prop2", "value2");
+        map.put("testProp1", "testVal1");
+        map.put("testProp2", "testVal2");
+        return map;
+    }
+
+    public static Map<UserId,Set<GuiRestriction>> getUserGuiRestrictionsMap() {
+        Map<UserId,Set<GuiRestriction>> map = new HashMap<>();
+        map.put(getUserId(), getGuiRestrictionSet());
+        map.put(getUserId(), getGuiRestrictionSet());
         return map;
     }
 
@@ -338,19 +276,27 @@ public class Utils {
     /*   access control policy objects   */
 
     public static Project getProject() {
-        return getProject(getProjectId(), getName(), getDescription(), getAddress(), getUserId(), getUserIdSet());
+        return getProject(getProjectId(), getName(), getDescription(), getAddress(), getUserId(), Optional.of(getProjectOptions()));
     }
 
-    public static Project getProject(ProjectId id, Name name, Description description, Address address, UserId owner, Set<UserId> administrators) {
-        return new ProjectImpl(id, name, description, address, owner, administrators);
+    public static Project getProject(ProjectId id, Name name, Description description, Address address, UserId owner, Optional<ProjectOptions> projectOptions) {
+        return f.getProject(id, name, description, address, owner, projectOptions);
     }
 
-    public static Operation getOperation() {
-        return getOperation(getOperationId(), getName(), getDescription(), DEFAULT_OPERATION_TYPE, Optional.of(getOperationRestrictionSet(getOperationRestriction())));
+    public static Operation getServerOperation() {
+        return getServerOperation(getOperationId(), getName(), getDescription(), DEFAULT_OPERATION_TYPE);
     }
 
-    public static Operation getOperation(OperationId id, Name operationName, Description description, OperationType type, Optional<Set<OperationRestriction>> restrictions) {
-        return new OperationImpl(id, operationName, description, type, restrictions);
+    public static Operation getServerOperation(OperationId id, Name operationName, Description description, OperationType type) {
+        return f.getServerOperation(id, operationName, description, type);
+    }
+
+    public static Operation getOntologyOperation(OperationId id, Name operationName, Description description, OperationType type) {
+        return f.getOntologyOperation(id, operationName, description, type);
+    }
+
+    public static Operation getMetaprojectOperation(OperationId id, Name operationName, Description description, OperationType type) {
+        return f.getMetaprojectOperation(id, operationName, description, type);
     }
 
     public static Role getRole() {
@@ -360,12 +306,11 @@ public class Utils {
     public static Role getRole(OperationId operation) {
         Set<OperationId> operations = new HashSet<>();
         operations.add(operation);
-
         return getRole(getRoleId(), getName(), getDescription(), operations);
     }
 
     public static Role getRole(RoleId id, Name name, Description description, Set<OperationId> operations) {
-        return new RoleImpl(id, name, description, operations);
+        return f.getRole(id, name, description, operations);
     }
 
     public static User getUser() {
@@ -373,7 +318,7 @@ public class Utils {
     }
 
     public static User getUser(UserId userId, Name name, EmailAddress emailAddress) {
-        return new UserImpl(userId, name, emailAddress);
+        return f.getUser(userId, name, emailAddress);
     }
 
 
@@ -422,7 +367,7 @@ public class Utils {
     public static Set<Operation> getOperationSet(int size) {
         Set<Operation> operations = new HashSet<>();
         for(int i = 0; i < size; i++) {
-            operations.add(getOperation());
+            operations.add(getServerOperation());
         }
         return operations;
     }
@@ -541,12 +486,6 @@ public class Utils {
 
     /*   sets of other things   */
 
-    public static Set<OperationRestriction> getOperationRestrictionSet(OperationRestriction... operationRestrictions) {
-        Set<OperationRestriction> operationRestrictionSet = new HashSet<>();
-        Collections.addAll(operationRestrictionSet, operationRestrictions);
-        return operationRestrictionSet;
-    }
-
     public static Set<AuthenticationDetails> getAuthenticationDetailsSet() {
         return getAuthenticationDetailsSet(DEFAULT_SET_SIZE);
     }
@@ -565,7 +504,7 @@ public class Utils {
         return set;
     }
 
-    public static Set<GuiRestriction> getGUIRestrictionSet() {
+    public static Set<GuiRestriction> getGuiRestrictionSet() {
         Set<GuiRestriction> set = new HashSet<>();
         for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
             set.add(Utils.getGUIRestriction());
@@ -573,96 +512,54 @@ public class Utils {
         return set;
     }
 
+    public static Set<String> getStringSet() {
+        Set<String> set = new HashSet<>();
+        for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
+            set.add(newUUID());
+        }
+        return set;
+    }
+
+    /*  maps of things  */
+
+    public static Map<String,String> getStringMap() {
+        Map<String,String> map = new HashMap<>();
+        for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
+            map.put(newUUID(), newUUID());
+        }
+        return map;
+    }
+
+    public static Map<String,Set<String>> getStringToStringSetMap() {
+        Map<String,Set<String>> map = new HashMap<>();
+        for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
+            map.put(newUUID(), getStringSet());
+        }
+        return map;
+    }
+
     public static GuiRestriction getGUIRestriction() {
         return getGUIRestriction("button" + newUUID(), GuiRestriction.Visibility.VISIBLE);
     }
 
     public static GuiRestriction getGUIRestriction(String componentName, GuiRestriction.Visibility visibility) {
-        return new GuiRestrictionImpl(componentName, visibility);
+        return f.getGuiRestriction(componentName, visibility);
     }
 
-
-    /*   entity IRI generation   */
-
-    public static UuidPrefixedNameEntityIriGenerator getUuidPrefixedNameEntityIriGenerator(EntityIriPrefix iriPrefix,
-            EntityNamePrefix classIdPrefix, EntityNamePrefix objectPropertyIdPrefix, EntityNamePrefix dataPropertyIdPrefix,
-            EntityNamePrefix annotationPropertyIdPrefix, EntityNamePrefix individualIdPrefix)
-    {
-        return new UuidPrefixedNameEntityIriGenerator.Builder()
-                .setEntityIriPrefix(iriPrefix)
-                .setClassNamePrefix(classIdPrefix)
-                .setObjectPropertyNamePrefix(objectPropertyIdPrefix)
-                .setDataPropertyNamePrefix(dataPropertyIdPrefix)
-                .setAnnotationPropertyNamePrefix(annotationPropertyIdPrefix)
-                .setIndividualNamePrefix(individualIdPrefix)
-                .createPrefixedUUIDGenerator();
+    public static ProjectOptions getProjectOptions() {
+        return getProjectOptions(getStringToStringSetMap(), getStringToStringSetMap(), getStringSet(), getStringSet(),
+                getStringSet(), getStringMap());
     }
 
-    public static SequentialPrefixedNameEntityIriGenerator getSequentialPrefixedNameEntityIriGenerator(EntityIriPrefix iriPrefix,
-            EntityNamePrefix classIdPrefix, EntityNamePrefix objectPropertyIdPrefix, EntityNamePrefix dataPropertyIdPrefix,
-            EntityNamePrefix annotationPropertyIdPrefix, EntityNamePrefix individualIdPrefix,
-            EntityNameSuffix classIdSuffix, EntityNameSuffix objPropSuffix, EntityNameSuffix dataPropSuffix,
-            EntityNameSuffix annPropSuffix, EntityNameSuffix indSuffix)
-    {
-        return new SequentialPrefixedNameEntityIriGenerator.Builder()
-                .setEntityIriPrefix(iriPrefix)
-                .setClassNamePrefix(classIdPrefix)
-                .setObjectPropertyNamePrefix(objectPropertyIdPrefix)
-                .setDataPropertyNamePrefix(dataPropertyIdPrefix)
-                .setAnnotationPropertyNamePrefix(annotationPropertyIdPrefix)
-                .setIndividualNamePrefix(individualIdPrefix)
-                .setClassNameSuffix(classIdSuffix)
-                .setObjectPropertyNameSuffix(objPropSuffix)
-                .setDataPropertyNameSuffix(dataPropSuffix)
-                .setAnnotationPropertyNameSuffix(annPropSuffix)
-                .setIndividualNameSuffix(indSuffix)
-                .createSequentialPrefixedNameEntityIriGenerator();
-    }
-
-    public static UuidEntityIriGenerator getUuidEntityIriGenerator(EntityIriPrefix iriPrefix) {
-        return new UuidEntityIriGenerator(iriPrefix);
-    }
-
-    public static EntityIriStatus getEntityIriStatus() {
-        return getEntityIriStatus(Utils.getEntityIriPrefix(),
-                Utils.getEntityNamePrefix(), Utils.getEntityNamePrefix(), Utils.getEntityNamePrefix(), Utils.getEntityNamePrefix(), Utils.getEntityNamePrefix(),
-                Utils.getEntityNameSuffix(Integer.toString(random.nextInt())), Utils.getEntityNameSuffix(Integer.toString(random.nextInt())),
-                Utils.getEntityNameSuffix(Integer.toString(random.nextInt())), Utils.getEntityNameSuffix(Integer.toString(random.nextInt())),
-                Utils.getEntityNameSuffix(Integer.toString(random.nextInt())));
-    }
-
-    public static EntityIriStatus getEntityIriStatus(EntityIriPrefix iriPrefix, EntityNameSuffix classId, EntityNameSuffix objPropId,
-                                                     EntityNameSuffix dataPropId, EntityNameSuffix annPropId, EntityNameSuffix indId)
-    {
-        return new EntityIriStatusImpl.Builder()
-                .setEntityIriPrefix(iriPrefix)
-                .setClassNamePrefix(Utils.getEntityNamePrefix("class"))
-                .setObjectPropertyNamePrefix(Utils.getEntityNamePrefix("objprop"))
-                .setDataPropertyNamePrefix(Utils.getEntityNamePrefix("dataprop"))
-                .setClassNameSuffix(classId)
-                .setObjectPropertyNameSuffix(objPropId)
-                .setDataPropertyNameSuffix(dataPropId)
-                .setAnnotationPropertyNameSuffix(annPropId)
-                .setIndividualNameSuffix(indId)
-                .createEntityIriStatus();
-    }
-
-    public static EntityIriStatus getEntityIriStatus(EntityIriPrefix iriPrefix, EntityNamePrefix classPrefix, EntityNamePrefix objPropPrefix, EntityNamePrefix dataPropPrefix,
-                                                     EntityNamePrefix annPropPrefix, EntityNamePrefix indPrefix, EntityNameSuffix classId,
-                                                     EntityNameSuffix objPropId, EntityNameSuffix dataPropId, EntityNameSuffix annPropId, EntityNameSuffix indId)
-    {
-        return new EntityIriStatusImpl.Builder()
-                .setEntityIriPrefix(iriPrefix)
-                .setClassNamePrefix(classPrefix)
-                .setObjectPropertyNamePrefix(objPropPrefix)
-                .setDataPropertyNamePrefix(dataPropPrefix)
-                .setAnnotationPropertyNamePrefix(annPropPrefix)
-                .setIndividualNamePrefix(indPrefix)
-                .setClassNameSuffix(classId)
-                .setObjectPropertyNameSuffix(objPropId)
-                .setDataPropertyNameSuffix(dataPropId)
-                .setAnnotationPropertyNameSuffix(annPropId)
-                .setIndividualNameSuffix(indId)
-                .createEntityIriStatus();
+    public static ProjectOptions getProjectOptions(Map<String, Set<String>> requiredAnnotationsMap, Map<String, Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
+                                                   Set<String> immutableAnnotations, Set<String> requiredEntities, Map<String, String> customProperties) {
+        return new ProjectOptionsBuilder()
+                .setRequiredAnnotationsMap(requiredAnnotationsMap)
+                .setOptionalAnnotationsMap(optionalAnnotationsMap)
+                .setComplexAnnotations(complexAnnotations)
+                .setImmutableAnnotations(immutableAnnotations)
+                .setRequiredEntities(requiredEntities)
+                .setCustomProperties(customProperties)
+                .createProjectOptions();
     }
 }

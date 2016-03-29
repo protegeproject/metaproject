@@ -6,7 +6,7 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface User extends AccessControlObject, HasName, Comparable<User> {
+public interface User extends HasName, Comparable<User> {
 
     /**
      * Get user's identifier that is used for logging in

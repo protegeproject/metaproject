@@ -12,16 +12,6 @@ import java.lang.reflect.Type;
  */
 public class AuthenticationDetailsSerializer implements JsonSerializer<AuthenticationDetails>, JsonDeserializer<AuthenticationDetails> {
     private final String USER_ID = "userId", SALT = "salt", PASSWORD = "password";
-    
-    @Override
-    public AuthenticationDetails deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        Factory factory = Manager.getFactory();
-        JsonObject obj = element.getAsJsonObject();
-        UserId userId = factory.createUserId(obj.getAsJsonPrimitive(USER_ID).getAsString());
-        Salt salt = factory.createSalt(obj.getAsJsonPrimitive(SALT).getAsString());
-        SaltedPasswordDigest password = factory.createSaltedPasswordDigest(obj.getAsJsonPrimitive(PASSWORD).getAsString(), salt);
-        return factory.createAuthenticationDetails(userId, password);
-    }
 
     @Override
     public JsonElement serialize(AuthenticationDetails details, Type type, JsonSerializationContext context) {
@@ -30,5 +20,15 @@ public class AuthenticationDetailsSerializer implements JsonSerializer<Authentic
         obj.add(PASSWORD, context.serialize(details.getPassword().getPassword()));
         obj.add(SALT, context.serialize(details.getPassword().getSalt().getString()));
         return obj;
+    }
+
+    @Override
+    public AuthenticationDetails deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
+        Factory factory = Manager.getFactory();
+        JsonObject obj = element.getAsJsonObject();
+        UserId userId = factory.getUserId(obj.getAsJsonPrimitive(USER_ID).getAsString());
+        Salt salt = factory.getSalt(obj.getAsJsonPrimitive(SALT).getAsString());
+        SaltedPasswordDigest password = factory.getSaltedPasswordDigest(obj.getAsJsonPrimitive(PASSWORD).getAsString(), salt);
+        return factory.getAuthenticationDetails(userId, password);
     }
 }

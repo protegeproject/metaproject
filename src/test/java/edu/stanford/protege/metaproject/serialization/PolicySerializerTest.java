@@ -30,9 +30,9 @@ public class PolicySerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        policy = Utils.getPolicyManager(map1);
-        otherPolicy = Utils.getPolicyManager(map1);
-        diffPolicy = Utils.getPolicyManager(map2);
+        policy = Utils.getPolicy(map1);
+        otherPolicy = Utils.getPolicy(map1);
+        diffPolicy = Utils.getPolicy(map2);
 
         jsonPolicyManager = gson.toJson(policy, Policy.class);
         jsonOtherPolicyManager = gson.toJson(otherPolicy, Policy.class);

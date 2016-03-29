@@ -6,12 +6,12 @@ import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseExceptio
 import java.util.Set;
 
 /**
- * A manager for users and user details (except password, which is handled by {@link AuthenticationManager}).
+ * A manager for users and user details (except password, which is handled by {@link AuthenticationRegistry}).
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface UserRegistry extends Registry {
+public interface UserRegistry {
 
     /**
      * Add user(s)
@@ -74,7 +74,7 @@ public interface UserRegistry extends Registry {
      * @param userName  New name
      * @throws UnknownUserIdException  User identifier is not recognized
      */
-    void changeName(UserId userId, Name userName) throws UnknownUserIdException;
+    void setName(UserId userId, Name userName) throws UnknownUserIdException;
 
     /**
      * Change the email address of a user
@@ -83,6 +83,22 @@ public interface UserRegistry extends Registry {
      * @param emailAddress New email address
      * @throws UnknownUserIdException  User identifier is not recognized
      */
-    void changeEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException;
+    void setEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException;
+
+    /**
+     * Verify whether the email address of the given user is already being used by another user
+     *
+     * @param address   User address
+     * @return true if email address is used by some other user, false otherwise
+     */
+    boolean isEmailAddressInUse(EmailAddress address);
+
+    /**
+     * Check whether the user registry contains a user with the given identifier
+     *
+     * @param userId    User identifier
+     * @return true if there is a user with the specified identifier, false otherwise
+     */
+    boolean contains(UserId userId);
 
 }

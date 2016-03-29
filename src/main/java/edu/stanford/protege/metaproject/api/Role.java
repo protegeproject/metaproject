@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Role extends AccessControlObject, HasName, HasDescription, Comparable<Role> {
+public interface Role extends HasName, HasDescription, Comparable<Role> {
 
     /**
      * Get the role identifier

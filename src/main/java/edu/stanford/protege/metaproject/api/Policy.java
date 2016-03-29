@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Policy extends Registry {
+public interface Policy {
 
     /**
      * Add a user to the access control policy with the specified role(s) in the given project
@@ -54,24 +54,22 @@ public interface Policy extends Registry {
     boolean hasRole(UserId userId, ProjectId projectId, RoleId roleId);
 
     /**
-     * Get the set of role identifiers that the given user has in the specified project
+     * Check whether the policy manager contains any role assignments for
+     * the user with the given identifier in the specified project
      *
      * @param userId    User identifier
      * @param projectId Project identifier
-     * @return Set of role identifiers the user has
-     * @throws UserNotInPolicyException    User not registered in the access control policy
-     * @throws ProjectNotInPolicyException  Project not registered for this user in the access control policy
+     * @return true if user has role assignments in the specified project
      */
-    Set<RoleId> getRoleIds(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
+    boolean hasRole(UserId userId, ProjectId projectId);
 
     /**
-     * Get the set of project identifiers that the given user is assigned to
+     * Check whether the policy contains role assignments for the user with the given identifier in some project
      *
      * @param userId    User identifier
-     * @return Set of project identifiers the user works on
-     * @throws UserNotInPolicyException User not registered in the access control policy
+     * @return true if policy has role assignments for the user with the specified identifier, false otherwise
      */
-    Set<ProjectId> getProjectIds(UserId userId) throws UserNotInPolicyException;
+    boolean hasRole(UserId userId);
 
     /**
      * Get a map of user identifiers to their project-roles assignments
@@ -89,67 +87,32 @@ public interface Policy extends Registry {
     Map<ProjectId, Set<RoleId>> getUserRoleMap(UserId userId);
 
     /**
-     * Check whether the policy manager contains any role assignments for
-     * the user with the given identifier in the specified project
+     * Get the set of role identifiers  that a given user has assigned
      *
      * @param userId    User identifier
      * @param projectId Project identifier
-     * @return true if user has role assignments in the specified project
-     */
-    boolean hasRoleAssignments(UserId userId, ProjectId projectId);
-
-    /**
-     * Check whether the specified operation is allowed for the given user
-     *
-     * @param operationId Operation identifier
-     * @param projectId   Project identifier
-     * @param userId  User identifier
-     * @return true if user is allowed to carry out the specified operation, false otherwise
-     * @throws UnknownAccessControlObjectIdException Unknown access control object exception
+     * @return Set of role identifiers
      * @throws UserNotInPolicyException UserId not registered in the access control policy
      * @throws ProjectNotInPolicyException  Project not registered in the access control policy
      */
-    boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId)
-            throws UnknownAccessControlObjectIdException, UserNotInPolicyException, ProjectNotInPolicyException;
+    Set<RoleId> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
 
     /**
-     * Get the set of operations allowed for a given user in a specific project
-     *
-     * @param userId    User identifier
-     * @param projectId Project identifier
-     * @return Set of operations
-     * @throws UserNotInPolicyException UserId not registered in the access control policy
-     * @throws ProjectNotInPolicyException  Project not registered in the access control policy
-     */
-    Set<Operation> getOperationsInProject(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
-
-    /**
-     * Get the set of projects that a user plays some role in
-     *
-     * @param userId    User identifier
-     * @return Set of projects
-     * @throws UserNotInPolicyException UserId not registered in the access control policy
-     */
-    Set<Project> getProjects(UserId userId) throws UserNotInPolicyException;
-
-    /**
-     * Get the set of roles that a given user has assigned
-     *
-     * @param userId    User identifier
-     * @param projectId Project identifier
-     * @return Set of roles
-     * @throws UserNotInPolicyException UserId not registered in the access control policy
-     * @throws ProjectNotInPolicyException  Project not registered in the access control policy
-     */
-    Set<Role> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
-
-    /**
-     * Get the set of users that have some role in the specified project
+     * Get the set of user identifiers that have some role in the specified project
      *
      * @param projectId    Project identifier
-     * @return Set of users
+     * @return Set of user identifiers
      * @throws UnknownAccessControlObjectIdException Unknown access control object exception
      */
-    Set<User> getUsers(ProjectId projectId) throws UnknownAccessControlObjectIdException;
+    Set<UserId> getUsers(ProjectId projectId) throws UnknownAccessControlObjectIdException;
+
+    /**
+     * Get the set of project identifiers that the given user is assigned to
+     *
+     * @param userId    User identifier
+     * @return Set of project identifiers the user works on
+     * @throws UserNotInPolicyException User not registered in the access control policy
+     */
+    Set<ProjectId> getProjects(UserId userId) throws UserNotInPolicyException;
 
 }

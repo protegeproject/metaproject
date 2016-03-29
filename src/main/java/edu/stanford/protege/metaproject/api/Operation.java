@@ -1,15 +1,12 @@
 package edu.stanford.protege.metaproject.api;
 
-import java.util.Optional;
-import java.util.Set;
-
 /**
- * A representation of an operation consisting of a unique identifier, a natural language description, and operation restrictions
+ * A representation of an operation consisting of a unique identifier and a natural language description
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Operation extends AccessControlObject, HasName, HasDescription, Comparable<Operation> {
+public interface Operation extends HasName, HasDescription, Comparable<Operation> {
 
     /**
      * Get the operation identifier
@@ -19,17 +16,31 @@ public interface Operation extends AccessControlObject, HasName, HasDescription,
     OperationId getId();
 
     /**
-     * Get the type of operation
+     * Get the type of operation: read, write, or execute
      *
      * @return Operation type
      */
     OperationType getType();
 
     /**
-     * Get the set of restrictions for the operation
+     * Check whether this is a metaproject operation
      *
-     * @return Set of operation restrictions
+     * @return true if this is a metaproject operation, false otherwise
      */
-    Optional<Set<OperationRestriction>> getRestrictions();
+    boolean isMetaprojectOperation();
+
+    /**
+     * Check whether this is a server operation
+     *
+     * @return true if this is a server operation, false otherwise
+     */
+    boolean isServerOperation();
+
+    /**
+     * Check whether this is an ontology operation
+     *
+     * @return true if this is an ontology operation, false otherwise
+     */
+    boolean isOntologyOperation();
 
 }

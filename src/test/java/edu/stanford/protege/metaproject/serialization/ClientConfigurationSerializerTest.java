@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ClientConfigurationSerializerTest {
     private static final Map<String,String> propertyMap = Utils.getPropertyMap();
     private static final Metaproject metaproject = Utils.getMetaproject(), diffMetaproject = Utils.getMetaproject();
-    private static final Set<GuiRestriction> disabledUiElements = Utils.getGUIRestrictionSet();
+    private static final Set<GuiRestriction> disabledUiElements = Utils.getGuiRestrictionSet();
     private static final int syncDelay = 150;
 
     private String jsonClientConfiguration, jsonOtherClientConfiguration, jsonDiffClientConfiguration;
