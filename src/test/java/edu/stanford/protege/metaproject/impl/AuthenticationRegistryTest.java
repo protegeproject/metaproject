@@ -3,7 +3,6 @@ package edu.stanford.protege.metaproject.impl;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 import org.junit.Before;
@@ -75,7 +74,7 @@ public class AuthenticationRegistryTest {
     }
 
     @Test
-    public void testRemoveAuthentication() throws UnknownAccessControlObjectIdException, UserNotRegisteredException {
+    public void testRemoveAuthentication() throws UserNotRegisteredException {
         assertThat(authManager.contains(userId3), is(true));
         authManager.remove(userId3);
         assertThat(authManager.contains(userId3), is(false));

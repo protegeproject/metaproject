@@ -3,7 +3,6 @@ package edu.stanford.protege.metaproject.impl;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 import org.junit.Before;
@@ -49,7 +48,7 @@ public class UserRegistryTest {
     }
 
     @Test
-    public void testRemoveUser() throws UnknownAccessControlObjectIdException {
+    public void testRemoveUser() {
         userRegistry.remove(user3);
         assertThat(userRegistry.getUsers().contains(user3), is(false));
     }

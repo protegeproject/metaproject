@@ -16,7 +16,8 @@ public interface UserAuthenticator {
      * @param userId    User identifier
      * @param password  Password
      * @return Authorisation token that represents the state of user credential verification
+     * @throws Exception    Generic exception
      */
-    AuthToken hasValidCredentials(UserId userId, PlainPassword password);
+    AuthToken hasValidCredentials(UserId userId, PlainPassword password) throws Exception;
 
 }

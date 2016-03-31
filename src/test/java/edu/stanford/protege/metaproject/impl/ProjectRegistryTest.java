@@ -2,7 +2,6 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +46,7 @@ public class ProjectRegistryTest {
     }
 
     @Test
-    public void testRemoveProject() throws UnknownAccessControlObjectIdException {
+    public void testRemoveProject() {
         assertThat(projectRegistry.getProjects().contains(project4), is(true));
         projectRegistry.remove(project4);
         assertThat(projectRegistry.getProjects().contains(project4), is(false));
