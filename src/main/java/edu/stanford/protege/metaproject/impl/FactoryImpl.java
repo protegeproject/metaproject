@@ -280,6 +280,13 @@ public final class FactoryImpl implements Factory {
     }
 
     @Override
+    public PolicyAgent getPolicyAgent(Policy policy, RoleRegistry roleRegistry) {
+        checkNotNull(policy, "Policy must not be null");
+        checkNotNull(roleRegistry, "Role registry must not be null");
+        return new PolicyAgentImpl(policy, roleRegistry);
+    }
+
+    @Override
     public AuthToken getAuthorizedUserToken(UserId userId) {
         checkNotNull(userId, "User identifier must not be null");
         return new AuthorizedUserToken(userId);

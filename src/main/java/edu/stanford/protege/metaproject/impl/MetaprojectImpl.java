@@ -2,13 +2,10 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
-import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -17,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class MetaprojectImpl implements Metaproject, Serializable {
-    private static final long serialVersionUID = -6074836114963155970L;
+    private static final long serialVersionUID = -7167580667424252242L;
     private Policy policy;
     private RoleRegistry roleRegistry;
     private OperationRegistry operationRegistry;
@@ -43,21 +40,13 @@ public class MetaprojectImpl implements Metaproject, Serializable {
     }
 
     @Override
-    public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId)
-            throws UnknownAccessControlObjectIdException, UserNotInPolicyException, ProjectNotInPolicyException {
-        Set<RoleId> roles = getPolicy().getRoles(userId, projectId);
-        for (RoleId role : roles) {
-            Role r = getRoleRegistry().getRole(role);
-            if (r.getOperations().contains(operationId)) {
-                return true;
-            }
-        }
-        return false;
+    public Policy getPolicy() {
+        return policy;
     }
 
     @Override
-    public Policy getPolicy() {
-        return policy;
+    public PolicyAgent getPolicyAgent() {
+        return Manager.getFactory().getPolicyAgent(policy, roleRegistry);
     }
 
     @Override

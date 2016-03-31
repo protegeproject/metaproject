@@ -346,6 +346,15 @@ public interface Factory {
     Policy getPolicy(Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap);
 
     /**
+     * Create an instance of a policy agent
+     *
+     * @param policy    Policy
+     * @param roleRegistry  Role registry
+     * @return Policy agent
+     */
+    PolicyAgent getPolicyAgent(Policy policy, RoleRegistry roleRegistry);
+
+    /**
      * Get an authentication token that reflects a successful authentication attempt
      *
      * @param userId    User identifier
