@@ -6,7 +6,12 @@ import edu.stanford.protege.metaproject.impl.MetaprojectBuilder;
 import edu.stanford.protege.metaproject.impl.ProjectOptionsBuilder;
 import edu.stanford.protege.metaproject.impl.ServerConfigurationBuilder;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
@@ -16,6 +21,7 @@ public class Utils {
     private static final int DEFAULT_SET_SIZE = 3;
     private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WRITE;
     private static final Random random = new Random();
+    private static final String rootDir = "target/server-distribution/server/root", uri = "rmi-owl2-server://localhost:5100";
     private static Factory f = Manager.getFactory();
     
     /*   access control object identifiers   */
@@ -69,14 +75,6 @@ public class Utils {
 
     public static Description getDescription(String description) {
         return f.getDescription(description);
-    }
-
-    public static Address getAddress() {
-        return getAddress("http://protege.stanford.edu/" + newUUID());
-    }
-
-    public static Address getAddress(String address) {
-        return f.getAddress(address);
     }
 
     public static EmailAddress getEmailAddress() {
@@ -193,14 +191,16 @@ public class Utils {
     /*   policy and server/client configurations   */
 
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Utils.getHost(), Utils.getMetaproject(), Utils.getAuthenticationRegistry(),
+        return getServerConfiguration(Utils.getHost(), Utils.getFile(), Utils.getMetaproject(), Utils.getAuthenticationRegistry(),
                 Utils.getPropertyMap(), getUserGuiRestrictionsMap());
     }
 
-    public static ServerConfiguration getServerConfiguration(Host host, Metaproject metaproject, AuthenticationRegistry authenticationRegistry,
+    public static ServerConfiguration getServerConfiguration(Host host, File root, Metaproject metaproject,
+                                                             AuthenticationRegistry authenticationRegistry,
                                                              Map<String, String> properties, Map<UserId, Set<GuiRestriction>> userGuiRestrictions) {
         return new ServerConfigurationBuilder()
                 .setHost(host)
+                .setServerRoot(root)
                 .setMetaproject(metaproject)
                 .setAuthenticationRegistry(authenticationRegistry)
                 .setPropertyMap(properties)
@@ -217,19 +217,37 @@ public class Utils {
     }
 
     public static Host getHost() {
-        return getHost(Utils.getAddress(), getPort(random.nextInt()), getRegistryPort(random.nextInt()));
+        return getHost(Utils.getUri(), Optional.of(getPort(random.nextInt())));
     }
 
-    public static Host getHost(Address address, Port port, RegistryPort registryPort) {
-        return f.getHost(address, port, registryPort);
+    public static Host getHost(URI address, Optional<Port> optionalPort) {
+        return f.getHost(address, optionalPort);
+    }
+
+    public static File getFile() {
+        return getFile(rootDir + "/" + newUUID() + ".history");
+    }
+
+    public static File getFile(String path) {
+        return new File(path);
     }
 
     public static Port getPort(int port) {
         return f.getPort(port);
     }
 
-    public static RegistryPort getRegistryPort(int port) {
-        return f.getRegistryPort(port);
+    public static URI getUri() {
+        return getUri(uri + "/" + newUUID());
+    }
+
+    public static URI getUri(String uri) {
+        URI newUri = null;
+        try {
+            newUri = new URI(uri);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return checkNotNull(newUri);
     }
 
     public static Metaproject getMetaproject() {
@@ -276,11 +294,11 @@ public class Utils {
     /*   access control policy objects   */
 
     public static Project getProject() {
-        return getProject(getProjectId(), getName(), getDescription(), getAddress(), getUserId(), Optional.of(getProjectOptions()));
+        return getProject(getProjectId(), getName(), getDescription(), getFile(), getUserId(), Optional.of(getProjectOptions()));
     }
 
-    public static Project getProject(ProjectId id, Name name, Description description, Address address, UserId owner, Optional<ProjectOptions> projectOptions) {
-        return f.getProject(id, name, description, address, owner, projectOptions);
+    public static Project getProject(ProjectId id, Name name, Description description, File file, UserId owner, Optional<ProjectOptions> projectOptions) {
+        return f.getProject(id, name, description, file, owner, projectOptions);
     }
 
     public static Operation getServerOperation() {

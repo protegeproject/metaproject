@@ -2,12 +2,13 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.Address;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
-import edu.stanford.protege.metaproject.api.RegistryPort;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.URI;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,9 +18,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class HostSerializerTest {
-    private static final Address hostAddress = Utils.getAddress("testHostId1"), diffHostAddress = Utils.getAddress("testHostId2");
-    private static final Port port = Utils.getPort(8080), diffPort = Utils.getPort(8081);
-    private static final RegistryPort registryPort = Utils.getRegistryPort(5100);
+    private static final URI hostAddress = Utils.getUri("rmi://testHostId1"), diffHostAddress = Utils.getUri("rmi://testHostId2");
+    private static final Optional<Port> optionalPort = Optional.of(Utils.getPort(5100));
 
     private String jsonHost, jsonOtherHost, jsonDiffHost;
     private Host host, otherHost, diffHost;
@@ -29,9 +29,9 @@ public class HostSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        host = Utils.getHost(hostAddress, port, registryPort);
-        otherHost = Utils.getHost(hostAddress, port, registryPort);
-        diffHost = Utils.getHost(diffHostAddress, diffPort, registryPort);
+        host = Utils.getHost(hostAddress, optionalPort);
+        otherHost = Utils.getHost(hostAddress, optionalPort);
+        diffHost = Utils.getHost(diffHostAddress, optionalPort);
 
         jsonHost = gson.toJson(host);
         jsonOtherHost = gson.toJson(otherHost);
@@ -77,11 +77,6 @@ public class HostSerializerTest {
 
     @Test
     public void testGetAddress() {
-        assertThat(gson.fromJson(jsonHost, Host.class).getAddress(), is(hostAddress));
-    }
-
-    @Test
-    public void testGetPort() {
-        assertThat(gson.fromJson(jsonHost, Host.class).getPort(), is(port));
+        assertThat(gson.fromJson(jsonHost, Host.class).getUri(), is(hostAddress));
     }
 }

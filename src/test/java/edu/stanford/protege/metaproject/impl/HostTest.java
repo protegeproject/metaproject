@@ -1,15 +1,16 @@
 package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.Address;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
-import edu.stanford.protege.metaproject.api.RegistryPort;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.net.URI;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,16 +24,15 @@ public class HostTest {
     private static final String toStringHead = Host.class.getSimpleName();
 
     @Mock private Port port, diffPort;
-    @Mock private RegistryPort registryPort;
-    @Mock private Address hostAddress, diffHostAddress;
-
+    private URI hostAddress = Utils.getUri(), diffHostAddress = Utils.getUri();
+    private Port optionalPort = Utils.getPort(5100);
     private Host host, otherHost, diffHost;
 
     @Before
     public void setUp() {
-        host = Utils.getHost(hostAddress, port, registryPort);
-        otherHost = Utils.getHost(hostAddress, port, registryPort);
-        diffHost = Utils.getHost(diffHostAddress, diffPort, registryPort);
+        host = Utils.getHost(hostAddress, Optional.of(optionalPort));
+        otherHost = Utils.getHost(hostAddress, Optional.of(optionalPort));
+        diffHost = Utils.getHost(diffHostAddress, Optional.of(optionalPort));
     }
 
     @Test
@@ -41,18 +41,13 @@ public class HostTest {
     }
 
     @Test
-    public void testGetAddress() {
-        assertThat(host.getAddress(), is(hostAddress));
+    public void testGetUri() {
+        assertThat(host.getUri(), is(hostAddress));
     }
 
     @Test
-    public void testGetPort() {
-        assertThat(host.getPort(), is(port));
-    }
-
-    @Test
-    public void getRegistryPort() {
-        assertThat(host.getRegistryPort(), is(registryPort));
+    public void getOptionalPort() {
+        assertThat(host.getSecondaryPort(), is(Optional.of(optionalPort)));
     }
 
     @Test

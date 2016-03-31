@@ -2,12 +2,12 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.api.Address;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
-import edu.stanford.protege.metaproject.api.RegistryPort;
 
 import java.io.Serializable;
+import java.net.URI;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -16,45 +16,36 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class HostImpl implements Host, Serializable {
-    private static final long serialVersionUID = -7354667414457398985L;
-    private final Address address;
-    private final Port port;
-    private final RegistryPort registryPort;
+    private static final long serialVersionUID = -1110049103826593951L;
+    private final URI uri;
+    private final Port secondaryPort;
 
     /**
      * Constructor
      *
-     * @param address   Host address
-     * @param port  Host port
-     * @param registryPort RMI registry port
+     * @param uri   Host uri
+     * @param secondaryPort Secondary port
      */
-    public HostImpl(Address address, Port port, RegistryPort registryPort) {
-        this.address = checkNotNull(address);
-        this.port = checkNotNull(port);
-        this.registryPort = checkNotNull(registryPort);
+    public HostImpl(URI uri, Optional<Port> secondaryPort) {
+        this.uri = checkNotNull(uri);
+        this.secondaryPort = (secondaryPort.isPresent() ? checkNotNull(secondaryPort.get()) : null);
     }
 
     @Override
-    public Port getPort() {
-        return port;
+    public Optional<Port> getSecondaryPort() {
+        return Optional.ofNullable(secondaryPort);
     }
 
     @Override
-    public RegistryPort getRegistryPort() {
-        return registryPort;
-    }
-
-    @Override
-    public Address getAddress() {
-        return address;
+    public URI getUri() {
+        return uri;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("address", address)
-                .add("port", port)
-                .add("registryPort", registryPort)
+                .add("uri", uri)
+                .add("secondaryPort", secondaryPort)
                 .toString();
     }
 
@@ -63,13 +54,12 @@ public final class HostImpl implements Host, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HostImpl host = (HostImpl) o;
-        return Objects.equal(address, host.address) &&
-                Objects.equal(port, host.port) &&
-                Objects.equal(registryPort, host.registryPort);
+        return Objects.equal(uri, host.uri) &&
+                Objects.equal(secondaryPort, host.secondaryPort);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(address, port, registryPort);
+        return Objects.hashCode(uri, secondaryPort);
     }
 }

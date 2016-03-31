@@ -6,6 +6,7 @@ import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
@@ -76,7 +77,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = createProject(project.getId(), projectName, project.getDescription(), project.getAddress(),
+        Project newProject = createProject(project.getId(), projectName, project.getDescription(), project.getFile(),
                 project.getOwner(), project.getOptions());
         add(newProject);
     }
@@ -87,7 +88,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = createProject(project.getId(), project.getName(), projectDescription, project.getAddress(),
+        Project newProject = createProject(project.getId(), project.getName(), projectDescription, project.getFile(),
                 project.getOwner(), project.getOptions());
         add(newProject);
     }
@@ -98,18 +99,18 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), project.getAddress(),
+        Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), project.getFile(),
                 userId, project.getOptions());
         add(newProject);
     }
 
     @Override
-    public void setAddress(ProjectId projectId, Address projectAddress) throws UnknownProjectIdException {
-        checkNotNull(projectAddress);
+    public void setFile(ProjectId projectId, File file) throws UnknownProjectIdException {
+        checkNotNull(file);
         Project project = getProject(projectId);
         remove(project);
 
-        Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), projectAddress,
+        Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), file,
                 project.getOwner(), project.getOptions());
         add(newProject);
     }
@@ -120,7 +121,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         checkNotNull(projectOptions);
         Project project = getProject(projectId);
         remove(project);
-        Project newProject = createProject(projectId, project.getName(), project.getDescription(), project.getAddress(),
+        Project newProject = createProject(projectId, project.getName(), project.getDescription(), project.getFile(),
                 project.getOwner(), Optional.of(projectOptions));
         add(newProject);
     }
@@ -139,9 +140,9 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
     /**
      * Create an instance of a project
      */
-    private Project createProject(ProjectId id, Name name, Description description, Address address,
+    private Project createProject(ProjectId id, Name name, Description description, File file,
                                   UserId owner, Optional<ProjectOptions> projectOptions) {
-        return Manager.getFactory().getProject(id, name, description, address, owner, projectOptions);
+        return Manager.getFactory().getProject(id, name, description, file, owner, projectOptions);
     }
 
     /**

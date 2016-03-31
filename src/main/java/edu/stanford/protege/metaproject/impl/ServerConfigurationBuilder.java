@@ -3,8 +3,10 @@ package edu.stanford.protege.metaproject.impl;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -17,7 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ServerConfigurationBuilder {
     private Factory f = Manager.getFactory();
-    private Host host = f.getHost(f.getAddress("localhost"), f.getPort(5100), f.getRegistryPort(5100));
+    private Host host = f.getHost(f.getUri("rmi-owl2-server://localhost:5100"), Optional.of(f.getPort(5200)));
+    private File root = new File("target/server-distribution/server/root");
     private Metaproject metaproject = new MetaprojectBuilder().createMetaproject();
     private AuthenticationRegistry authenticationRegistry = Manager.getFactory().getAuthenticationRegistry();
     private Map<String,String> properties = new HashMap<>();
@@ -30,7 +33,18 @@ public class ServerConfigurationBuilder {
      * @return ServerConfigurationBuilder
      */
     public ServerConfigurationBuilder setHost(Host host) {
-        this.host = checkNotNull(host);
+        this.host = host;
+        return this;
+    }
+
+    /**
+     * Set the root directory of the server
+     *
+     * @param root  Root directory of the server
+     * @return ServerConfigurationBuilder
+     */
+    public ServerConfigurationBuilder setServerRoot(File root) {
+        this.root = root;
         return this;
     }
 
@@ -41,7 +55,7 @@ public class ServerConfigurationBuilder {
      * @return ServerConfigurationBuilder
      */
     public ServerConfigurationBuilder setMetaproject(Metaproject metaproject) {
-        this.metaproject = checkNotNull(metaproject);
+        this.metaproject = metaproject;
         return this;
     }
 
@@ -84,6 +98,6 @@ public class ServerConfigurationBuilder {
      * @return Server configuration
      */
     public ServerConfigurationImpl createServerConfiguration() {
-        return new ServerConfigurationImpl(host, metaproject, authenticationRegistry, properties, userGuiRestrictions);
+        return new ServerConfigurationImpl(host, root, metaproject, authenticationRegistry, properties, userGuiRestrictions);
     }
 }

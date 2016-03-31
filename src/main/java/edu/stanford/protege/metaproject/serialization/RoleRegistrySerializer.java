@@ -16,7 +16,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class RoleManagerSerializer implements JsonSerializer<RoleRegistry>, JsonDeserializer<RoleRegistry> {
+public class RoleRegistrySerializer implements JsonSerializer<RoleRegistry>, JsonDeserializer<RoleRegistry> {
 
     @Override
     public JsonElement serialize(RoleRegistry roleRegistry, Type type, JsonSerializationContext context) {

@@ -2,6 +2,9 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.api.*;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -18,14 +21,14 @@ public final class FactoryImpl implements Factory {
     public FactoryImpl() { }
 
     @Override
-    public Project getProject(ProjectId projectId, Name name, Description description, Address address, UserId ownerId, Optional<ProjectOptions> options) {
+    public Project getProject(ProjectId projectId, Name name, Description description, File file, UserId ownerId, Optional<ProjectOptions> options) {
         checkNotNull(projectId, "Project identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
         checkNotNull(description, "Description cannot be null");
-        checkNotNull(address, "Address cannot be null");
+        checkNotNull(file, "File cannot be null");
         checkNotNull(ownerId, "Owner user identifier cannot be null");
         checkNotNull(options, "Project options cannot be null");
-        return new ProjectImpl(projectId, name, description, address, ownerId, options);
+        return new ProjectImpl(projectId, name, description, file, ownerId, options);
     }
 
     @Override
@@ -66,7 +69,7 @@ public final class FactoryImpl implements Factory {
     public User getUser(UserId userId, Name name, EmailAddress emailAddress) {
         checkNotNull(userId, "User identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
-        checkNotNull(emailAddress, "Name cannot be null");
+        checkNotNull(emailAddress, "Email address cannot be null");
         return new UserImpl(userId, name, emailAddress);
     }
 
@@ -106,12 +109,6 @@ public final class FactoryImpl implements Factory {
     public Description getDescription(String description) {
         checkNotNull(description, "Description cannot be null");
         return new DescriptionImpl(description);
-    }
-
-    @Override
-    public Address getAddress(String address) {
-        checkNotNull(address, "Address cannot be null");
-        return new AddressImpl(address);
     }
 
     @Override
@@ -175,17 +172,23 @@ public final class FactoryImpl implements Factory {
     }
 
     @Override
-    public RegistryPort getRegistryPort(Integer portNr) {
-        checkNotNull(portNr, "Port number must not be null");
-        return new RegistryPortImpl(portNr);
+    public Host getHost(URI address, Optional<Port> secondaryPort) {
+        checkNotNull(address, "Host URI must not be null");
+        if(secondaryPort.isPresent()) {
+            checkNotNull(secondaryPort.get(), "Secondary port must not be null");
+        }
+        return new HostImpl(address, secondaryPort);
     }
 
     @Override
-    public Host getHost(Address address, Port port, RegistryPort registryPort) {
-        checkNotNull(address, "Host address must not be null");
-        checkNotNull(port, "Host port must not be null");
-        checkNotNull(registryPort, "Registry port must not be null");
-        return new HostImpl(address, port, registryPort);
+    public URI getUri(String uri) {
+        URI newUri = null;
+        try {
+            newUri = new URI(uri);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return checkNotNull(newUri);
     }
 
     @Override

@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 
+import java.io.File;
 import java.util.Set;
 
 /**
@@ -78,13 +79,13 @@ public interface ProjectRegistry {
     void setOwner(ProjectId projectId, UserId userId) throws UnknownProjectIdException;
 
     /**
-     * Change the location of the specified project
+     * Change the file location of the specified project
      *
      * @param projectId Project identifier
-     * @param projectAddress   Project address
+     * @param file   Project file
      * @throws UnknownProjectIdException    Project identifier is not recognized
      */
-    void setAddress(ProjectId projectId, Address projectAddress) throws UnknownProjectIdException;
+    void setFile(ProjectId projectId, File file) throws UnknownProjectIdException;
 
     /**
      * Set the options for this project

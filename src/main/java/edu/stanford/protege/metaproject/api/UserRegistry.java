@@ -49,7 +49,7 @@ public interface UserRegistry {
      * @param emailAddress  Email address
      * @return Set of users
      */
-    Set<User> getUsers(Address emailAddress);
+    Set<User> getUsers(EmailAddress emailAddress);
 
     /**
      * Get a guest user instance

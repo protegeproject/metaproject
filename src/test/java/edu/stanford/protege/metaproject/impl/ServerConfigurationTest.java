@@ -5,6 +5,7 @@ import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ServerConfigurationTest {
     private static final String toStringHead = ServerConfiguration.class.getSimpleName();
     private static final Host host = Utils.getHost();
+    private static final File root = Utils.getFile();
     private static final Metaproject metaproject = Utils.getMetaproject();
     private static final AuthenticationRegistry authenticationRegistry = Utils.getAuthenticationRegistry();
     private static Map<String,String> propertiesMap = Utils.getPropertyMap();
@@ -27,8 +29,8 @@ public class ServerConfigurationTest {
 
     @Before
     public void setUp() {
-        serverConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationRegistry, propertiesMap, userGuiRestrictions);
-        otherServerConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationRegistry, propertiesMap, userGuiRestrictions);
+        serverConfiguration = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertiesMap, userGuiRestrictions);
+        otherServerConfiguration = Utils.getServerConfiguration(host, root,metaproject, authenticationRegistry, propertiesMap, userGuiRestrictions);
         diffServerConfiguration = Utils.getServerConfiguration();
     }
 

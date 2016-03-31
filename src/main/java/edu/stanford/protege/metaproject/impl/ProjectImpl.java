@@ -6,6 +6,7 @@ import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.*;
 
 import javax.annotation.Nonnull;
+import java.io.File;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -16,11 +17,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ProjectImpl implements Project, Serializable, Comparable<Project> {
-    private static final long serialVersionUID = 3279929230549022362L;
+    private static final long serialVersionUID = -4724361870390660883L;
     private final ProjectId id;
     private final Name name;
     private final Description description;
-    private final Address address;
+    private final File file;
     private final UserId owner;
     private final ProjectOptions options;
 
@@ -30,15 +31,15 @@ public final class ProjectImpl implements Project, Serializable, Comparable<Proj
      * @param id Project identifier
      * @param name   Project name
      * @param description    Project description
-     * @param address  Project address
+     * @param file  Project file
      * @param owner Owner of the project
      * @param options   Project options
      */
-    public ProjectImpl(ProjectId id, Name name, Description description, Address address, UserId owner, Optional<ProjectOptions> options) {
+    public ProjectImpl(ProjectId id, Name name, Description description, File file, UserId owner, Optional<ProjectOptions> options) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
-        this.address = checkNotNull(address);
+        this.file = checkNotNull(file);
         this.owner = checkNotNull(owner);
         this.options = (options.isPresent() ? checkNotNull(options.get()) : null);
     }
@@ -58,9 +59,8 @@ public final class ProjectImpl implements Project, Serializable, Comparable<Proj
         return description;
     }
 
-    @Override
-    public Address getAddress() {
-        return address;
+    public File getFile() {
+        return file;
     }
 
     @Override
@@ -81,14 +81,14 @@ public final class ProjectImpl implements Project, Serializable, Comparable<Proj
         return Objects.equal(id, project.id) &&
                 Objects.equal(name, project.name) &&
                 Objects.equal(description, project.description) &&
-                Objects.equal(address, project.address) &&
+                Objects.equal(file, project.file) &&
                 Objects.equal(owner, project.owner) &&
                 Objects.equal(options, project.options);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, name, description, address, owner, options);
+        return Objects.hashCode(id, name, description, file, owner, options);
     }
 
     @Override
@@ -97,7 +97,7 @@ public final class ProjectImpl implements Project, Serializable, Comparable<Proj
                 .add("id", id)
                 .add("name", name)
                 .add("description", description)
-                .add("address", address)
+                .add("file", file)
                 .add("owner", owner)
                 .add("options", options)
                 .toString();

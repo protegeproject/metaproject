@@ -6,6 +6,7 @@ import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class ServerConfigurationSerializerTest {
     private static final Host host = Utils.getHost(), diffHost = Utils.getHost();
+    private static final File root = Utils.getFile();
     private static final Metaproject metaproject = Utils.getMetaproject();
     private static final AuthenticationRegistry authenticationRegistry = Utils.getAuthenticationRegistry();
     private static final Map<String,String> propertyMap = Utils.getPropertyMap();
@@ -31,9 +33,9 @@ public class ServerConfigurationSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        config = Utils.getServerConfiguration(host, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
-        otherServerConfiguration = Utils.getServerConfiguration(host, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
-        diffServerConfiguration = Utils.getServerConfiguration(diffHost, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
+        config = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
+        otherServerConfiguration = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
+        diffServerConfiguration = Utils.getServerConfiguration(diffHost, root, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
 
         jsonServerConfiguration = gson.toJson(config, ServerConfiguration.class);
         jsonOtherServerConfiguration = gson.toJson(otherServerConfiguration, ServerConfiguration.class);

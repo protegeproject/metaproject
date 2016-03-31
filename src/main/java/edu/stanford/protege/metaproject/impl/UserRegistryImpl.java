@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class UserRegistryImpl implements UserRegistry, Serializable {
-    private static final long serialVersionUID = -1485344104008068717L;
+    private static final long serialVersionUID = -4127144765876721800L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -76,7 +76,7 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     }
 
     @Override
-    public Set<User> getUsers(Address emailAddress) {
+    public Set<User> getUsers(EmailAddress emailAddress) {
         checkNotNull(emailAddress);
         return users.stream().filter(user -> user.getEmailAddress().equals(emailAddress)).collect(Collectors.toSet());
     }

@@ -1,25 +1,28 @@
 package edu.stanford.protege.metaproject.api;
 
+import java.net.URI;
+import java.util.Optional;
+
 /**
- * A representation of host information, consisting of an address, a port number, and the RMI registry port
+ * A representation of host information, consisting of a URI and a secondary (optional) port
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Host extends HasAddress {
+public interface Host {
 
     /**
-     * Get the host port
+     * Get the URI of the server host
      *
-     * @return Port
+     * @return URI of host
      */
-    Port getPort();
+    URI getUri();
 
     /**
-     * Get the RMI registry port
+     * Get the secondary port that may be used, for example, as an RMI registry port
      *
-     * @return RMI registry port
+     * @return Optional secondary port
      */
-    RegistryPort getRegistryPort();
+    Optional<Port> getSecondaryPort();
 
 }

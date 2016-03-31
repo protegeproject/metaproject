@@ -7,6 +7,7 @@ import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -63,28 +64,28 @@ public class ProjectRegistryTest {
     }
 
     @Test
-    public void testChangeDescription() throws UnknownProjectIdException {
+    public void testSetDescription() throws UnknownProjectIdException {
         Description newDescription = Utils.getDescription("new test description");
         projectRegistry.setDescription(project2.getId(), newDescription);
         assertThat(projectRegistry.getProject(project2.getId()).getDescription(), is(newDescription));
     }
 
     @Test
-    public void testChangeName() throws UnknownProjectIdException {
+    public void testSetName() throws UnknownProjectIdException {
         Name newName = Utils.getName("new test name");
         projectRegistry.setName(project2.getId(), newName);
         assertThat(projectRegistry.getProject(project2.getId()).getName(), is(newName));
     }
 
     @Test
-    public void testChangeAddress() throws UnknownProjectIdException {
-        Address newAddress = Utils.getAddress("new test address");
-        projectRegistry.setAddress(project2.getId(), newAddress);
-        assertThat(projectRegistry.getProject(project2.getId()).getAddress(), is(newAddress));
+    public void testSetFile() throws UnknownProjectIdException {
+        File newFile = Utils.getFile("documents/test/somefile.txt");
+        projectRegistry.setFile(project2.getId(), newFile);
+        assertThat(projectRegistry.getProject(project2.getId()).getFile(), is(newFile));
     }
 
     @Test
-    public void testChangeOwner() throws UnknownProjectIdException {
+    public void testSetOwner() throws UnknownProjectIdException {
         UserId newOwner = Utils.getUserId();
         projectRegistry.setOwner(project2.getId(), newOwner);
         assertThat(projectRegistry.getProject(project2.getId()).getOwner(), is(newOwner));

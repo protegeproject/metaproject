@@ -50,9 +50,9 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
                     // access control object managers
                     .registerTypeAdapter(Policy.class, new PolicySerializer())
                     .registerTypeAdapter(OperationRegistry.class, new OperationRegistrySerializer())
-                    .registerTypeAdapter(ProjectRegistry.class, new ProjectManagerSerializer())
-                    .registerTypeAdapter(RoleRegistry.class, new RoleManagerSerializer())
-                    .registerTypeAdapter(UserRegistry.class, new UserManagerSerializer())
+                    .registerTypeAdapter(ProjectRegistry.class, new ProjectRegistrySerializer())
+                    .registerTypeAdapter(RoleRegistry.class, new RoleRegistrySerializer())
+                    .registerTypeAdapter(UserRegistry.class, new UserRegistrySerializer())
                     .registerTypeAdapter(AuthenticationRegistry.class, new AuthenticationRegistrySerializer())
 
                     // other objects

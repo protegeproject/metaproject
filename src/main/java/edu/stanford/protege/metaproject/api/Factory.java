@@ -1,5 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
+import java.io.File;
+import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -16,12 +18,12 @@ public interface Factory {
      * @param projectId Project identifier
      * @param name  Project name
      * @param description   Project description
-     * @param address   Project location
+     * @param file   Project file
      * @param ownerId   Project owner user identifier
      * @param options   Project options
      * @return New Project instance
      */
-    Project getProject(ProjectId projectId, Name name, Description description, Address address, UserId ownerId, Optional<ProjectOptions> options);
+    Project getProject(ProjectId projectId, Name name, Description description, File file, UserId ownerId, Optional<ProjectOptions> options);
 
     /**
      * Create a new role
@@ -128,14 +130,6 @@ public interface Factory {
     Description getDescription(String description);
 
     /**
-     * Create an address for an access control object
-     *
-     * @param address   Address
-     * @return Address instance
-     */
-    Address getAddress(String address);
-
-    /**
      * Create an email address name for an access control object
      *
      * @param emailAddress  Email address
@@ -212,22 +206,21 @@ public interface Factory {
     Port getPort(Integer portNr);
 
     /**
-     * Create an instance of an RMI registry port
-     *
-     * @param portNr    Port number
-     * @return Registry Port instance
-     */
-    RegistryPort getRegistryPort(Integer portNr);
-
-    /**
      * Create an instance of a Host
      *
      * @param address   Host address
-     * @param port  Port
-     * @param registryPort  Registry port
+     * @param secondaryPort  Optional secondary port
      * @return Host instance
      */
-    Host getHost(Address address, Port port, RegistryPort registryPort);
+    Host getHost(URI address, Optional<Port> secondaryPort);
+
+    /**
+     * Get a URI based on the given string
+     *
+     * @param uri   URI string
+     * @return URI
+     */
+    URI getUri(String uri);
 
     /**
      * Create an instance of a GUI restriction

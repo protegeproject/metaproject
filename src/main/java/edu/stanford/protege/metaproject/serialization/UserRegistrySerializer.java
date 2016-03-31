@@ -16,7 +16,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class UserManagerSerializer implements JsonSerializer<UserRegistry>, JsonDeserializer<UserRegistry> {
+public class UserRegistrySerializer implements JsonSerializer<UserRegistry>, JsonDeserializer<UserRegistry> {
 
     @Override
     public JsonElement serialize(UserRegistry userRegistry, Type type, JsonSerializationContext context) {

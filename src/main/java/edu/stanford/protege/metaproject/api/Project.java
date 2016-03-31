@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
+import java.io.File;
 import java.util.Optional;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Optional;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Project extends HasName, HasDescription, HasAddress, Comparable<Project> {
+public interface Project extends HasName, HasDescription, Comparable<Project> {
 
     /**
      * Get the identifier of the project
@@ -18,6 +19,13 @@ public interface Project extends HasName, HasDescription, HasAddress, Comparable
      * @return Project identifier
      */
     ProjectId getId();
+
+    /**
+     * Get the project file
+     *
+     * @return Project file
+     */
+    File getFile();
 
     /**
      * Get the owner user of the project

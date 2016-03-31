@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.io.File;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -26,7 +27,7 @@ public class ProjectTest {
     private static final ProjectId projectId = Utils.getProjectId(projectIdStr), diffProjectId = Utils.getProjectId(otherIdStr);
     private static final Name projectName = Utils.getName(projectNameStr);
     private static final Description projectDescription = Utils.getDescription(projectDescriptionStr);
-    private static final Address projectLocation = Utils.getAddress("/Users/test/folder/project.owl");
+    private static final File projectFile = Utils.getFile("/Users/test/folder/project.owl");
     private static final UserId ownerId = Utils.getUserId("owner");
     @Mock private ProjectOptions projectOptions;
 
@@ -34,11 +35,11 @@ public class ProjectTest {
 
     @Before
     public void setUp() {
-        project = Utils.getProject(projectId, projectName, projectDescription, projectLocation, ownerId,
+        project = Utils.getProject(projectId, projectName, projectDescription, projectFile, ownerId,
                 Optional.ofNullable(projectOptions));
-        otherProject = Utils.getProject(projectId, projectName, projectDescription, projectLocation, ownerId,
+        otherProject = Utils.getProject(projectId, projectName, projectDescription, projectFile, ownerId,
                 Optional.ofNullable(projectOptions));
-        diffProject = Utils.getProject(diffProjectId, projectName, projectDescription, projectLocation, ownerId,
+        diffProject = Utils.getProject(diffProjectId, projectName, projectDescription, projectFile, ownerId,
                 Optional.ofNullable(projectOptions));
     }
 
@@ -63,8 +64,8 @@ public class ProjectTest {
     }
 
     @Test
-    public void testGetAddress() {
-        assertThat(project.getAddress(), is(projectLocation));
+    public void testGetFile() {
+        assertThat(project.getFile(), is(projectFile));
     }
 
     @Test

@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +21,13 @@ public interface ServerConfiguration extends HasProperties {
      * @return Server host
      */
     Host getHost();
+
+    /**
+     * Get the root directory of the server, where (ontology) project files are located
+     *
+     * @return Server root directory
+     */
+    File getServerRoot();
 
     /**
      * Get the manager of the access control policy in effect on the server
