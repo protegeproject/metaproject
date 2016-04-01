@@ -7,11 +7,11 @@ package edu.stanford.protege.metaproject.api;
 public interface AuthToken extends Comparable<AuthToken> {
 
     /**
-     * Get the user identifier
+     * Get the user that was attributed this authorization token upon login
      *
-     * @return User identifier
+     * @return User
      */
-    UserId getUserId();
+    User getUser();
 
     /**
      * Check if token reflects successful authorisation with the server

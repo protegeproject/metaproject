@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.AuthToken;
-import edu.stanford.protege.metaproject.api.UserId;
+import edu.stanford.protege.metaproject.api.User;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
@@ -17,23 +17,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class AuthorizedUserToken implements AuthToken, Serializable {
-    private static final long serialVersionUID = 6410375631284230375L;
-    private final UserId userId;
+    private static final long serialVersionUID = -7742639350166955863L;
+    private final User user;
     private final String secret;
 
     /**
      * Constructor
      *
-     * @param userId    User identifier
+     * @param user    User identifier
      */
-    public AuthorizedUserToken(UserId userId) {
-        this.userId = checkNotNull(userId);
+    public AuthorizedUserToken(User user) {
+        this.user = checkNotNull(user);
         this.secret = UUID.randomUUID().toString();
     }
 
     @Override
-    public UserId getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
     @Override
@@ -46,26 +46,26 @@ public final class AuthorizedUserToken implements AuthToken, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthorizedUserToken that = (AuthorizedUserToken) o;
-        return Objects.equal(userId, that.userId) &&
+        return Objects.equal(user, that.user) &&
                 Objects.equal(secret, that.secret);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(userId, secret);
+        return Objects.hashCode(user, secret);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("userId", userId)
+                .add("user", user)
                 .toString();
     }
 
     @Override
     public int compareTo(@Nonnull AuthToken that) {
         return ComparisonChain.start()
-                .compare(this.userId.get(), that.getUserId().get())
+                .compare(this.user.getId().get(), that.getUser().getId().get())
                 .result();
     }
 }

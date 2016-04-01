@@ -357,18 +357,18 @@ public interface Factory {
     /**
      * Get an authentication token that reflects a successful authentication attempt
      *
-     * @param userId    User identifier
+     * @param user    User
      * @return Authentication token
      */
-    AuthToken getAuthorizedUserToken(UserId userId);
+    AuthToken getAuthorizedUserToken(User user);
 
     /**
      * Get an authentication token that reflects an unsuccessful authentication attempt
      *
-     * @param userId    User identifier
+     * @param user    User
      * @return Authentication token
      */
-    AuthToken getUnauthorizedUserToken(UserId userId);
+    AuthToken getUnauthorizedUserToken(User user);
 
     /**
      * Create an instance of project options

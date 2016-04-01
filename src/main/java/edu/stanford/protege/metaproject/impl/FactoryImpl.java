@@ -287,15 +287,15 @@ public final class FactoryImpl implements Factory {
     }
 
     @Override
-    public AuthToken getAuthorizedUserToken(UserId userId) {
-        checkNotNull(userId, "User identifier must not be null");
-        return new AuthorizedUserToken(userId);
+    public AuthToken getAuthorizedUserToken(User user) {
+        checkNotNull(user, "User must not be null");
+        return new AuthorizedUserToken(user);
     }
 
     @Override
-    public AuthToken getUnauthorizedUserToken(UserId userId) {
-        checkNotNull(userId, "User identifier must not be null");
-        return new UnauthorizedUserToken(userId);
+    public AuthToken getUnauthorizedUserToken(User user) {
+        checkNotNull(user, "User must not be null");
+        return new UnauthorizedUserToken(user);
     }
 
     @Override

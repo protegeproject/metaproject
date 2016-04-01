@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.AuthToken;
-import edu.stanford.protege.metaproject.api.UserId;
+import edu.stanford.protege.metaproject.api.User;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;
@@ -16,21 +16,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class UnauthorizedUserToken implements AuthToken, Serializable {
-    private static final long serialVersionUID = -3070260723936558419L;
-    private final UserId userId;
+    private static final long serialVersionUID = -2517575146165315707L;
+    private final User user;
 
     /**
      * Constructor
      *
-     * @param userId    User identifier
+     * @param user    User
      */
-    public UnauthorizedUserToken(UserId userId) {
-        this.userId = checkNotNull(userId);
+    public UnauthorizedUserToken(User user) {
+        this.user = checkNotNull(user);
     }
 
     @Override
-    public UserId getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
     @Override
@@ -43,25 +43,25 @@ public final class UnauthorizedUserToken implements AuthToken, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UnauthorizedUserToken that = (UnauthorizedUserToken) o;
-        return Objects.equal(userId, that.userId);
+        return Objects.equal(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(userId);
+        return Objects.hashCode(user);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("userId", userId)
+                .add("user", user)
                 .toString();
     }
 
     @Override
     public int compareTo(@Nonnull AuthToken that) {
         return ComparisonChain.start()
-                .compare(this.userId.get(), that.getUserId().get())
+                .compare(this.user.getId().get(), that.getUser().getId().get())
                 .result();
     }
 }
