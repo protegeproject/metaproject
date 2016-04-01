@@ -70,16 +70,21 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
     }
 
     @Override
-    public <T> T parse(File f, Class<T> cls) throws FileNotFoundException, JsonSyntaxException, JsonIOException, ObjectConversionException {
+    public <T> T parse(File f, Class<T> cls) throws FileNotFoundException, ObjectConversionException {
         Gson gson = getInstance();
         T obj;
         try {
             obj = gson.fromJson(new FileReader(f), cls);
-        } catch(NullPointerException e) {
+        } catch(JsonSyntaxException | JsonIOException e) {
             throw new ObjectConversionException("The given JSON file could not be parsed. This is likely to happen if the JSON object in " +
                     "the file does not match the Java object structure required for instantiating the object.");
         }
         return obj;
+    }
+
+    @Override
+    public String write(Object obj, Class cls) {
+        return getInstance().toJson(obj, cls);
     }
 
     @Override

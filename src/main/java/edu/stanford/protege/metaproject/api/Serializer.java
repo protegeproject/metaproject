@@ -1,13 +1,14 @@
 package edu.stanford.protege.metaproject.api;
 
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 import edu.stanford.protege.metaproject.api.exception.ObjectConversionException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
+ * A generic serializer that can be used to parse a file into a Java object representation, and,
+ * analogously, write out some string-representation of the specified Java object.
+ *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
@@ -28,10 +29,17 @@ public interface Serializer<E> {
      * @param <T>   Type
      * @return Instance of the specified class
      * @throws FileNotFoundException    Specified file was not found
-     * @throws JsonSyntaxException  JSON syntax exception
-     * @throws JsonIOException  JSON IO exception
      * @throws ObjectConversionException   JSON object could not be converted to a Java object
      */
-    <T> T parse(File f, Class<T> cls) throws FileNotFoundException, JsonSyntaxException, JsonIOException, ObjectConversionException;
+    <T> T parse(File f, Class<T> cls) throws FileNotFoundException, ObjectConversionException;
+
+    /**
+     * Write into a string a representation of the given object as the specified type
+     *
+     * @param obj   Object to get a string representation of
+     * @param cls   Class
+     * @return String representation of specified object
+     */
+    String write(Object obj, Class cls);
 
 }

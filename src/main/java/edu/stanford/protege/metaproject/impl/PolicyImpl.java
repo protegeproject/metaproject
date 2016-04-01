@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class PolicyImpl implements Policy, Serializable {
-    private static final long serialVersionUID = 2254902693499295820L;
+    private static final long serialVersionUID = -3471252524491406454L;
     private Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap = new HashMap<>();
 
     /**
@@ -93,6 +93,17 @@ public class PolicyImpl implements Policy, Serializable {
         checkUserIsInPolicy(userId);
         checkProjectIsInPolicy(userId, projectId);
         return userRoleMap.get(userId).get(projectId);
+    }
+
+    @Override
+    public Set<RoleId> getRoles(UserId userId) throws UserNotInPolicyException {
+        checkUserIsInPolicy(userId);
+        Map<ProjectId,Set<RoleId>> map = userRoleMap.get(userId);
+        Set<RoleId> roles = new HashSet<>();
+        for(ProjectId p : map.keySet()) {
+            roles.addAll(map.get(p));
+        }
+        return roles;
     }
 
     @Override

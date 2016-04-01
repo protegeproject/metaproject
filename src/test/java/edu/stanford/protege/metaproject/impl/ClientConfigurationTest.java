@@ -39,7 +39,7 @@ public class ClientConfigurationTest {
     }
 
     @Test
-    public void testGetPolicy() {
+    public void testGetMetaproject() {
         assertThat(clientConfiguration.getMetaproject(), is(metaproject));
     }
 
@@ -56,6 +56,24 @@ public class ClientConfigurationTest {
     @Test
     public void testGetProperties() {
         assertThat(clientConfiguration.getProperties(), is(propertiesMap));
+    }
+
+    @Test
+    public void testAddProperty() {
+        String key = "key1", value = "val1";
+        assertThat(clientConfiguration.getProperties().containsKey(key), is(false));
+        clientConfiguration.addProperty(key, value);
+        assertThat(clientConfiguration.getProperties().containsKey(key), is(true));
+        assertThat(clientConfiguration.getProperties().get(key), is(value));
+    }
+
+    @Test
+    public void testRemoveProperty() {
+        String key = "key2", value = "val2";
+        clientConfiguration.addProperty(key, value);
+        assertThat(clientConfiguration.getProperties().containsKey(key), is(true));
+        clientConfiguration.removeProperty(key);
+        assertThat(clientConfiguration.getProperties().containsKey(key), is(false));
     }
 
     @Test

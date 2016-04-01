@@ -87,7 +87,7 @@ public interface Policy {
     Map<ProjectId, Set<RoleId>> getUserRoleMap(UserId userId);
 
     /**
-     * Get the set of role identifiers  that a given user has assigned
+     * Get the set of role identifiers that a given user has assigned within the specified project
      *
      * @param userId    User identifier
      * @param projectId Project identifier
@@ -96,6 +96,15 @@ public interface Policy {
      * @throws ProjectNotInPolicyException  Project not registered in the access control policy
      */
     Set<RoleId> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
+
+    /**
+     * Get the set of role identifiers that a given user has assigned
+     *
+     * @param userId    User identifier
+     * @return Set of role identifiers
+     * @throws UserNotInPolicyException UserId not registered in the access control policy
+     */
+    Set<RoleId> getRoles(UserId userId) throws UserNotInPolicyException;
 
     /**
      * Get the set of user identifiers that have some role in the specified project
