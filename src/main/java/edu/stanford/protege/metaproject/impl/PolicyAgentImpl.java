@@ -31,14 +31,17 @@ public class PolicyAgentImpl implements PolicyAgent {
     }
 
     @Override
-    public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId)
-            throws UnknownAccessControlObjectIdException, UserNotInPolicyException, ProjectNotInPolicyException {
-        Set<RoleId> roles = policy.getRoles(userId, projectId);
-        for (RoleId role : roles) {
-            Role r = roleRegistry.getRole(role);
-            if (r.getOperations().contains(operationId)) {
-                return true;
+    public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) {
+        try {
+            Set<RoleId> roles = policy.getRoles(userId, projectId);
+            for (RoleId role : roles) {
+                Role r = roleRegistry.getRole(role);
+                if (r.getOperations().contains(operationId)) {
+                    return true;
+                }
             }
+        } catch (UnknownAccessControlObjectIdException | UserNotInPolicyException | ProjectNotInPolicyException e) {
+            return false;
         }
         return false;
     }
