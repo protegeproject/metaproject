@@ -45,7 +45,7 @@ public class MetaprojectImpl implements Metaproject, Serializable {
     }
 
     @Override
-    public PolicyAgent getPolicyAgent() {
+    public PolicyChecker getPolicyAgent() {
         return Manager.getFactory().getPolicyAgent(policy, roleRegistry);
     }
 

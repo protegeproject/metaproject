@@ -14,8 +14,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ProjectOptionsImpl implements ProjectOptions {
-    private final Map<String,Set<String>> requiredAnnotations, optionalAnnotationsMap;
-    private final Set<String> complexAnnotations, immutableAnnotations, requiredEntities;
+    private final Map<String,Set<String>> requiredAnnotations, requiredEntities, optionalAnnotationsMap;
+    private final Set<String> complexAnnotations, immutableAnnotations;
     private Map<String,String> customProperties;
 
     /**
@@ -30,12 +30,11 @@ public class ProjectOptionsImpl implements ProjectOptions {
      *                                  signature
      * @param complexAnnotations  Set of complex annotations
      * @param immutableAnnotations  Set of annotation properties whose value cannot be modified
-     * @param requiredEntities  Set of entities that must exist in the ontology's signature in order
-     *                          to perform some operation within the project with these options.
+     * @param requiredEntities  Map of entities to entities that are required for some operation
      * @param customProperties  Map of custom properties for the project
      */
     ProjectOptionsImpl(Map<String,Set<String>> requiredAnnotations, Map<String,Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
-                       Set<String> immutableAnnotations, Set<String> requiredEntities, Map<String,String> customProperties) {
+                       Set<String> immutableAnnotations, Map<String,Set<String>> requiredEntities, Map<String,String> customProperties) {
         this.requiredAnnotations = checkNotNull(requiredAnnotations);
         this.optionalAnnotationsMap = checkNotNull(optionalAnnotationsMap);
         this.complexAnnotations = checkNotNull(complexAnnotations);
@@ -55,7 +54,7 @@ public class ProjectOptionsImpl implements ProjectOptions {
     }
 
     @Override
-    public Set<String> getRequiredEntities() {
+    public Map<String,Set<String>> getRequiredEntities() {
         return requiredEntities;
     }
 
@@ -82,6 +81,11 @@ public class ProjectOptionsImpl implements ProjectOptions {
     @Override
     public void removeProperty(String key) {
         customProperties.remove(checkNotNull(key));
+    }
+
+    @Override
+    public String getProperty(String key) {
+        return customProperties.get(key);
     }
 
     @Override

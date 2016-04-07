@@ -82,6 +82,11 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
     }
 
     @Override
+    public String getProperty(String key) {
+        return properties.get(key);
+    }
+
+    @Override
     public Map<UserId, Set<GuiRestriction>> getUserGuiRestrictions() {
         return userGuiRestrictions;
     }

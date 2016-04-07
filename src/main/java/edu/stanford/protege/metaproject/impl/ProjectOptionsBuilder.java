@@ -18,10 +18,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ProjectOptionsBuilder {
     private Map<String, Set<String>> requiredAnnotationsMap = new HashMap<>();
+    private Map<String, Set<String>> requiredEntities = new HashMap<>();
     private Map<String, Set<String>> optionalAnnotationsMap = new HashMap<>();
     private Set<String> complexAnnotations = new HashSet<>();
     private Set<String> immutableAnnotations = new HashSet<>();
-    private Set<String> requiredEntities = new HashSet<>();
     private Map<String, String> customProperties = new HashMap<>();
 
     /**
@@ -75,12 +75,12 @@ public class ProjectOptionsBuilder {
     }
 
     /**
-     * Get the set of entities that are required to exist in the ontology for some operation
+     * Get the map of entities to entities that are required for some operation
      *
-     * @param requiredEntities  Set of required entities
+     * @param requiredEntities  Map of entities to entities that are required for some operation
      * @return ProjectOptionsBuilder
      */
-    public ProjectOptionsBuilder setRequiredEntities(Set<String> requiredEntities) {
+    public ProjectOptionsBuilder setRequiredEntities(Map<String,Set<String>> requiredEntities) {
         this.requiredEntities = checkNotNull(requiredEntities);
         return this;
     }

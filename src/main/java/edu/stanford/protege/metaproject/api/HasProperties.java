@@ -30,4 +30,12 @@ public interface HasProperties {
      */
     void removeProperty(String key);
 
+    /**
+     * Get the value for the given property key
+     *
+     * @param key   Property key
+     * @return Property value
+     */
+    String getProperty(String key);
+
 }

@@ -4,7 +4,7 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface PolicyAgent {
+public interface PolicyChecker {
 
     /**
      * Check whether the specified operation is allowed for the given user

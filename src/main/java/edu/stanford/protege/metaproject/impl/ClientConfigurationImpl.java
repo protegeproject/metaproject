@@ -71,6 +71,11 @@ public class ClientConfigurationImpl implements ClientConfiguration, Serializabl
     }
 
     @Override
+    public String getProperty(String key) {
+        return properties.get(key);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

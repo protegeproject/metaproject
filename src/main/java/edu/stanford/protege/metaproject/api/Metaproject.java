@@ -21,7 +21,7 @@ public interface Metaproject {
      *
      * @return Policy agent
      */
-    PolicyAgent getPolicyAgent();
+    PolicyChecker getPolicyAgent();
 
     /**
      * Get the role registry, which allows one to create, remove, or modify roles

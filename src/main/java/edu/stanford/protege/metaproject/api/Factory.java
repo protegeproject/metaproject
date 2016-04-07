@@ -352,7 +352,7 @@ public interface Factory {
      * @param roleRegistry  Role registry
      * @return Policy agent
      */
-    PolicyAgent getPolicyAgent(Policy policy, RoleRegistry roleRegistry);
+    PolicyChecker getPolicyAgent(Policy policy, RoleRegistry roleRegistry);
 
     /**
      * Get an authentication token that reflects a successful authentication attempt
@@ -379,12 +379,11 @@ public interface Factory {
      *                                  (optionally) accompany each entity's addition to the ontology signature
      * @param complexAnnotations    Set of complex annotations
      * @param immutableAnnotations  Set of annotation properties whose value cannot be modified
-     * @param requiredEntities  Set of entities that must exist in the ontology's signature in order
-     *                          to perform some operation within the project with these options.
+     * @param requiredEntities  Map of entities to entities that are required for some operation
      * @param customProperties  Map of custom properties for the project
      * @return Project options
      */
     ProjectOptions getProjectOptions(Map<String,Set<String>> requiredAnnotationsMap, Map<String,Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
-                                     Set<String> immutableAnnotations, Set<String> requiredEntities, Map<String, String> customProperties);
+                                     Set<String> immutableAnnotations, Map<String,Set<String>> requiredEntities, Map<String, String> customProperties);
 
 }

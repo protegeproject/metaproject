@@ -285,10 +285,10 @@ public final class FactoryImpl implements Factory {
     }
 
     @Override
-    public PolicyAgent getPolicyAgent(Policy policy, RoleRegistry roleRegistry) {
+    public PolicyChecker getPolicyAgent(Policy policy, RoleRegistry roleRegistry) {
         checkNotNull(policy, "Policy must not be null");
         checkNotNull(roleRegistry, "Role registry must not be null");
-        return new PolicyAgentImpl(policy, roleRegistry);
+        return new PolicyCheckerImpl(policy, roleRegistry);
     }
 
     @Override
@@ -305,12 +305,12 @@ public final class FactoryImpl implements Factory {
 
     @Override
     public ProjectOptions getProjectOptions(Map<String, Set<String>> requiredAnnotationsMap, Map<String, Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
-                                            Set<String> immutableAnnotations, Set<String> requiredEntities, Map<String, String> customProperties) {
+                                            Set<String> immutableAnnotations, Map<String,Set<String>> requiredEntities, Map<String, String> customProperties) {
         checkNotNull(requiredAnnotationsMap, "Map of required annotations must not be null");
         checkNotNull(optionalAnnotationsMap, "Map of optional annotations must not be null");
         checkNotNull(complexAnnotations, "Set of complex annotation properties must not be null");
         checkNotNull(immutableAnnotations, "Set of immutable annotation properties must not be null");
-        checkNotNull(requiredEntities, "Set of required entities must not be null");
+        checkNotNull(requiredEntities, "Map of required entities must not be null");
         checkNotNull(customProperties, "Map of custom properties must not be null");
         return new ProjectOptionsImpl(requiredAnnotationsMap, optionalAnnotationsMap, complexAnnotations,
                 immutableAnnotations, requiredEntities, customProperties);

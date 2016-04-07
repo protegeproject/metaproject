@@ -4,7 +4,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A representation of some project wide options
+ * A representation of some project wide options centered around entities. Entities are expected
+ * to be represented as strings that correspond to their IRIs.
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
@@ -28,11 +29,11 @@ public interface ProjectOptions extends HasProperties {
     Set<String> getImmutableAnnotationProperties();
 
     /**
-     * Get the set of entities that are required for project operation
+     * Get the map of entities to their entity presence requirements
      *
-     * @return Set of required entities
+     * @return Map of entities to entities that are required for some operation
      */
-    Set<String> getRequiredEntities();
+    Map<String,Set<String>> getRequiredEntities();
 
     /**
      * Get the map of annotation properties to the set of annotation properties that

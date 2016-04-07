@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class PolicyAgentImpl implements PolicyAgent {
+public class PolicyCheckerImpl implements PolicyChecker {
     private Policy policy;
     private RoleRegistry roleRegistry;
 
@@ -25,7 +25,7 @@ public class PolicyAgentImpl implements PolicyAgent {
      * @param policy    Policy
      * @param roleRegisty   Role registry
      */
-    public PolicyAgentImpl(Policy policy, RoleRegistry roleRegisty) {
+    public PolicyCheckerImpl(Policy policy, RoleRegistry roleRegisty) {
         this.policy = checkNotNull(policy);
         this.roleRegistry = checkNotNull(roleRegisty);
     }
@@ -50,7 +50,7 @@ public class PolicyAgentImpl implements PolicyAgent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PolicyAgentImpl that = (PolicyAgentImpl) o;
+        PolicyCheckerImpl that = (PolicyCheckerImpl) o;
         return Objects.equal(policy, that.policy) &&
                 Objects.equal(roleRegistry, that.roleRegistry);
     }
