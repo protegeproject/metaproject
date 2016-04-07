@@ -1,13 +1,15 @@
 package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.AuthenticationRegistry;
+import edu.stanford.protege.metaproject.api.Host;
+import edu.stanford.protege.metaproject.api.Metaproject;
+import edu.stanford.protege.metaproject.api.ServerConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,14 +25,13 @@ public class ServerConfigurationTest {
     private static final Metaproject metaproject = Utils.getMetaproject();
     private static final AuthenticationRegistry authenticationRegistry = Utils.getAuthenticationRegistry();
     private static Map<String,String> propertiesMap = Utils.getPropertyMap();
-    private static Map<UserId,Set<GuiRestriction>> userGuiRestrictions = Utils.getUserGuiRestrictionsMap();
 
     private ServerConfiguration serverConfiguration, otherServerConfiguration, diffServerConfiguration;
 
     @Before
     public void setUp() {
-        serverConfiguration = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertiesMap, userGuiRestrictions);
-        otherServerConfiguration = Utils.getServerConfiguration(host, root,metaproject, authenticationRegistry, propertiesMap, userGuiRestrictions);
+        serverConfiguration = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertiesMap);
+        otherServerConfiguration = Utils.getServerConfiguration(host, root,metaproject, authenticationRegistry, propertiesMap);
         diffServerConfiguration = Utils.getServerConfiguration();
     }
 

@@ -192,11 +192,6 @@ public final class FactoryImpl implements Factory {
     }
 
     @Override
-    public GuiRestriction getGuiRestriction(String component, GuiRestriction.Visibility visibility) {
-        return new GuiRestrictionImpl(component, visibility);
-    }
-
-    @Override
     public SaltGenerator getSaltGenerator() {
         return new SaltGeneratorImpl();
     }

@@ -1,13 +1,15 @@
 package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Manager;
-import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.AuthenticationRegistry;
+import edu.stanford.protege.metaproject.api.Factory;
+import edu.stanford.protege.metaproject.api.Host;
+import edu.stanford.protege.metaproject.api.Metaproject;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -24,7 +26,6 @@ public class ServerConfigurationBuilder {
     private Metaproject metaproject = new MetaprojectBuilder().createMetaproject();
     private AuthenticationRegistry authenticationRegistry = Manager.getFactory().getAuthenticationRegistry();
     private Map<String,String> properties = new HashMap<>();
-    private Map<UserId, Set<GuiRestriction>> userGuiRestrictions = new HashMap<>();
 
     /**
      * Set the server host information
@@ -82,22 +83,11 @@ public class ServerConfigurationBuilder {
     }
 
     /**
-     * Set the map of users to their GUI restrictions
-     *
-     * @param userGuiRestrictions   Map of user identifiers to sets of GUI restrictions
-     * @return ServerConfigurationBuilder
-     */
-    public ServerConfigurationBuilder setUserGuiRestrictions(Map<UserId, Set<GuiRestriction>> userGuiRestrictions) {
-        this.userGuiRestrictions = checkNotNull(userGuiRestrictions);
-        return this;
-    }
-
-    /**
      * Create a server configuration instance
      *
      * @return Server configuration
      */
     public ServerConfigurationImpl createServerConfiguration() {
-        return new ServerConfigurationImpl(host, root, metaproject, authenticationRegistry, properties, userGuiRestrictions);
+        return new ServerConfigurationImpl(host, root, metaproject, authenticationRegistry, properties);
     }
 }

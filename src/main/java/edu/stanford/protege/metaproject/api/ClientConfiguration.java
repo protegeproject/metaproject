@@ -1,7 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import java.util.Set;
-
 /**
  * A representation of a client configuration, consisting of the value for the client-server synchronisation delay,
  * the set of UI components that are disabled for this client
@@ -24,12 +22,5 @@ public interface ClientConfiguration extends HasProperties {
      * @return Synchronisation delay in seconds
      */
     int getSynchronisationDelay();
-
-    /**
-     * Get the set of GUI restrictions
-     *
-     * @return Set of GUI restrictions
-     */
-    Set<GuiRestriction> getGuiRestrictions();
 
 }

@@ -35,7 +35,7 @@ public class ProjectOptionsSerializer implements JsonSerializer<ProjectOptions>,
         JsonObject obj = element.getAsJsonObject();
         Set<String> complexProperties = context.deserialize(obj.getAsJsonArray(COMPLEX_PROPERTIES), Set.class);
         Set<String> immutableProperties = context.deserialize(obj.getAsJsonArray(IMMUTABLE_PROPERTIES), Set.class);
-        Map<String,Set<String>> requiredEntities = context.deserialize(obj.getAsJsonArray(REQUIRED_ENTITIES), new TypeToken<Map<String,Set<String>>>(){}.getType());
+        Map<String,Set<String>> requiredEntities = context.deserialize(obj.get(REQUIRED_ENTITIES), new TypeToken<Map<String,Set<String>>>(){}.getType());
         Map<String,Set<String>> requiredAnnotationsMap = context.deserialize(obj.get(REQUIRED_ANNOTATIONS), new TypeToken<Map<String,Set<String>>>(){}.getType());
         Map<String,Set<String>> optionalAnnotationsMap = context.deserialize(obj.get(OPTIONAL_ANNOTATIONS), new TypeToken<Map<String,Set<String>>>(){}.getType());
         Map<String,String> customProperties = context.deserialize(obj.get(CUSTOM_PROPERTIES), Map.class);

@@ -2,13 +2,15 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.AuthenticationRegistry;
+import edu.stanford.protege.metaproject.api.Host;
+import edu.stanford.protege.metaproject.api.Metaproject;
+import edu.stanford.protege.metaproject.api.ServerConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,7 +25,6 @@ public class ServerConfigurationSerializerTest {
     private static final Metaproject metaproject = Utils.getMetaproject();
     private static final AuthenticationRegistry authenticationRegistry = Utils.getAuthenticationRegistry();
     private static final Map<String,String> propertyMap = Utils.getPropertyMap();
-    private static Map<UserId,Set<GuiRestriction>> userGuiRestrictions = Utils.getUserGuiRestrictionsMap();
 
     private String jsonServerConfiguration, jsonOtherServerConfiguration, jsonDiffServerConfiguration;
     private ServerConfiguration config, otherServerConfiguration, diffServerConfiguration;
@@ -33,9 +34,9 @@ public class ServerConfigurationSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        config = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
-        otherServerConfiguration = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
-        diffServerConfiguration = Utils.getServerConfiguration(diffHost, root, metaproject, authenticationRegistry, propertyMap, userGuiRestrictions);
+        config = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertyMap);
+        otherServerConfiguration = Utils.getServerConfiguration(host, root, metaproject, authenticationRegistry, propertyMap);
+        diffServerConfiguration = Utils.getServerConfiguration(diffHost, root, metaproject, authenticationRegistry, propertyMap);
 
         jsonServerConfiguration = gson.toJson(config, ServerConfiguration.class);
         jsonOtherServerConfiguration = gson.toJson(otherServerConfiguration, ServerConfiguration.class);

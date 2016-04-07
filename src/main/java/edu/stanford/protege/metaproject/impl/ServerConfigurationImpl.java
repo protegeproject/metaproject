@@ -10,7 +10,6 @@ import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException
 import java.io.File;
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -19,13 +18,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = -8185041367744109757L;
+    private static final long serialVersionUID = -1381462891599550914L;
     private final Host host;
     private final File root;
     private final Metaproject metaproject;
     private final AuthenticationRegistry authenticationRegistry;
     private Map<String,String> properties;
-    private Map<UserId, Set<GuiRestriction>> userGuiRestrictions;
 
     /**
      * Package-private constructor; use {@link ServerConfigurationBuilder}
@@ -35,16 +33,13 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
      * @param metaproject    Metaproject
      * @param authenticationRegistry Authentication manager
      * @param properties   Map of custom configuration properties
-     * @param userGuiRestrictions   Map of user identifiers to their correspondings sets of GUI restrictions
      */
-    ServerConfigurationImpl(Host host, File root, Metaproject metaproject, AuthenticationRegistry
-            authenticationRegistry, Map<String,String> properties, Map<UserId, Set<GuiRestriction>> userGuiRestrictions) {
+    ServerConfigurationImpl(Host host, File root, Metaproject metaproject, AuthenticationRegistry authenticationRegistry, Map<String,String> properties) {
         this.host = checkNotNull(host);
         this.root = checkNotNull(root);
         this.metaproject = checkNotNull(metaproject);
         this.authenticationRegistry = checkNotNull(authenticationRegistry);
         this.properties = checkNotNull(properties);
-        this.userGuiRestrictions = checkNotNull(userGuiRestrictions);
     }
 
     @Override
@@ -87,11 +82,6 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
     }
 
     @Override
-    public Map<UserId, Set<GuiRestriction>> getUserGuiRestrictions() {
-        return userGuiRestrictions;
-    }
-
-    @Override
     public void enableGuestUser(boolean enableGuestUser) throws UserIdAlreadyInUseException {
         UserRegistry userRegistry = metaproject.getUserRegistry();
         User guestUser = userRegistry.getGuestUser();
@@ -121,13 +111,12 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
                 Objects.equal(root, that.root) &&
                 Objects.equal(metaproject, that.metaproject) &&
                 Objects.equal(authenticationRegistry, that.authenticationRegistry) &&
-                Objects.equal(properties, that.properties) &&
-                Objects.equal(userGuiRestrictions, that.userGuiRestrictions);
+                Objects.equal(properties, that.properties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(host, root, metaproject, authenticationRegistry, properties, userGuiRestrictions);
+        return Objects.hashCode(host, root, metaproject, authenticationRegistry, properties);
     }
 
     @Override
@@ -138,7 +127,6 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
                 .add("metaproject", metaproject)
                 .add("authenticationRegistry", authenticationRegistry)
                 .add("properties", properties)
-                .add("userGuiRestrictions", userGuiRestrictions)
                 .toString();
     }
 }

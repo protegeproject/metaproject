@@ -192,28 +192,27 @@ public class Utils {
 
     public static ServerConfiguration getServerConfiguration() {
         return getServerConfiguration(Utils.getHost(), Utils.getFile(), Utils.getMetaproject(), Utils.getAuthenticationRegistry(),
-                Utils.getPropertyMap(), getUserGuiRestrictionsMap());
+                Utils.getPropertyMap());
     }
 
     public static ServerConfiguration getServerConfiguration(Host host, File root, Metaproject metaproject,
                                                              AuthenticationRegistry authenticationRegistry,
-                                                             Map<String, String> properties, Map<UserId, Set<GuiRestriction>> userGuiRestrictions) {
+                                                             Map<String, String> properties) {
         return new ServerConfigurationBuilder()
                 .setHost(host)
                 .setServerRoot(root)
                 .setMetaproject(metaproject)
                 .setAuthenticationRegistry(authenticationRegistry)
                 .setPropertyMap(properties)
-                .setUserGuiRestrictions(userGuiRestrictions)
                 .createServerConfiguration();
     }
 
     public static ClientConfiguration getClientConfiguration() {
-        return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getGuiRestrictionSet(), Utils.getPropertyMap());
+        return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getPropertyMap());
     }
 
-    public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Set<GuiRestriction> disabledUIComponents, Map<String,String> propertyMap) {
-        return new ClientConfigurationBuilder().setMetaproject(metaproject).setSynchronisationDelay(syncDelay).setGuiRestrictions(disabledUIComponents).setProperties(propertyMap).createClientConfiguration();
+    public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Map<String,String> propertyMap) {
+        return new ClientConfigurationBuilder().setMetaproject(metaproject).setSynchronisationDelay(syncDelay).setProperties(propertyMap).createClientConfiguration();
     }
 
     public static Host getHost() {
@@ -280,13 +279,6 @@ public class Utils {
         Map<String,String> map = new HashMap<>();
         map.put("testProp1", "testVal1");
         map.put("testProp2", "testVal2");
-        return map;
-    }
-
-    public static Map<UserId,Set<GuiRestriction>> getUserGuiRestrictionsMap() {
-        Map<UserId,Set<GuiRestriction>> map = new HashMap<>();
-        map.put(getUserId(), getGuiRestrictionSet());
-        map.put(getUserId(), getGuiRestrictionSet());
         return map;
     }
 
@@ -522,14 +514,6 @@ public class Utils {
         return set;
     }
 
-    public static Set<GuiRestriction> getGuiRestrictionSet() {
-        Set<GuiRestriction> set = new HashSet<>();
-        for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
-            set.add(Utils.getGUIRestriction());
-        }
-        return set;
-    }
-
     public static Set<String> getStringSet() {
         Set<String> set = new HashSet<>();
         for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
@@ -556,21 +540,13 @@ public class Utils {
         return map;
     }
 
-    public static GuiRestriction getGUIRestriction() {
-        return getGUIRestriction("button" + newUUID(), GuiRestriction.Visibility.VISIBLE);
-    }
-
-    public static GuiRestriction getGUIRestriction(String componentName, GuiRestriction.Visibility visibility) {
-        return f.getGuiRestriction(componentName, visibility);
-    }
-
     public static ProjectOptions getProjectOptions() {
         return getProjectOptions(getStringToStringSetMap(), getStringToStringSetMap(), getStringSet(), getStringSet(),
-                getStringSet(), getStringMap());
+                getStringToStringSetMap(), getStringMap());
     }
 
     public static ProjectOptions getProjectOptions(Map<String, Set<String>> requiredAnnotationsMap, Map<String, Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
-                                                   Set<String> immutableAnnotations, Set<String> requiredEntities, Map<String, String> customProperties) {
+                                                   Set<String> immutableAnnotations, Map<String,Set<String>> requiredEntities, Map<String, String> customProperties) {
         return new ProjectOptionsBuilder()
                 .setRequiredAnnotationsMap(requiredAnnotationsMap)
                 .setOptionalAnnotationsMap(optionalAnnotationsMap)

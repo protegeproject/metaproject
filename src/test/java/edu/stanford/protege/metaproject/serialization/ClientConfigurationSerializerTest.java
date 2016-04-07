@@ -3,13 +3,11 @@ package edu.stanford.protege.metaproject.serialization;
 import com.google.gson.Gson;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.ClientConfiguration;
-import edu.stanford.protege.metaproject.api.GuiRestriction;
 import edu.stanford.protege.metaproject.api.Metaproject;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,7 +19,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ClientConfigurationSerializerTest {
     private static final Map<String,String> propertyMap = Utils.getPropertyMap();
     private static final Metaproject metaproject = Utils.getMetaproject(), diffMetaproject = Utils.getMetaproject();
-    private static final Set<GuiRestriction> disabledUiElements = Utils.getGuiRestrictionSet();
     private static final int syncDelay = 150;
 
     private String jsonClientConfiguration, jsonOtherClientConfiguration, jsonDiffClientConfiguration;
@@ -32,9 +29,9 @@ public class ClientConfigurationSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        config = Utils.getClientConfiguration(metaproject, syncDelay, disabledUiElements, propertyMap);
-        otherClientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, disabledUiElements, propertyMap);
-        diffClientConfiguration = Utils.getClientConfiguration(diffMetaproject, syncDelay, disabledUiElements, propertyMap);
+        config = Utils.getClientConfiguration(metaproject, syncDelay, propertyMap);
+        otherClientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, propertyMap);
+        diffClientConfiguration = Utils.getClientConfiguration(diffMetaproject, syncDelay, propertyMap);
 
         jsonClientConfiguration = gson.toJson(config);
         jsonOtherClientConfiguration = gson.toJson(otherClientConfiguration);
@@ -91,10 +88,5 @@ public class ClientConfigurationSerializerTest {
     @Test
     public void testGetProperties() {
         assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getProperties(), is(propertyMap));
-    }
-
-    @Test
-    public void testGetDisabledUIElements() {
-        assertThat(gson.fromJson(jsonClientConfiguration, ClientConfiguration.class).getGuiRestrictions(), is(disabledUiElements));
     }
 }

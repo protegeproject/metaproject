@@ -3,8 +3,6 @@ package edu.stanford.protege.metaproject.api;
 import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 
 import java.io.File;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A representation of a server configuration, composed of host information, the access control policy, the status of
@@ -50,12 +48,5 @@ public interface ServerConfiguration extends HasProperties {
      * @throws UserIdAlreadyInUseException  Guest user identifier is already taken by another user
      */
     void enableGuestUser(boolean enableGuestUser) throws UserIdAlreadyInUseException;
-
-    /**
-     * Get the map of user identifiers to their corresponding sets of GUI restrictions
-     *
-     * @return Map of user identifiers to sets of GUI restrictions
-     */
-    Map<UserId,Set<GuiRestriction>> getUserGuiRestrictions();
 
 }

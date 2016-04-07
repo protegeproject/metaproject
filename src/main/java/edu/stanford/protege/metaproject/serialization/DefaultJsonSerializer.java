@@ -59,7 +59,6 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
                     .registerTypeHierarchyAdapter(TextProperty.class, new PropertySerializer())
                     .registerTypeHierarchyAdapter(NumericProperty.class, new PropertySerializer())
                     .registerTypeHierarchyAdapter(AuthenticationDetails.class, new AuthenticationDetailsSerializer())
-                    .registerTypeAdapter(GuiRestriction.class, new GuiRestrictionSerializer())
                     .registerTypeAdapter(ProjectOptions.class, new ProjectOptionsSerializer())
 
                     .enableComplexMapKeySerialization()

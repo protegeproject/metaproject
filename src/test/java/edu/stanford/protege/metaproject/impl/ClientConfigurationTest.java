@@ -2,13 +2,11 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.ClientConfiguration;
-import edu.stanford.protege.metaproject.api.GuiRestriction;
 import edu.stanford.protege.metaproject.api.Metaproject;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -20,7 +18,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ClientConfigurationTest {
     private static final String toStringHead = ClientConfiguration.class.getSimpleName();
     private static final Metaproject metaproject = Utils.getMetaproject();
-    private static final Set<GuiRestriction> disabledElements = Utils.getGuiRestrictionSet();
     private static final int syncDelay = 30;
     private static final Map<String,String> propertiesMap = Utils.getPropertyMap();
 
@@ -28,8 +25,8 @@ public class ClientConfigurationTest {
 
     @Before
     public void setUp() {
-        clientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, disabledElements, propertiesMap);
-        otherClientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, disabledElements, propertiesMap);;
+        clientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, propertiesMap);
+        otherClientConfiguration = Utils.getClientConfiguration(metaproject, syncDelay, propertiesMap);;
         diffClientConfiguration = Utils.getClientConfiguration();
     }
 
@@ -46,11 +43,6 @@ public class ClientConfigurationTest {
     @Test
     public void testGetSynchronisationDelay() {
         assertThat(clientConfiguration.getSynchronisationDelay(), is(syncDelay));
-    }
-
-    @Test
-    public void testGetGUIRestrictions() {
-        assertThat(clientConfiguration.getGuiRestrictions(), is(disabledElements));
     }
 
     @Test

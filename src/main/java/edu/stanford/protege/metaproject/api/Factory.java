@@ -223,15 +223,6 @@ public interface Factory {
     URI getUri(String uri);
 
     /**
-     * Create an instance of a GUI restriction
-     *
-     * @param component Component to be hidden represented by a string
-     * @param visibility    Visibility of component (visible or hidden)
-     * @return GUI restriction
-     */
-    GuiRestriction getGuiRestriction(String component, GuiRestriction.Visibility visibility);
-
-    /**
      * Create an instance of a salt generator
      *
      * @return Salt generator

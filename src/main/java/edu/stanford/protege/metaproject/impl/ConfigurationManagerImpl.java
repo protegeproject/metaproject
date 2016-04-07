@@ -70,7 +70,6 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 
         return new ClientConfigurationBuilder()
                 .setMetaproject(userMetaproject)
-                .setGuiRestrictions(serverConfiguration.getUserGuiRestrictions().get(userId))
                 .setProperties(serverConfiguration.getProperties())
                 .createClientConfiguration();
     }
