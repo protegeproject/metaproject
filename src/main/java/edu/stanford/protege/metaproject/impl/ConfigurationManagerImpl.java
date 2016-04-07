@@ -1,17 +1,15 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.*;
+import edu.stanford.protege.metaproject.api.exception.MetaprojectNotLoadedException;
+import edu.stanford.protege.metaproject.api.exception.ObjectConversionException;
+import edu.stanford.protege.metaproject.api.exception.ServerConfigurationNotLoadedException;
+import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -61,22 +59,13 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 
     @Override
     public ClientConfiguration getClientConfiguration(UserId userId) throws MetaprojectNotLoadedException, ServerConfigurationNotLoadedException, UserNotInPolicyException {
-        Factory f = Manager.getFactory();
         Metaproject metaproject = serverConfiguration.getMetaproject();
-
-        // Get policy for user
-        Map<UserId,Map<ProjectId, Set<RoleId>>> userPolicyMap = new HashMap<>();
-        userPolicyMap.put(userId, metaproject.getPolicy().getUserRoleMap(userId));
-        Policy userPolicy = f.getPolicy(userPolicyMap);
-
-        ProjectRegistry projectRegistry = getProjectRegistry(metaproject, userId, f);
-
         Metaproject userMetaproject = new MetaprojectBuilder()
                 .setOperationRegistry(metaproject.getOperationRegistry())
-                .setProjectRegistry(projectRegistry)
+                .setProjectRegistry(metaproject.getProjectRegistry())
                 .setRoleRegistry(metaproject.getRoleRegistry())
                 .setUserRegistry(metaproject.getUserRegistry())
-                .setPolicy(userPolicy)
+                .setPolicy(metaproject.getPolicy())
                 .createMetaproject();
 
         return new ClientConfigurationBuilder()
@@ -84,17 +73,6 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
                 .setGuiRestrictions(serverConfiguration.getUserGuiRestrictions().get(userId))
                 .setProperties(serverConfiguration.getProperties())
                 .createClientConfiguration();
-    }
-
-    private ProjectRegistry getProjectRegistry(Metaproject metaproject, UserId userId, Factory f) throws UserNotInPolicyException {
-        Set<ProjectId> projects = metaproject.getPolicy().getProjects(userId);
-        Set<Project> projectSet = new HashSet<>();
-        for(ProjectId p : projects) {
-            try {
-                projectSet.add(metaproject.getProjectRegistry().getProject(p));
-            } catch (UnknownProjectIdException e) { /* no-op */ }
-        }
-        return f.getProjectRegistry(projectSet);
     }
 
     private ServerConfiguration checkConfigurationIsSet(ServerConfiguration config) throws ServerConfigurationNotLoadedException {

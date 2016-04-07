@@ -60,6 +60,7 @@ public interface ConfigurationManager {
      * @return Client configuration
      * @throws ServerConfigurationNotLoadedException    Server configuration has not been loaded
      * @throws MetaprojectNotLoadedException    Metaproject has not been loaded
+     * @throws UserNotInPolicyException User identifier is not registered in the policy
      */
     ClientConfiguration getClientConfiguration(UserId userId)
             throws MetaprojectNotLoadedException, ServerConfigurationNotLoadedException, UserNotInPolicyException;

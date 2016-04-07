@@ -3,10 +3,13 @@ package edu.stanford.protege.metaproject.impl;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.Factory;
 import edu.stanford.protege.metaproject.api.Operation;
+import edu.stanford.protege.metaproject.api.OperationId;
 import edu.stanford.protege.metaproject.api.OperationType;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Rafael Gonçalves <br>
@@ -175,9 +178,18 @@ public final class Operations {
     /**
      * Get a set of all the default operations
      *
-     * @return List of operations
+     * @return Set of operations
      */
     public static Set<Operation> getDefaultOperations() {
         return defaultOperations;
+    }
+
+    /**
+     * Get a set of all the default operations' identifiers
+     *
+     * @return Set of operation identifiers
+     */
+    public static Set<OperationId> getDefaultOperationsIds() {
+        return defaultOperations.stream().map(Operation::getId).collect(Collectors.toSet());
     }
 }

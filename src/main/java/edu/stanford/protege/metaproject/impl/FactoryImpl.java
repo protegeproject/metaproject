@@ -214,7 +214,9 @@ public final class FactoryImpl implements Factory {
 
     @Override
     public UserRegistry getUserRegistry() {
-        return getUserRegistry(new HashSet<>());
+        Set<User> users = new HashSet<>();
+        users.add(getRootUser());
+        return getUserRegistry(users);
     }
 
     @Override
@@ -247,7 +249,9 @@ public final class FactoryImpl implements Factory {
 
     @Override
     public RoleRegistry getRoleRegistry() {
-        return getRoleRegistry(new HashSet<>());
+        Set<Role> roles = new HashSet<>();
+        roles.add(getAdminRole());
+        return getRoleRegistry(roles);
     }
 
     @Override
@@ -258,8 +262,9 @@ public final class FactoryImpl implements Factory {
 
     @Override
     public AuthenticationRegistry getAuthenticationRegistry() {
-        // TODO should add root user
-        return getAuthenticationRegistry(new HashSet<>());
+        Set<AuthenticationDetails> authDetails = new HashSet<>();
+        authDetails.add(getRootUserAuthDetails(getRootUser().getId()));
+        return getAuthenticationRegistry(authDetails);
     }
 
     @Override
@@ -309,5 +314,19 @@ public final class FactoryImpl implements Factory {
         checkNotNull(customProperties, "Map of custom properties must not be null");
         return new ProjectOptionsImpl(requiredAnnotationsMap, optionalAnnotationsMap, complexAnnotations,
                 immutableAnnotations, requiredEntities, customProperties);
+    }
+
+    private Role getAdminRole() {
+        return getRole(getRoleId("server-admin"), getName("Server Administrator"), getDescription("A user with this role is allowed to do any operation on the server"), Operations.getDefaultOperationsIds());
+    }
+
+    private User getRootUser() {
+        return getUser(getUserId("root"), getName("Root User"), getEmailAddress("protege-user@lists.stanford.edu"));
+    }
+
+    private AuthenticationDetails getRootUserAuthDetails(UserId userId) {
+        PasswordHasher h = getPasswordHasher();
+        SaltedPasswordDigest passwordDigest = h.hash(getPlainPassword("rootpass"), getSaltGenerator().generate());
+        return getAuthenticationDetails(userId, passwordDigest);
     }
 }

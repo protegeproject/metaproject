@@ -301,7 +301,7 @@ public interface Factory {
     OperationRegistry getOperationRegistry(Set<Operation> operations);
 
     /**
-     * Create an instance of an empty role registry
+     * Create an instance of a role registry that contains the default server-admin user
      *
      * @return Role registry
      */
