@@ -20,7 +20,7 @@ public class RoleRegistrySerializer implements JsonSerializer<RoleRegistry>, Jso
 
     @Override
     public JsonElement serialize(RoleRegistry roleRegistry, Type type, JsonSerializationContext context) {
-        List<Role> list = new ArrayList<>(roleRegistry.getRoles());
+        List<Role> list = new ArrayList<>(roleRegistry.getEntries());
         Collections.sort(list);
         return context.serialize(list);
     }

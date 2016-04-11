@@ -4,8 +4,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
-import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -20,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class UserRegistryImpl implements UserRegistry, Serializable {
-    private static final long serialVersionUID = -4127144765876721800L;
+    private static final long serialVersionUID = 1218938640226117890L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -33,34 +34,31 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     }
 
     @Override
-    public void add(User... users) throws UserIdAlreadyInUseException {
-        checkNotNull(users);
-        for(User user : users) {
-            checkNotNull(user);
-            if (contains(user.getId())) {
-                throw new UserIdAlreadyInUseException("The specified user identifier is already used by another user");
-            }
-            this.users.add(user);
+    public void add(User user) throws IdAlreadyInUseException {
+        checkNotNull(user);
+        if (contains(user.getId())) {
+            throw new IdAlreadyInUseException("The specified user identifier is already used by another user");
         }
+        users.add(user);
     }
 
     @Override
-    public void remove(User... users) {
-        checkNotNull(users);
-        for(User user : users) {
-            checkNotNull(user);
-            this.users.remove(user);
-        }
+    public void remove(User user) {
+        checkNotNull(user);
+        users.remove(user);
     }
 
     @Override
-    public Set<User> getUsers() {
+    public Set<User> getEntries() {
         return users;
     }
 
     @Override
-    public User getUser(UserId userId) throws UnknownUserIdException {
-        Optional<User> user = getUserOptional(userId);
+    public <E extends MetaprojectObjectId> User get(E id) throws UnknownMetaprojectObjectIdException {
+        if(!(id instanceof UserId)) {
+            throw new IllegalArgumentException("Programmer error: Expected a user identifier");
+        }
+        Optional<User> user = getUserOptional((UserId)id);
         if(user.isPresent()) {
             return user.get();
         }
@@ -70,13 +68,13 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     }
 
     @Override
-    public Set<User> getUsers(Name userName) {
+    public Set<User> getEntries(Name userName) {
         checkNotNull(userName);
         return users.stream().filter(user -> user.getName().get().equals(userName.get())).collect(Collectors.toSet());
     }
 
     @Override
-    public Set<User> getUsers(EmailAddress emailAddress) {
+    public Set<User> getEntries(EmailAddress emailAddress) {
         checkNotNull(emailAddress);
         return users.stream().filter(user -> user.getEmailAddress().equals(emailAddress)).collect(Collectors.toSet());
     }
@@ -89,29 +87,21 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     }
 
     @Override
-    public void setName(UserId userId, Name userName) throws UnknownUserIdException {
+    public void setName(UserId userId, Name userName) throws UnknownMetaprojectObjectIdException {
         checkNotNull(userName);
-        User user = getUser(userId);
+        User user = get(userId);
         remove(user);
         User newUser = createUser(userId, userName, user.getEmailAddress());
-        try {
-            add(newUser);
-        } catch (UserIdAlreadyInUseException e) {
-            e.printStackTrace();
-        }
+        update(newUser);
     }
 
     @Override
-    public void setEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownUserIdException {
+    public void setEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownMetaprojectObjectIdException {
         checkNotNull(emailAddress);
-        User user = getUser(userId);
+        User user = get(userId);
         remove(user);
         User newUser = createUser(userId, user.getName(), emailAddress);
-        try {
-            add(newUser);
-        } catch (UserIdAlreadyInUseException e) {
-            e.printStackTrace();
-        }
+        update(newUser);
     }
 
     @Override
@@ -126,14 +116,29 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     }
 
     @Override
-    public boolean contains(UserId userId) {
-        checkNotNull(userId);
+    public boolean contains(User obj) {
+        checkNotNull(obj);
+        return users.contains(obj);
+    }
+
+    @Override
+    public <E extends MetaprojectObjectId> boolean contains(E id) {
+        checkNotNull(id);
         for(User user : users) {
-            if(user.getId().equals(userId)) {
+            if(user.getId().equals(id)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Update the registry with the given user
+     *
+     * @param user  User
+     */
+    private void update(User user) {
+        users.add(user);
     }
 
     /**

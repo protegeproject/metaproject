@@ -4,6 +4,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
 
 import java.io.Serializable;
@@ -18,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationRegistryImpl implements OperationRegistry, Serializable {
-    private static final long serialVersionUID = 924879919250231146L;
+    private static final long serialVersionUID = -8928478849716596933L;
     private Set<Operation> operations = new HashSet<>();
 
     /**
@@ -31,30 +33,31 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
     }
 
     @Override
-    public void add(Operation... operations) {
-        checkNotNull(operations);
-        for(Operation o : operations) {
-            this.operations.add(checkNotNull(o));
+    public void add(Operation operation) throws IdAlreadyInUseException {
+        checkNotNull(operation);
+        if (contains(operation.getId())) {
+            throw new IdAlreadyInUseException("The specified operation identifier is already used by another operation");
         }
+        operations.add(operation);
     }
 
     @Override
-    public void remove(Operation... operations) {
-        checkNotNull(operations);
-        for(Operation o : operations) {
-            checkNotNull(o);
-            this.operations.remove(o);
-        }
+    public void remove(Operation operation) {
+        checkNotNull(operation);
+        operations.remove(operation);
     }
 
     @Override
-    public Set<Operation> getOperations() {
+    public Set<Operation> getEntries() {
         return operations;
     }
 
     @Override
-    public Operation getOperation(OperationId operationId) throws UnknownOperationIdException {
-        Optional<Operation> operation = getOperationOptional(operationId);
+    public <E extends MetaprojectObjectId> Operation get(E id) throws UnknownMetaprojectObjectIdException {
+        if(!(id instanceof OperationId)) {
+            throw new IllegalArgumentException("Programmer error: Expected an operation identifier");
+        }
+        Optional<Operation> operation = getOperationOptional((OperationId)id);
         if(operation.isPresent()) {
             return operation.get();
         }
@@ -64,32 +67,47 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
     }
 
     @Override
-    public void setName(OperationId operationId, Name operationName) throws UnknownOperationIdException {
+    public void setName(OperationId operationId, Name operationName) throws UnknownMetaprojectObjectIdException {
         checkNotNull(operationName);
-        Operation operation = getOperation(operationId);
+        Operation operation = get(operationId);
         remove(operation);
         Operation newOperation = createOperation(operation.getId(), operationName, operation.getDescription(), operation.getType());
-        add(newOperation);
+        update(newOperation);
     }
 
     @Override
-    public void setDescription(OperationId operationId, Description operationDescription) throws UnknownOperationIdException {
+    public void setDescription(OperationId operationId, Description operationDescription) throws UnknownMetaprojectObjectIdException {
         checkNotNull(operationDescription);
-        Operation operation = getOperation(operationId);
+        Operation operation = get(operationId);
         remove(operation);
         Operation newOperation = createOperation(operation.getId(), operation.getName(), operationDescription, operation.getType());
-        add(newOperation);
+        update(newOperation);
     }
 
     @Override
-    public boolean contains(OperationId operationId) {
-        checkNotNull(operationId);
+    public boolean contains(Operation obj) {
+        checkNotNull(obj);
+        return operations.contains(obj);
+    }
+
+    @Override
+    public <E extends MetaprojectObjectId> boolean contains(E id) {
+        checkNotNull(id);
         for(Operation operation : operations) {
-            if(operation.getId().equals(operationId)) {
+            if(operation.getId().equals(id)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Update the registry with the given operation
+     *
+     * @param operation Operation
+     */
+    private void update(Operation operation) {
+        operations.add(operation);
     }
 
     /**

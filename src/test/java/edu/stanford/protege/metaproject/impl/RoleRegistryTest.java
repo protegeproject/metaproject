@@ -2,7 +2,8 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UnknownRoleIdException;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,43 +37,43 @@ public class RoleRegistryTest {
 
     @Test
     public void testGetRoles() {
-        assertThat(roleRegistry.getRoles(), is(roleSet));
+        assertThat(roleRegistry.getEntries(), is(roleSet));
     }
 
     @Test
-    public void testGetRoleById() throws UnknownRoleIdException {
-        assertThat(roleRegistry.getRole(role1.getId()), is(role1));
+    public void testGetRoleById() throws UnknownMetaprojectObjectIdException {
+        assertThat(roleRegistry.get(role1.getId()), is(role1));
     }
 
     @Test
     public void testRemoveRole() {
-        assertThat(roleRegistry.getRoles().contains(role4), is(true));
+        assertThat(roleRegistry.getEntries().contains(role4), is(true));
         roleRegistry.remove(role4);
-        assertThat(roleRegistry.getRoles().contains(role4), is(false));
+        assertThat(roleRegistry.getEntries().contains(role4), is(false));
     }
 
     @Test
-    public void testAddRole() throws UnknownRoleIdException {
+    public void testAddRole() throws UnknownMetaprojectObjectIdException, IdAlreadyInUseException {
         Role role5 = Utils.getRole();
-        assertThat(roleRegistry.getRoles().contains(role5), is(false));
+        assertThat(roleRegistry.getEntries().contains(role5), is(false));
 
         roleRegistry.add(role5);
-        assertThat(roleRegistry.getRoles().contains(role5), is(true));
-        assertThat(roleRegistry.getRole(role5.getId()), is(role5));
+        assertThat(roleRegistry.getEntries().contains(role5), is(true));
+        assertThat(roleRegistry.get(role5.getId()), is(role5));
     }
 
     @Test
-    public void testChangeDescription() throws UnknownRoleIdException {
+    public void testChangeDescription() throws UnknownMetaprojectObjectIdException {
         Description newDescription = Utils.getDescription("new test description");
         roleRegistry.setDescription(role2.getId(), newDescription);
-        assertThat(roleRegistry.getRole(role2.getId()).getDescription(), is(newDescription));
+        assertThat(roleRegistry.get(role2.getId()).getDescription(), is(newDescription));
     }
 
     @Test
-    public void testChangeName() throws UnknownRoleIdException {
+    public void testChangeName() throws UnknownMetaprojectObjectIdException {
         Name newName = Utils.getName("new test name");
         roleRegistry.setName(role2.getId(), newName);
-        assertThat(roleRegistry.getRole(role2.getId()).getName(), is(newName));
+        assertThat(roleRegistry.get(role2.getId()).getName(), is(newName));
     }
 
     @Test
@@ -83,19 +84,19 @@ public class RoleRegistryTest {
     }
 
     @Test
-    public void testAddOperation() throws UnknownRoleIdException {
+    public void testAddOperation() throws UnknownMetaprojectObjectIdException {
         OperationId newOperation = Utils.getOperationId();
-        assertThat(roleRegistry.getRole(role2.getId()).getOperations().contains(newOperation), is(false));
+        assertThat(roleRegistry.get(role2.getId()).getOperations().contains(newOperation), is(false));
 
         roleRegistry.addOperation(role2.getId(), newOperation);
-        assertThat(roleRegistry.getRole(role2.getId()).getOperations().contains(newOperation), is(true));
+        assertThat(roleRegistry.get(role2.getId()).getOperations().contains(newOperation), is(true));
     }
 
     @Test
-    public void testRemoveOperation() throws UnknownRoleIdException {
+    public void testRemoveOperation() throws UnknownMetaprojectObjectIdException {
         OperationId operationId = role2.getOperations().iterator().next();
         roleRegistry.removeOperation(role2.getId(), operationId);
-        assertThat(roleRegistry.getRole(role2.getId()).getOperations().contains(operationId), is(false));
+        assertThat(roleRegistry.get(role2.getId()).getOperations().contains(operationId), is(false));
     }
 
     @Test

@@ -75,12 +75,12 @@ public class UserRegistrySerializerTest {
 
     @Test
     public void testGetUsersNotNull() {
-        assertThat(gson.fromJson(jsonUserManager, UserRegistry.class).getUsers(), is(not(equalTo(null))));
+        assertThat(gson.fromJson(jsonUserManager, UserRegistry.class).getEntries(), is(not(equalTo(null))));
     }
 
     @Test
     public void testGetUsers() {
-        assertThat(gson.fromJson(jsonUserManager, UserRegistry.class).getUsers(), is(userSet));
+        assertThat(gson.fromJson(jsonUserManager, UserRegistry.class).getEntries(), is(userSet));
     }
 
     @Test

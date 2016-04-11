@@ -20,7 +20,7 @@ public class OperationRegistrySerializer implements JsonSerializer<OperationRegi
 
     @Override
     public JsonElement serialize(OperationRegistry operationRegistry, Type type, JsonSerializationContext context) {
-        List<Operation> list = new ArrayList<>(operationRegistry.getOperations());
+        List<Operation> list = new ArrayList<>(operationRegistry.getEntries());
         Collections.sort(list);
         return context.serialize(list);
     }

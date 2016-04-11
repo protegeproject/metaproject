@@ -10,18 +10,20 @@ package edu.stanford.protege.metaproject.api;
 public interface Metaproject {
 
     /**
+     * Get the metaproject agent that provides an access point to accessing high-level information contained in the registries.
+     * In particular, it allows one to verify if a user is allowed to do some operation within a project, as well as to obtain
+     * sets of metaproject objects such as users, roles, operations and projects.
+     *
+     * @return Metaproject agent
+     */
+    MetaprojectAgent getMetaprojectAgent();
+
+    /**
      * Get the access control policy, where users get assigned roles within projects
      *
      * @return Policy
      */
     Policy getPolicy();
-
-    /**
-     * Get the policy agent that allows one to verify if a user is allowed to do some operation within a project
-     *
-     * @return Policy agent
-     */
-    PolicyChecker getPolicyAgent();
 
     /**
      * Get the role registry, which allows one to create, remove, or modify roles

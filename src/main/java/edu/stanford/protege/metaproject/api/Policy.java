@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.util.Map;
@@ -42,6 +42,22 @@ public interface Policy {
      * @param roleId    Role identifier
      */
     void remove(UserId userId, ProjectId projectId, RoleId roleId);
+
+    /**
+     * Remove all role assignments on the specified project by the given user
+     *
+     * @param userId    User identifier
+     * @param projectId Project identifier
+     */
+    void remove(UserId userId, ProjectId projectId);
+
+    /**
+     * Remove all policy and registry entries involving the metaproject object with the specified identifier
+     *
+     * @param obj   Metaproject object identifier
+     * @param <E>   Type of identifier
+     */
+    <E extends MetaprojectObjectId> void remove(E obj);
 
     /**
      * Check if a given user has the specified role
@@ -111,9 +127,9 @@ public interface Policy {
      *
      * @param projectId    Project identifier
      * @return Set of user identifiers
-     * @throws UnknownAccessControlObjectIdException Unknown access control object exception
+     * @throws UnknownMetaprojectObjectIdException Unknown access control object exception
      */
-    Set<UserId> getUsers(ProjectId projectId) throws UnknownAccessControlObjectIdException;
+    Set<UserId> getUsers(ProjectId projectId) throws UnknownMetaprojectObjectIdException;
 
     /**
      * Get the set of project identifiers that the given user is assigned to

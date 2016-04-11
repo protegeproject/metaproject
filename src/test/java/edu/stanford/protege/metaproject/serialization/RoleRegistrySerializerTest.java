@@ -75,11 +75,11 @@ public class RoleRegistrySerializerTest {
 
     @Test
     public void testGetRolesNotNull() {
-        assertThat(gson.fromJson(jsonRoleManager, RoleRegistry.class).getRoles(), is(not(equalTo(null))));
+        assertThat(gson.fromJson(jsonRoleManager, RoleRegistry.class).getEntries(), is(not(equalTo(null))));
     }
 
     @Test
     public void testGetRoles() {
-        assertThat(gson.fromJson(jsonDiffRoleManager, RoleRegistry.class).getRoles(), is(diffRoleSet));
+        assertThat(gson.fromJson(jsonDiffRoleManager, RoleRegistry.class).getEntries(), is(diffRoleSet));
     }
 }

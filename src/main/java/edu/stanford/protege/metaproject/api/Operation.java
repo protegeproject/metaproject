@@ -6,14 +6,7 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Operation extends HasName, HasDescription, Comparable<Operation> {
-
-    /**
-     * Get the operation identifier
-     *
-     * @return Operation identifier
-     */
-    OperationId getId();
+public interface Operation extends MetaprojectObject<OperationId>, HasName, HasDescription, Comparable<Operation> {
 
     /**
      * Get the type of operation: read, write, or execute

@@ -2,7 +2,8 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,57 +38,57 @@ public class ProjectRegistryTest {
 
     @Test
     public void testGetProjects() {
-        assertThat(projectRegistry.getProjects(), is(projectSet));
+        assertThat(projectRegistry.getEntries(), is(projectSet));
     }
 
     @Test
-    public void testGetProjectById() throws UnknownProjectIdException {
-        assertThat(projectRegistry.getProject(project1.getId()), is(project1));
+    public void testGetProjectById() throws UnknownMetaprojectObjectIdException {
+        assertThat(projectRegistry.get(project1.getId()), is(project1));
     }
 
     @Test
     public void testRemoveProject() {
-        assertThat(projectRegistry.getProjects().contains(project4), is(true));
+        assertThat(projectRegistry.getEntries().contains(project4), is(true));
         projectRegistry.remove(project4);
-        assertThat(projectRegistry.getProjects().contains(project4), is(false));
+        assertThat(projectRegistry.getEntries().contains(project4), is(false));
     }
 
     @Test
-    public void testAddProject() throws UnknownProjectIdException {
+    public void testAddProject() throws UnknownMetaprojectObjectIdException, IdAlreadyInUseException {
         Project project5 = Utils.getProject();
-        assertThat(projectRegistry.getProjects().contains(project5), is(false));
+        assertThat(projectRegistry.getEntries().contains(project5), is(false));
 
         projectRegistry.add(project5);
-        assertThat(projectRegistry.getProjects().contains(project5), is(true));
-        assertThat(projectRegistry.getProject(project5.getId()), is(project5));
+        assertThat(projectRegistry.getEntries().contains(project5), is(true));
+        assertThat(projectRegistry.get(project5.getId()), is(project5));
     }
 
     @Test
-    public void testSetDescription() throws UnknownProjectIdException {
+    public void testSetDescription() throws UnknownMetaprojectObjectIdException {
         Description newDescription = Utils.getDescription("new test description");
         projectRegistry.setDescription(project2.getId(), newDescription);
-        assertThat(projectRegistry.getProject(project2.getId()).getDescription(), is(newDescription));
+        assertThat(projectRegistry.get(project2.getId()).getDescription(), is(newDescription));
     }
 
     @Test
-    public void testSetName() throws UnknownProjectIdException {
+    public void testSetName() throws UnknownMetaprojectObjectIdException {
         Name newName = Utils.getName("new test name");
         projectRegistry.setName(project2.getId(), newName);
-        assertThat(projectRegistry.getProject(project2.getId()).getName(), is(newName));
+        assertThat(projectRegistry.get(project2.getId()).getName(), is(newName));
     }
 
     @Test
-    public void testSetFile() throws UnknownProjectIdException {
+    public void testSetFile() throws UnknownMetaprojectObjectIdException {
         File newFile = Utils.getFile("documents/test/somefile.txt");
         projectRegistry.setFile(project2.getId(), newFile);
-        assertThat(projectRegistry.getProject(project2.getId()).getFile(), is(newFile));
+        assertThat(projectRegistry.get(project2.getId()).getFile(), is(newFile));
     }
 
     @Test
-    public void testSetOwner() throws UnknownProjectIdException {
+    public void testSetOwner() throws UnknownMetaprojectObjectIdException {
         UserId newOwner = Utils.getUserId();
         projectRegistry.setOwner(project2.getId(), newOwner);
-        assertThat(projectRegistry.getProject(project2.getId()).getOwner(), is(newOwner));
+        assertThat(projectRegistry.get(project2.getId()).getOwner(), is(newOwner));
     }
 
     @Test

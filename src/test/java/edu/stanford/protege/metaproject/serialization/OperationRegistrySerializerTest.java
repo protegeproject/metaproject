@@ -75,11 +75,11 @@ public class OperationRegistrySerializerTest {
 
     @Test
     public void testGetOperationsNotNull() {
-        assertThat(gson.fromJson(jsonOperationManager, OperationRegistry.class).getOperations(), is(not(equalTo(null))));
+        assertThat(gson.fromJson(jsonOperationManager, OperationRegistry.class).getEntries(), is(not(equalTo(null))));
     }
 
     @Test
     public void testGetOperations() {
-        assertThat(gson.fromJson(jsonOperationManager, OperationRegistry.class).getOperations(), is(operationSet));
+        assertThat(gson.fromJson(jsonOperationManager, OperationRegistry.class).getEntries(), is(operationSet));
     }
 }

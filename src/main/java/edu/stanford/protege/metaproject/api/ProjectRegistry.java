@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 
 import java.io.File;
 import java.util.Set;
@@ -11,37 +11,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ProjectRegistry {
-
-    /**
-     * Add the given project(s) to the project registry
-     *
-     * @param project   One or more new projects
-     */
-    void add(Project... project);
-
-    /**
-     * Remove the specified project(s) from the project registry
-     *
-     * @param project   One or more projects to be removed
-     */
-    void remove(Project... project);
-
-    /**
-     * Get the set of all projects
-     *
-     * @return Set of projects
-     */
-    Set<Project> getProjects();
-
-    /**
-     * A convenience method to fetch a project or die trying (with an exception)
-     *
-     * @param projectId    Project identifier
-     * @return Project instance
-     * @throws UnknownProjectIdException    Project identifier is not recognized
-     */
-    Project getProject(ProjectId projectId) throws UnknownProjectIdException;
+public interface ProjectRegistry extends Registry<Project> {
 
     /**
      * Get the set of projects with the specified project name
@@ -49,59 +19,51 @@ public interface ProjectRegistry {
      * @param projectName   Project name
      * @return Set of projects
      */
-    Set<Project> getProjects(Name projectName);
+    Set<Project> getEntries(Name projectName);
 
     /**
      * Change the name of the given project
      *
      * @param projectId   Project identifier
      * @param projectName   New project name
-     * @throws UnknownProjectIdException    Project identifier is not recognized
+     * @throws UnknownMetaprojectObjectIdException    Project identifier is not recognized
      */
-    void setName(ProjectId projectId, Name projectName) throws UnknownProjectIdException;
+    void setName(ProjectId projectId, Name projectName) throws UnknownMetaprojectObjectIdException;
 
     /**
      * Change the description of the given project
      *
      * @param projectId   Project identifier
      * @param projectDescription    New project description
-     * @throws UnknownProjectIdException    Project identifier is not recognized
+     * @throws UnknownMetaprojectObjectIdException    Project identifier is not recognized
      */
-    void setDescription(ProjectId projectId, Description projectDescription) throws UnknownProjectIdException;
+    void setDescription(ProjectId projectId, Description projectDescription) throws UnknownMetaprojectObjectIdException;
 
     /**
      * Change the owner of the specified project
      *
      * @param projectId   Project identifier
      * @param userId    New owner user identifier
-     * @throws UnknownProjectIdException    Project identifier is not recognized
+     * @throws UnknownMetaprojectObjectIdException    Project identifier is not recognized
      */
-    void setOwner(ProjectId projectId, UserId userId) throws UnknownProjectIdException;
+    void setOwner(ProjectId projectId, UserId userId) throws UnknownMetaprojectObjectIdException;
 
     /**
      * Change the file location of the specified project
      *
      * @param projectId Project identifier
      * @param file   Project file
-     * @throws UnknownProjectIdException    Project identifier is not recognized
+     * @throws UnknownMetaprojectObjectIdException    Project identifier is not recognized
      */
-    void setFile(ProjectId projectId, File file) throws UnknownProjectIdException;
+    void setFile(ProjectId projectId, File file) throws UnknownMetaprojectObjectIdException;
 
     /**
      * Set the options for this project
      *
      * @param projectId Project identifier
      * @param projectOptions    Project options
-     * @throws UnknownProjectIdException    Project identifier is not recognized
+     * @throws UnknownMetaprojectObjectIdException    Project identifier is not recognized
      */
-    void setOptions(ProjectId projectId, ProjectOptions projectOptions) throws UnknownProjectIdException;
-
-    /**
-     * Check whether the project registry contains a projectwith the given identifier
-     *
-     * @param projectId    Project identifier
-     * @return true if there is a project with the specified identifier, false otherwise
-     */
-    boolean contains(ProjectId projectId);
+    void setOptions(ProjectId projectId, ProjectOptions projectOptions) throws UnknownMetaprojectObjectIdException;
 
 }

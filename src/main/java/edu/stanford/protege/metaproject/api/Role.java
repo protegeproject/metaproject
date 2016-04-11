@@ -9,14 +9,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Role extends HasName, HasDescription, Comparable<Role> {
-
-    /**
-     * Get the role identifier
-     *
-     * @return Role identifier
-     */
-    RoleId getId();
+public interface Role extends MetaprojectObject<RoleId>, HasName, HasDescription, Comparable<Role> {
 
     /**
      * Get the set of operations associated with this role

@@ -280,10 +280,14 @@ public final class FactoryImpl implements Factory {
     }
 
     @Override
-    public PolicyChecker getPolicyAgent(Policy policy, RoleRegistry roleRegistry) {
+    public MetaprojectAgent getMetaprojectAgent(Policy policy, RoleRegistry roleRegistry, OperationRegistry operationRegistry,
+                                                UserRegistry userRegistry, ProjectRegistry projectRegistry) {
         checkNotNull(policy, "Policy must not be null");
         checkNotNull(roleRegistry, "Role registry must not be null");
-        return new PolicyCheckerImpl(policy, roleRegistry);
+        checkNotNull(operationRegistry, "Operation registry must not be null");
+        checkNotNull(userRegistry, "User registry must not be null");
+        checkNotNull(projectRegistry, "Project registry must not be null");
+        return new MetaprojectAgentImpl(policy, roleRegistry, operationRegistry, userRegistry, projectRegistry);
     }
 
     @Override

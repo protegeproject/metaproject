@@ -14,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class MetaprojectImpl implements Metaproject, Serializable {
-    private static final long serialVersionUID = -7167580667424252242L;
+    private static final long serialVersionUID = 6544827736273396053L;
     private Policy policy;
     private RoleRegistry roleRegistry;
     private OperationRegistry operationRegistry;
@@ -45,8 +45,8 @@ public class MetaprojectImpl implements Metaproject, Serializable {
     }
 
     @Override
-    public PolicyChecker getPolicyAgent() {
-        return Manager.getFactory().getPolicyAgent(policy, roleRegistry);
+    public MetaprojectAgent getMetaprojectAgent() {
+        return Manager.getFactory().getMetaprojectAgent(policy, roleRegistry, operationRegistry, userRegistry, projectRegistry);
     }
 
     @Override

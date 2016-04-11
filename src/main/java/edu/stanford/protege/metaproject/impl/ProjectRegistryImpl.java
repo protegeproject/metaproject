@@ -4,6 +4,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UnknownProjectIdException;
 
 import java.io.File;
@@ -20,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
-    private static final long serialVersionUID = 3845757431219337228L;
+    private static final long serialVersionUID = -5367365674865713167L;
     private Set<Project> projects = new HashSet<>();
 
     /**
@@ -33,30 +35,31 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
     }
 
     @Override
-    public void add(Project... projects) {
-        checkNotNull(projects);
-        for(Project p : projects) {
-            this.projects.add(checkNotNull(p));
+    public void add(Project project) throws IdAlreadyInUseException {
+        checkNotNull(project);
+        if (contains(project.getId())) {
+            throw new IdAlreadyInUseException("The specified project identifier is already used by another project");
         }
+        projects.add(project);
     }
 
     @Override
-    public void remove(Project... projects) {
-        checkNotNull(projects);
-        for(Project p : projects) {
-            checkNotNull(p);
-            this.projects.remove(p);
-        }
+    public void remove(Project project) {
+        checkNotNull(project);
+        projects.remove(project);
     }
 
     @Override
-    public Set<Project> getProjects() {
+    public Set<Project> getEntries() {
         return projects;
     }
 
     @Override
-    public Project getProject(ProjectId projectId) throws UnknownProjectIdException {
-        Optional<Project> project = getProjectOptional(projectId);
+    public <E extends MetaprojectObjectId> Project get(E id) throws UnknownMetaprojectObjectIdException {
+        if(!(id instanceof ProjectId)) {
+            throw new IllegalArgumentException("Programmer error: Expected a project identifier");
+        }
+        Optional<Project> project = getProjectOptional((ProjectId)id);
         if(project.isPresent()) {
             return project.get();
         }
@@ -66,75 +69,90 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
     }
 
     @Override
-    public Set<Project> getProjects(Name projectName) {
+    public Set<Project> getEntries(Name projectName) {
         checkNotNull(projectName);
         return projects.stream().filter(project -> project.getName().equals(projectName)).collect(Collectors.toSet());
     }
 
     @Override
-    public void setName(ProjectId projectId, Name projectName) throws UnknownProjectIdException {
+    public void setName(ProjectId projectId, Name projectName) throws UnknownMetaprojectObjectIdException {
         checkNotNull(projectName);
-        Project project = getProject(projectId);
+        Project project = get(projectId);
         remove(project);
 
         Project newProject = createProject(project.getId(), projectName, project.getDescription(), project.getFile(),
                 project.getOwner(), project.getOptions());
-        add(newProject);
+        update(newProject);
     }
 
     @Override
-    public void setDescription(ProjectId projectId, Description projectDescription) throws UnknownProjectIdException {
+    public void setDescription(ProjectId projectId, Description projectDescription) throws UnknownMetaprojectObjectIdException {
         checkNotNull(projectDescription);
-        Project project = getProject(projectId);
+        Project project = get(projectId);
         remove(project);
 
         Project newProject = createProject(project.getId(), project.getName(), projectDescription, project.getFile(),
                 project.getOwner(), project.getOptions());
-        add(newProject);
+        update(newProject);
     }
 
     @Override
-    public void setOwner(ProjectId projectId, UserId userId) throws UnknownProjectIdException {
+    public void setOwner(ProjectId projectId, UserId userId) throws UnknownMetaprojectObjectIdException {
         checkNotNull(userId);
-        Project project = getProject(projectId);
+        Project project = get(projectId);
         remove(project);
 
         Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), project.getFile(),
                 userId, project.getOptions());
-        add(newProject);
+        update(newProject);
     }
 
     @Override
-    public void setFile(ProjectId projectId, File file) throws UnknownProjectIdException {
+    public void setFile(ProjectId projectId, File file) throws UnknownMetaprojectObjectIdException {
         checkNotNull(file);
-        Project project = getProject(projectId);
+        Project project = get(projectId);
         remove(project);
 
         Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), file,
                 project.getOwner(), project.getOptions());
-        add(newProject);
+        update(newProject);
     }
 
     @Override
-    public void setOptions(ProjectId projectId, ProjectOptions projectOptions) throws UnknownProjectIdException {
+    public void setOptions(ProjectId projectId, ProjectOptions projectOptions) throws UnknownMetaprojectObjectIdException {
         checkNotNull(projectId);
         checkNotNull(projectOptions);
-        Project project = getProject(projectId);
+        Project project = get(projectId);
         remove(project);
         Project newProject = createProject(projectId, project.getName(), project.getDescription(), project.getFile(),
                 project.getOwner(), Optional.of(projectOptions));
-        add(newProject);
+        update(newProject);
     }
 
     @Override
-    public boolean contains(ProjectId projectId) {
-        checkNotNull(projectId);
+    public boolean contains(Project obj) {
+        checkNotNull(obj);
+        return projects.contains(obj);
+    }
+
+    @Override
+    public <E extends MetaprojectObjectId> boolean contains(E id) {
+        checkNotNull(id);
         for(Project p : projects) {
-            if(p.getId().equals(projectId)) {
+            if(p.getId().equals(id)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Update the registry with the given project
+     *
+     * @param project   Project
+     */
+    private void update(Project project) {
+        projects.add(project);
     }
 
     /**

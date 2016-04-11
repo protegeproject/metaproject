@@ -2,7 +2,8 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UnknownOperationIdException;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,43 +37,43 @@ public class OperationRegistryTest {
 
     @Test
     public void testGetOperations() {
-        assertThat(operationRegistry.getOperations(), is(operationSet));
+        assertThat(operationRegistry.getEntries(), is(operationSet));
     }
 
     @Test
-    public void testGetOperationById() throws UnknownOperationIdException {
-        assertThat(operationRegistry.getOperation(operation1.getId()), is(operation1));
+    public void testGetOperationById() throws UnknownMetaprojectObjectIdException {
+        assertThat(operationRegistry.get(operation1.getId()), is(operation1));
     }
 
     @Test
     public void testRemoveOperation() {
-        assertThat(operationRegistry.getOperations().contains(operation4), is(true));
+        assertThat(operationRegistry.getEntries().contains(operation4), is(true));
         operationRegistry.remove(operation4);
-        assertThat(operationRegistry.getOperations().contains(operation4), is(false));
+        assertThat(operationRegistry.getEntries().contains(operation4), is(false));
     }
 
     @Test
-    public void testAddOperation() throws UnknownOperationIdException {
+    public void testAddOperation() throws UnknownMetaprojectObjectIdException, IdAlreadyInUseException {
         Operation operation5 = Utils.getServerOperation();
-        assertThat(operationRegistry.getOperations().contains(operation5), is(false));
+        assertThat(operationRegistry.getEntries().contains(operation5), is(false));
 
         operationRegistry.add(operation5);
-        assertThat(operationRegistry.getOperations().contains(operation5), is(true));
-        assertThat(operationRegistry.getOperation(operation5.getId()), is(operation5));
+        assertThat(operationRegistry.getEntries().contains(operation5), is(true));
+        assertThat(operationRegistry.get(operation5.getId()), is(operation5));
     }
 
     @Test
-    public void testChangeDescription() throws UnknownOperationIdException {
+    public void testChangeDescription() throws UnknownMetaprojectObjectIdException {
         Description newDescription = Utils.getDescription("new test description");
         operationRegistry.setDescription(operation2.getId(), newDescription);
-        assertThat(operationRegistry.getOperation(operation2.getId()).getDescription(), is(newDescription));
+        assertThat(operationRegistry.get(operation2.getId()).getDescription(), is(newDescription));
     }
 
     @Test
-    public void testChangeName() throws UnknownOperationIdException {
+    public void testChangeName() throws UnknownMetaprojectObjectIdException {
         Name newName = Utils.getName("new test name");
         operationRegistry.setName(operation2.getId(), newName);
-        assertThat(operationRegistry.getOperation(operation2.getId()).getName(), is(newName));
+        assertThat(operationRegistry.get(operation2.getId()).getName(), is(newName));
     }
 
     @Test

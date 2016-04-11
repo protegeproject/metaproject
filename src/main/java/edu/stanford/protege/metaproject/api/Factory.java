@@ -341,9 +341,13 @@ public interface Factory {
      *
      * @param policy    Policy
      * @param roleRegistry  Role registry
+     * @param operationRegistry Operation registry
+     * @param userRegistry  User registry
+     * @param projectRegistry   Project registry
      * @return Policy agent
      */
-    PolicyChecker getPolicyAgent(Policy policy, RoleRegistry roleRegistry);
+    MetaprojectAgent getMetaprojectAgent(Policy policy, RoleRegistry roleRegistry, OperationRegistry operationRegistry,
+                                         UserRegistry userRegistry, ProjectRegistry projectRegistry);
 
     /**
      * Get an authentication token that reflects a successful authentication attempt

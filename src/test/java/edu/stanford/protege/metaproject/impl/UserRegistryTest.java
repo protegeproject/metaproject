@@ -3,8 +3,8 @@ package edu.stanford.protege.metaproject.impl;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UnknownUserIdException;
-import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,39 +39,39 @@ public class UserRegistryTest {
 
     @Test
     public void testGetUsers() {
-        assertThat(userRegistry.getUsers(), is(userSet));
+        assertThat(userRegistry.getEntries(), is(userSet));
     }
 
     @Test
-    public void testGetUserById() throws UnknownUserIdException {
-        assertThat(userRegistry.getUser(user1.getId()), is(user1));
+    public void testGetUserById() throws UnknownMetaprojectObjectIdException {
+        assertThat(userRegistry.get(user1.getId()), is(user1));
     }
 
     @Test
     public void testRemoveUser() {
         userRegistry.remove(user3);
-        assertThat(userRegistry.getUsers().contains(user3), is(false));
+        assertThat(userRegistry.getEntries().contains(user3), is(false));
     }
 
     @Test
-    public void testAddUser() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException {
+    public void testAddUser() throws EmailAddressAlreadyInUseException, IdAlreadyInUseException {
         User user4 = Utils.getUser();
         userRegistry.add(user4);
-        assertThat(userRegistry.getUsers().contains(user4), is(true));
+        assertThat(userRegistry.getEntries().contains(user4), is(true));
     }
 
     @Test
-    public void testChangeEmailAddress() throws UnknownUserIdException, UserIdAlreadyInUseException, EmailAddressAlreadyInUseException {
+    public void testChangeEmailAddress() throws UnknownMetaprojectObjectIdException, IdAlreadyInUseException, EmailAddressAlreadyInUseException {
         EmailAddress newEmailAddress = Utils.getEmailAddress("new_test_email@test.com");
         userRegistry.setEmailAddress(user2.getId(), newEmailAddress);
-        assertThat(userRegistry.getUser(user2.getId()).getEmailAddress(), is(newEmailAddress));
+        assertThat(userRegistry.get(user2.getId()).getEmailAddress(), is(newEmailAddress));
     }
 
     @Test
-    public void testChangeName() throws UnknownUserIdException, UserIdAlreadyInUseException, EmailAddressAlreadyInUseException {
+    public void testChangeName() throws UnknownMetaprojectObjectIdException, IdAlreadyInUseException, EmailAddressAlreadyInUseException {
         Name newName = Utils.getName("new test name");
         userRegistry.setName(user2.getId(), newName);
-        assertThat(userRegistry.getUser(user2.getId()).getName(), is(newName));
+        assertThat(userRegistry.get(user2.getId()).getName(), is(newName));
     }
 
     @Test
@@ -90,14 +90,14 @@ public class UserRegistryTest {
     public void testGetUsersByName() {
         Set<User> userSet = new HashSet<>();
         userSet.add(user1);
-        assertThat(userRegistry.getUsers(user1.getName()), is(userSet));
+        assertThat(userRegistry.getEntries(user1.getName()), is(userSet));
     }
 
     @Test
     public void testGetUsersByEmail() {
         Set<User> userSet = new HashSet<>();
         userSet.add(user1);
-        assertThat(userRegistry.getUsers(user1.getEmailAddress()), is(userSet));
+        assertThat(userRegistry.getEntries(user1.getEmailAddress()), is(userSet));
     }
 
     @Test

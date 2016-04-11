@@ -75,11 +75,11 @@ public class ProjectRegistrySerializerTest {
 
     @Test
     public void testGetProjectsNotNull() {
-        assertThat(gson.fromJson(jsonProjectManager, ProjectRegistry.class).getProjects(), is(not(equalTo(null))));
+        assertThat(gson.fromJson(jsonProjectManager, ProjectRegistry.class).getEntries(), is(not(equalTo(null))));
     }
 
     @Test
     public void testGetProjects() {
-        assertThat(gson.fromJson(jsonProjectManager, ProjectRegistry.class).getProjects(), is(projectSet));
+        assertThat(gson.fromJson(jsonProjectManager, ProjectRegistry.class).getEntries(), is(projectSet));
     }
 }

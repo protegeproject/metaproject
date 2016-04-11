@@ -20,7 +20,7 @@ public class ProjectRegistrySerializer implements JsonSerializer<ProjectRegistry
 
     @Override
     public JsonElement serialize(ProjectRegistry projectRegistry, Type type, JsonSerializationContext context) {
-        List<Project> list = new ArrayList<>(projectRegistry.getProjects());
+        List<Project> list = new ArrayList<>(projectRegistry.getEntries());
         Collections.sort(list);
         return context.serialize(list, new TypeToken<List<Project>>(){}.getType());
     }

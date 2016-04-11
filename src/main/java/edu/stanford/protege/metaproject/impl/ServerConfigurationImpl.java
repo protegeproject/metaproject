@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
 import java.io.File;
@@ -82,7 +82,7 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
     }
 
     @Override
-    public void enableGuestUser(boolean enableGuestUser) throws UserIdAlreadyInUseException {
+    public void enableGuestUser(boolean enableGuestUser) throws IdAlreadyInUseException {
         UserRegistry userRegistry = metaproject.getUserRegistry();
         User guestUser = userRegistry.getGuestUser();
         if(enableGuestUser && !authenticationRegistry.contains(guestUser.getId())) {

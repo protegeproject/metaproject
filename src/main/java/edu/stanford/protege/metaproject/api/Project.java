@@ -11,14 +11,7 @@ import java.util.Optional;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Project extends HasName, HasDescription, Comparable<Project> {
-
-    /**
-     * Get the identifier of the project
-     *
-     * @return Project identifier
-     */
-    ProjectId getId();
+public interface Project extends MetaprojectObject<ProjectId>, HasName, HasDescription, Comparable<Project> {
 
     /**
      * Get the project file

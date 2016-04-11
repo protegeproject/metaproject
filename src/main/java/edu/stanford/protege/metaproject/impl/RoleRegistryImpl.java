@@ -4,6 +4,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UnknownRoleIdException;
 
 import java.io.Serializable;
@@ -19,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class RoleRegistryImpl implements RoleRegistry, Serializable {
-    private static final long serialVersionUID = -1117872269784523476L;
+    private static final long serialVersionUID = 669566289686711682L;
     private Set<Role> roles = new HashSet<>();
 
     /**
@@ -32,30 +34,31 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
     }
 
     @Override
-    public void add(Role... roles) {
-        checkNotNull(roles);
-        for(Role r : roles) {
-            this.roles.add(checkNotNull(r));
+    public void add(Role role) throws IdAlreadyInUseException {
+        checkNotNull(role);
+        if (contains(role.getId())) {
+            throw new IdAlreadyInUseException("The specified role identifier is already used in another role");
         }
+        roles.add(checkNotNull(role));
     }
 
     @Override
-    public void remove(Role... roles) {
-        checkNotNull(roles);
-        for(Role r : roles) {
-            checkNotNull(r);
-            this.roles.remove(r);
-        }
+    public void remove(Role role) {
+        checkNotNull(role);
+        roles.remove(role);
     }
 
     @Override
-    public Set<Role> getRoles() {
+    public Set<Role> getEntries() {
         return roles;
     }
 
     @Override
-    public Role getRole(RoleId roleId) throws UnknownRoleIdException {
-        Optional<Role> role = getRoleOptional(roleId);
+    public <E extends MetaprojectObjectId> Role get(E id) throws UnknownMetaprojectObjectIdException {
+        if(!(id instanceof RoleId)) {
+            throw new IllegalArgumentException("Programmer error: Expected a role identifier");
+        }
+        Optional<Role> role = getRoleOptional((RoleId)id);
         if(role.isPresent()) {
             return role.get();
         }
@@ -65,40 +68,40 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
     }
 
     @Override
-    public void setName(RoleId roleId, Name roleName) throws UnknownRoleIdException {
+    public void setName(RoleId roleId, Name roleName) throws UnknownMetaprojectObjectIdException {
         checkNotNull(roleName);
-        Role role = getRole(roleId);
+        Role role = get(roleId);
         remove(role);
         Role newRole = createRole(role.getId(), roleName, role.getDescription(), role.getOperations());
-        add(newRole);
+        update(newRole);
     }
 
     @Override
-    public void setDescription(RoleId roleId, Description roleDescription) throws UnknownRoleIdException {
+    public void setDescription(RoleId roleId, Description roleDescription) throws UnknownMetaprojectObjectIdException {
         checkNotNull(roleDescription);
-        Role role = getRole(roleId);
+        Role role = get(roleId);
         remove(role);
         Role newRole = createRole(role.getId(), role.getName(), roleDescription, role.getOperations());
-        add(newRole);
+        update(newRole);
     }
 
     @Override
-    public void addOperation(RoleId roleId, OperationId... operationIds) throws UnknownRoleIdException {
+    public void addOperation(RoleId roleId, OperationId... operationIds) throws UnknownMetaprojectObjectIdException {
         checkNotNull(operationIds);
-        Role role = getRole(roleId);
+        Role role = get(roleId);
         remove(role);
 
         Set<OperationId> operations = new HashSet<>(role.getOperations());
         Collections.addAll(operations, operationIds);
 
         Role newRole = createRole(role.getId(), role.getName(), role.getDescription(), operations);
-        add(newRole);
+        update(newRole);
     }
 
     @Override
-    public void removeOperation(RoleId roleId, OperationId... operationIds) throws UnknownRoleIdException {
+    public void removeOperation(RoleId roleId, OperationId... operationIds) throws UnknownMetaprojectObjectIdException {
         checkNotNull(operationIds);
-        Role role = getRole(roleId);
+        Role role = get(roleId);
         remove(role);
 
         Set<OperationId> operations = new HashSet<>(role.getOperations());
@@ -107,18 +110,33 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
         }
 
         Role newRole = createRole(role.getId(), role.getName(), role.getDescription(), operations);
-        add(newRole);
+        update(newRole);
     }
 
     @Override
-    public boolean contains(RoleId roleId) {
-        checkNotNull(roleId);
+    public boolean contains(Role obj) {
+        checkNotNull(obj);
+        return roles.contains(obj);
+    }
+
+    @Override
+    public <E extends MetaprojectObjectId> boolean contains(E id) {
+        checkNotNull(id);
         for(Role role : roles) {
-            if(role.getId().equals(roleId)) {
+            if(role.getId().equals(id)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Update the role registry with the given role
+     *
+     * @param role  Role
+     */
+    private void update(Role role) {
+        roles.add(role);
     }
 
     /**

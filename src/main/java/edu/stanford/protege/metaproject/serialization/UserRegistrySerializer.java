@@ -20,7 +20,7 @@ public class UserRegistrySerializer implements JsonSerializer<UserRegistry>, Jso
 
     @Override
     public JsonElement serialize(UserRegistry userRegistry, Type type, JsonSerializationContext context) {
-        List<User> list = new ArrayList<>(userRegistry.getUsers());
+        List<User> list = new ArrayList<>(userRegistry.getEntries());
         Collections.sort(list);
         return context.serialize(list);
     }

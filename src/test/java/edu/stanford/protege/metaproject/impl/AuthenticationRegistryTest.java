@@ -3,7 +3,7 @@ package edu.stanford.protege.metaproject.impl;
 import edu.stanford.protege.metaproject.Utils;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class AuthenticationRegistryTest {
     private AuthenticationRegistry authManager, otherAuthManager, diffAuthManager;
 
     @Before
-    public void setUp() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException {
+    public void setUp() throws EmailAddressAlreadyInUseException, IdAlreadyInUseException {
         authManager = Utils.getAuthenticationRegistry();
         authManager.add(userId1, passwd1);
         authManager.add(userId2, passwd2);
@@ -67,7 +67,7 @@ public class AuthenticationRegistryTest {
     }
 
     @Test
-    public void testAddAuthentication() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException, UserNotRegisteredException {
+    public void testAddAuthentication() throws EmailAddressAlreadyInUseException, IdAlreadyInUseException, UserNotRegisteredException {
         AuthenticationDetails authentication5 = Utils.getAuthenticationDetails();
         authManager.add(authentication5.getUserId(), authentication5.getPassword());
         assertThat(authManager.getAuthenticationDetails(authentication5.getUserId()), is(authentication5));
@@ -81,7 +81,7 @@ public class AuthenticationRegistryTest {
     }
 
     @Test(expected=UserNotRegisteredException.class)
-    public void testGetAuthenticationException() throws EmailAddressAlreadyInUseException, UserIdAlreadyInUseException, UserNotRegisteredException {
+    public void testGetAuthenticationException() throws EmailAddressAlreadyInUseException, IdAlreadyInUseException, UserNotRegisteredException {
         AuthenticationDetails authentication5 = Utils.getAuthenticationDetails();
         authManager.getAuthenticationDetails(authentication5.getUserId());
     }

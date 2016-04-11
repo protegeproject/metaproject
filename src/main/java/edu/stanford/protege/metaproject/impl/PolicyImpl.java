@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
-import edu.stanford.protege.metaproject.api.exception.UnknownAccessControlObjectIdException;
+import edu.stanford.protege.metaproject.api.exception.UnknownMetaprojectObjectIdException;
 import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.io.Serializable;
@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class PolicyImpl implements Policy, Serializable {
-    private static final long serialVersionUID = -3471252524491406454L;
+    private static final long serialVersionUID = -6047433872591697859L;
     private Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap = new HashMap<>();
 
     /**
@@ -76,6 +76,74 @@ public class PolicyImpl implements Policy, Serializable {
             map.put(projectId, roles);
         }
         userRoleMap.put(userId, map);
+    }
+
+    @Override
+    public void remove(UserId userId, ProjectId projectId) {
+        Map<ProjectId,Set<RoleId>> roleAssignments = userRoleMap.get(userId);
+        roleAssignments.remove(projectId);
+        userRoleMap.put(userId, roleAssignments);
+    }
+
+    @Override
+    public <E extends MetaprojectObjectId> void remove(E obj) {
+        if(obj instanceof UserId) {
+            remove((UserId)obj);
+        }
+        else if(obj instanceof RoleId) {
+            remove((RoleId)obj);
+        }
+        else if(obj instanceof ProjectId) {
+            remove((ProjectId)obj);
+        }
+        else {
+            throw new IllegalArgumentException("Programmer error: Expected a user, role or project identifier");
+        }
+    }
+
+    /**
+     * Remove all policy entries for the user with the given identifier
+     *
+     * @param userId User identifier
+     */
+    private void remove(UserId userId) {
+        userRoleMap.remove(userId);
+    }
+
+    /**
+     * Remove all users' role assignments involving the role with the specified identifier
+     *
+     * @param roleId    Role identifier
+     */
+    private void remove(RoleId roleId) {
+        Map<UserId, Map<ProjectId,Set<RoleId>>> toUpdate = new HashMap<>();
+        for(UserId userId : userRoleMap.keySet()) {
+            Map<ProjectId,Set<RoleId>> roleAssignments = new HashMap<>();
+            for(ProjectId projectId : userRoleMap.get(userId).keySet()) {
+                if(roleAssignments.get(projectId).contains(roleId)) {
+                    Set<RoleId> roleIds = roleAssignments.get(projectId);
+                    roleIds.remove(roleId);
+                    roleAssignments.put(projectId, roleIds);
+                }
+            }
+            toUpdate.put(userId, roleAssignments);
+        }
+        userRoleMap.putAll(toUpdate);
+    }
+
+    /**
+     * Remove all users' role assignments to the project with the given identifier
+     *
+     * @param projectId Project identifier
+     */
+    private void remove(ProjectId projectId) {
+        Map<UserId, Map<ProjectId,Set<RoleId>>> toUpdate = new HashMap<>();
+        for(UserId userId : userRoleMap.keySet()) {
+            Map<ProjectId, Set<RoleId>> roleAssignments = new HashMap<>();
+            roleAssignments.remove(projectId);
+            toUpdate.put(userId, roleAssignments);
+        }
+        userRoleMap.putAll(toUpdate);
     }
 
     @Override
@@ -137,7 +205,7 @@ public class PolicyImpl implements Policy, Serializable {
     }
 
     @Override
-    public Set<UserId> getUsers(ProjectId projectId) throws UnknownAccessControlObjectIdException {
+    public Set<UserId> getUsers(ProjectId projectId) throws UnknownMetaprojectObjectIdException {
         return getPolicyMappings().keySet().stream().filter(userId ->
                 userRoleMap.get(userId).keySet().contains(projectId)).collect(Collectors.toSet());
     }

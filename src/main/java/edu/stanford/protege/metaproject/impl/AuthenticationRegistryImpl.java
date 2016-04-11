@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.UserIdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
 
 import java.io.Serializable;
@@ -37,9 +37,9 @@ public class AuthenticationRegistryImpl implements AuthenticationRegistry, Seria
     }
 
     @Override
-    public void add(UserId userId, SaltedPasswordDigest password) throws UserIdAlreadyInUseException {
+    public void add(UserId userId, SaltedPasswordDigest password) throws IdAlreadyInUseException {
         if(contains(userId)) {
-            throw new UserIdAlreadyInUseException("The specified user is already registered with the authentication manager. Recover or change the password.");
+            throw new IdAlreadyInUseException("The specified user is already registered with the authentication manager. Recover or change the password.");
         }
         authenticationDetails.add(createAuthenticationDetails(userId, password));
     }
