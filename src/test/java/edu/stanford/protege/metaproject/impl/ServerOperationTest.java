@@ -17,11 +17,12 @@ public class ServerOperationTest {
             operationIdStr = "testOperationId1",
             otherIdStr = "testOperationId2",
             operationNameStr = "test operation name",
+            otherOperationNameStr = "test operation name 2",
             operationDescriptionStr = "test operation description",
             toStringHead = ServerOperation.class.getSimpleName();
 
     private static final OperationId operationId = Utils.getOperationId(operationIdStr), diffOperationId = Utils.getOperationId(otherIdStr);
-    private static final Name operationName = Utils.getName(operationNameStr);
+    private static final Name operationName = Utils.getName(operationNameStr), diffOperationName = Utils.getName(otherOperationNameStr);
     private static final Description operationDescription = Utils.getDescription(operationDescriptionStr);
     private static final OperationType operationType = OperationType.WRITE;
     private Operation operation, otherOperation, diffOperation;
@@ -30,7 +31,7 @@ public class ServerOperationTest {
     public void setUp() {
         operation = Utils.getServerOperation(operationId, operationName, operationDescription, operationType);
         otherOperation = Utils.getServerOperation(operationId, operationName, operationDescription, operationType);
-        diffOperation = Utils.getServerOperation(diffOperationId, operationName, operationDescription, operationType);
+        diffOperation = Utils.getServerOperation(diffOperationId, diffOperationName, operationDescription, operationType);
     }
 
     @Test

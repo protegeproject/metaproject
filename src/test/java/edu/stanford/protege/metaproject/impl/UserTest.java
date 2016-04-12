@@ -20,11 +20,12 @@ public class UserTest {
             userIdStr = "testUserId1",
             otherIdStr = "testUserId2",
             userNameStr = "testUserName",
+            otherUserNameStr = "testUserName2",
             userEmailStr = "test@EmailAddress",
             toStringHead = User.class.getSimpleName();
 
     private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(otherIdStr);
-    private static final Name userName = Utils.getName(userNameStr);
+    private static final Name userName = Utils.getName(userNameStr), diffUserName = Utils.getName(otherUserNameStr);
     private static final EmailAddress userEmail = Utils.getEmailAddress(userEmailStr);
 
     private User user, otherUser, diffUser;
@@ -33,7 +34,7 @@ public class UserTest {
     public void setUp() {
         user = Utils.getUser(userId, userName, userEmail);
         otherUser = Utils.getUser(userId, userName, userEmail);
-        diffUser = Utils.getUser(diffUserId, userName, userEmail);
+        diffUser = Utils.getUser(diffUserId, diffUserName, userEmail);
     }
 
     @Test

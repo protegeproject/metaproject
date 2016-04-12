@@ -19,11 +19,12 @@ public class RoleTest {
             roleIdStr = "testRoleId1",
             otherIdStr = "testRoleId2",
             roleNameStr = "test role name",
+            otherRoleNameStr = "test role name 2",
             roleDescriptionStr = "test role description",
             toStringHead = Role.class.getSimpleName();
 
     private static final RoleId roleId = Utils.getRoleId(roleIdStr), diffRoleId = Utils.getRoleId(otherIdStr);
-    private static final Name roleName = Utils.getName(roleNameStr);
+    private static final Name roleName = Utils.getName(roleNameStr), otherRoleName = Utils.getName(otherRoleNameStr);
     private static final Description roleDescription = Utils.getDescription(roleDescriptionStr);
     private static final Set<OperationId> operations = Utils.getOperationIdSet("testOperationId1", "testOperationId2");
 
@@ -33,7 +34,7 @@ public class RoleTest {
     public void setUp() {
         role = Utils.getRole(roleId, roleName, roleDescription, operations);
         otherRole = Utils.getRole(roleId, roleName, roleDescription, operations);
-        diffRole = Utils.getRole(diffRoleId, roleName, roleDescription, operations);
+        diffRole = Utils.getRole(diffRoleId, otherRoleName, roleDescription, operations);
     }
 
     @Test

@@ -21,11 +21,12 @@ public class ProjectTest {
             projectIdStr = "testProjectId1",
             otherIdStr = "testProjectId2",
             projectNameStr = "test project name",
+            otherProjectNameStr = "test project name 2",
             projectDescriptionStr = "test project description",
             toStringHead = Project.class.getSimpleName();
 
     private static final ProjectId projectId = Utils.getProjectId(projectIdStr), diffProjectId = Utils.getProjectId(otherIdStr);
-    private static final Name projectName = Utils.getName(projectNameStr);
+    private static final Name projectName = Utils.getName(projectNameStr), diffProjectName = Utils.getName(otherProjectNameStr);
     private static final Description projectDescription = Utils.getDescription(projectDescriptionStr);
     private static final File projectFile = Utils.getFile("/Users/test/folder/project.owl");
     private static final UserId ownerId = Utils.getUserId("owner");
@@ -35,12 +36,9 @@ public class ProjectTest {
 
     @Before
     public void setUp() {
-        project = Utils.getProject(projectId, projectName, projectDescription, projectFile, ownerId,
-                Optional.ofNullable(projectOptions));
-        otherProject = Utils.getProject(projectId, projectName, projectDescription, projectFile, ownerId,
-                Optional.ofNullable(projectOptions));
-        diffProject = Utils.getProject(diffProjectId, projectName, projectDescription, projectFile, ownerId,
-                Optional.ofNullable(projectOptions));
+        project = Utils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
+        otherProject = Utils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
+        diffProject = Utils.getProject(diffProjectId, diffProjectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
     }
 
     @Test
