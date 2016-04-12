@@ -16,8 +16,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class AuthenticationDetailsImpl implements AuthenticationDetails, Serializable, Comparable<AuthenticationDetails> {
-    private static final long serialVersionUID = -1678322962202041927L;
+public final class AuthenticationDetailsImpl implements AuthenticationDetails, Serializable {
+    private static final long serialVersionUID = 7662794049332794523L;
     private final UserId userId;
     private final SaltedPasswordDigest password;
 

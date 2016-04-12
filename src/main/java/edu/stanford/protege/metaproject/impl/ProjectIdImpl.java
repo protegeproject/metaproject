@@ -2,20 +2,20 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.ProjectId;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A representation of a project identifier
- *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ProjectIdImpl implements ProjectId, Serializable {
-    private static final long serialVersionUID = -255425634150665564L;
+    private static final long serialVersionUID = 3419677289045594606L;
     private final String id;
 
     /**
@@ -50,5 +50,12 @@ public final class ProjectIdImpl implements ProjectId, Serializable {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(@Nonnull ProjectId that) {
+        return ComparisonChain.start()
+                .compare(id, that.get())
+                .result();
     }
 }

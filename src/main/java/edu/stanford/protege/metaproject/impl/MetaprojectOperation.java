@@ -14,8 +14,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class MetaprojectOperation implements Operation, Serializable, Comparable<Operation> {
-    private static final long serialVersionUID = 5658553867393881536L;
+final class MetaprojectOperation implements Operation, Serializable {
+    private static final long serialVersionUID = -7290270565973062203L;
     private final OperationId id;
     private final Name name;
     private final Description description;
@@ -29,7 +29,7 @@ public final class MetaprojectOperation implements Operation, Serializable, Comp
      * @param description  Operation description
      * @param type Operation type
      */
-    public MetaprojectOperation(OperationId id, Name name, Description description, OperationType type) {
+    MetaprojectOperation(OperationId id, Name name, Description description, OperationType type) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
@@ -100,7 +100,7 @@ public final class MetaprojectOperation implements Operation, Serializable, Comp
     @Override
     public int compareTo(@Nonnull Operation that) {
         return ComparisonChain.start()
-                .compare(this.id.get(), that.getId().get())
+                .compare(this.name.get(), that.getName().get())
                 .result();
     }
 }

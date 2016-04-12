@@ -2,8 +2,10 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.RoleId;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -13,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class RoleIdImpl implements RoleId, Serializable {
-    private static final long serialVersionUID = 9219574475388890855L;
+    private static final long serialVersionUID = -8626557415093579469L;
     private final String id;
 
     /**
@@ -48,5 +50,12 @@ public final class RoleIdImpl implements RoleId, Serializable {
         return MoreObjects.toStringHelper(this)
                 .add("id", id)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(@Nonnull RoleId that) {
+        return ComparisonChain.start()
+                .compare(id, that.get())
+                .result();
     }
 }

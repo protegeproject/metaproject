@@ -16,8 +16,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class ProjectImpl implements Project, Serializable, Comparable<Project> {
-    private static final long serialVersionUID = -4724361870390660883L;
+public final class ProjectImpl implements Project, Serializable {
+    private static final long serialVersionUID = 19700812669460954L;
     private final ProjectId id;
     private final Name name;
     private final Description description;
@@ -106,7 +106,7 @@ public final class ProjectImpl implements Project, Serializable, Comparable<Proj
     @Override
     public int compareTo(@Nonnull Project that) {
         return ComparisonChain.start()
-                .compare(this.id.get(), that.getId().get())
+                .compare(this.name.get(), that.getName().get())
                 .result();
     }
 }

@@ -19,8 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class UserImpl implements User, Serializable, Comparable<User> {
-    private static final long serialVersionUID = 8008446184946348594L;
+public final class UserImpl implements User, Serializable {
+    private static final long serialVersionUID = 245252683386382364L;
     private final UserId id;
     private final Name name;
     private final EmailAddress emailAddress;
@@ -95,7 +95,7 @@ public final class UserImpl implements User, Serializable, Comparable<User> {
     @Override
     public int compareTo(@Nonnull User that) {
         return ComparisonChain.start()
-                .compare(this.id.get(), that.getId().get())
+                .compare(this.name.get(), that.getName().get())
                 .result();
     }
 }

@@ -2,8 +2,10 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.Port;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -13,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class PortImpl implements Port, Serializable {
-    private static final long serialVersionUID = 4965093309501055806L;
+    private static final long serialVersionUID = 5510762950428135513L;
     private final Integer port;
 
     /**
@@ -48,5 +50,12 @@ public final class PortImpl implements Port, Serializable {
         return MoreObjects.toStringHelper(this)
                 .add("port", port)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(@Nonnull Port that) {
+        return ComparisonChain.start()
+                .compare(port, that.get())
+                .result();
     }
 }

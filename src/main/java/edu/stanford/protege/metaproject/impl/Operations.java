@@ -54,9 +54,9 @@ public final class Operations {
             factory.getDescription("Modify project details and options"), OperationType.WRITE);
 
     // View project
-    public static final Operation VIEW_PROJECT = factory.getMetaprojectOperation(
-            factory.getOperationId("view-project"), factory.getName("View project"),
-            factory.getDescription("View a project in the project registry"), OperationType.READ);
+    public static final Operation OPEN_PROJECT = factory.getMetaprojectOperation(
+            factory.getOperationId("open-project"), factory.getName("Open project"),
+            factory.getDescription("Open a project in the project registry"), OperationType.READ);
 
     // Add role
     public static final Operation ADD_ROLE = factory.getMetaprojectOperation(

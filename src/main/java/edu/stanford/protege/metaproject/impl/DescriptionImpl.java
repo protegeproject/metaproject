@@ -2,8 +2,10 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.Description;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -13,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class DescriptionImpl implements Description, Serializable {
-    private static final long serialVersionUID = -975155126719271502L;
+    private static final long serialVersionUID = -3951323580770065998L;
     private final String description;
 
     /**
@@ -48,5 +50,12 @@ public final class DescriptionImpl implements Description, Serializable {
         return MoreObjects.toStringHelper(this)
                 .add("description", description)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(@Nonnull Description that) {
+        return ComparisonChain.start()
+                .compare(description, that.get())
+                .result();
     }
 }

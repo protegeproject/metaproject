@@ -14,8 +14,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class OntologyOperation implements Operation, Serializable, Comparable<Operation> {
-    private static final long serialVersionUID = -3661747771730009091L;
+public final class OntologyOperation implements Operation, Serializable {
+    private static final long serialVersionUID = -7829686785177329295L;
     private final OperationId id;
     private final Name name;
     private final Description description;
@@ -100,7 +100,7 @@ public final class OntologyOperation implements Operation, Serializable, Compara
     @Override
     public int compareTo(@Nonnull Operation that) {
         return ComparisonChain.start()
-                .compare(this.id.get(), that.getId().get())
+                .compare(this.name.get(), that.getName().get())
                 .result();
     }
 }

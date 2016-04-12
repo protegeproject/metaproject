@@ -16,8 +16,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class RoleImpl implements Role, Serializable, Comparable<Role> {
-    private static final long serialVersionUID = -2619393142467414282L;
+public final class RoleImpl implements Role, Serializable {
+    private static final long serialVersionUID = -220401317372110321L;
     private final RoleId id;
     private final Name name;
     private final Description description;
@@ -40,40 +40,21 @@ public final class RoleImpl implements Role, Serializable, Comparable<Role> {
         this.operations = checkNotNull(operationsCopy);
     }
 
-    /**
-     * Get the role identifier
-     *
-     * @return Role identifier
-     */
     @Override
     public RoleId getId() {
         return id;
     }
 
-    /**
-     * Get the role name
-     * @return  Role name
-     */
     @Override
     public Name getName() {
         return name;
     }
 
-    /**
-     * Get the role description
-     *
-     * @return Role description
-     */
     @Override
     public Description getDescription() {
         return description;
     }
 
-    /**
-     * Get the set of operations associated with this role
-     *
-     * @return Set of operations identifiers
-     */
     @Override
     public Set<OperationId> getOperations() {
         return operations;
@@ -108,7 +89,7 @@ public final class RoleImpl implements Role, Serializable, Comparable<Role> {
     @Override
     public int compareTo(@Nonnull Role that) {
         return ComparisonChain.start()
-                .compare(this.id.get(), that.getId().get())
+                .compare(this.name.get(), that.getName().get())
                 .result();
     }
 }

@@ -7,7 +7,7 @@ package edu.stanford.protege.metaproject.api;
 public interface HasId<T> {
 
     /**
-     * Get identifier
+     * Get the identifier of the object
      *
      * @return Identifier
      */

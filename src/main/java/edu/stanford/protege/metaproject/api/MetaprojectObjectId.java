@@ -6,6 +6,6 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface MetaprojectObjectId extends TextProperty {
+public interface MetaprojectObjectId<T> extends TextProperty<T> {
 
 }
