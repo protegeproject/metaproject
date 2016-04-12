@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.impl.FactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,12 +11,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class FactoryTest {
-    private Factory gen;
+public class MetaprojectFactoryTest {
+    private MetaprojectFactory gen;
 
     @Before
     public void setUp() {
-        gen = new FactoryImpl();
+        gen = new MetaprojectFactoryImpl();
     }
 
     @Test

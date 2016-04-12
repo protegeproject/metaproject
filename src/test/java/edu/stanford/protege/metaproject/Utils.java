@@ -22,7 +22,7 @@ public class Utils {
     private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WRITE;
     private static final Random random = new Random();
     private static final String rootDir = "target/server-distribution/server/root", uri = "rmi-owl2-server://localhost:5100";
-    private static Factory f = Manager.getFactory();
+    private static MetaprojectFactory f = Manager.getFactory();
     
     /*   access control object identifiers   */
 

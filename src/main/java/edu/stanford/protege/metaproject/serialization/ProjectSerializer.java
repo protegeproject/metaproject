@@ -32,7 +32,7 @@ public class ProjectSerializer implements JsonDeserializer<Project>, JsonSeriali
 
     @Override
     public Project deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        Factory factory = Manager.getFactory();
+        MetaprojectFactory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
         ProjectId projectId = factory.getProjectId(obj.getAsJsonPrimitive(ID).getAsString());
         Name projectName = factory.getName(obj.getAsJsonPrimitive(NAME).getAsString());

@@ -82,7 +82,7 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     @Override
     public User getGuestUser() {
         final String id = "guest", name = "Guest user", email = "";
-        Factory f = Manager.getFactory();
+        MetaprojectFactory f = Manager.getFactory();
         return createUser(f.getUserId(id), f.getName(name), f.getEmailAddress(email));
     }
 

@@ -1,9 +1,9 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.ConfigurationManager;
-import edu.stanford.protege.metaproject.api.Factory;
+import edu.stanford.protege.metaproject.api.MetaprojectFactory;
 import edu.stanford.protege.metaproject.impl.ConfigurationManagerImpl;
-import edu.stanford.protege.metaproject.impl.FactoryImpl;
+import edu.stanford.protege.metaproject.impl.MetaprojectFactoryImpl;
 import edu.stanford.protege.metaproject.serialization.DefaultJsonSerializer;
 
 /**
@@ -11,7 +11,7 @@ import edu.stanford.protege.metaproject.serialization.DefaultJsonSerializer;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class Manager {
-    private static Factory factory;
+    private static MetaprojectFactory factory;
     private static ConfigurationManager configurationManager;
 
     /**
@@ -19,9 +19,9 @@ public final class Manager {
      *
      * @return Factory
      */
-    public static Factory getFactory() {
+    public static MetaprojectFactory getFactory() {
         if(factory == null) {
-            factory = new FactoryImpl();
+            factory = new MetaprojectFactoryImpl();
         }
         return factory;
     }

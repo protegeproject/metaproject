@@ -13,12 +13,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class FactoryImpl implements Factory {
+public final class MetaprojectFactoryImpl implements MetaprojectFactory {
 
     /**
      * No-args constructor
      */
-    public FactoryImpl() { }
+    public MetaprojectFactoryImpl() { }
 
     @Override
     public Project getProject(ProjectId projectId, Name name, Description description, File file, UserId ownerId, Optional<ProjectOptions> options) {

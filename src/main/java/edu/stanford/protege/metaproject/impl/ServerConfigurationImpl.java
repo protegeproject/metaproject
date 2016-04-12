@@ -87,7 +87,7 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
         User guestUser = userRegistry.getGuestUser();
         if(enableGuestUser && !authenticationRegistry.contains(guestUser.getId())) {
             final String guestPassword = "guest";
-            final Factory f = Manager.getFactory();
+            final MetaprojectFactory f = Manager.getFactory();
             PasswordHasher hasher = f.getPasswordHasher();
             SaltGenerator saltGenerator = f.getSaltGenerator();
             SaltedPasswordDigest passwordDigest = hasher.hash(f.getPlainPassword(guestPassword), saltGenerator.generate());

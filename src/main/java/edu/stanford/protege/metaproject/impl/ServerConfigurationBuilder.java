@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.AuthenticationRegistry;
-import edu.stanford.protege.metaproject.api.Factory;
+import edu.stanford.protege.metaproject.api.MetaprojectFactory;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Metaproject;
 
@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ServerConfigurationBuilder {
-    private Factory f = Manager.getFactory();
+    private MetaprojectFactory f = Manager.getFactory();
     private Host host = f.getHost(f.getUri("rmi-owl2-server://localhost:5100"), Optional.of(f.getPort(5200)));
     private File root = new File("target/server-distribution/server/root");
     private Metaproject metaproject = new MetaprojectBuilder().createMetaproject();

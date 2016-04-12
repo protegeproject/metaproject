@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Factory {
+public interface MetaprojectFactory {
 
     /**
      * Create a new project

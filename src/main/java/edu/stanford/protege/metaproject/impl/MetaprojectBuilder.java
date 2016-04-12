@@ -6,7 +6,7 @@ import edu.stanford.protege.metaproject.api.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MetaprojectBuilder {
-    private Factory f = Manager.getFactory();
+    private MetaprojectFactory f = Manager.getFactory();
     private Policy policy = f.getPolicy();
     private RoleRegistry roleRegistry = f.getRoleRegistry();
     private OperationRegistry operationRegistry = f.getOperationRegistry();
