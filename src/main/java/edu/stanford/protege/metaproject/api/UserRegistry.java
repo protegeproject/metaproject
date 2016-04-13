@@ -29,13 +29,6 @@ public interface UserRegistry extends Registry<User> {
     Set<User> getEntries(EmailAddress emailAddress);
 
     /**
-     * Get a guest user instance
-     *
-     * @return Guest user
-     */
-    User getGuestUser();
-
-    /**
      * Change the display name of the given user
      *
      * @param userId    User identifier

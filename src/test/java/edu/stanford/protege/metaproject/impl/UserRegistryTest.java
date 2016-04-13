@@ -75,11 +75,6 @@ public class UserRegistryTest {
     }
 
     @Test
-    public void testGetGuestUserNotNull() {
-        assertThat(userRegistry.getGuestUser(), is(not(equalTo(null))));
-    }
-
-    @Test
     public void testExists() {
         UserId userId = Utils.getUserId("newTestUserId");
         assertThat(userRegistry.contains(user1.getId()), is(true));

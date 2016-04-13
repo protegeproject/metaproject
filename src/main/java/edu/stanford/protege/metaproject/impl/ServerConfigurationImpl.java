@@ -2,10 +2,10 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.Manager;
-import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
-import edu.stanford.protege.metaproject.api.exception.UserNotRegisteredException;
+import edu.stanford.protege.metaproject.api.AuthenticationRegistry;
+import edu.stanford.protege.metaproject.api.Host;
+import edu.stanford.protege.metaproject.api.Metaproject;
+import edu.stanford.protege.metaproject.api.ServerConfiguration;
 
 import java.io.File;
 import java.io.Serializable;
@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = -1381462891599550914L;
+    private static final long serialVersionUID = 7078506798600235000L;
     private final Host host;
     private final File root;
     private final Metaproject metaproject;
@@ -79,27 +79,6 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
     @Override
     public String getProperty(String key) {
         return properties.get(key);
-    }
-
-    @Override
-    public void enableGuestUser(boolean enableGuestUser) throws IdAlreadyInUseException {
-        UserRegistry userRegistry = metaproject.getUserRegistry();
-        User guestUser = userRegistry.getGuestUser();
-        if(enableGuestUser && !authenticationRegistry.contains(guestUser.getId())) {
-            final String guestPassword = "guest";
-            final MetaprojectFactory f = Manager.getFactory();
-            PasswordHasher hasher = f.getPasswordHasher();
-            SaltGenerator saltGenerator = f.getSaltGenerator();
-            SaltedPasswordDigest passwordDigest = hasher.hash(f.getPlainPassword(guestPassword), saltGenerator.generate());
-            authenticationRegistry.add(guestUser.getId(), passwordDigest);
-            userRegistry.add(guestUser);
-        }
-        else if(!enableGuestUser) {
-            userRegistry.remove(guestUser);
-            try {
-                authenticationRegistry.remove(guestUser.getId());
-            } catch (UserNotRegisteredException e) { /* no-op */ }
-        }
     }
 
     @Override

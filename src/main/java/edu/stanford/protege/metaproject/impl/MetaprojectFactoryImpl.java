@@ -181,13 +181,8 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
     }
 
     @Override
-    public URI getUri(String uri) {
-        URI newUri = null;
-        try {
-            newUri = new URI(uri);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+    public URI getUri(String uri) throws URISyntaxException {
+        URI newUri = new URI(uri);
         return checkNotNull(newUri);
     }
 
@@ -198,7 +193,7 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
 
     @Override
     public PasswordHasher getPasswordHasher() {
-        int hashByteSize = 24, nrIterations = 10000;
+        int hashByteSize = 24, nrIterations = 50000;
         return getPasswordHasher(hashByteSize, nrIterations);
     }
 
@@ -210,7 +205,8 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
     @Override
     public UserRegistry getUserRegistry() {
         Set<User> users = new HashSet<>();
-        users.add(getRootUser());
+        users.add(MetaprojectUtils.getRootUser());
+        users.add(MetaprojectUtils.getGuestUser());
         return getUserRegistry(users);
     }
 
@@ -245,7 +241,8 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
     @Override
     public RoleRegistry getRoleRegistry() {
         Set<Role> roles = new HashSet<>();
-        roles.add(getAdminRole());
+        roles.add(MetaprojectUtils.getAdminRole());
+        roles.add(MetaprojectUtils.getGuestRole());
         return getRoleRegistry(roles);
     }
 
@@ -258,7 +255,8 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
     @Override
     public AuthenticationRegistry getAuthenticationRegistry() {
         Set<AuthenticationDetails> authDetails = new HashSet<>();
-        authDetails.add(getRootUserAuthDetails(getRootUser().getId()));
+        authDetails.add(MetaprojectUtils.getRootUserCredentials());
+        authDetails.add(MetaprojectUtils.getGuestUserCredentials());
         return getAuthenticationRegistry(authDetails);
     }
 
@@ -270,7 +268,10 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
 
     @Override
     public Policy getPolicy() {
-        return getPolicy(new HashMap<>());
+        Policy policy = getPolicy(new HashMap<>());
+        policy.add(MetaprojectUtils.getRootUser().getId(), MetaprojectUtils.getTopProjectId(), MetaprojectUtils.getAdminRole().getId());
+        policy.add(MetaprojectUtils.getGuestUser().getId(), MetaprojectUtils.getTopProjectId(), MetaprojectUtils.getGuestRole().getId());
+        return policy;
     }
 
     @Override
@@ -303,8 +304,9 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
     }
 
     @Override
-    public ProjectOptions getProjectOptions(Map<String, Set<String>> requiredAnnotationsMap, Map<String, Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
-                                            Set<String> immutableAnnotations, Map<String,Set<String>> requiredEntities, Map<String, String> customProperties) {
+    public ProjectOptions getProjectOptions(Map<String, Set<String>> requiredAnnotationsMap, Map<String, Set<String>> optionalAnnotationsMap,
+                                            Set<String> complexAnnotations, Set<String> immutableAnnotations,
+                                            Map<String,Set<String>> requiredEntities, Map<String, String> customProperties) {
         checkNotNull(requiredAnnotationsMap, "Map of required annotations must not be null");
         checkNotNull(optionalAnnotationsMap, "Map of optional annotations must not be null");
         checkNotNull(complexAnnotations, "Set of complex annotation properties must not be null");
@@ -313,19 +315,5 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
         checkNotNull(customProperties, "Map of custom properties must not be null");
         return new ProjectOptionsImpl(requiredAnnotationsMap, optionalAnnotationsMap, complexAnnotations,
                 immutableAnnotations, requiredEntities, customProperties);
-    }
-
-    private Role getAdminRole() {
-        return getRole(getRoleId("server-admin"), getName("Server Administrator"), getDescription("A user with this role is allowed to do any operation on the server"), Operations.getDefaultOperationsIds());
-    }
-
-    private User getRootUser() {
-        return getUser(getUserId("root"), getName("Root User"), getEmailAddress("protege-user@lists.stanford.edu"));
-    }
-
-    private AuthenticationDetails getRootUserAuthDetails(UserId userId) {
-        PasswordHasher h = getPasswordHasher();
-        SaltedPasswordDigest passwordDigest = h.hash(getPlainPassword("rootpass"), getSaltGenerator().generate());
-        return getAuthenticationDetails(userId, passwordDigest);
     }
 }

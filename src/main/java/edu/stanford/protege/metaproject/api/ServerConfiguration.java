@@ -1,7 +1,5 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
-
 import java.io.File;
 
 /**
@@ -40,13 +38,5 @@ public interface ServerConfiguration extends HasProperties {
      * @return Authentication manager
      */
     AuthenticationRegistry getAuthenticationRegistry();
-
-    /**
-     * Enable the guest user with the usual guest credentials
-     *
-     * @param enableGuestUser   true if guest user should be enabled, false otherwise
-     * @throws IdAlreadyInUseException  Guest user identifier is already taken by another user
-     */
-    void enableGuestUser(boolean enableGuestUser) throws IdAlreadyInUseException;
 
 }

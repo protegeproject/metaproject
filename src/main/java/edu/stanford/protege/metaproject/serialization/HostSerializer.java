@@ -8,6 +8,7 @@ import edu.stanford.protege.metaproject.api.Port;
 
 import java.lang.reflect.Type;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 /**
@@ -31,7 +32,12 @@ public class HostSerializer implements JsonSerializer<Host>, JsonDeserializer<Ho
     public Host deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         MetaprojectFactory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
-        URI address = factory.getUri(obj.getAsJsonPrimitive(SERVER_URI).getAsString());
+        URI address = null;
+        try {
+            address = factory.getUri(obj.getAsJsonPrimitive(SERVER_URI).getAsString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         Optional<Port> optionalPort = (obj.getAsJsonPrimitive(SECONDARY_PORT) != null ?
                 Optional.ofNullable(factory.getPort(obj.getAsJsonPrimitive(SECONDARY_PORT).getAsInt())) :
                 Optional.empty());

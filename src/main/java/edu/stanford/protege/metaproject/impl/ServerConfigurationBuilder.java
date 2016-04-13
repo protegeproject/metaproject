@@ -2,14 +2,12 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Manager;
 import edu.stanford.protege.metaproject.api.AuthenticationRegistry;
-import edu.stanford.protege.metaproject.api.MetaprojectFactory;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Metaproject;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -20,9 +18,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ServerConfigurationBuilder {
-    private MetaprojectFactory f = Manager.getFactory();
-    private Host host = f.getHost(f.getUri("rmi-owl2-server://localhost:5100"), Optional.of(f.getPort(5200)));
-    private File root = new File("target/server-distribution/server/root");
+    private Host host = MetaprojectUtils.getServerHost();
+    private File root = MetaprojectUtils.getServerRoot();
     private Metaproject metaproject = new MetaprojectBuilder().createMetaproject();
     private AuthenticationRegistry authenticationRegistry = Manager.getFactory().getAuthenticationRegistry();
     private Map<String,String> properties = new HashMap<>();

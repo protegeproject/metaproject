@@ -82,9 +82,4 @@ public class UserRegistrySerializerTest {
     public void testGetUsers() {
         assertThat(gson.fromJson(jsonUserManager, UserRegistry.class).getEntries(), is(userSet));
     }
-
-    @Test
-    public void testGetGuestUser() {
-        assertThat(gson.fromJson(jsonUserManager, UserRegistry.class).getGuestUser(), is(userRegistry.getGuestUser()));
-    }
 }

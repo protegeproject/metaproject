@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.api;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -219,8 +220,9 @@ public interface MetaprojectFactory {
      *
      * @param uri   URI string
      * @return URI
+     * @throws URISyntaxException   URI syntax exception
      */
-    URI getUri(String uri);
+    URI getUri(String uri) throws URISyntaxException;
 
     /**
      * Create an instance of a salt generator

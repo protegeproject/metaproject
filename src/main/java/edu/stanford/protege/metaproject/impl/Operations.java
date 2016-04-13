@@ -192,4 +192,24 @@ public final class Operations {
     public static Set<OperationId> getDefaultOperationsIds() {
         return defaultOperations.stream().map(Operation::getId).collect(Collectors.toSet());
     }
+
+    /**
+     * Get the set of default operations of the specified type
+     *
+     * @param type  Operation type
+     * @return Set of operations
+     */
+    public static Set<Operation> getDefaultOperations(OperationType type) {
+        return defaultOperations.stream().filter(op -> op.getType().equals(type)).collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the set of default operation identifiers of the specified type
+     *
+     * @param type  Operation type
+     * @return Set of operation identifiers
+     */
+    public static Set<OperationId> getDefaultOperationsIds(OperationType type) {
+        return getDefaultOperations(type).stream().map(Operation::getId).collect(Collectors.toSet());
+    }
 }
