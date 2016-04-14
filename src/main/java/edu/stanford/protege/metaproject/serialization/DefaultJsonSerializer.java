@@ -43,7 +43,6 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
 
                     // configurations
                     .registerTypeAdapter(ServerConfiguration.class, new ServerConfigurationSerializer())
-                    .registerTypeAdapter(ClientConfiguration.class, new ClientConfigurationSerializer())
                     .registerTypeAdapter(Metaproject.class, new MetaprojectSerializer())
                     .registerTypeAdapter(Host.class, new HostSerializer())
 

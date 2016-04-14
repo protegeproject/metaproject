@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.impl.ClientConfigurationBuilder;
 import edu.stanford.protege.metaproject.impl.MetaprojectBuilder;
 import edu.stanford.protege.metaproject.impl.ProjectOptionsBuilder;
 import edu.stanford.protege.metaproject.impl.ServerConfigurationBuilder;
@@ -205,14 +204,6 @@ public class Utils {
                 .setAuthenticationRegistry(authenticationRegistry)
                 .setPropertyMap(properties)
                 .createServerConfiguration();
-    }
-
-    public static ClientConfiguration getClientConfiguration() {
-        return getClientConfiguration(Utils.getMetaproject(), random.nextInt(), Utils.getPropertyMap());
-    }
-
-    public static ClientConfiguration getClientConfiguration(Metaproject metaproject, int syncDelay, Map<String,String> propertyMap) {
-        return new ClientConfigurationBuilder().setMetaproject(metaproject).setSynchronisationDelay(syncDelay).setProperties(propertyMap).createClientConfiguration();
     }
 
     public static Host getHost() {

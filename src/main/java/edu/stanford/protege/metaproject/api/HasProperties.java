@@ -16,21 +16,6 @@ public interface HasProperties {
     Map<String,String> getProperties();
 
     /**
-     * Add a property
-     *
-     * @param key   Key
-     * @param value Value for key
-     */
-    void addProperty(String key, String value);
-
-    /**
-     * Remove a property from the map
-     *
-     * @param key   Key
-     */
-    void removeProperty(String key);
-
-    /**
      * Get the value for the given property key
      *
      * @param key   Property key

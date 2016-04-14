@@ -24,8 +24,8 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
         obj.add(HOST, context.serialize(config.getHost(), Host.class));
         obj.add(ROOT, context.serialize(config.getServerRoot().getPath()));
         obj.add(METAPROJECT, context.serialize(config.getMetaproject(), Metaproject.class));
-        obj.add(PROPERTIES, context.serialize(config.getProperties(), Map.class));
         obj.add(AUTHENTICATION, context.serialize(config.getAuthenticationRegistry(), AuthenticationRegistry.class));
+        obj.add(PROPERTIES, context.serialize(config.getProperties(), Map.class));
         return obj;
     }
 

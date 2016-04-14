@@ -1,9 +1,7 @@
 package edu.stanford.protege.metaproject.api;
 
-import edu.stanford.protege.metaproject.api.exception.MetaprojectNotLoadedException;
 import edu.stanford.protege.metaproject.api.exception.ObjectConversionException;
 import edu.stanford.protege.metaproject.api.exception.ServerConfigurationNotLoadedException;
-import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,17 +50,5 @@ public interface ConfigurationManager {
      * @throws ServerConfigurationNotLoadedException    Server configuration has not been loaded
      */
     void saveServerConfiguration(File outputFile) throws IOException, ServerConfigurationNotLoadedException;
-
-    /**
-     * Get the client configuration for the user with the specified user identifier
-     *
-     * @param userId    User identifier
-     * @return Client configuration
-     * @throws ServerConfigurationNotLoadedException    Server configuration has not been loaded
-     * @throws MetaprojectNotLoadedException    Metaproject has not been loaded
-     * @throws UserNotInPolicyException User identifier is not registered in the policy
-     */
-    ClientConfiguration getClientConfiguration(UserId userId)
-            throws MetaprojectNotLoadedException, ServerConfigurationNotLoadedException, UserNotInPolicyException;
 
 }

@@ -9,7 +9,7 @@ import java.io.File;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ServerConfiguration extends HasProperties {
+public interface ServerConfiguration extends HasModifiableProperties {
 
     /**
      * Get the server host

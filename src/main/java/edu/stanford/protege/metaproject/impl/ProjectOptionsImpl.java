@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.ProjectOptions;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,10 +14,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class ProjectOptionsImpl implements ProjectOptions {
+public final class ProjectOptionsImpl implements ProjectOptions, Serializable {
+    private static final long serialVersionUID = 4165189780072429894L;
     private final Map<String,Set<String>> requiredAnnotations, requiredEntities, optionalAnnotationsMap;
     private final Set<String> complexAnnotations, immutableAnnotations;
-    private Map<String,String> customProperties;
+    private final Map<String,String> customProperties;
 
     /**
      * Package-private constructor; user {@link ProjectOptionsBuilder}
@@ -71,16 +73,6 @@ public class ProjectOptionsImpl implements ProjectOptions {
     @Override
     public Map<String,String> getProperties() {
         return customProperties;
-    }
-
-    @Override
-    public void addProperty(String key, String value) {
-        customProperties.put(checkNotNull(key), checkNotNull(value));
-    }
-
-    @Override
-    public void removeProperty(String key) {
-        customProperties.remove(checkNotNull(key));
     }
 
     @Override

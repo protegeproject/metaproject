@@ -193,8 +193,7 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
 
     @Override
     public PasswordHasher getPasswordHasher() {
-        int hashByteSize = 24, nrIterations = 50000;
-        return getPasswordHasher(hashByteSize, nrIterations);
+        return getPasswordHasher(MetaprojectUtils.getHashByteSize(), MetaprojectUtils.getKeyStretchingIterations());
     }
 
     @Override

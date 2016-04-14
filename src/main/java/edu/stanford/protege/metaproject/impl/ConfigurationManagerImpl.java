@@ -1,10 +1,10 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.api.exception.MetaprojectNotLoadedException;
+import edu.stanford.protege.metaproject.api.ConfigurationManager;
+import edu.stanford.protege.metaproject.api.Serializer;
+import edu.stanford.protege.metaproject.api.ServerConfiguration;
 import edu.stanford.protege.metaproject.api.exception.ObjectConversionException;
 import edu.stanford.protege.metaproject.api.exception.ServerConfigurationNotLoadedException;
-import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,23 +55,6 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
         String json = serializer.write(serverConfiguration, ServerConfiguration.class);
         fw.write(json);
         fw.close();
-    }
-
-    @Override
-    public ClientConfiguration getClientConfiguration(UserId userId) throws MetaprojectNotLoadedException, ServerConfigurationNotLoadedException, UserNotInPolicyException {
-        Metaproject metaproject = serverConfiguration.getMetaproject();
-        Metaproject userMetaproject = new MetaprojectBuilder()
-                .setOperationRegistry(metaproject.getOperationRegistry())
-                .setProjectRegistry(metaproject.getProjectRegistry())
-                .setRoleRegistry(metaproject.getRoleRegistry())
-                .setUserRegistry(metaproject.getUserRegistry())
-                .setPolicy(metaproject.getPolicy())
-                .createMetaproject();
-
-        return new ClientConfigurationBuilder()
-                .setMetaproject(userMetaproject)
-                .setProperties(serverConfiguration.getProperties())
-                .createClientConfiguration();
     }
 
     private ServerConfiguration checkConfigurationIsSet(ServerConfiguration config) throws ServerConfigurationNotLoadedException {

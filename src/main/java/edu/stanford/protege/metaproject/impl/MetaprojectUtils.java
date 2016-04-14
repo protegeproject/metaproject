@@ -14,17 +14,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class MetaprojectUtils {
-    private static MetaprojectFactory f = Manager.getFactory();
+    private final static MetaprojectFactory f = Manager.getFactory();
 
-    private final static int OPTIONAL_PORT = 5200;
+    private final static int
+            OPTIONAL_PORT = 5200,
+            HASH_BYTE_SIZE = 24,
+            KEY_ITERATIONS = 20000;
 
     private final static String
             SERVER_URI = "rmi-owl2-server://localhost:5100",
             SERVER_ROOT = "target/server-distribution/server/root",
             ROOT_USER_ID = "root",
             ROOT_USER_NAME = "Root User",
+            ROOT_USER_PASSWORD = "rootpwd",
             GUEST_USER_ID = "guest",
             GUEST_USER_NAME = "Guest User",
+            GUEST_USER_PASSWORD = "guestpwd",
             ADMIN_ROLE_ID = "mp-admin",
             ADMIN_ROLE_NAME = "Administrator",
             ADMIN_ROLE_DESCRIPTION = "A user with this role is allowed to do any operation on the server",
@@ -113,7 +118,7 @@ public final class MetaprojectUtils {
      * @return Authentication details
      */
     public static AuthenticationDetails getRootUserCredentials() {
-        return getAuthenticationDetails(MetaprojectUtils.getRootUser().getId(), f.getPlainPassword("rootpwd"));
+        return getAuthenticationDetails(MetaprojectUtils.getRootUser().getId(), f.getPlainPassword(ROOT_USER_PASSWORD));
     }
 
     /**
@@ -122,7 +127,7 @@ public final class MetaprojectUtils {
      * @return Authentication details
      */
     public static AuthenticationDetails getGuestUserCredentials() {
-        return getAuthenticationDetails(MetaprojectUtils.getGuestUser().getId(), f.getPlainPassword("guestpwd"));
+        return getAuthenticationDetails(MetaprojectUtils.getGuestUser().getId(), f.getPlainPassword(GUEST_USER_PASSWORD));
     }
 
     private static AuthenticationDetails getAuthenticationDetails(UserId userId, PlainPassword password) {
@@ -131,5 +136,23 @@ public final class MetaprojectUtils {
         PasswordHasher h = f.getPasswordHasher();
         SaltedPasswordDigest passwordDigest = h.hash(password, f.getSaltGenerator().generate());
         return f.getAuthenticationDetails(userId, passwordDigest);
+    }
+
+    /**
+     * Get the default hash byte size
+     *
+     * @return Integer
+     */
+    public static int getHashByteSize() {
+        return HASH_BYTE_SIZE;
+    }
+
+    /**
+     * Get the default number of key-stretching iterations performed by the default hash function
+     *
+     * @return Integer
+     */
+    public static int getKeyStretchingIterations() {
+        return KEY_ITERATIONS;
     }
 }
