@@ -14,13 +14,11 @@ import java.io.Serializable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Representation of a user, consisting of a unique identifier used to log in, a display name, and an email address
- *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
 public final class UserImpl implements User, Serializable {
-    private static final long serialVersionUID = 245252683386382364L;
+    private static final long serialVersionUID = -514737206401105074L;
     private final UserId id;
     private final Name name;
     private final EmailAddress emailAddress;
@@ -38,34 +36,39 @@ public final class UserImpl implements User, Serializable {
         this.emailAddress = checkNotNull(emailAddress);
     }
 
-    /**
-     * Get user's identifier that is used for logging in
-     *
-     * @return User identifier
-     */
     @Override
     public UserId getId() {
         return id;
     }
 
-    /**
-     * Get user's name as used for displaying purposes
-     *
-     * @return User name
-     */
     @Override
     public Name getName() {
         return name;
     }
 
-    /**
-     * Get user's email address
-     *
-     * @return Email address instance
-     */
     @Override
     public EmailAddress getEmailAddress() {
         return emailAddress;
+    }
+
+    @Override
+    public boolean isUser() {
+        return true;
+    }
+
+    @Override
+    public boolean isProject() {
+        return false;
+    }
+
+    @Override
+    public boolean isRole() {
+        return false;
+    }
+
+    @Override
+    public boolean isOperation() {
+        return false;
     }
 
     @Override

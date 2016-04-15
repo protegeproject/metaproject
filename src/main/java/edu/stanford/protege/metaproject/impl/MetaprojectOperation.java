@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 final class MetaprojectOperation implements Operation, Serializable {
-    private static final long serialVersionUID = -7290270565973062203L;
+    private static final long serialVersionUID = -6890409391570138362L;
     private final OperationId id;
     private final Name name;
     private final Description description;
@@ -69,6 +69,26 @@ final class MetaprojectOperation implements Operation, Serializable {
     @Override
     public boolean isOntologyOperation() {
         return false;
+    }
+
+    @Override
+    public boolean isUser() {
+        return false;
+    }
+
+    @Override
+    public boolean isProject() {
+        return false;
+    }
+
+    @Override
+    public boolean isRole() {
+        return false;
+    }
+
+    @Override
+    public boolean isOperation() {
+        return true;
     }
 
     @Override

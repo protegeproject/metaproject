@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ProjectImpl implements Project, Serializable {
-    private static final long serialVersionUID = 19700812669460954L;
+    private static final long serialVersionUID = 4575272908702931683L;
     private final ProjectId id;
     private final Name name;
     private final Description description;
@@ -71,6 +71,26 @@ public final class ProjectImpl implements Project, Serializable {
     @Override
     public Optional<ProjectOptions> getOptions() {
         return Optional.ofNullable(options);
+    }
+
+    @Override
+    public boolean isUser() {
+        return false;
+    }
+
+    @Override
+    public boolean isProject() {
+        return true;
+    }
+
+    @Override
+    public boolean isRole() {
+        return false;
+    }
+
+    @Override
+    public boolean isOperation() {
+        return false;
     }
 
     @Override

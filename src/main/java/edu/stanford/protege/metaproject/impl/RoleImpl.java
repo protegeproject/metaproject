@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class RoleImpl implements Role, Serializable {
-    private static final long serialVersionUID = -220401317372110321L;
+    private static final long serialVersionUID = 5032132538086137230L;
     private final RoleId id;
     private final Name name;
     private final Description description;
@@ -58,6 +58,26 @@ public final class RoleImpl implements Role, Serializable {
     @Override
     public Set<OperationId> getOperations() {
         return operations;
+    }
+
+    @Override
+    public boolean isUser() {
+        return false;
+    }
+
+    @Override
+    public boolean isProject() {
+        return false;
+    }
+
+    @Override
+    public boolean isRole() {
+        return true;
+    }
+
+    @Override
+    public boolean isOperation() {
+        return false;
     }
 
     @Override
