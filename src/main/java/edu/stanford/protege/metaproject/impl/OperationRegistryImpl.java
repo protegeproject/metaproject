@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationRegistryImpl implements OperationRegistry, Serializable {
-    private static final long serialVersionUID = -8928478849716596933L;
+    private static final long serialVersionUID = 2327711655023800432L;
     private Set<Operation> operations = new HashSet<>();
 
     /**
@@ -70,18 +70,22 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
     public void setName(OperationId operationId, Name operationName) throws UnknownMetaprojectObjectIdException {
         checkNotNull(operationName);
         Operation operation = get(operationId);
-        remove(operation);
         Operation newOperation = createOperation(operation.getId(), operationName, operation.getDescription(), operation.getType());
-        update(newOperation);
+        update(operationId, newOperation);
     }
 
     @Override
     public void setDescription(OperationId operationId, Description operationDescription) throws UnknownMetaprojectObjectIdException {
         checkNotNull(operationDescription);
         Operation operation = get(operationId);
-        remove(operation);
         Operation newOperation = createOperation(operation.getId(), operation.getName(), operationDescription, operation.getType());
-        update(newOperation);
+        update(operationId, newOperation);
+    }
+
+    @Override
+    public <E extends MetaprojectObjectId> void update(E id, Operation newObj) throws UnknownMetaprojectObjectIdException {
+        remove(get(id));
+        operations.add(newObj);
     }
 
     @Override
@@ -99,15 +103,6 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
             }
         }
         return false;
-    }
-
-    /**
-     * Update the registry with the given operation
-     *
-     * @param operation Operation
-     */
-    private void update(Operation operation) {
-        operations.add(operation);
     }
 
     /**

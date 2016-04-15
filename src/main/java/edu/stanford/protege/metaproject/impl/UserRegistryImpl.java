@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class UserRegistryImpl implements UserRegistry, Serializable {
-    private static final long serialVersionUID = 6083125962987513258L;
+    private static final long serialVersionUID = -1890146077901635672L;
     private Set<User> users = new HashSet<>();
 
     /**
@@ -83,18 +83,22 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
     public void setName(UserId userId, Name userName) throws UnknownMetaprojectObjectIdException {
         checkNotNull(userName);
         User user = get(userId);
-        remove(user);
         User newUser = createUser(userId, userName, user.getEmailAddress());
-        update(newUser);
+        update(userId, newUser);
     }
 
     @Override
     public void setEmailAddress(UserId userId, EmailAddress emailAddress) throws UnknownMetaprojectObjectIdException {
         checkNotNull(emailAddress);
         User user = get(userId);
-        remove(user);
         User newUser = createUser(userId, user.getName(), emailAddress);
-        update(newUser);
+        update(userId, newUser);
+    }
+
+    @Override
+    public <E extends MetaprojectObjectId> void update(E id, User newObj) throws UnknownMetaprojectObjectIdException {
+        remove(get(id));
+        users.add(newObj);
     }
 
     @Override
@@ -123,15 +127,6 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
             }
         }
         return false;
-    }
-
-    /**
-     * Update the registry with the given user
-     *
-     * @param user  User
-     */
-    private void update(User user) {
-        users.add(user);
     }
 
     /**

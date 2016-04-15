@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
-    private static final long serialVersionUID = -5367365674865713167L;
+    private static final long serialVersionUID = 2396045530027040761L;
     private Set<Project> projects = new HashSet<>();
 
     /**
@@ -78,44 +78,36 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
     public void setName(ProjectId projectId, Name projectName) throws UnknownMetaprojectObjectIdException {
         checkNotNull(projectName);
         Project project = get(projectId);
-        remove(project);
-
         Project newProject = createProject(project.getId(), projectName, project.getDescription(), project.getFile(),
                 project.getOwner(), project.getOptions());
-        update(newProject);
+        update(projectId, newProject);
     }
 
     @Override
     public void setDescription(ProjectId projectId, Description projectDescription) throws UnknownMetaprojectObjectIdException {
         checkNotNull(projectDescription);
         Project project = get(projectId);
-        remove(project);
-
         Project newProject = createProject(project.getId(), project.getName(), projectDescription, project.getFile(),
                 project.getOwner(), project.getOptions());
-        update(newProject);
+        update(projectId, newProject);
     }
 
     @Override
     public void setOwner(ProjectId projectId, UserId userId) throws UnknownMetaprojectObjectIdException {
         checkNotNull(userId);
         Project project = get(projectId);
-        remove(project);
-
         Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), project.getFile(),
                 userId, project.getOptions());
-        update(newProject);
+        update(projectId, newProject);
     }
 
     @Override
     public void setFile(ProjectId projectId, File file) throws UnknownMetaprojectObjectIdException {
         checkNotNull(file);
         Project project = get(projectId);
-        remove(project);
-
         Project newProject = createProject(project.getId(), project.getName(), project.getDescription(), file,
                 project.getOwner(), project.getOptions());
-        update(newProject);
+        update(projectId, newProject);
     }
 
     @Override
@@ -123,10 +115,15 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         checkNotNull(projectId);
         checkNotNull(projectOptions);
         Project project = get(projectId);
-        remove(project);
         Project newProject = createProject(projectId, project.getName(), project.getDescription(), project.getFile(),
                 project.getOwner(), Optional.of(projectOptions));
-        update(newProject);
+        update(projectId, newProject);
+    }
+
+    @Override
+    public <E extends MetaprojectObjectId> void update(E id, Project newObj) throws UnknownMetaprojectObjectIdException {
+        remove(get(id));
+        projects.add(newObj);
     }
 
     @Override
@@ -144,15 +141,6 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
             }
         }
         return false;
-    }
-
-    /**
-     * Update the registry with the given project
-     *
-     * @param project   Project
-     */
-    private void update(Project project) {
-        projects.add(project);
     }
 
     /**

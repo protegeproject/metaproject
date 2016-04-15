@@ -60,4 +60,14 @@ public interface Registry<T extends MetaprojectObject> {
      */
     <E extends MetaprojectObjectId> boolean contains(E id);
 
+    /**
+     * Update the object with the specified identifier with the given, updated object
+     *
+     * @param id    Project identifier
+     * @param newObj    New project instance
+     * @param <E>   Metaproject object identifier type
+     * @throws UnknownMetaprojectObjectIdException  The specified identifier is not recognized
+     */
+    <E extends MetaprojectObjectId> void update(E id, T newObj) throws UnknownMetaprojectObjectIdException;
+
 }
