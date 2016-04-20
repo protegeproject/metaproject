@@ -29,11 +29,6 @@ public final class SaltedPasswordDigestImpl implements SaltedPasswordDigest, Ser
         this.salt = checkNotNull(salt);
     }
 
-    /**
-     * Get the password hash
-     *
-     * @return Password hash
-     */
     @Override
     public String getPassword() {
         return password;

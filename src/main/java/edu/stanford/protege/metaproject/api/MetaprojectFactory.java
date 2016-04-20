@@ -106,7 +106,7 @@ public interface MetaprojectFactory {
     PlainPassword getPlainPassword(String password);
 
     /**
-     * Create an instance of salted password
+     * Create an instance of salted password given a string that represents the hash of a password, and the salt used to hash it
      *
      * @param password  Password string
      * @param salt  Salt

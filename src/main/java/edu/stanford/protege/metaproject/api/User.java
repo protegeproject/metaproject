@@ -6,7 +6,7 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface User extends MetaprojectObject<UserId>, HasName, Comparable<User> {
+public interface User extends MetaprojectObject<UserId>, Comparable<User> {
 
     /**
      * Get user's email address

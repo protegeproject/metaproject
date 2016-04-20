@@ -6,7 +6,7 @@ package edu.stanford.protege.metaproject.api;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface MetaprojectObject<T extends MetaprojectObjectId> extends HasId<T> {
+public interface MetaprojectObject<T extends MetaprojectObjectId> extends HasId<T>, HasName {
 
     /**
      * Check whether this object is of type {@link User}

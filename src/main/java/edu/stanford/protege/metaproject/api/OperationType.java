@@ -14,6 +14,6 @@ public enum OperationType {
     }
 
     public String getInitial() {
-        return Character.toLowerCase(name().charAt(0)) + "";
+        return Character.toUpperCase(name().charAt(0)) + "";
     }
 }
