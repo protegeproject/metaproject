@@ -18,12 +18,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = 7078506798600235000L;
-    private final Host host;
-    private final File root;
+    private static final long serialVersionUID = -790337608616699925L;
     private final Metaproject metaproject;
     private final AuthenticationRegistry authenticationRegistry;
     private Map<String,String> properties;
+    private Host host;
+    private File root;
 
     /**
      * Package-private constructor; use {@link ServerConfigurationBuilder}
@@ -57,8 +57,19 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
         return metaproject;
     }
 
+    @Override
     public AuthenticationRegistry getAuthenticationRegistry() {
         return authenticationRegistry;
+    }
+
+    @Override
+    public void setHost(Host host) {
+        this.host = checkNotNull(host);
+    }
+
+    @Override
+    public void setServerRoot(File root) {
+        this.root = checkNotNull(root);
     }
 
     @Override
