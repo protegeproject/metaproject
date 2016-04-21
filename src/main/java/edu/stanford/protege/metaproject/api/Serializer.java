@@ -4,6 +4,7 @@ import edu.stanford.protege.metaproject.api.exception.ObjectConversionException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Reader;
 
 /**
  * A generic serializer that can be used to parse a file into a Java object representation, and,
@@ -22,6 +23,18 @@ public interface Serializer<E> {
     E getInstance();
 
     /**
+     * Process the stream in the given reader and return the desired Java class instance
+     *
+     * @param reader    Reader
+     * @param cls   Class
+     * @param <T>   Type
+     * @return Instance of the specified class
+     * @throws FileNotFoundException    Specified file was not found
+     * @throws ObjectConversionException   JSON object could not be converted to a Java object
+     */
+    <T> T parse(Reader reader, Class<T> cls) throws FileNotFoundException, ObjectConversionException;
+
+    /**
      * Parse a given file and return the desired Java class instance
      *
      * @param f File
@@ -34,12 +47,11 @@ public interface Serializer<E> {
     <T> T parse(File f, Class<T> cls) throws FileNotFoundException, ObjectConversionException;
 
     /**
-     * Write into a string a representation of the given object as the specified type
+     * Write into a string a representation of the given object
      *
      * @param obj   Object to get a string representation of
-     * @param cls   Class
      * @return String representation of specified object
      */
-    String write(Object obj, Class cls);
+    String write(Object obj);
 
 }

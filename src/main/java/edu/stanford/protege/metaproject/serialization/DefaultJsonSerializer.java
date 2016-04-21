@@ -12,6 +12,7 @@ import edu.stanford.protege.metaproject.api.exception.ObjectConversionException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.Reader;
 
 /**
  * @author Rafael Gonçalves <br>
@@ -68,11 +69,11 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
     }
 
     @Override
-    public <T> T parse(File f, Class<T> cls) throws FileNotFoundException, ObjectConversionException {
+    public <T> T parse(Reader reader, Class<T> cls) throws FileNotFoundException, ObjectConversionException {
         Gson gson = getInstance();
         T obj;
         try {
-            obj = gson.fromJson(new FileReader(f), cls);
+            obj = gson.fromJson(reader, cls);
         } catch(JsonSyntaxException | JsonIOException e) {
             throw new ObjectConversionException("The given JSON file could not be parsed. This is likely to happen if the JSON object in " +
                     "the file does not match the Java object structure required for instantiating the object.");
@@ -81,8 +82,13 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
     }
 
     @Override
-    public String write(Object obj, Class cls) {
-        return getInstance().toJson(obj, cls);
+    public <T> T parse(File f, Class<T> cls) throws FileNotFoundException, ObjectConversionException {
+        return parse(new FileReader(f), cls);
+    }
+
+    @Override
+    public String write(Object obj) {
+        return getInstance().toJson(obj, obj.getClass());
     }
 
     @Override
