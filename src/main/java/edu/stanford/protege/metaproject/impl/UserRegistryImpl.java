@@ -156,8 +156,12 @@ public class UserRegistryImpl implements UserRegistry, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserRegistryImpl)) {
+            return false;
+        }
         UserRegistryImpl that = (UserRegistryImpl) o;
         return Objects.equal(users, that.users);
     }

@@ -93,13 +93,17 @@ public final class OntologyOperation implements Operation, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OntologyOperation operation = (OntologyOperation) o;
-        return Objects.equal(id, operation.id) &&
-                Objects.equal(name, operation.name) &&
-                Objects.equal(description, operation.description) &&
-                Objects.equal(type, operation.type);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof OntologyOperation)) {
+            return false;
+        }
+        OntologyOperation that = (OntologyOperation) o;
+        return Objects.equal(id, that.id) &&
+                Objects.equal(name, that.name) &&
+                Objects.equal(description, that.description) &&
+                type == that.type;
     }
 
     @Override

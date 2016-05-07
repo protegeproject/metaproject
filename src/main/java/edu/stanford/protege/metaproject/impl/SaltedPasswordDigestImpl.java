@@ -41,8 +41,12 @@ public final class SaltedPasswordDigestImpl implements SaltedPasswordDigest, Ser
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof SaltedPasswordDigestImpl)) {
+            return false;
+        }
         SaltedPasswordDigestImpl that = (SaltedPasswordDigestImpl) o;
         return Objects.equal(password, that.password) &&
                 Objects.equal(salt, that.salt);

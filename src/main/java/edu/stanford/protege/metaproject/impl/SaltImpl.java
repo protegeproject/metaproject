@@ -41,10 +41,14 @@ public final class SaltImpl implements Salt, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SaltImpl salt1 = (SaltImpl) o;
-        return Objects.equal(salt, salt1.salt);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof SaltImpl)) {
+            return false;
+        }
+        SaltImpl that = (SaltImpl) o;
+        return Objects.equal(salt, that.salt);
     }
 
     @Override

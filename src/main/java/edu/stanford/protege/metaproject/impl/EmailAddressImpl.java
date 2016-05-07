@@ -34,8 +34,12 @@ public final class EmailAddressImpl implements EmailAddress, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof EmailAddressImpl)) {
+            return false;
+        }
         EmailAddressImpl that = (EmailAddressImpl) o;
         return Objects.equal(email, that.email);
     }

@@ -94,19 +94,23 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ServerConfigurationImpl)) {
+            return false;
+        }
         ServerConfigurationImpl that = (ServerConfigurationImpl) o;
-        return Objects.equal(host, that.host) &&
-                Objects.equal(root, that.root) &&
-                Objects.equal(metaproject, that.metaproject) &&
+        return Objects.equal(metaproject, that.metaproject) &&
                 Objects.equal(authenticationRegistry, that.authenticationRegistry) &&
-                Objects.equal(properties, that.properties);
+                Objects.equal(properties, that.properties) &&
+                Objects.equal(host, that.host) &&
+                Objects.equal(root, that.root);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(host, root, metaproject, authenticationRegistry, properties);
+        return Objects.hashCode(metaproject, authenticationRegistry, properties, host, root);
     }
 
     @Override

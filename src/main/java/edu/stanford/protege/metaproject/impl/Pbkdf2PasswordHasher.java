@@ -69,8 +69,12 @@ public final class Pbkdf2PasswordHasher implements PasswordHasher {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Pbkdf2PasswordHasher)) {
+            return false;
+        }
         Pbkdf2PasswordHasher that = (Pbkdf2PasswordHasher) o;
         return Objects.equal(hashByteSize, that.hashByteSize) &&
                 Objects.equal(nrIterations, that.nrIterations);

@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.MetaprojectFactory;
+import edu.stanford.protege.metaproject.api.Serializer;
 import edu.stanford.protege.metaproject.impl.ConfigurationManagerImpl;
 import edu.stanford.protege.metaproject.impl.MetaprojectFactoryImpl;
 import edu.stanford.protege.metaproject.serialization.DefaultJsonSerializer;
@@ -13,7 +14,7 @@ import edu.stanford.protege.metaproject.serialization.DefaultJsonSerializer;
 public final class Manager {
     private static MetaprojectFactory factory;
     private static ConfigurationManager configurationManager;
-
+    private static Serializer serializer;
     /**
      * Get a factory for creating metaproject-related objects
      *
@@ -33,8 +34,20 @@ public final class Manager {
      */
     public static ConfigurationManager getConfigurationManager() {
         if(configurationManager == null) {
-            configurationManager = new ConfigurationManagerImpl(new DefaultJsonSerializer());
+            configurationManager = new ConfigurationManagerImpl(getSerializer());
         }
         return configurationManager;
+    }
+
+    /**
+     * Get the default configuration serializer
+     *
+     * @return Serializer
+     */
+    public static Serializer getSerializer() {
+        if(serializer == null) {
+            serializer = new DefaultJsonSerializer();
+        }
+        return serializer;
     }
 }

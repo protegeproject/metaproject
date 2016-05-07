@@ -118,8 +118,12 @@ public class AuthenticationRegistryImpl implements AuthenticationRegistry, Seria
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AuthenticationRegistryImpl)) {
+            return false;
+        }
         AuthenticationRegistryImpl that = (AuthenticationRegistryImpl) o;
         return Objects.equal(authenticationDetails, that.authenticationDetails);
     }

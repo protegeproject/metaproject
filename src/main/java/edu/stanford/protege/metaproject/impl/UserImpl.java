@@ -73,12 +73,16 @@ public final class UserImpl implements User, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserImpl user = (UserImpl) o;
-        return Objects.equal(id, user.id) &&
-                Objects.equal(name, user.name) &&
-                Objects.equal(emailAddress, user.emailAddress);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserImpl)) {
+            return false;
+        }
+        UserImpl that = (UserImpl) o;
+        return Objects.equal(id, that.id) &&
+                Objects.equal(name, that.name) &&
+                Objects.equal(emailAddress, that.emailAddress);
     }
 
     @Override

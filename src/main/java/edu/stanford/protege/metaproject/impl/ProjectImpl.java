@@ -95,15 +95,19 @@ public final class ProjectImpl implements Project, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProjectImpl project = (ProjectImpl) o;
-        return Objects.equal(id, project.id) &&
-                Objects.equal(name, project.name) &&
-                Objects.equal(description, project.description) &&
-                Objects.equal(file, project.file) &&
-                Objects.equal(owner, project.owner) &&
-                Objects.equal(options, project.options);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ProjectImpl)) {
+            return false;
+        }
+        ProjectImpl that = (ProjectImpl) o;
+        return Objects.equal(id, that.id) &&
+                Objects.equal(name, that.name) &&
+                Objects.equal(description, that.description) &&
+                Objects.equal(file, that.file) &&
+                Objects.equal(owner, that.owner) &&
+                Objects.equal(options, that.options);
     }
 
     @Override

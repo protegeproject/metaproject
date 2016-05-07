@@ -40,8 +40,12 @@ public final class UnauthorizedUserToken implements AuthToken, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UnauthorizedUserToken)) {
+            return false;
+        }
         UnauthorizedUserToken that = (UnauthorizedUserToken) o;
         return Objects.equal(user, that.user);
     }

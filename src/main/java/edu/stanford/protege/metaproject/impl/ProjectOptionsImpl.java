@@ -82,21 +82,24 @@ public final class ProjectOptionsImpl implements ProjectOptions, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ProjectOptionsImpl)) {
+            return false;
+        }
         ProjectOptionsImpl that = (ProjectOptionsImpl) o;
         return Objects.equal(requiredAnnotations, that.requiredAnnotations) &&
+                Objects.equal(requiredEntities, that.requiredEntities) &&
                 Objects.equal(optionalAnnotationsMap, that.optionalAnnotationsMap) &&
                 Objects.equal(complexAnnotations, that.complexAnnotations) &&
                 Objects.equal(immutableAnnotations, that.immutableAnnotations) &&
-                Objects.equal(requiredEntities, that.requiredEntities) &&
                 Objects.equal(customProperties, that.customProperties);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(requiredAnnotations, optionalAnnotationsMap, complexAnnotations,
-                immutableAnnotations, requiredEntities, customProperties);
+        return Objects.hashCode(requiredAnnotations, requiredEntities, optionalAnnotationsMap, complexAnnotations, immutableAnnotations, customProperties);
     }
 
     @Override

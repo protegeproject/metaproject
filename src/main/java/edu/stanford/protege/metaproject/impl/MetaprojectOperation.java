@@ -93,8 +93,12 @@ final class MetaprojectOperation implements Operation, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof MetaprojectOperation)) {
+            return false;
+        }
         MetaprojectOperation operation = (MetaprojectOperation) o;
         return Objects.equal(id, operation.id) &&
                 Objects.equal(name, operation.name) &&

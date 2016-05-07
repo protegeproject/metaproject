@@ -36,8 +36,12 @@ public final class OperationIdImpl implements OperationId, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof OperationIdImpl)) {
+            return false;
+        }
         OperationIdImpl that = (OperationIdImpl) o;
         return Objects.equal(id, that.id);
     }

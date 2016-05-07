@@ -34,11 +34,14 @@ public final class UserIdImpl implements UserId, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        if (!getClass().getName().equals(o.getClass().getName())) return false;
-        UserId that = (UserId) o;
-        return Objects.equal(this.get(), that.get());
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserIdImpl)) {
+            return false;
+        }
+        UserIdImpl that = (UserIdImpl) o;
+        return Objects.equal(id, that.id);
     }
 
     @Override

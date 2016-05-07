@@ -71,8 +71,12 @@ public class MetaprojectImpl implements Metaproject, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof MetaprojectImpl)) {
+            return false;
+        }
         MetaprojectImpl that = (MetaprojectImpl) o;
         return Objects.equal(policy, that.policy) &&
                 Objects.equal(roleRegistry, that.roleRegistry) &&

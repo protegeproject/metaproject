@@ -158,8 +158,12 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RoleRegistryImpl)) {
+            return false;
+        }
         RoleRegistryImpl that = (RoleRegistryImpl) o;
         return Objects.equal(roles, that.roles);
     }

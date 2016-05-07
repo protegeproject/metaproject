@@ -162,8 +162,12 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof MetaprojectAgentImpl)) {
+            return false;
+        }
         MetaprojectAgentImpl that = (MetaprojectAgentImpl) o;
         return Objects.equal(policy, that.policy) &&
                 Objects.equal(roleRegistry, that.roleRegistry) &&

@@ -37,8 +37,12 @@ public final class PlainPasswordImpl implements PlainPassword, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PlainPasswordImpl)) {
+            return false;
+        }
         PlainPasswordImpl that = (PlainPasswordImpl) o;
         return Objects.equal(plainPassword, that.plainPassword);
     }

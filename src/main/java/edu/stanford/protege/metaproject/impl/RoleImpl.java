@@ -82,13 +82,17 @@ public final class RoleImpl implements Role, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RoleImpl role = (RoleImpl) o;
-        return Objects.equal(id, role.id) &&
-                Objects.equal(name, role.name) &&
-                Objects.equal(description, role.description) &&
-                Objects.equal(operations, role.operations);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof RoleImpl)) {
+            return false;
+        }
+        RoleImpl that = (RoleImpl) o;
+        return Objects.equal(id, that.id) &&
+                Objects.equal(name, that.name) &&
+                Objects.equal(description, that.description) &&
+                Objects.equal(operations, that.operations);
     }
 
     @Override

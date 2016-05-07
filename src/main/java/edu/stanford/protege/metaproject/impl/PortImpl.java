@@ -34,10 +34,14 @@ public final class PortImpl implements Port, Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PortImpl port1 = (PortImpl) o;
-        return Objects.equal(port, port1.port);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PortImpl)) {
+            return false;
+        }
+        PortImpl that = (PortImpl) o;
+        return Objects.equal(port, that.port);
     }
 
     @Override

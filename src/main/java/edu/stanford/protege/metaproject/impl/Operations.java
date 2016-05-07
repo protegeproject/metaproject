@@ -158,6 +158,16 @@ public final class Operations {
             factory.getOperationId("modify-ontology-iri"), factory.getName("Modify the ontology IRI"),
             factory.getDescription("Modify the IRI of the ontology"), OperationType.WRITE);
 
+    // Accept change in revision history
+    public static final Operation ACCEPT_CHANGE = factory.getOntologyOperation(
+            factory.getOperationId("accept-change"), factory.getName("Accept change"),
+            factory.getDescription("Accept a change in the change history"), OperationType.WRITE);
+
+    // Reject change in revision history
+    public static final Operation REJECT_CHANGE = factory.getOntologyOperation(
+            factory.getOperationId("reject-change"), factory.getName("Reject change"),
+            factory.getDescription("Reject a change in the change history"), OperationType.WRITE);
+
 
     /**
      * Create a list of all operations declared as members of this class

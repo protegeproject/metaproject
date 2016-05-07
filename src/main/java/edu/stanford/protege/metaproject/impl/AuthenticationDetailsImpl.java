@@ -44,8 +44,12 @@ public final class AuthenticationDetailsImpl implements AuthenticationDetails, S
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if(!(o instanceof AuthenticationDetailsImpl)) {
+            return false;
+        }
         AuthenticationDetailsImpl that = (AuthenticationDetailsImpl) o;
         return Objects.equal(userId, that.userId) &&
                 Objects.equal(password, that.password);
