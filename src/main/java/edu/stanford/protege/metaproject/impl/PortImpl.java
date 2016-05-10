@@ -37,11 +37,11 @@ public final class PortImpl implements Port, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PortImpl)) {
+        if (!(o instanceof Port)) {
             return false;
         }
-        PortImpl that = (PortImpl) o;
-        return Objects.equal(port, that.port);
+        Port that = (Port) o;
+        return Objects.equal(port, that.get());
     }
 
     @Override

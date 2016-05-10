@@ -37,11 +37,11 @@ public final class NameImpl implements Name, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof NameImpl)) {
+        if (!(o instanceof Name)) {
             return false;
         }
-        NameImpl that = (NameImpl) o;
-        return Objects.equal(name, that.name);
+        Name that = (Name) o;
+        return Objects.equal(name, that.get());
     }
 
     @Override

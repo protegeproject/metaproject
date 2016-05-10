@@ -173,11 +173,11 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ProjectRegistryImpl)) {
+        if (!(o instanceof ProjectRegistry)) {
             return false;
         }
-        ProjectRegistryImpl that = (ProjectRegistryImpl) o;
-        return Objects.equal(projects, that.projects);
+        ProjectRegistry that = (ProjectRegistry) o;
+        return Objects.equal(projects, that.getEntries());
     }
 
     @Override

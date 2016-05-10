@@ -40,11 +40,11 @@ public final class PlainPasswordImpl implements PlainPassword, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PlainPasswordImpl)) {
+        if (!(o instanceof PlainPassword)) {
             return false;
         }
-        PlainPasswordImpl that = (PlainPasswordImpl) o;
-        return Objects.equal(plainPassword, that.plainPassword);
+        PlainPassword that = (PlainPassword) o;
+        return Objects.equal(plainPassword, that.getPassword());
     }
 
     @Override

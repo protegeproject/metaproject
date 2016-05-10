@@ -76,13 +76,13 @@ public final class UserImpl implements User, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UserImpl)) {
+        if (!(o instanceof User)) {
             return false;
         }
-        UserImpl that = (UserImpl) o;
-        return Objects.equal(id, that.id) &&
-                Objects.equal(name, that.name) &&
-                Objects.equal(emailAddress, that.emailAddress);
+        User that = (User) o;
+        return Objects.equal(id, that.getId()) &&
+                Objects.equal(name, that.getName()) &&
+                Objects.equal(emailAddress, that.getEmailAddress());
     }
 
     @Override

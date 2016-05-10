@@ -161,11 +161,11 @@ public class RoleRegistryImpl implements RoleRegistry, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof RoleRegistryImpl)) {
+        if (!(o instanceof RoleRegistry)) {
             return false;
         }
-        RoleRegistryImpl that = (RoleRegistryImpl) o;
-        return Objects.equal(roles, that.roles);
+        RoleRegistry that = (RoleRegistry) o;
+        return Objects.equal(roles, that.getEntries());
     }
 
     @Override

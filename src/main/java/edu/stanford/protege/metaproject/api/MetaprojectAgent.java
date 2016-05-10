@@ -66,6 +66,22 @@ public interface MetaprojectAgent {
     Set<Operation> getOperations(UserId userId, ProjectId projectId);
 
     /**
+     * Get the set of operations allowed by the given role set
+     *
+     * @param roles Set of roles
+     * @return Set of operations
+     */
+    Set<Operation> getOperations(Set<Role> roles);
+
+    /**
+     * Get the set of operations allowed by the given role
+     *
+     * @param role  Role
+     * @return Set of operations
+     */
+    Set<Operation> getOperations(Role role);
+
+    /**
      * Add the given metaproject object (such as user, role, project, operation) to the appropriate registry
      *
      * @param obj   Metaproject object to add

@@ -44,11 +44,11 @@ public final class SaltImpl implements Salt, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof SaltImpl)) {
+        if (!(o instanceof Salt)) {
             return false;
         }
-        SaltImpl that = (SaltImpl) o;
-        return Objects.equal(salt, that.salt);
+        Salt that = (Salt) o;
+        return Objects.equal(salt, that.getString());
     }
 
     @Override

@@ -134,11 +134,11 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OperationRegistryImpl)) {
+        if (!(o instanceof OperationRegistry)) {
             return false;
         }
-        OperationRegistryImpl that = (OperationRegistryImpl) o;
-        return Objects.equal(operations, that.operations);
+        OperationRegistry that = (OperationRegistry) o;
+        return Objects.equal(operations, that.getEntries());
     }
 
     @Override

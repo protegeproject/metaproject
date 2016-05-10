@@ -37,11 +37,11 @@ public final class DescriptionImpl implements Description, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DescriptionImpl)) {
+        if (!(o instanceof Description)) {
             return false;
         }
-        DescriptionImpl that = (DescriptionImpl) o;
-        return Objects.equal(description, that.description);
+        Description that = (Description) o;
+        return Objects.equal(description, that.get());
     }
 
     @Override

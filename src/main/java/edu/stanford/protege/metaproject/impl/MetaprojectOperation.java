@@ -96,14 +96,14 @@ final class MetaprojectOperation implements Operation, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MetaprojectOperation)) {
+        if (!(o instanceof Operation)) {
             return false;
         }
-        MetaprojectOperation operation = (MetaprojectOperation) o;
-        return Objects.equal(id, operation.id) &&
-                Objects.equal(name, operation.name) &&
-                Objects.equal(description, operation.description) &&
-                Objects.equal(type, operation.type);
+        Operation operation = (Operation) o;
+        return Objects.equal(id, operation.getId()) &&
+                Objects.equal(name, operation.getName()) &&
+                Objects.equal(description, operation.getDescription()) &&
+                Objects.equal(type, operation.getType());
     }
 
     @Override

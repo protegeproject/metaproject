@@ -37,11 +37,11 @@ public final class ProjectIdImpl implements ProjectId, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ProjectIdImpl)) {
+        if (!(o instanceof ProjectId)) {
             return false;
         }
-        ProjectIdImpl that = (ProjectIdImpl) o;
-        return Objects.equal(id, that.id);
+        ProjectId that = (ProjectId) o;
+        return Objects.equal(id, that.get());
     }
 
     @Override

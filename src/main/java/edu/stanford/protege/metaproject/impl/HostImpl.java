@@ -54,12 +54,12 @@ public final class HostImpl implements Host, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof HostImpl)) {
+        if (!(o instanceof Host)) {
             return false;
         }
-        HostImpl host = (HostImpl) o;
-        return Objects.equal(uri, host.uri) &&
-                Objects.equal(secondaryPort, host.secondaryPort);
+        Host host = (Host) o;
+        return Objects.equal(uri, host.getUri()) &&
+                Objects.equal(Optional.ofNullable(secondaryPort), host.getSecondaryPort());
     }
 
     @Override

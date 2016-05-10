@@ -97,15 +97,15 @@ public class ServerConfigurationImpl implements ServerConfiguration, Serializabl
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ServerConfigurationImpl)) {
+        if (!(o instanceof ServerConfiguration)) {
             return false;
         }
-        ServerConfigurationImpl that = (ServerConfigurationImpl) o;
-        return Objects.equal(metaproject, that.metaproject) &&
-                Objects.equal(authenticationRegistry, that.authenticationRegistry) &&
-                Objects.equal(properties, that.properties) &&
-                Objects.equal(host, that.host) &&
-                Objects.equal(root, that.root);
+        ServerConfiguration that = (ServerConfiguration) o;
+        return Objects.equal(metaproject, that.getMetaproject()) &&
+                Objects.equal(authenticationRegistry, that.getAuthenticationRegistry()) &&
+                Objects.equal(properties, that.getProperties()) &&
+                Objects.equal(host, that.getHost()) &&
+                Objects.equal(root, that.getServerRoot());
     }
 
     @Override

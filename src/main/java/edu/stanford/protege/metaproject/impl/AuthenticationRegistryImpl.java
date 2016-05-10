@@ -121,11 +121,11 @@ public class AuthenticationRegistryImpl implements AuthenticationRegistry, Seria
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AuthenticationRegistryImpl)) {
+        if (!(o instanceof AuthenticationRegistry)) {
             return false;
         }
-        AuthenticationRegistryImpl that = (AuthenticationRegistryImpl) o;
-        return Objects.equal(authenticationDetails, that.authenticationDetails);
+        AuthenticationRegistry that = (AuthenticationRegistry) o;
+        return Objects.equal(authenticationDetails, that.getAuthenticationDetails());
     }
 
     @Override

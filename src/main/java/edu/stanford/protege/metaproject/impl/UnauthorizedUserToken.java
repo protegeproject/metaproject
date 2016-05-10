@@ -43,11 +43,11 @@ public final class UnauthorizedUserToken implements AuthToken, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UnauthorizedUserToken)) {
+        if (!(o instanceof AuthToken)) {
             return false;
         }
-        UnauthorizedUserToken that = (UnauthorizedUserToken) o;
-        return Objects.equal(user, that.user);
+        AuthToken that = (AuthToken) o;
+        return Objects.equal(user, that.getUser());
     }
 
     @Override

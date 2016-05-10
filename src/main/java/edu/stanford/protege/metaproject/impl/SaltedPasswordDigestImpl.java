@@ -44,12 +44,12 @@ public final class SaltedPasswordDigestImpl implements SaltedPasswordDigest, Ser
         if (this == o) {
             return true;
         }
-        if (!(o instanceof SaltedPasswordDigestImpl)) {
+        if (!(o instanceof SaltedPasswordDigest)) {
             return false;
         }
-        SaltedPasswordDigestImpl that = (SaltedPasswordDigestImpl) o;
-        return Objects.equal(password, that.password) &&
-                Objects.equal(salt, that.salt);
+        SaltedPasswordDigest that = (SaltedPasswordDigest) o;
+        return Objects.equal(password, that.getPassword()) &&
+                Objects.equal(salt, that.getSalt());
     }
 
     @Override

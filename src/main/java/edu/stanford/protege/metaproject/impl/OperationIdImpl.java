@@ -39,11 +39,11 @@ public final class OperationIdImpl implements OperationId, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof OperationIdImpl)) {
+        if (!(o instanceof OperationId)) {
             return false;
         }
-        OperationIdImpl that = (OperationIdImpl) o;
-        return Objects.equal(id, that.id);
+        OperationId that = (OperationId) o;
+        return Objects.equal(id, that.get());
     }
 
     @Override

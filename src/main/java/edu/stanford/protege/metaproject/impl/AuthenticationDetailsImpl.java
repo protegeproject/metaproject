@@ -47,12 +47,12 @@ public final class AuthenticationDetailsImpl implements AuthenticationDetails, S
         if (this == o) {
             return true;
         }
-        if(!(o instanceof AuthenticationDetailsImpl)) {
+        if(!(o instanceof AuthenticationDetails)) {
             return false;
         }
-        AuthenticationDetailsImpl that = (AuthenticationDetailsImpl) o;
-        return Objects.equal(userId, that.userId) &&
-                Objects.equal(password, that.password);
+        AuthenticationDetails that = (AuthenticationDetails) o;
+        return Objects.equal(userId, that.getUserId()) &&
+                Objects.equal(password, that.getPassword());
     }
 
     @Override

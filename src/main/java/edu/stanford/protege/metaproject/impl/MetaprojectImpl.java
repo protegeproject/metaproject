@@ -74,15 +74,15 @@ public class MetaprojectImpl implements Metaproject, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MetaprojectImpl)) {
+        if (!(o instanceof Metaproject)) {
             return false;
         }
-        MetaprojectImpl that = (MetaprojectImpl) o;
-        return Objects.equal(policy, that.policy) &&
-                Objects.equal(roleRegistry, that.roleRegistry) &&
-                Objects.equal(operationRegistry, that.operationRegistry) &&
-                Objects.equal(userRegistry, that.userRegistry) &&
-                Objects.equal(projectRegistry, that.projectRegistry);
+        Metaproject that = (Metaproject) o;
+        return Objects.equal(policy, that.getPolicy()) &&
+                Objects.equal(roleRegistry, that.getRoleRegistry()) &&
+                Objects.equal(operationRegistry, that.getOperationRegistry()) &&
+                Objects.equal(userRegistry, that.getUserRegistry()) &&
+                Objects.equal(projectRegistry, that.getProjectRegistry());
     }
 
     @Override

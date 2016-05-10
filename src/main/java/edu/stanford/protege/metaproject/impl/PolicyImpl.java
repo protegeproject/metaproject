@@ -254,11 +254,11 @@ public class PolicyImpl implements Policy, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PolicyImpl)) {
+        if (!(o instanceof Policy)) {
             return false;
         }
-        PolicyImpl that = (PolicyImpl) o;
-        return Objects.equal(userRoleMap, that.userRoleMap);
+        Policy that = (Policy) o;
+        return Objects.equal(userRoleMap, that.getPolicyMappings());
     }
 
     @Override

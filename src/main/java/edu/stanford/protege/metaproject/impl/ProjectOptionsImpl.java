@@ -85,16 +85,16 @@ public final class ProjectOptionsImpl implements ProjectOptions, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ProjectOptionsImpl)) {
+        if (!(o instanceof ProjectOptions)) {
             return false;
         }
-        ProjectOptionsImpl that = (ProjectOptionsImpl) o;
-        return Objects.equal(requiredAnnotations, that.requiredAnnotations) &&
-                Objects.equal(requiredEntities, that.requiredEntities) &&
-                Objects.equal(optionalAnnotationsMap, that.optionalAnnotationsMap) &&
-                Objects.equal(complexAnnotations, that.complexAnnotations) &&
-                Objects.equal(immutableAnnotations, that.immutableAnnotations) &&
-                Objects.equal(customProperties, that.customProperties);
+        ProjectOptions that = (ProjectOptions) o;
+        return Objects.equal(requiredAnnotations, that.getRequiredAnnotationsForAnnotation()) &&
+                Objects.equal(requiredEntities, that.getRequiredEntities()) &&
+                Objects.equal(optionalAnnotationsMap, that.getOptionalAnnotationAnnotations()) &&
+                Objects.equal(complexAnnotations, that.getComplexAnnotationProperties()) &&
+                Objects.equal(immutableAnnotations, that.getImmutableAnnotationProperties()) &&
+                Objects.equal(customProperties, that.getProperties());
     }
 
     @Override

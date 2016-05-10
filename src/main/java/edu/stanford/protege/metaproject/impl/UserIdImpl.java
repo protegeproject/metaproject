@@ -37,11 +37,11 @@ public final class UserIdImpl implements UserId, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UserIdImpl)) {
+        if (!(o instanceof UserId)) {
             return false;
         }
-        UserIdImpl that = (UserIdImpl) o;
-        return Objects.equal(id, that.id);
+        UserId that = (UserId) o;
+        return Objects.equal(id, that.get());
     }
 
     @Override

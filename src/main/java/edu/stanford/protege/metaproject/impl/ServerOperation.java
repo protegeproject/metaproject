@@ -96,14 +96,14 @@ public final class ServerOperation implements Operation, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ServerOperation)) {
+        if (!(o instanceof Operation)) {
             return false;
         }
-        ServerOperation that = (ServerOperation) o;
-        return Objects.equal(id, that.id) &&
-                Objects.equal(name, that.name) &&
-                Objects.equal(description, that.description) &&
-                type == that.type;
+        Operation that = (Operation) o;
+        return Objects.equal(id, that.getId()) &&
+                Objects.equal(name, that.getName()) &&
+                Objects.equal(description, that.getDescription()) &&
+                type == that.getType();
     }
 
     @Override

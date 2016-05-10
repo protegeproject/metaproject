@@ -1,7 +1,5 @@
 package edu.stanford.protege.metaproject.impl;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
 import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
@@ -106,14 +104,22 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
         return getOperations(roles);
     }
 
-    private Set<Operation> getOperations(Set<Role> roles) {
+    @Override
+    public Set<Operation> getOperations(Set<Role> roles) {
         Set<Operation> operations = new HashSet<>();
-        for(Role r : roles) {
-            for(OperationId opId : r.getOperations()) {
-                try {
-                    operations.add(operationRegistry.get(opId));
-                } catch (UnknownMetaprojectObjectIdException e) { /* no-op */ }
-            }
+        for(Role role : roles) {
+            operations.addAll(getOperations(role));
+        }
+        return operations;
+    }
+
+    @Override
+    public Set<Operation> getOperations(Role role) {
+        Set<Operation> operations = new HashSet<>();
+        for(OperationId opId : role.getOperations()) {
+            try {
+                operations.add(operationRegistry.get(opId));
+            } catch (UnknownMetaprojectObjectIdException e) { /* no-op */ }
         }
         return operations;
     }
@@ -158,37 +164,5 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
 
     private enum Action {
         ADD, REMOVE
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof MetaprojectAgentImpl)) {
-            return false;
-        }
-        MetaprojectAgentImpl that = (MetaprojectAgentImpl) o;
-        return Objects.equal(policy, that.policy) &&
-                Objects.equal(roleRegistry, that.roleRegistry) &&
-                Objects.equal(userRegistry, that.userRegistry) &&
-                Objects.equal(operationRegistry, that.operationRegistry) &&
-                Objects.equal(projectRegistry, that.projectRegistry);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(policy, roleRegistry, userRegistry, operationRegistry, projectRegistry);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("policy", policy)
-                .add("roleRegistry", roleRegistry)
-                .add("userRegistry", userRegistry)
-                .add("operationRegistry", operationRegistry)
-                .add("projectRegistry", projectRegistry)
-                .toString();
     }
 }

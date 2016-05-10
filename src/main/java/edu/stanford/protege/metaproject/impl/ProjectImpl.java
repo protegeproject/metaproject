@@ -98,16 +98,16 @@ public final class ProjectImpl implements Project, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ProjectImpl)) {
+        if (!(o instanceof Project)) {
             return false;
         }
-        ProjectImpl that = (ProjectImpl) o;
-        return Objects.equal(id, that.id) &&
-                Objects.equal(name, that.name) &&
-                Objects.equal(description, that.description) &&
-                Objects.equal(file, that.file) &&
-                Objects.equal(owner, that.owner) &&
-                Objects.equal(options, that.options);
+        Project that = (Project) o;
+        return Objects.equal(id, that.getId()) &&
+                Objects.equal(name, that.getName()) &&
+                Objects.equal(description, that.getDescription()) &&
+                Objects.equal(file, that.getFile()) &&
+                Objects.equal(owner, that.getOwner()) &&
+                Objects.equal(Optional.ofNullable(options), that.getOptions());
     }
 
     @Override

@@ -85,14 +85,14 @@ public final class RoleImpl implements Role, Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof RoleImpl)) {
+        if (!(o instanceof Role)) {
             return false;
         }
-        RoleImpl that = (RoleImpl) o;
-        return Objects.equal(id, that.id) &&
-                Objects.equal(name, that.name) &&
-                Objects.equal(description, that.description) &&
-                Objects.equal(operations, that.operations);
+        Role that = (Role) o;
+        return Objects.equal(id, that.getId()) &&
+                Objects.equal(name, that.getName()) &&
+                Objects.equal(description, that.getDescription()) &&
+                Objects.equal(operations, that.getOperations());
     }
 
     @Override
