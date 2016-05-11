@@ -1,6 +1,8 @@
 package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
+import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
+import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
 
 import java.util.Set;
 
@@ -28,16 +30,18 @@ public interface MetaprojectAgent {
      *
      * @param userId    User identifier
      * @return Set of projects
+     * @throws UserNotInPolicyException User with given identifier not found in the access control policy
      */
-    Set<Project> getProjects(UserId userId);
+    Set<Project> getProjects(UserId userId) throws UserNotInPolicyException;
 
     /**
      * Get the set of roles that the user with the given identifier has been assigned
      *
      * @param userId    User identifier
      * @return Set of roles
+     * @throws UserNotInPolicyException User with given identifier not found in the access control policy
      */
-    Set<Role> getRoles(UserId userId);
+    Set<Role> getRoles(UserId userId) throws UserNotInPolicyException;
 
     /**
      * Get the set of roles that the user with the given identifier has been assigned in the project with the given identifier
@@ -45,16 +49,19 @@ public interface MetaprojectAgent {
      * @param userId    User identifier
      * @param projectId Project identifier
      * @return Set of roles
+     * @throws UserNotInPolicyException User with given identifier not found in the access control policy
+     * @throws ProjectNotInPolicyException  Project with given identifier not found in the access control policy
      */
-    Set<Role> getRoles(UserId userId, ProjectId projectId);
+    Set<Role> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
 
     /**
      * Get the set of operations that the user with the given identifier can perform
      *
      * @param userId    User identifier
      * @return Set of operations
+     * @throws UserNotInPolicyException User with given identifier not found in the access control policy
      */
-    Set<Operation> getOperations(UserId userId);
+    Set<Operation> getOperations(UserId userId) throws UserNotInPolicyException;
 
     /**
      * Get the set of operations that the user with the given identifier can perform in the project with the given identifier
@@ -62,8 +69,10 @@ public interface MetaprojectAgent {
      * @param userId    User identifier
      * @param projectId Project identifier
      * @return Set of operations
+     * @throws UserNotInPolicyException User with given identifier not found in the access control policy
+     * @throws ProjectNotInPolicyException  Project with given identifier not found in the access control policy
      */
-    Set<Operation> getOperations(UserId userId, ProjectId projectId);
+    Set<Operation> getOperations(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
 
     /**
      * Get the set of operations allowed by the given role set

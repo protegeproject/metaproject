@@ -267,10 +267,7 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
 
     @Override
     public Policy getPolicy() {
-        Policy policy = getPolicy(new HashMap<>());
-        policy.add(MetaprojectUtils.getRootUser().getId(), MetaprojectUtils.getTopProjectId(), MetaprojectUtils.getAdminRole().getId());
-        policy.add(MetaprojectUtils.getGuestUser().getId(), MetaprojectUtils.getTopProjectId(), MetaprojectUtils.getGuestRole().getId());
-        return policy;
+        return getPolicy(new HashMap<>());
     }
 
     @Override

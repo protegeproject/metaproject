@@ -35,8 +35,7 @@ public final class MetaprojectUtils {
             ADMIN_ROLE_DESCRIPTION = "A user with this role is allowed to do any operation on the server",
             GUEST_ROLE_ID = "mp-guest",
             GUEST_ROLE_NAME = "Guest",
-            GUEST_ROLE_DESCRIPTION = "A user with this role is allowed to do any read operation on the server",
-            TOP_PROJECT_ID = "top-project";
+            GUEST_ROLE_DESCRIPTION = "A user with this role is allowed to do any read operation on the server";
 
 
     /**
@@ -98,18 +97,6 @@ public final class MetaprojectUtils {
      */
     public static User getGuestUser() {
         return f.getUser(f.getUserId(GUEST_USER_ID), f.getName(GUEST_USER_NAME), f.getEmailAddress(""));
-    }
-
-    /**
-     * Get the project identifier that represents the "top project", as in, all projects. This is specifically meant for assigning
-     * roles that have a global nature, for example, the default 'guest user' is assigned a 'guest role' that allows all default
-     * operations of type 'read'. Since permissions are assigned on a per-project basis, there is a need to have a wildcard project
-     * that represents all projects so that we can say 'guest user' has 'guest role' on 'all projects'
-     *
-     * @return Project identifier
-     */
-    public static ProjectId getTopProjectId() {
-        return f.getProjectId(TOP_PROJECT_ID);
     }
 
     /**

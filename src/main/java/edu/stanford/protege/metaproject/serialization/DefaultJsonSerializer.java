@@ -76,7 +76,7 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
             obj = gson.fromJson(reader, cls);
         } catch(JsonSyntaxException | JsonIOException e) {
             throw new ObjectConversionException("The given JSON file could not be parsed. This is likely to happen if the JSON object in " +
-                    "the file does not match the Java object structure required for instantiating the object.");
+                    "the file does not match the Java object structure required for instantiating the object.", e.getCause());
         }
         return obj;
     }
