@@ -50,8 +50,9 @@ public interface Serializer<E> {
      * Write into a string a representation of the given object
      *
      * @param obj   Object to get a string representation of
+     * @param cls   Class
      * @return String representation of specified object
      */
-    String write(Object obj);
+    String write(Object obj, Class cls);
 
 }

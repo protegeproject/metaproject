@@ -52,7 +52,7 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
         checkNotNull(outputFile, "Output configuration file must not be null");
         checkConfigurationIsSet(serverConfiguration);
         FileWriter fw = new FileWriter(outputFile);
-        String json = serializer.write(serverConfiguration);
+        String json = serializer.write(serverConfiguration, ServerConfiguration.class);
         fw.write(json);
         fw.close();
     }

@@ -87,8 +87,8 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
     }
 
     @Override
-    public String write(Object obj) {
-        return getInstance().toJson(obj, obj.getClass());
+    public String write(Object obj, Class cls) {
+        return getInstance().toJson(obj, cls);
     }
 
     @Override
