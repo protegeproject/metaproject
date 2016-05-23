@@ -1,20 +1,12 @@
 package edu.stanford.protege.metaproject.api;
 
 /**
- * A representation of a password digest, consisting of the password
- * and the salt used to hash it
+ * A representation of a salted password digest, consisting of the password and the salt used to hash it
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface SaltedPasswordDigest {
-
-    /**
-     * Get the password
-     *
-     * @return Password string
-     */
-    String getPassword();
+public interface SaltedPasswordDigest extends Password {
 
     /**
      * Get the salt used for hashing this password
