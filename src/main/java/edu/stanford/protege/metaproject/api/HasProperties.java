@@ -9,7 +9,7 @@ import java.util.Map;
 public interface HasProperties {
 
     /**
-     * Get the map of client configuration properties
+     * Get the map of properties
      *
      * @return Map of string properties
      */

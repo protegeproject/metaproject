@@ -300,16 +300,8 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
     }
 
     @Override
-    public ProjectOptions getProjectOptions(Map<String, Set<String>> requiredAnnotationsMap, Map<String, Set<String>> optionalAnnotationsMap,
-                                            Set<String> complexAnnotations, Set<String> immutableAnnotations,
-                                            Map<String,Set<String>> requiredEntities, Map<String, String> customProperties) {
-        checkNotNull(requiredAnnotationsMap, "Map of required annotations must not be null");
-        checkNotNull(optionalAnnotationsMap, "Map of optional annotations must not be null");
-        checkNotNull(complexAnnotations, "Set of complex annotation properties must not be null");
-        checkNotNull(immutableAnnotations, "Set of immutable annotation properties must not be null");
-        checkNotNull(requiredEntities, "Map of required entities must not be null");
-        checkNotNull(customProperties, "Map of custom properties must not be null");
-        return new ProjectOptionsImpl(requiredAnnotationsMap, optionalAnnotationsMap, complexAnnotations,
-                immutableAnnotations, requiredEntities, customProperties);
+    public ProjectOptions getProjectOptions(Map<String,Set<String>> options) {
+        checkNotNull(options, "Options map must not be null");
+        return new ProjectOptionsImpl(options);
     }
 }

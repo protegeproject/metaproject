@@ -15,69 +15,38 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ProjectOptionsImpl implements ProjectOptions, Serializable {
-    private static final long serialVersionUID = 4165189780072429894L;
-    private final Map<String,Set<String>> requiredAnnotations, requiredEntities, optionalAnnotationsMap;
-    private final Set<String> complexAnnotations, immutableAnnotations;
-    private final Map<String,String> customProperties;
+    private static final long serialVersionUID = -4019008663618078530L;
+    private final Map<String,Set<String>> options;
 
     /**
-     * Package-private constructor; user {@link ProjectOptionsBuilder}
+     * Constructor
      *
-     * Entities are expected to be represented as strings that correspond to their IRIs.
-     *
-     * @param requiredAnnotations    Map of entities to the sets of annotation properties that must
-     *                                  accompany each entity's addition to the ontology signature
-     * @param optionalAnnotationsMap    Map of entities to the sets of annotation properties that can
-     *                                  (optionally) accompany each entity's addition to the ontology
-     *                                  signature
-     * @param complexAnnotations  Set of complex annotations
-     * @param immutableAnnotations  Set of annotation properties whose value cannot be modified
-     * @param requiredEntities  Map of entities to entities that are required for some operation
-     * @param customProperties  Map of custom properties for the project
+     * @param options   Project options map
      */
-    ProjectOptionsImpl(Map<String,Set<String>> requiredAnnotations, Map<String,Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
-                       Set<String> immutableAnnotations, Map<String,Set<String>> requiredEntities, Map<String,String> customProperties) {
-        this.requiredAnnotations = checkNotNull(requiredAnnotations);
-        this.optionalAnnotationsMap = checkNotNull(optionalAnnotationsMap);
-        this.complexAnnotations = checkNotNull(complexAnnotations);
-        this.immutableAnnotations = checkNotNull(immutableAnnotations);
-        this.requiredEntities = checkNotNull(requiredEntities);
-        this.customProperties = checkNotNull(customProperties);
+    public ProjectOptionsImpl(Map<String,Set<String>> options) {
+        this.options = checkNotNull(options);
     }
 
     @Override
-    public Set<String> getComplexAnnotationProperties() {
-        return complexAnnotations;
+    public Map<String,Set<String>> getOptions() {
+        return options;
     }
 
     @Override
-    public Set<String> getImmutableAnnotationProperties() {
-        return immutableAnnotations;
+    public Set<String> getOption(String key) {
+        return options.get(key);
     }
 
     @Override
-    public Map<String,Set<String>> getRequiredEntities() {
-        return requiredEntities;
+    public String getSingletonOption(String key) {
+        return options.get(key).iterator().next();
     }
 
     @Override
-    public Map<String, Set<String>> getRequiredAnnotationsForAnnotation() {
-        return requiredAnnotations;
-    }
-
-    @Override
-    public Map<String, Set<String>> getOptionalAnnotationAnnotations() {
-        return optionalAnnotationsMap;
-    }
-
-    @Override
-    public Map<String,String> getProperties() {
-        return customProperties;
-    }
-
-    @Override
-    public String getProperty(String key) {
-        return customProperties.get(key);
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("options", options)
+                .toString();
     }
 
     @Override
@@ -89,28 +58,11 @@ public final class ProjectOptionsImpl implements ProjectOptions, Serializable {
             return false;
         }
         ProjectOptions that = (ProjectOptions) o;
-        return Objects.equal(requiredAnnotations, that.getRequiredAnnotationsForAnnotation()) &&
-                Objects.equal(requiredEntities, that.getRequiredEntities()) &&
-                Objects.equal(optionalAnnotationsMap, that.getOptionalAnnotationAnnotations()) &&
-                Objects.equal(complexAnnotations, that.getComplexAnnotationProperties()) &&
-                Objects.equal(immutableAnnotations, that.getImmutableAnnotationProperties()) &&
-                Objects.equal(customProperties, that.getProperties());
+        return Objects.equal(options, that.getOptions());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(requiredAnnotations, requiredEntities, optionalAnnotationsMap, complexAnnotations, immutableAnnotations, customProperties);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("requiredAnnotations", requiredAnnotations)
-                .add("optionalAnnotationsMap", optionalAnnotationsMap)
-                .add("complexAnnotations", complexAnnotations)
-                .add("immutableAnnotations", immutableAnnotations)
-                .add("requiredEntities", requiredEntities)
-                .add("customProperties", customProperties)
-                .toString();
+        return Objects.hashCode(options);
     }
 }

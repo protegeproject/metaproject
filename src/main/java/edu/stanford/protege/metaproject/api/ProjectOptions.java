@@ -4,51 +4,37 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A representation of some project wide options centered around entities. Entities are expected
- * to be represented as strings that correspond to their IRIs.
+ * A representation of some project wide options. These options may concern entities in the ontology, in which case they
+ * are expected to be represented as strings that correspond to their IRIs.
  *
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface ProjectOptions extends HasProperties {
+public interface ProjectOptions {
 
     /**
-     * Get the set of annotation properties that, when introduced, need to be annotated with
-     * specific properties that can be obtained via getRequiredAnnotationsForAnnotation().
+     * Get the options map
      *
-     * @return Set of annotation properties
+     * @return Map of strings to sets of strings
      */
-    Set<String> getComplexAnnotationProperties();
+    Map<String,Set<String>> getOptions();
 
     /**
-     * Get the set of annotation properties whose fillers, once inserted,
-     * cannot be modified.
+     * Get the value, in the form of a set of strings, for the given property key
      *
-     * @return Set of annotation properties with immutable fillers
+     * @param key   Property key
+     * @return Set of strings
      */
-    Set<String> getImmutableAnnotationProperties();
+    Set<String> getOption(String key);
 
     /**
-     * Get the map of entities to their entity presence requirements
+     * Get the single string value for the given property key. This method should be used when the key is mapped to a set with
+     * one single element that will be returned. In case the (set) value for the given key contains multiple elements, the first
+     * to be fetched is returned.
      *
-     * @return Map of entities to entities that are required for some operation
+     * @param key   Property key
+     * @return String
      */
-    Map<String,Set<String>> getRequiredEntities();
-
-    /**
-     * Get the map of annotation properties to the set of annotation properties that
-     * must be used to annotate the annotation property map key
-     *
-     * @return Map of annotation properties to required annotation properties
-     */
-    Map<String,Set<String>> getRequiredAnnotationsForAnnotation();
-
-    /**
-     * Get the map of annotation properties to the set of annotation properties that
-     * can optionally be used to annotate the annotation property map key
-     *
-     * @return Map of annotation properties to optional annotation properties
-     */
-    Map<String,Set<String>> getOptionalAnnotationAnnotations();
+    String getSingletonOption(String key);
 
 }

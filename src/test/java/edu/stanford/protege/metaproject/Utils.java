@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.impl.MetaprojectBuilder;
-import edu.stanford.protege.metaproject.impl.ProjectOptionsBuilder;
+import edu.stanford.protege.metaproject.impl.ProjectOptionsImpl;
 import edu.stanford.protege.metaproject.impl.ServerConfigurationBuilder;
 
 import java.io.File;
@@ -532,19 +532,10 @@ public class Utils {
     }
 
     public static ProjectOptions getProjectOptions() {
-        return getProjectOptions(getStringToStringSetMap(), getStringToStringSetMap(), getStringSet(), getStringSet(),
-                getStringToStringSetMap(), getStringMap());
+        return getProjectOptions(getStringToStringSetMap());
     }
 
-    public static ProjectOptions getProjectOptions(Map<String, Set<String>> requiredAnnotationsMap, Map<String, Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
-                                                   Set<String> immutableAnnotations, Map<String,Set<String>> requiredEntities, Map<String, String> customProperties) {
-        return new ProjectOptionsBuilder()
-                .setRequiredAnnotationsMap(requiredAnnotationsMap)
-                .setOptionalAnnotationsMap(optionalAnnotationsMap)
-                .setComplexAnnotations(complexAnnotations)
-                .setImmutableAnnotations(immutableAnnotations)
-                .setRequiredEntities(requiredEntities)
-                .setCustomProperties(customProperties)
-                .createProjectOptions();
+    public static ProjectOptions getProjectOptions(Map<String, Set<String>> options) {
+        return new ProjectOptionsImpl(options);
     }
 }

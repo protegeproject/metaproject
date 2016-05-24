@@ -13,8 +13,7 @@ import java.util.Optional;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ProjectSerializer implements JsonDeserializer<Project>, JsonSerializer<Project> {
-    private final String ID = "id", NAME = "name", DESCRIPTION = "description", FILE = "file", OWNER = "owner",
-            OPTIONS = "options";
+    private final String ID = "id", NAME = "name", DESCRIPTION = "description", FILE = "file", OWNER = "owner", OPTIONS = "options";
 
     @Override
     public JsonElement serialize(Project project, Type type, JsonSerializationContext context) {

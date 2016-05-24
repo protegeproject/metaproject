@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class ConfigurationManagerImpl implements ConfigurationManager {
-    private final Serializer serializer;
+    private final Serializer<?> serializer;
     private ServerConfiguration serverConfiguration;
 
     /**
@@ -26,14 +26,14 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
      *
      * @param serializer    Configuration serializer
      */
-    public ConfigurationManagerImpl(Serializer serializer) {
+    public ConfigurationManagerImpl(Serializer<?> serializer) {
         this.serializer = checkNotNull(serializer);
     }
 
     @Override
     public ServerConfiguration loadServerConfiguration(File f) throws FileNotFoundException, ObjectConversionException {
         checkNotNull(f, "Input configuration file must not be null");
-        serverConfiguration = checkNotNull((ServerConfiguration) serializer.parse(f, ServerConfiguration.class));
+        serverConfiguration = checkNotNull(serializer.parse(f, ServerConfiguration.class));
         return serverConfiguration;
     }
 

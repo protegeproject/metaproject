@@ -14,7 +14,8 @@ import edu.stanford.protege.metaproject.serialization.DefaultJsonSerializer;
 public final class Manager {
     private static MetaprojectFactory factory;
     private static ConfigurationManager configurationManager;
-    private static Serializer serializer;
+    private static Serializer<?> serializer;
+
     /**
      * Get a factory for creating metaproject-related objects
      *
@@ -44,7 +45,7 @@ public final class Manager {
      *
      * @return Serializer
      */
-    public static Serializer getSerializer() {
+    public static Serializer<?> getSerializer() {
         if(serializer == null) {
             serializer = new DefaultJsonSerializer();
         }

@@ -370,17 +370,9 @@ public interface MetaprojectFactory {
     /**
      * Create an instance of project options
      *
-     * @param requiredAnnotationsMap    Map of entities to the sets of annotation properties that must
-     *                                  accompany each entity's addition to the ontology signature
-     * @param optionalAnnotationsMap    Map of entities to the sets of annotation properties that can
-     *                                  (optionally) accompany each entity's addition to the ontology signature
-     * @param complexAnnotations    Set of complex annotations
-     * @param immutableAnnotations  Set of annotation properties whose value cannot be modified
-     * @param requiredEntities  Map of entities to entities that are required for some operation
-     * @param customProperties  Map of custom properties for the project
+     * @param options  Options map
      * @return Project options
      */
-    ProjectOptions getProjectOptions(Map<String,Set<String>> requiredAnnotationsMap, Map<String,Set<String>> optionalAnnotationsMap, Set<String> complexAnnotations,
-                                     Set<String> immutableAnnotations, Map<String,Set<String>> requiredEntities, Map<String, String> customProperties);
+    ProjectOptions getProjectOptions(Map<String,Set<String>> options);
 
 }

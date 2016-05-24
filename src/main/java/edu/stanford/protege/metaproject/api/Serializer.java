@@ -13,14 +13,14 @@ import java.io.Reader;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Serializer<E> {
+public interface Serializer<S> {
 
     /**
      * Get the instance of the serializer
      *
      * @return Serializer instance
      */
-    E getInstance();
+    S getInstance();
 
     /**
      * Process the stream in the given reader and return the desired Java class instance
