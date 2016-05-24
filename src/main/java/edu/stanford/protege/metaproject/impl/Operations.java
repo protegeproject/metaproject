@@ -222,4 +222,58 @@ public final class Operations {
     public static Set<OperationId> getDefaultOperationsIds(OperationType type) {
         return getDefaultOperations(type).stream().map(Operation::getId).collect(Collectors.toSet());
     }
+
+    /**
+     * Get the set of default ontology operations
+     *
+     * @return Set of operations
+     */
+    public static Set<Operation> getOntologyOperations() {
+        return defaultOperations.stream().filter(Operation::isOntologyOperation).collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the set of default ontology operations identifiers
+     *
+     * @return Set of operation identifiers
+     */
+    public static Set<OperationId> getOntologyOperationsIds() {
+        return getOntologyOperations().stream().map(Operation::getId).collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the set of default server operations
+     *
+     * @return Set of operations
+     */
+    public static Set<Operation> getServerOperations() {
+        return defaultOperations.stream().filter(Operation::isServerOperation).collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the set of default server operations identifiers
+     *
+     * @return Set of operation identifiers
+     */
+    public static Set<OperationId> getServerOperationsIds() {
+        return getServerOperations().stream().map(Operation::getId).collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the set of default metaproject operations
+     *
+     * @return Set of operations
+     */
+    public static Set<Operation> getMetaprojectOperations() {
+        return defaultOperations.stream().filter(Operation::isMetaprojectOperation).collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the set of default metaproject operations identifiers
+     *
+     * @return Set of operation identifiers
+     */
+    public static Set<OperationId> getMetaprojectOperationsIds() {
+        return getMetaprojectOperations().stream().map(Operation::getId).collect(Collectors.toSet());
+    }
 }

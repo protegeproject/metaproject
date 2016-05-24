@@ -242,6 +242,7 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
         Set<Role> roles = new HashSet<>();
         roles.add(MetaprojectUtils.getAdminRole());
         roles.add(MetaprojectUtils.getGuestRole());
+        roles.add(MetaprojectUtils.getProjectManagerRole());
         return getRoleRegistry(roles);
     }
 

@@ -6,6 +6,7 @@ import edu.stanford.protege.metaproject.api.*;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,7 +36,11 @@ public final class MetaprojectUtils {
             ADMIN_ROLE_DESCRIPTION = "A user with this role is allowed to do any operation on the server",
             GUEST_ROLE_ID = "mp-guest",
             GUEST_ROLE_NAME = "Guest",
-            GUEST_ROLE_DESCRIPTION = "A user with this role is allowed to do any read operation on the server";
+            GUEST_ROLE_DESCRIPTION = "A user with this role is allowed to do any read operation on the server",
+            PROJECT_MANAGER_ROLE_ID = "mp-project-manager",
+            PROJECT_MANAGER_ROLE_NAME = "Project Manager",
+            PROJECT_MANAGER_ROLE_DESCRIPTION = "A user with this role is allowed to create, remove, modify and open a project, as well as" +
+                    " to perform any ontology operations";
 
 
     /**
@@ -78,7 +83,22 @@ public final class MetaprojectUtils {
      * @return Role
      */
     public static Role getGuestRole() {
-        return f.getRole(f.getRoleId(GUEST_ROLE_ID), f.getName(GUEST_ROLE_NAME), f.getDescription(GUEST_ROLE_DESCRIPTION), Operations.getDefaultOperationsIds(OperationType.READ));
+        return f.getRole(f.getRoleId(GUEST_ROLE_ID), f.getName(GUEST_ROLE_NAME), f.getDescription(GUEST_ROLE_DESCRIPTION),
+                Operations.getDefaultOperationsIds(OperationType.READ));
+    }
+
+    /**
+     * Get the project manager role, which allows all ontology operations and the add-project operation
+     *
+     * @return Role
+     */
+    public static Role getProjectManagerRole() {
+        Set<OperationId> operationIds = Operations.getOntologyOperationsIds();
+        operationIds.add(Operations.ADD_PROJECT.getId());
+        operationIds.add(Operations.REMOVE_PROJECT.getId());
+        operationIds.add(Operations.MODIFY_PROJECT.getId());
+        operationIds.add(Operations.OPEN_PROJECT.getId());
+        return f.getRole(f.getRoleId(PROJECT_MANAGER_ROLE_ID), f.getName(PROJECT_MANAGER_ROLE_NAME), f.getDescription(PROJECT_MANAGER_ROLE_DESCRIPTION), operationIds);
     }
 
     /**
