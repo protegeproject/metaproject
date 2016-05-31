@@ -16,14 +16,23 @@ import java.util.Set;
 public interface MetaprojectAgent {
 
     /**
-     * Check whether the specified operation is allowed for the given user
+     * Check whether the specified operation is allowed for the given user within the project
      *
      * @param operationId Operation identifier
      * @param projectId   Project identifier
      * @param userId  User identifier
-     * @return true if user is allowed to carry out the specified operation, false otherwise
+     * @return true if user is allowed to carry out the specified operation within the project, false otherwise
      */
     boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId);
+
+    /**
+     * Check whether the specified operation is allowed for the given user
+     *
+     * @param operationId Operation identifier
+     * @param userId  User identifier
+     * @return true if user is allowed to carry out the specified operation, false otherwise
+     */
+    boolean isOperationAllowed(OperationId operationId, UserId userId);
 
     /**
      * Get the set of projects that the user with the given identifier has some role assignments

@@ -284,20 +284,16 @@ public class Utils {
         return f.getProject(id, name, description, file, owner, projectOptions);
     }
 
-    public static Operation getServerOperation() {
-        return getServerOperation(getOperationId(), getName(), getDescription(), DEFAULT_OPERATION_TYPE);
+    public static Operation getSystemOperation() {
+        return getSystemOperation(getOperationId(), getName(), getDescription(), DEFAULT_OPERATION_TYPE, Operation.Scope.SERVER);
     }
 
-    public static Operation getServerOperation(OperationId id, Name operationName, Description description, OperationType type) {
-        return f.getServerOperation(id, operationName, description, type);
+    public static Operation getSystemOperation(OperationId id, Name operationName, Description description, OperationType type, Operation.Scope scope) {
+        return f.getSystemOperation(id, operationName, description, type, scope);
     }
 
-    public static Operation getOntologyOperation(OperationId id, Name operationName, Description description, OperationType type) {
-        return f.getOntologyOperation(id, operationName, description, type);
-    }
-
-    public static Operation getMetaprojectOperation(OperationId id, Name operationName, Description description, OperationType type) {
-        return f.getMetaprojectOperation(id, operationName, description, type);
+    public static Operation getCustomOperation(OperationId id, Name operationName, Description description, OperationType type, Operation.Scope scope) {
+        return f.getCustomOperation(id, operationName, description, type, scope);
     }
 
     public static Role getRole() {
@@ -368,7 +364,7 @@ public class Utils {
     public static Set<Operation> getOperationSet(int size) {
         Set<Operation> operations = new HashSet<>();
         for(int i = 0; i < size; i++) {
-            operations.add(getServerOperation());
+            operations.add(getSystemOperation());
         }
         return operations;
     }

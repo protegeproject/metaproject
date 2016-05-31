@@ -16,24 +16,20 @@ public interface Operation extends MetaprojectObject<OperationId>, HasDescriptio
     OperationType getType();
 
     /**
-     * Check whether this is a metaproject operation
+     * Get the scope of this operation, i.e., whether it applies to the ontology, metaproject, or server
      *
-     * @return true if this is a metaproject operation, false otherwise
+     * @return Scope of operation
      */
-    boolean isMetaprojectOperation();
+    Scope getScope();
 
     /**
-     * Check whether this is a server operation
+     * Check whether this is a system operation, i.e., a default operation defined by the API
      *
-     * @return true if this is a server operation, false otherwise
+     * @return true if this is a system operation, false otherwise
      */
-    boolean isServerOperation();
+    boolean isSystemOperation();
 
-    /**
-     * Check whether this is an ontology operation
-     *
-     * @return true if this is an ontology operation, false otherwise
-     */
-    boolean isOntologyOperation();
-
+    enum Scope {
+        METAPROJECT, SERVER, ONTOLOGY
+    }
 }

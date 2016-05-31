@@ -19,6 +19,7 @@ public class OperationSerializerTest {
     private static final Name operationName = Utils.getName();
     private static final Description operationDescription = Utils.getDescription();
     private static final OperationType type = OperationType.READ;
+    private final static Operation.Scope scope = Operation.Scope.METAPROJECT;
 
     private String jsonOperation, jsonOtherOperation, jsonDiffOperation;
     private Operation operation, otherOperation, diffOperation;
@@ -28,9 +29,9 @@ public class OperationSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getInstance();
 
-        operation = Utils.getServerOperation(operationId, operationName, operationDescription, type);
-        otherOperation = Utils.getServerOperation(operationId, operationName, operationDescription, type);
-        diffOperation = Utils.getServerOperation(diffOperationId, operationName, operationDescription, type);
+        operation = Utils.getSystemOperation(operationId, operationName, operationDescription, type, scope);
+        otherOperation = Utils.getSystemOperation(operationId, operationName, operationDescription, type, scope);
+        diffOperation = Utils.getSystemOperation(diffOperationId, operationName, operationDescription, type, scope);
 
         jsonOperation = gson.toJson(operation);
         jsonOtherOperation = gson.toJson(otherOperation);

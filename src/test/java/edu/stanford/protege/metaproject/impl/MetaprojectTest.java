@@ -18,7 +18,7 @@ public class MetaprojectTest {
     private static final User user1 = Utils.getUser(), user2 = Utils.getUser(), user3 = Utils.getUser();
     private static final UserRegistry userRegistry = Utils.getUserRegistry(Utils.getUserSet(user1, user2, user3));
 
-    private static final Operation operation1 = Utils.getServerOperation(), operation2 = Utils.getServerOperation(), operation3 = Utils.getServerOperation();
+    private static final Operation operation1 = Utils.getSystemOperation(), operation2 = Utils.getSystemOperation(), operation3 = Utils.getSystemOperation();
     private static final OperationRegistry operationRegistry = Utils.getOperationManager(Utils.getOperationSet(operation1, operation2, operation3));
 
     private static final Project project1 = Utils.getProject(), project2 = Utils.getProject(), project3 = Utils.getProject();

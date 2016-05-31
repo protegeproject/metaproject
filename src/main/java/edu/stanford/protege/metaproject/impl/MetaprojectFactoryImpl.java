@@ -41,24 +41,18 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
     }
 
     @Override
-    public Operation getServerOperation(OperationId operationId, Name name, Description description, OperationType operationType) {
-        checkOperationArguments(operationId, name, description, operationType);
-        return new ServerOperation(operationId, name, description, operationType);
+    public Operation getCustomOperation(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope) {
+        checkOperationArguments(operationId, name, description, operationType, scope);
+        return new CustomOperation(operationId, name, description, operationType, scope);
     }
 
     @Override
-    public Operation getOntologyOperation(OperationId operationId, Name name, Description description, OperationType operationType) {
-        checkOperationArguments(operationId, name, description, operationType);
-        return new OntologyOperation(operationId, name, description, operationType);
+    public Operation getSystemOperation(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope) {
+        checkOperationArguments(operationId, name, description, operationType, scope);
+        return new SystemOperation(operationId, name, description, operationType, scope);
     }
 
-    @Override
-    public Operation getMetaprojectOperation(OperationId operationId, Name name, Description description, OperationType operationType) {
-        checkOperationArguments(operationId, name, description, operationType);
-        return new MetaprojectOperation(operationId, name, description, operationType);
-    }
-
-    private void checkOperationArguments(OperationId operationId, Name name, Description description, OperationType operationType) {
+    private void checkOperationArguments(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope) {
         checkNotNull(operationId, "Operation identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
         checkNotNull(description, "Description cannot be null");

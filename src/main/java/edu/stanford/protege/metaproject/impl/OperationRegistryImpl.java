@@ -70,7 +70,7 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
     public void setName(OperationId operationId, Name operationName) throws UnknownMetaprojectObjectIdException {
         checkNotNull(operationName);
         Operation operation = get(operationId);
-        Operation newOperation = createOperation(operation.getId(), operationName, operation.getDescription(), operation.getType());
+        Operation newOperation = createOperation(operation.getId(), operationName, operation.getDescription(), operation.getType(), operation.getScope());
         update(operationId, newOperation);
     }
 
@@ -78,7 +78,7 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
     public void setDescription(OperationId operationId, Description operationDescription) throws UnknownMetaprojectObjectIdException {
         checkNotNull(operationDescription);
         Operation operation = get(operationId);
-        Operation newOperation = createOperation(operation.getId(), operation.getName(), operationDescription, operation.getType());
+        Operation newOperation = createOperation(operation.getId(), operation.getName(), operationDescription, operation.getType(), operation.getScope());
         update(operationId, newOperation);
     }
 
@@ -108,8 +108,8 @@ public class OperationRegistryImpl implements OperationRegistry, Serializable {
     /**
      * Create an instance of an operation
      */
-    private Operation createOperation(OperationId id, Name name, Description description, OperationType type) {
-        return Manager.getFactory().getServerOperation(id, name, description, type);
+    private Operation createOperation(OperationId id, Name name, Description description, OperationType type, Operation.Scope scope) {
+        return Manager.getFactory().getCustomOperation(id, name, description, type, scope);
     }
 
     /**

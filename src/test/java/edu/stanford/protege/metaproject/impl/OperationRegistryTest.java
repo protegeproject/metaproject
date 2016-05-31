@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Stanford Center for Biomedical Informatics Research
  */
 public class OperationRegistryTest {
-    private static final Operation operation1 = Utils.getServerOperation(), operation2 = Utils.getServerOperation(), operation3 = Utils.getServerOperation(), operation4 = Utils.getServerOperation();
+    private static final Operation operation1 = Utils.getSystemOperation(), operation2 = Utils.getSystemOperation(), operation3 = Utils.getSystemOperation(), operation4 = Utils.getSystemOperation();
     private static final Set<Operation> operationSet = Utils.getOperationSet(operation1, operation2, operation3, operation4);
     private static final String toStringHead = OperationRegistry.class.getSimpleName();
 
@@ -54,7 +54,7 @@ public class OperationRegistryTest {
 
     @Test
     public void testAddOperation() throws UnknownMetaprojectObjectIdException, IdAlreadyInUseException {
-        Operation operation5 = Utils.getServerOperation();
+        Operation operation5 = Utils.getSystemOperation();
         assertThat(operationRegistry.getEntries().contains(operation5), is(false));
 
         operationRegistry.add(operation5);

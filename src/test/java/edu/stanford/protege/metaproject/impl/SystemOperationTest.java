@@ -12,26 +12,27 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class MetaprojectOperationTest {
+public class SystemOperationTest {
     private static final String
             operationIdStr = "testOperationId1",
             otherIdStr = "testOperationId2",
             operationNameStr = "test operation name",
             otherOperationNameStr = "test operation name 2",
             operationDescriptionStr = "test operation description",
-            toStringHead = MetaprojectOperation.class.getSimpleName();
+            toStringHead = SystemOperation.class.getSimpleName();
 
     private static final OperationId operationId = Utils.getOperationId(operationIdStr), diffOperationId = Utils.getOperationId(otherIdStr);
     private static final Name operationName = Utils.getName(operationNameStr), diffOperationName = Utils.getName(otherOperationNameStr);
     private static final Description operationDescription = Utils.getDescription(operationDescriptionStr);
     private static final OperationType operationType = OperationType.WRITE;
+    private final static Operation.Scope scope = Operation.Scope.METAPROJECT;
     private Operation operation, otherOperation, diffOperation;
 
     @Before
     public void setUp() {
-        operation = Utils.getMetaprojectOperation(operationId, operationName, operationDescription, operationType);
-        otherOperation = Utils.getMetaprojectOperation(operationId, operationName, operationDescription, operationType);
-        diffOperation = Utils.getMetaprojectOperation(diffOperationId, diffOperationName, operationDescription, operationType);
+        operation = Utils.getSystemOperation(operationId, operationName, operationDescription, operationType, scope);
+        otherOperation = Utils.getSystemOperation(operationId, operationName, operationDescription, operationType, scope);
+        diffOperation = Utils.getSystemOperation(diffOperationId, diffOperationName, operationDescription, operationType, scope);
     }
 
     @Test
@@ -105,17 +106,7 @@ public class MetaprojectOperationTest {
     }
 
     @Test
-    public void testIsOntologyOperation() {
-        assertThat(operation.isOntologyOperation(), is(false));
-    }
-
-    @Test
-    public void testIsServerOperation() {
-        assertThat(operation.isServerOperation(), is(false));
-    }
-
-    @Test
     public void testIsMetaprojectOperation() {
-        assertThat(operation.isMetaprojectOperation(), is(true));
+        assertThat(operation.isSystemOperation(), is(true));
     }
 }

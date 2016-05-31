@@ -38,37 +38,28 @@ public interface MetaprojectFactory {
     Role getRole(RoleId roleId, Name name, Description description, Set<OperationId> operations);
 
     /**
-     * Create a new read operation
+     * Create a new custom operation
      *
      * @param operationId   Operation identifier
      * @param name  Operation name
      * @param description   Operation description
      * @param operationType Operation type
+     * @param scope Operation scope
      * @return New operation instance
      */
-    Operation getServerOperation(OperationId operationId, Name name, Description description, OperationType operationType);
+    Operation getCustomOperation(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope);
 
     /**
-     * Create a new write operation
+     * Create a new system operation
      *
      * @param operationId   Operation identifier
      * @param name  Operation name
      * @param description   Operation description
      * @param operationType Operation type
+     * @param scope Operation scope
      * @return New operation instance
      */
-    Operation getOntologyOperation(OperationId operationId, Name name, Description description, OperationType operationType);
-
-    /**
-     * Create a new execute operation
-     *
-     * @param operationId   Operation identifier
-     * @param name  Operation name
-     * @param description   Operation description
-     * @param operationType Operation type
-     * @return New operation instance
-     */
-    Operation getMetaprojectOperation(OperationId operationId, Name name, Description description, OperationType operationType);
+    Operation getSystemOperation(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope);
 
     /**
      * Create a user with the given user identifier, name and email address

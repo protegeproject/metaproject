@@ -60,6 +60,22 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
     }
 
     @Override
+    public boolean isOperationAllowed(OperationId operationId, UserId userId) {
+        try {
+            Set<RoleId> roles = policy.getRoles(userId);
+            for (RoleId role : roles) {
+                Role r = roleRegistry.get(role);
+                if (r.getOperations().contains(operationId)) {
+                    return true;
+                }
+            }
+        } catch (UnknownMetaprojectObjectIdException | UserNotInPolicyException e) {
+            return false;
+        }
+        return false;
+    }
+
+    @Override
     public Set<Project> getProjects(UserId userId) throws UserNotInPolicyException {
         Set<Project> projects = new HashSet<>();
         Set<ProjectId> projectIds = policy.getProjects(userId);
