@@ -4,6 +4,7 @@ import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.*;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -11,7 +12,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-abstract class OperationAbst implements Operation {
+public abstract class OperationAbst implements Operation, Serializable {
+    private static final long serialVersionUID = -6214079549750022529L;
     protected final OperationId id;
     protected final Name name;
     protected final Description description;
@@ -27,7 +29,7 @@ abstract class OperationAbst implements Operation {
      * @param type Operation type
      * @param scope Operation scope
      */
-    OperationAbst(OperationId id, Name name, Description description, OperationType type, Scope scope) {
+    public OperationAbst(OperationId id, Name name, Description description, OperationType type, Scope scope) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);

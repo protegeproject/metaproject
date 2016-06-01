@@ -11,8 +11,8 @@ import java.io.Serializable;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-final class SystemOperation extends OperationAbst implements Serializable {
-    private static final long serialVersionUID = 624027255772710818L;
+public final class SystemOperation extends OperationAbst implements Serializable {
+    private static final long serialVersionUID = 5905319142356191909L;
 
     @SerializedName("default")
     private final boolean system = true;
@@ -26,7 +26,7 @@ final class SystemOperation extends OperationAbst implements Serializable {
      * @param type Operation type
      * @param scope Operation scope
      */
-    SystemOperation(OperationId id, Name name, Description description, OperationType type, Scope scope) {
+    public SystemOperation(OperationId id, Name name, Description description, OperationType type, Scope scope) {
         super(id, name, description, type, scope);
     }
 

@@ -57,6 +57,7 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
         checkNotNull(name, "Name cannot be null");
         checkNotNull(description, "Description cannot be null");
         checkNotNull(operationType, "Operation type cannot be null");
+        checkNotNull(scope, "Operation scope cannot be null");
     }
 
     @Override
