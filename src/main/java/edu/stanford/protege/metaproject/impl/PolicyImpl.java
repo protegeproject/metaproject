@@ -118,8 +118,8 @@ public class PolicyImpl implements Policy, Serializable {
     private void remove(RoleId roleId) {
         Map<UserId, Map<ProjectId,Set<RoleId>>> toUpdate = new HashMap<>();
         for(UserId userId : userRoleMap.keySet()) {
-            Map<ProjectId,Set<RoleId>> roleAssignments = new HashMap<>();
-            for(ProjectId projectId : userRoleMap.get(userId).keySet()) {
+            Map<ProjectId,Set<RoleId>> roleAssignments = userRoleMap.get(userId);
+            for(ProjectId projectId : roleAssignments.keySet()) {
                 if(roleAssignments.get(projectId).contains(roleId)) {
                     Set<RoleId> roleIds = roleAssignments.get(projectId);
                     roleIds.remove(roleId);
@@ -139,7 +139,7 @@ public class PolicyImpl implements Policy, Serializable {
     private void remove(ProjectId projectId) {
         Map<UserId, Map<ProjectId,Set<RoleId>>> toUpdate = new HashMap<>();
         for(UserId userId : userRoleMap.keySet()) {
-            Map<ProjectId, Set<RoleId>> roleAssignments = new HashMap<>();
+            Map<ProjectId, Set<RoleId>> roleAssignments = userRoleMap.get(userId);
             roleAssignments.remove(projectId);
             toUpdate.put(userId, roleAssignments);
         }
