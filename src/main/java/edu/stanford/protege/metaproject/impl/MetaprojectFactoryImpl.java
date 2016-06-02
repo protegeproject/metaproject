@@ -265,14 +265,24 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
 
     @Override
     public Policy getPolicy() {
-        Set<RoleId> roles = new HashSet<>();
-        roles.add(MetaprojectUtils.getAdminRole().getId());
-
-        Map<ProjectId, Set<RoleId>> projectAssignments = new HashMap<>();
-        projectAssignments.put(MetaprojectUtils.getUniversalProject().getId(), roles);
-
         Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap = new HashMap<>();
-        userRoleMap.put(MetaprojectUtils.getRootUser().getId(), projectAssignments);
+
+        // admin user
+        Set<RoleId> adminRoles = new HashSet<>();
+        adminRoles.add(MetaprojectUtils.getAdminRole().getId());
+
+        Map<ProjectId, Set<RoleId>> adminAssignments = new HashMap<>();
+        adminAssignments.put(MetaprojectUtils.getUniversalProjectId(), adminRoles);
+        userRoleMap.put(MetaprojectUtils.getRootUser().getId(), adminAssignments);
+
+        // guest user
+        Set<RoleId> guestRoles = new HashSet<>();
+        guestRoles.add(MetaprojectUtils.getGuestRole().getId());
+
+        Map<ProjectId, Set<RoleId>> guestAssignments = new HashMap<>();
+        guestAssignments.put(MetaprojectUtils.getUniversalProjectId(), guestRoles);
+        userRoleMap.put(MetaprojectUtils.getGuestUser().getId(), guestAssignments);
+
         return getPolicy(userRoleMap);
     }
 
