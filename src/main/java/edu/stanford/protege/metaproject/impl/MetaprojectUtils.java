@@ -23,8 +23,9 @@ public final class MetaprojectUtils {
             KEY_ITERATIONS = 20000;
 
     private final static String
-            SERVER_URI = "rmi-owl2-server://localhost:5100",
-            SERVER_ROOT = "target/server-distribution/server/root",
+            SERVER_URI = "rmi://localhost:5100",
+            SERVER_ROOT = "root/data",
+            SYSTEM_USER_ID = "system",
             ROOT_USER_ID = "root",
             ROOT_USER_NAME = "Root User",
             ROOT_USER_PASSWORD = "rootpwd",
@@ -39,8 +40,13 @@ public final class MetaprojectUtils {
             GUEST_ROLE_DESCRIPTION = "A user with this role is allowed to do any read operation on the server",
             PROJECT_MANAGER_ROLE_ID = "mp-project-manager",
             PROJECT_MANAGER_ROLE_NAME = "Project Manager",
-            PROJECT_MANAGER_ROLE_DESCRIPTION = "A user with this role is allowed to create, remove, modify and open a project, as well as" +
-                    " to perform any ontology operations";
+            PROJECT_MANAGER_ROLE_DESCRIPTION = "A user with this role is allowed to create, remove, modify and open a project, " +
+                    "as well as to perform any ontology operations",
+            UNIVERSAL_PROJECT_ID = "all-projects",
+            UNIVERSAL_PROJECT_NAME = "All Projects",
+            UNIVERSAL_PROJECT_DESCRIPTION = "A project that represents all projects, i.e., global rights";
+
+
 
 
     /**
@@ -98,7 +104,8 @@ public final class MetaprojectUtils {
         operationIds.add(Operations.REMOVE_PROJECT.getId());
         operationIds.add(Operations.MODIFY_PROJECT.getId());
         operationIds.add(Operations.OPEN_PROJECT.getId());
-        return f.getRole(f.getRoleId(PROJECT_MANAGER_ROLE_ID), f.getName(PROJECT_MANAGER_ROLE_NAME), f.getDescription(PROJECT_MANAGER_ROLE_DESCRIPTION), operationIds);
+        return f.getRole(f.getRoleId(PROJECT_MANAGER_ROLE_ID), f.getName(PROJECT_MANAGER_ROLE_NAME),
+                f.getDescription(PROJECT_MANAGER_ROLE_DESCRIPTION), operationIds);
     }
 
     /**
@@ -117,6 +124,25 @@ public final class MetaprojectUtils {
      */
     public static User getGuestUser() {
         return f.getUser(f.getUserId(GUEST_USER_ID), f.getName(GUEST_USER_NAME), f.getEmailAddress(""));
+    }
+
+    /**
+     * Get the universal project that represents all projects (global rights)
+     *
+     * @return Project
+     */
+    public static Project getUniversalProject() {
+        return f.getProject(getUniversalProjectId(), f.getName(UNIVERSAL_PROJECT_NAME), f.getDescription(UNIVERSAL_PROJECT_DESCRIPTION),
+                new File(""), f.getUserId(SYSTEM_USER_ID), Optional.empty());
+    }
+
+    /**
+     * Get the universal project identifier
+     *
+     * @return Project identifier
+     */
+    public static ProjectId getUniversalProjectId() {
+        return f.getProjectId(UNIVERSAL_PROJECT_ID);
     }
 
     /**

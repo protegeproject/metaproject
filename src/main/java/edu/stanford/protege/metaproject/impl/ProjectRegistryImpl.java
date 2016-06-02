@@ -51,7 +51,9 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
 
     @Override
     public Set<Project> getEntries() {
-        return projects;
+        Set<Project> projectSet = new HashSet<>(projects);
+        projectSet.remove(MetaprojectUtils.getUniversalProject());
+        return projectSet;
     }
 
     @Override
@@ -71,7 +73,8 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
     @Override
     public Set<Project> getEntries(Name projectName) {
         checkNotNull(projectName);
-        return projects.stream().filter(project -> project.getName().equals(projectName)).collect(Collectors.toSet());
+        return projects.stream().filter(project -> project.getName().equals(projectName) &&
+                !project.getId().equals(MetaprojectUtils.getUniversalProjectId())).collect(Collectors.toSet());
     }
 
     @Override
@@ -177,7 +180,7 @@ public class ProjectRegistryImpl implements ProjectRegistry, Serializable {
             return false;
         }
         ProjectRegistry that = (ProjectRegistry) o;
-        return Objects.equal(projects, that.getEntries());
+        return Objects.equal(getEntries(), that.getEntries());
     }
 
     @Override

@@ -218,7 +218,9 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
     @Override
     public ProjectRegistry getProjectRegistry(Set<Project> projects) {
         checkNotNull(projects, "Set of projects must not be null");
-        return new ProjectRegistryImpl(projects);
+        Set<Project> projectSet = new HashSet<>(projects);
+        projectSet.add(MetaprojectUtils.getUniversalProject());
+        return new ProjectRegistryImpl(projectSet);
     }
 
     @Override
@@ -263,7 +265,15 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
 
     @Override
     public Policy getPolicy() {
-        return getPolicy(new HashMap<>());
+        Set<RoleId> roles = new HashSet<>();
+        roles.add(MetaprojectUtils.getAdminRole().getId());
+
+        Map<ProjectId, Set<RoleId>> projectAssignments = new HashMap<>();
+        projectAssignments.put(MetaprojectUtils.getUniversalProject().getId(), roles);
+
+        Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap = new HashMap<>();
+        userRoleMap.put(MetaprojectUtils.getRootUser().getId(), projectAssignments);
+        return getPolicy(userRoleMap);
     }
 
     @Override

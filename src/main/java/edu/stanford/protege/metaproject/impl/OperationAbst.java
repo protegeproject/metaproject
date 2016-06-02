@@ -13,7 +13,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public abstract class OperationAbst implements Operation, Serializable {
-    private static final long serialVersionUID = -6214079549750022529L;
     protected final OperationId id;
     protected final Name name;
     protected final Description description;

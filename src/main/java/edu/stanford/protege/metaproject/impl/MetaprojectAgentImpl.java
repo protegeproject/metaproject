@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- *         Stanford Center for Biomedical Informatics Research
+ * Stanford Center for Biomedical Informatics Research
  */
 public class MetaprojectAgentImpl implements MetaprojectAgent {
     private final static Logger logger = LoggerFactory.getLogger(MetaprojectAgent.class);
@@ -46,7 +46,8 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
     @Override
     public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) {
         try {
-            Set<RoleId> roles = policy.getRoles(userId, projectId);
+            Set<RoleId> roles = new HashSet<>(policy.getRoles(userId, projectId));
+            roles.addAll(policy.getRoles(userId, MetaprojectUtils.getUniversalProjectId()));
             for (RoleId role : roles) {
                 Role r = roleRegistry.get(role);
                 if (r.getOperations().contains(operationId)) {
