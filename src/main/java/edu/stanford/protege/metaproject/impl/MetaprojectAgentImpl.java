@@ -46,8 +46,13 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
     @Override
     public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) {
         try {
-            Set<RoleId> roles = new HashSet<>(policy.getRoles(userId, projectId));
-            roles.addAll(policy.getRoles(userId, MetaprojectUtils.getUniversalProjectId()));
+            Set<RoleId> roles = new HashSet<>();
+            if(policy.hasRole(userId, MetaprojectUtils.getUniversalProjectId())) {
+                roles.addAll(policy.getRoles(userId, MetaprojectUtils.getUniversalProjectId()));
+            }
+            if(policy.hasRole(userId, projectId)) {
+                roles.addAll(policy.getRoles(userId, projectId));
+            }
             for (RoleId role : roles) {
                 Role r = roleRegistry.get(role);
                 if (r.getOperations().contains(operationId)) {

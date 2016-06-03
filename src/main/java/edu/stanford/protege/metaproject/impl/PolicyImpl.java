@@ -148,9 +148,15 @@ public class PolicyImpl implements Policy, Serializable {
 
     @Override
     public boolean hasRole(UserId userId, ProjectId projectId, RoleId roleId) {
-        if (userRoleMap.containsKey(userId) && userRoleMap.get(userId).containsKey(projectId)) {
-            if (userRoleMap.get(userId).get(projectId).contains(roleId)) {
-                return true;
+        if (userRoleMap.containsKey(userId)) {
+            Map<ProjectId, Set<RoleId>> assignments = userRoleMap.get(userId);
+            if (assignments.containsKey(projectId)) {
+                if(assignments.get(projectId).contains(roleId)) {
+                    return true;
+                }
+            }
+            if (assignments.containsKey(MetaprojectUtils.getUniversalProjectId())) {
+                return assignments.get(MetaprojectUtils.getUniversalProjectId()).contains(roleId);
             }
         }
         return false;
@@ -160,7 +166,12 @@ public class PolicyImpl implements Policy, Serializable {
     public Set<RoleId> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException {
         checkUserIsInPolicy(userId);
         checkProjectIsInPolicy(userId, projectId);
-        return userRoleMap.get(userId).get(projectId);
+        Map<ProjectId,Set<RoleId>> assignments = userRoleMap.get(userId);
+        Set<RoleId> roles = new HashSet<>(assignments.get(projectId));
+        if(assignments.containsKey(MetaprojectUtils.getUniversalProjectId())) {
+            roles.addAll(assignments.get(MetaprojectUtils.getUniversalProjectId()));
+        }
+        return roles;
     }
 
     @Override
