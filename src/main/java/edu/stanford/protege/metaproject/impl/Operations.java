@@ -108,15 +108,10 @@ public final class Operations {
             factory.getOperationId("stop-server"), factory.getName("Stop the server"),
             factory.getDescription("Stop the execution of the server"), OperationType.EXECUTE, Operation.Scope.SERVER);
 
-    // Restart server
-    public static final Operation RESTART_SERVER = factory.getSystemOperation(
-            factory.getOperationId("restart-server"), factory.getName("Restart the server"),
-            factory.getDescription("Restart the execution of the server"), OperationType.EXECUTE, Operation.Scope.SERVER);
-
     // Modify server configuration
-    public static final Operation MODIFY_SERVER_CONFIG = factory.getSystemOperation(
-            factory.getOperationId("modify-config"), factory.getName("Modify server configuration"),
-            factory.getDescription("Make changes to the configuration of the server"), OperationType.WRITE, Operation.Scope.SERVER);
+    public static final Operation MODIFY_SERVER_SETTINGS = factory.getSystemOperation(
+            factory.getOperationId("modify-settings"), factory.getName("Modify server settings"),
+            factory.getDescription("Make changes to the settings of the server, such as host or custom properties"), OperationType.WRITE, Operation.Scope.SERVER);
 
 
     /**
