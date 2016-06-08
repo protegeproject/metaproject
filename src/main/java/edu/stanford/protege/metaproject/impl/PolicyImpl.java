@@ -167,11 +167,7 @@ public class PolicyImpl implements Policy, Serializable {
         checkUserIsInPolicy(userId);
         checkProjectIsInPolicy(userId, projectId);
         Map<ProjectId,Set<RoleId>> assignments = userRoleMap.get(userId);
-        Set<RoleId> roles = new HashSet<>(assignments.get(projectId));
-        if(assignments.containsKey(MetaprojectUtils.getUniversalProjectId())) {
-            roles.addAll(assignments.get(MetaprojectUtils.getUniversalProjectId()));
-        }
-        return roles;
+        return new HashSet<>(assignments.get(projectId));
     }
 
     @Override
