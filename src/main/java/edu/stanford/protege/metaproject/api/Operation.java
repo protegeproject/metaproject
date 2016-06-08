@@ -30,6 +30,6 @@ public interface Operation extends MetaprojectObject<OperationId>, HasDescriptio
     boolean isSystemOperation();
 
     enum Scope {
-        METAPROJECT, SERVER, ONTOLOGY
+        METAPROJECT, SERVER, ONTOLOGY, GUI
     }
 }

@@ -19,7 +19,7 @@ public final class Operations {
     private static MetaprojectFactory factory = Manager.getFactory();
     private static Set<Operation> defaultOperations = new HashSet<>();
 
-    /**
+    /*
      * Metaproject operations
      */
 
@@ -99,7 +99,7 @@ public final class Operations {
             factory.getDescription("Retract a role from a user"), OperationType.WRITE, Operation.Scope.METAPROJECT);
 
 
-    /**
+    /*
      * Server operations
      */
 
@@ -114,7 +114,7 @@ public final class Operations {
             factory.getDescription("Make changes to the settings of the server, such as host or custom properties"), OperationType.WRITE, Operation.Scope.SERVER);
 
 
-    /**
+    /*
      * Broad categories of OWL ontology operations following top-level OWLAPI OWLOntologyChange subtypes
      */
 
@@ -164,8 +164,53 @@ public final class Operations {
             factory.getDescription("Reject a change in the change history"), OperationType.WRITE, Operation.Scope.ONTOLOGY);
 
 
-    /**
-     * Create a list of all operations declared as members of this class
+    /*
+     * Protege GUI component visibility operations
+     */
+
+    public static final Operation USE_VIEWS_MENU = factory.getSystemOperation(
+            factory.getOperationId("use-views-menu"), factory.getName("Use the Views menu"),
+            factory.getDescription("Use the 'Window > Views' menu item"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_ENTITIES_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-entities-tab"), factory.getName("Use the Entities tab"),
+            factory.getDescription("Use the 'Entities' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_ACTIVE_ONTOLOGY_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-active-ontology-tab"), factory.getName("Use the Active Ontology tab"),
+            factory.getDescription("Use the 'Active Ontology' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_CLASSES_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-classes-tab"), factory.getName("Use the Classes tab"),
+            factory.getDescription("Use the 'Classes' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_OBJECT_PROPERTIES_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-object-properties-tab"), factory.getName("Use the Object Properties tab"),
+            factory.getDescription("Use the 'Object Properties' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_DATA_PROPERTIES_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-data-properties-tab"), factory.getName("Use the Data Properties tab"),
+            factory.getDescription("Use the 'Data Properties' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_ANNOTATION_PROPERTIES_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-annotation-properties-tab"), factory.getName("Use the Annotation Properties tab"),
+            factory.getDescription("Use the 'Annotation Properties' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_INDIVIDUALS_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-individuals-tab"), factory.getName("Use the Annotation Properties tab"),
+            factory.getDescription("Use the 'Annotation Properties' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_REVISION_LOG_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-revision-log-tab"), factory.getName("Use the Revision Log diff tab"),
+            factory.getDescription("Use the 'Revision Log diff' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+    public static final Operation USE_SERVER_ADMIN_TAB = factory.getSystemOperation(
+            factory.getOperationId("use-server-admin-tab"), factory.getName("Use the Server Administration tab"),
+            factory.getDescription("Use the 'Server Administration' tab"), OperationType.EXECUTE, Operation.Scope.GUI);
+
+
+    /*
+      Create a list of all operations declared as members of this class
      */
     static {
         Field[] fields = Operations.class.getDeclaredFields();
