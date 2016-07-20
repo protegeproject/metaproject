@@ -98,23 +98,18 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
 
     @Override
     public Set<Role> getRoles(UserId userId) throws UserNotInPolicyException {
-        Set<Role> roles = new HashSet<>();
         Set<RoleId> roleIds = policy.getRoles(userId);
-        for (RoleId roleId : roleIds) {
-            try {
-                roles.add(roleRegistry.get(roleId));
-            } catch (UnknownMetaprojectObjectIdException e) {
-                logger.debug("The role with identifier '" + roleId.get() + "' is stated in the access control policy " +
-                        "but there is no role with that identifier in the role registry.");
-            }
-        }
-        return roles;
+        return getRoles(roleIds);
     }
 
     @Override
     public Set<Role> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException {
-        Set<Role> roles = new HashSet<>();
         Set<RoleId> roleIds = policy.getRoles(userId, projectId);
+        return getRoles(roleIds);
+    }
+
+    private Set<Role> getRoles(Set<RoleId> roleIds) {
+        Set<Role> roles = new HashSet<>();
         for (RoleId roleId : roleIds) {
             try {
                 roles.add(roleRegistry.get(roleId));
