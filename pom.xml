@@ -146,7 +146,8 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>
                             edu.stanford.protege.metaproject.*,
-                            org.apache.commons.codec.*
+                            org.apache.commons.codec.*,
+                            com.google.gson.*
                         </Export-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>
                     </instructions>
