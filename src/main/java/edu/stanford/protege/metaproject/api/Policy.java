@@ -107,20 +107,22 @@ public interface Policy {
      *
      * @param userId    User identifier
      * @param projectId Project identifier
+     * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of role identifiers
      * @throws UserNotInPolicyException UserId not registered in the access control policy
      * @throws ProjectNotInPolicyException  Project not registered in the access control policy
      */
-    Set<RoleId> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
+    Set<RoleId> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws UserNotInPolicyException, ProjectNotInPolicyException;
 
     /**
      * Get the set of role identifiers that a given user has assigned
      *
      * @param userId    User identifier
+     * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of role identifiers
      * @throws UserNotInPolicyException UserId not registered in the access control policy
      */
-    Set<RoleId> getRoles(UserId userId) throws UserNotInPolicyException;
+    Set<RoleId> getRoles(UserId userId, GlobalPermissions globalPermissions) throws UserNotInPolicyException;
 
     /**
      * Get the set of user identifiers that have some role in the specified project

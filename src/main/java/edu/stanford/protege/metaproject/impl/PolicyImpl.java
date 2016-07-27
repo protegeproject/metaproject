@@ -163,19 +163,33 @@ public class PolicyImpl implements Policy, Serializable {
     }
 
     @Override
-    public Set<RoleId> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException {
+    public Set<RoleId> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws UserNotInPolicyException, ProjectNotInPolicyException {
         checkUserIsInPolicy(userId);
-        checkProjectIsInPolicy(userId, projectId);
         Map<ProjectId,Set<RoleId>> assignments = userRoleMap.get(userId);
-        return new HashSet<>(assignments.get(projectId));
+        if(globalPermissions.equals(GlobalPermissions.EXCLUDED)) {
+            checkProjectIsInPolicy(userId, projectId);
+            return new HashSet<>(assignments.get(projectId));
+        } else {
+            Set<RoleId> roles = new HashSet<>();
+            if(assignments.containsKey(projectId)) {
+                roles.addAll(assignments.get(projectId));
+            }
+            if(assignments.containsKey(MetaprojectUtils.getUniversalProjectId())) {
+                roles.addAll(assignments.get(MetaprojectUtils.getUniversalProjectId()));
+            }
+            return roles;
+        }
     }
 
     @Override
-    public Set<RoleId> getRoles(UserId userId) throws UserNotInPolicyException {
+    public Set<RoleId> getRoles(UserId userId, GlobalPermissions globalPermissions) throws UserNotInPolicyException {
         checkUserIsInPolicy(userId);
         Map<ProjectId,Set<RoleId>> map = userRoleMap.get(userId);
         Set<RoleId> roles = new HashSet<>();
         for(ProjectId p : map.keySet()) {
+            if(p.equals(MetaprojectUtils.getUniversalProjectId()) && globalPermissions.equals(GlobalPermissions.EXCLUDED)) {
+                continue;
+            }
             roles.addAll(map.get(p));
         }
         return roles;

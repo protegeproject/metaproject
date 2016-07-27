@@ -1,10 +1,7 @@
 package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Utils;
-import edu.stanford.protege.metaproject.api.Policy;
-import edu.stanford.protege.metaproject.api.ProjectId;
-import edu.stanford.protege.metaproject.api.RoleId;
-import edu.stanford.protege.metaproject.api.UserId;
+import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.api.exception.PolicyException;
 import edu.stanford.protege.metaproject.api.exception.ProjectNotInPolicyException;
 import edu.stanford.protege.metaproject.api.exception.UserNotInPolicyException;
@@ -81,7 +78,7 @@ public class PolicyTest {
 
         policy.add(user2, project3, roleId);
         assertThat(policy.hasRole(user2, project3, roleId), is(true));
-        assertThat(policy.getRoles(user2, project3).contains(roleId), is(true));
+        assertThat(policy.getRoles(user2, project3, GlobalPermissions.INCLUDED).contains(roleId), is(true));
     }
     @Test
     public void testAddPolicyRoleBased() throws PolicyException {
@@ -102,12 +99,12 @@ public class PolicyTest {
 
     @Test
     public void testGetRoles() throws UserNotInPolicyException, ProjectNotInPolicyException {
-        assertThat(policy.getRoles(user1, project1), is(set1));
+        assertThat(policy.getRoles(user1, project1, GlobalPermissions.INCLUDED), is(set1));
     }
 
     @Test(expected=UserNotInPolicyException.class)
     public void testGetRolesThrowsException() throws UserNotInPolicyException, ProjectNotInPolicyException {
-        policy.getRoles(Utils.getUserId(), project1);
+        policy.getRoles(Utils.getUserId(), project1, GlobalPermissions.INCLUDED);
     }
 
     @Test

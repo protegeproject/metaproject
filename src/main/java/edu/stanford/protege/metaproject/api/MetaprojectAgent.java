@@ -47,41 +47,45 @@ public interface MetaprojectAgent {
      * Get the set of roles that the user with the given identifier has been assigned
      *
      * @param userId    User identifier
+     * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of roles
      * @throws UserNotInPolicyException User with given identifier not found in the access control policy
      */
-    Set<Role> getRoles(UserId userId) throws UserNotInPolicyException;
+    Set<Role> getRoles(UserId userId, GlobalPermissions globalPermissions) throws UserNotInPolicyException;
 
     /**
      * Get the set of roles that the user with the given identifier has been assigned in the project with the given identifier
      *
      * @param userId    User identifier
      * @param projectId Project identifier
+     * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of roles
      * @throws UserNotInPolicyException User with given identifier not found in the access control policy
      * @throws ProjectNotInPolicyException  Project with given identifier not found in the access control policy
      */
-    Set<Role> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
+    Set<Role> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws UserNotInPolicyException, ProjectNotInPolicyException;
 
     /**
      * Get the set of operations that the user with the given identifier can perform
      *
      * @param userId    User identifier
+     * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of operations
      * @throws UserNotInPolicyException User with given identifier not found in the access control policy
      */
-    Set<Operation> getOperations(UserId userId) throws UserNotInPolicyException;
+    Set<Operation> getOperations(UserId userId, GlobalPermissions globalPermissions) throws UserNotInPolicyException;
 
     /**
      * Get the set of operations that the user with the given identifier can perform in the project with the given identifier
      *
      * @param userId    User identifier
      * @param projectId Project identifier
+     * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of operations
      * @throws UserNotInPolicyException User with given identifier not found in the access control policy
      * @throws ProjectNotInPolicyException  Project with given identifier not found in the access control policy
      */
-    Set<Operation> getOperations(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException;
+    Set<Operation> getOperations(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws UserNotInPolicyException, ProjectNotInPolicyException;
 
     /**
      * Get the set of operations allowed by the given role set

@@ -46,13 +46,7 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
     @Override
     public boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) {
         try {
-            Set<RoleId> roles = new HashSet<>();
-            if(policy.hasRole(userId, MetaprojectUtils.getUniversalProjectId())) {
-                roles.addAll(policy.getRoles(userId, MetaprojectUtils.getUniversalProjectId()));
-            }
-            if(policy.hasRole(userId, projectId)) {
-                roles.addAll(policy.getRoles(userId, projectId));
-            }
+            Set<RoleId> roles = new HashSet<>(policy.getRoles(userId, projectId, GlobalPermissions.INCLUDED));
             for (RoleId role : roles) {
                 Role r = roleRegistry.get(role);
                 if (r.getOperations().contains(operationId)) {
@@ -68,7 +62,7 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
     @Override
     public boolean isOperationAllowed(OperationId operationId, UserId userId) {
         try {
-            Set<RoleId> roles = policy.getRoles(userId);
+            Set<RoleId> roles = policy.getRoles(userId, GlobalPermissions.INCLUDED);
             for (RoleId role : roles) {
                 Role r = roleRegistry.get(role);
                 if (r.getOperations().contains(operationId)) {
@@ -97,14 +91,14 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
     }
 
     @Override
-    public Set<Role> getRoles(UserId userId) throws UserNotInPolicyException {
-        Set<RoleId> roleIds = policy.getRoles(userId);
+    public Set<Role> getRoles(UserId userId, GlobalPermissions globalPermissions) throws UserNotInPolicyException {
+        Set<RoleId> roleIds = policy.getRoles(userId, globalPermissions);
         return getRoles(roleIds);
     }
 
     @Override
-    public Set<Role> getRoles(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException {
-        Set<RoleId> roleIds = policy.getRoles(userId, projectId);
+    public Set<Role> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws UserNotInPolicyException, ProjectNotInPolicyException {
+        Set<RoleId> roleIds = policy.getRoles(userId, projectId, globalPermissions);
         return getRoles(roleIds);
     }
 
@@ -122,14 +116,14 @@ public class MetaprojectAgentImpl implements MetaprojectAgent {
     }
 
     @Override
-    public Set<Operation> getOperations(UserId userId) throws UserNotInPolicyException {
-        Set<Role> roles = getRoles(userId);
+    public Set<Operation> getOperations(UserId userId, GlobalPermissions globalPermissions) throws UserNotInPolicyException {
+        Set<Role> roles = getRoles(userId, globalPermissions);
         return getOperations(roles);
     }
 
     @Override
-    public Set<Operation> getOperations(UserId userId, ProjectId projectId) throws UserNotInPolicyException, ProjectNotInPolicyException {
-        Set<Role> roles = getRoles(userId, projectId);
+    public Set<Operation> getOperations(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws UserNotInPolicyException, ProjectNotInPolicyException {
+        Set<Role> roles = getRoles(userId, projectId, globalPermissions);
         return getOperations(roles);
     }
 
