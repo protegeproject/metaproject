@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public class PolicyImpl implements Policy, Serializable {
-    private static final long serialVersionUID = -9001259511982474948L;
+    private static final long serialVersionUID = 6720449700513258179L;
     private Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap = new HashMap<>();
 
     /**
@@ -149,7 +149,7 @@ public class PolicyImpl implements Policy, Serializable {
     @Override
     public boolean hasRole(UserId userId, ProjectId projectId, RoleId roleId) {
         if (userRoleMap.containsKey(userId)) {
-            Map<ProjectId, Set<RoleId>> assignments = userRoleMap.get(userId);
+            Map<ProjectId, Set<RoleId>> assignments = getUserRoleMap(userId);
             if (assignments.containsKey(projectId)) {
                 if(assignments.get(projectId).contains(roleId)) {
                     return true;
@@ -164,8 +164,7 @@ public class PolicyImpl implements Policy, Serializable {
 
     @Override
     public Set<RoleId> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws UserNotInPolicyException, ProjectNotInPolicyException {
-        checkUserIsInPolicy(userId);
-        Map<ProjectId,Set<RoleId>> assignments = userRoleMap.get(userId);
+        Map<ProjectId,Set<RoleId>> assignments = getUserRoleMap(userId);
         if(globalPermissions.equals(GlobalPermissions.EXCLUDED)) {
             checkProjectIsInPolicy(userId, projectId);
             return new HashSet<>(assignments.get(projectId));
@@ -183,8 +182,7 @@ public class PolicyImpl implements Policy, Serializable {
 
     @Override
     public Set<RoleId> getRoles(UserId userId, GlobalPermissions globalPermissions) throws UserNotInPolicyException {
-        checkUserIsInPolicy(userId);
-        Map<ProjectId,Set<RoleId>> map = userRoleMap.get(userId);
+        Map<ProjectId,Set<RoleId>> map = getUserRoleMap(userId);
         Set<RoleId> roles = new HashSet<>();
         for(ProjectId p : map.keySet()) {
             if(p.equals(MetaprojectUtils.getUniversalProjectId()) && globalPermissions.equals(GlobalPermissions.EXCLUDED)) {
@@ -197,8 +195,7 @@ public class PolicyImpl implements Policy, Serializable {
 
     @Override
     public Set<ProjectId> getProjects(UserId userId) throws UserNotInPolicyException {
-        checkUserIsInPolicy(userId);
-        return userRoleMap.get(userId).keySet();
+        return getUserRoleMap(userId).keySet();
     }
 
     @Override
@@ -222,27 +219,18 @@ public class PolicyImpl implements Policy, Serializable {
 
     @Override
     public Map<ProjectId, Set<RoleId>> getUserRoleMap(UserId userId) {
-        return userRoleMap.get(userId);
+        Map<ProjectId, Set<RoleId>> map = userRoleMap.get(userId);
+        if(map != null) {
+            return map;
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     @Override
     public Set<UserId> getUsers(ProjectId projectId) throws UnknownMetaprojectObjectIdException {
         return getPolicyMappings().keySet().stream().filter(userId ->
                 userRoleMap.get(userId).keySet().contains(projectId)).collect(Collectors.toSet());
-    }
-
-    /**
-     * Verify whether given user identifier(s) are registered in the access control policy, i.e., in the user-role map
-     *
-     * @param users One or more user identifiers
-     * @throws UserNotInPolicyException UserId not registered in the access control policy
-     */
-    private void checkUserIsInPolicy(UserId... users) throws UserNotInPolicyException {
-        for (UserId user : users) {
-            if (!hasRole(user)) {
-                throw new UserNotInPolicyException("The specified user (id: " + user.get() + ") is not registered in the access control policy");
-            }
-        }
     }
 
     /**

@@ -102,11 +102,6 @@ public class PolicyTest {
         assertThat(policy.getRoles(user1, project1, GlobalPermissions.INCLUDED), is(set1));
     }
 
-    @Test(expected=UserNotInPolicyException.class)
-    public void testGetRolesThrowsException() throws UserNotInPolicyException, ProjectNotInPolicyException {
-        policy.getRoles(Utils.getUserId(), project1, GlobalPermissions.INCLUDED);
-    }
-
     @Test
     public void testHasRoleAssignments() {
         assertThat(policy.hasRole(user1, project1), is(true));
