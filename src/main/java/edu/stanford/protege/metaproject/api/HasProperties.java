@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * @author Rafael Gonçalves <br>
@@ -13,7 +13,7 @@ public interface HasProperties {
      *
      * @return Map of string properties
      */
-    Map<String,String> getProperties();
+    ImmutableMap<String,String> getProperties();
 
     /**
      * Get the value for the given property key

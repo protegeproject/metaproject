@@ -25,7 +25,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford University
  */
 public final class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = 6433022019303822760L;
+    private static final long serialVersionUID = 7907697651569583698L;
     private static final Logger logger = LoggerFactory.getLogger(ServerConfigurationImpl.class.getName());
     private final ConfigurationManager configManager;
     private final ImmutableMap<UserId, Map<ProjectId, Set<RoleId>>> policyMap;
@@ -90,7 +90,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public Map<String,String> getProperties() {
+    public ImmutableMap<String,String> getProperties() {
         return properties;
     }
 

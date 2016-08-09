@@ -5,10 +5,7 @@ import edu.stanford.protege.metaproject.api.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -18,8 +15,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Center for Biomedical Informatics Research <br>
  * Stanford University
  */
-public class ConfigurationManagerImpl implements ConfigurationManager {
+public class ConfigurationManagerImpl implements ConfigurationManager, Serializable {
     private static final Logger logger = LoggerFactory.getLogger(ConfigurationManagerImpl.class.getName());
+    private static final long serialVersionUID = -8224499729431946518L;
     private final Serializer<?> serializer;
     private final PolicyFactory factory;
     private ServerConfiguration serverConfiguration;
@@ -38,7 +36,18 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
     @Override
     public synchronized ServerConfiguration loadConfiguration(File f) throws FileNotFoundException, ObjectConversionException {
         checkNotNull(f, "Input configuration file must not be null");
-        serverConfiguration = checkNotNull(serializer.parse(f, ServerConfiguration.class));
+        serverConfiguration = new ServerConfigurationBuilder(checkNotNull(serializer.parse(f, ServerConfiguration.class)))
+                .setConfigurationManager(this)
+                .createServerConfiguration();
+        return serverConfiguration;
+    }
+
+    @Override
+    public synchronized ServerConfiguration loadConfiguration(Reader reader) throws ObjectConversionException {
+        checkNotNull(reader, "Input reader must not be null");
+        serverConfiguration = new ServerConfigurationBuilder(checkNotNull(serializer.parse(reader, ServerConfiguration.class)))
+                .setConfigurationManager(this)
+                .createServerConfiguration();
         return serverConfiguration;
     }
 
@@ -49,7 +58,9 @@ public class ConfigurationManagerImpl implements ConfigurationManager {
 
     @Override
     public void setActiveConfiguration(ServerConfiguration configuration) {
-        this.serverConfiguration = checkNotNull(configuration);
+        serverConfiguration = new ServerConfigurationBuilder(checkNotNull(configuration))
+                .setConfigurationManager(this)
+                .createServerConfiguration();
     }
 
     @Override

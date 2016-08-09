@@ -6,6 +6,7 @@ import edu.stanford.protege.metaproject.api.exception.ServerConfigurationNotLoad
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 
 /**
  * A manager for a single server configuration.
@@ -25,6 +26,15 @@ public interface ConfigurationManager extends ConfigurationTransformer {
      * @throws ObjectConversionException   JSON object could not be converted to a Java object
      */
     ServerConfiguration loadConfiguration(File f) throws FileNotFoundException, ObjectConversionException;
+
+    /**
+     * Load a server configuration from a reader
+     *
+     * @param reader Input reader
+     * @return Server configuration
+     * @throws ObjectConversionException   JSON object could not be converted to a Java object
+     */
+    ServerConfiguration loadConfiguration(Reader reader) throws ObjectConversionException;
 
     /**
      * Get the server configuration loaded by this manager
