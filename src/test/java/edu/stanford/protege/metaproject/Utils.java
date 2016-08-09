@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.impl.MetaprojectBuilder;
 import edu.stanford.protege.metaproject.impl.ProjectOptionsImpl;
 import edu.stanford.protege.metaproject.impl.ServerConfigurationBuilder;
 
@@ -14,16 +13,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class Utils {
     private static final int DEFAULT_SET_SIZE = 3;
     private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WRITE;
     private static final Random random = new Random();
-    private static final String rootDir = "target/server-distribution/server/root", uri = "rmi-owl2-server://localhost:5100";
-    private static MetaprojectFactory f = Manager.getFactory();
+    private static final String rootDir = "target/server-distribution/server/root", uri = "http://localhost:8008";
+    private static PolicyFactory f = Manager.getFactory();
     
-    /*   access control object identifiers   */
+    /*   policy object identifiers   */
 
     public static UserId getUserId() {
         return getUserId("userId-" + newUUID());
@@ -136,72 +136,26 @@ public class Utils {
     }
 
 
-    /*   access control policy managers   */
-
-    public static Policy getPolicy() {
-        return getPolicy(new HashMap<>());
-    }
-
-    public static Policy getPolicy(Map<UserId, Map<ProjectId,Set<RoleId>>> map) {
-        return f.getPolicy(map);
-    }
-
-    public static UserRegistry getUserRegistry() {
-        return getUserRegistry(new HashSet<>());
-    }
-
-    public static UserRegistry getUserRegistry(Set<User> users) {
-        return f.getUserRegistry(users);
-    }
-
-    public static RoleRegistry getRoleManager() {
-        return getRoleManager(new HashSet<>());
-    }
-
-    public static RoleRegistry getRoleManager(Set<Role> roles) {
-        return f.getRoleRegistry(roles);
-    }
-
-    public static OperationRegistry getOperationManager() {
-        return getOperationManager(new HashSet<>());
-    }
-
-    public static OperationRegistry getOperationManager(Set<Operation> operations) {
-        return f.getOperationRegistry(operations);
-    }
-
-    public static ProjectRegistry getProjectRegistry() {
-        return getProjectRegistry(new HashSet<>());
-    }
-
-    public static ProjectRegistry getProjectRegistry(Set<Project> projects) {
-        return f.getProjectRegistry(projects);
-    }
-
-    public static AuthenticationRegistry getAuthenticationRegistry() {
-        return f.getAuthenticationRegistry(Utils.getAuthenticationDetailsSet());
-    }
-
-    public static AuthenticationRegistry getAuthenticationRegistry(Set<AuthenticationDetails> authDetails) {
-        return f.getAuthenticationRegistry(authDetails);
-    }
-
-
     /*   policy and server/client configurations   */
 
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Utils.getHost(), Utils.getFile(), Utils.getMetaproject(), Utils.getAuthenticationRegistry(),
-                Utils.getPropertyMap());
+        return getServerConfiguration(Manager.getConfigurationManager(), Utils.getHost(), Utils.getFile(), Utils.getPolicyMap(), Utils.getUserSet(),
+                Utils.getProjectSet(), Utils.getRoleSet(), Utils.getOperationSet(), Utils.getAuthenticationDetailsSet(), Utils.getPropertyMap());
     }
 
-    public static ServerConfiguration getServerConfiguration(Host host, File root, Metaproject metaproject,
-                                                             AuthenticationRegistry authenticationRegistry,
-                                                             Map<String, String> properties) {
+    public static ServerConfiguration getServerConfiguration(
+            ConfigurationManager configManager, Host host, File root, Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap, Set<User> users,
+            Set<Project> projects, Set<Role> roles, Set<Operation> operations, Set<AuthenticationDetails> authDetails, Map<String,String> properties) {
         return new ServerConfigurationBuilder()
+                .setConfigurationManager(configManager)
                 .setHost(host)
                 .setServerRoot(root)
-                .setMetaproject(metaproject)
-                .setAuthenticationRegistry(authenticationRegistry)
+                .setPolicyMap(policyMap)
+                .setUsers(users)
+                .setProjects(projects)
+                .setRoles(roles)
+                .setOperations(operations)
+                .setAuthenticationDetails(authDetails)
                 .setPropertyMap(properties)
                 .createServerConfiguration();
     }
@@ -240,22 +194,7 @@ public class Utils {
         return checkNotNull(newUri);
     }
 
-    public static Metaproject getMetaproject() {
-        return getMetaproject(Utils.getPolicy(Utils.getUserRoleMap()), Utils.getUserRegistry(Utils.getUserSet()),
-                Utils.getRoleManager(Utils.getRoleSet()), Utils.getOperationManager(Utils.getOperationSet()), Utils.getProjectRegistry(Utils.getProjectSet()));
-    }
-
-    public static Metaproject getMetaproject(Policy policy, UserRegistry userRegistry, RoleRegistry roleRegistry, OperationRegistry operationRegistry, ProjectRegistry projectRegistry) {
-        return new MetaprojectBuilder()
-                .setPolicy(policy)
-                .setUserRegistry(userRegistry)
-                .setRoleRegistry(roleRegistry)
-                .setOperationRegistry(operationRegistry)
-                .setProjectRegistry(projectRegistry)
-                .createMetaproject();
-    }
-
-    public static Map<UserId,Map<ProjectId, Set<RoleId>>> getUserRoleMap() {
+    public static Map<UserId,Map<ProjectId, Set<RoleId>>> getPolicyMap() {
         Map<UserId, Map<ProjectId,Set<RoleId>>> map = new HashMap<>();
         for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
             Map<ProjectId,Set<RoleId>> assignments = new HashMap<>();

@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Role extends MetaprojectObject<RoleId>, HasDescription, Comparable<Role> {
+public interface Role extends PolicyObject<RoleId>, HasDescription, Comparable<Role> {
 
     /**
      * Get the set of operations associated with this role

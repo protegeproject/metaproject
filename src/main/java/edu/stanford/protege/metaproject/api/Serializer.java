@@ -29,10 +29,9 @@ public interface Serializer<S> {
      * @param cls   Class
      * @param <T>   Type
      * @return Instance of the specified class
-     * @throws FileNotFoundException    Specified file was not found
      * @throws ObjectConversionException   JSON object could not be converted to a Java object
      */
-    <T> T parse(Reader reader, Class<T> cls) throws FileNotFoundException, ObjectConversionException;
+    <T> T parse(Reader reader, Class<T> cls) throws ObjectConversionException;
 
     /**
      * Parse a given file and return the desired Java class instance
@@ -49,7 +48,7 @@ public interface Serializer<S> {
     /**
      * Write into a string a representation of the given object
      *
-     * @param obj   Object to get a string representation of
+     * @param obj   Object to getProject a string representation of
      * @param cls   Class
      * @return String representation of specified object
      */

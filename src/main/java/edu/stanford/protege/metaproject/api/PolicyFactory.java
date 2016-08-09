@@ -9,9 +9,10 @@ import java.util.Set;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
-public interface MetaprojectFactory {
+public interface PolicyFactory {
 
     /**
      * Create a new project
@@ -238,109 +239,6 @@ public interface MetaprojectFactory {
      * @return Password hasher
      */
     PasswordHasher getPasswordHasher(int hashByteSize, int nrIterations);
-
-    /**
-     * Create an instance of an empty user registry
-     *
-     * @return User registry
-     */
-    UserRegistry getUserRegistry();
-
-    /**
-     * Create an instance of a user registry with the given users
-     *
-     * @param users Set of users
-     * @return User registry
-     */
-    UserRegistry getUserRegistry(Set<User> users);
-
-    /**
-     * Create an instance of an empty project registry
-     *
-     * @return Project registry
-     */
-    ProjectRegistry getProjectRegistry();
-
-    /**
-     * Create an instance of a project registry with the given projects
-     *
-     * @param projects  Set of projects
-     * @return Project registry
-     */
-    ProjectRegistry getProjectRegistry(Set<Project> projects);
-
-    /**
-     * Create an instance of an operation registry that contains default operations
-     *
-     * @return Operation registry
-     */
-    OperationRegistry getOperationRegistry();
-
-    /**
-     * Create an instance of an operation registry with the given operations
-     *
-     * @param operations    Set of operations
-     * @return Operation registry
-     */
-    OperationRegistry getOperationRegistry(Set<Operation> operations);
-
-    /**
-     * Create an instance of a role registry that contains the default server-admin user
-     *
-     * @return Role registry
-     */
-    RoleRegistry getRoleRegistry();
-
-    /**
-     * Create an instance of a role registry with the given roles
-     *
-     * @param roles Set of roles
-     * @return Role registry
-     */
-    RoleRegistry getRoleRegistry(Set<Role> roles);
-
-    /**
-     * Create an instance of an empty authentication manager
-     *
-     * @return Authentication manager
-     */
-    AuthenticationRegistry getAuthenticationRegistry();
-
-    /**
-     * Create an instance of an authentication manager with the given authentication credentials
-     *
-     * @param authenticationDetails   Set of authentication details
-     * @return Authentication manager
-     */
-    AuthenticationRegistry getAuthenticationRegistry(Set<AuthenticationDetails> authenticationDetails);
-
-    /**
-     * Create an instance of an empty policy
-     *
-     * @return Policy
-     */
-    Policy getPolicy();
-
-    /**
-     * Create an instance of a policy with the given map of users to role associations within projects
-     *
-     * @param userRoleMap   Map of users to maps of projects to assigned roles
-     * @return Policy
-     */
-    Policy getPolicy(Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap);
-
-    /**
-     * Create an instance of a policy agent
-     *
-     * @param policy    Policy
-     * @param roleRegistry  Role registry
-     * @param operationRegistry Operation registry
-     * @param userRegistry  User registry
-     * @param projectRegistry   Project registry
-     * @return Policy agent
-     */
-    MetaprojectAgent getMetaprojectAgent(Policy policy, RoleRegistry roleRegistry, OperationRegistry operationRegistry,
-                                         UserRegistry userRegistry, ProjectRegistry projectRegistry);
 
     /**
      * Get an authentication token that reflects a successful authentication attempt

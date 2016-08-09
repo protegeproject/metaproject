@@ -1,12 +1,13 @@
 package edu.stanford.protege.metaproject.api;
 
 /**
- * Marker interface for a metaproject object such as user, role, project, etc.
+ * Marker interface for a policy object such as user, role, project, etc.
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
-public interface MetaprojectObject<T extends MetaprojectObjectId> extends HasId<T>, HasName {
+public interface PolicyObject<T extends PolicyObjectId> extends HasId<T>, HasName {
 
     /**
      * Check whether this object is of type {@link User}

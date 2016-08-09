@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import edu.stanford.protege.metaproject.Manager;
-import edu.stanford.protege.metaproject.api.MetaprojectFactory;
+import edu.stanford.protege.metaproject.api.PolicyFactory;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
 
@@ -30,7 +30,7 @@ public class HostSerializer implements JsonSerializer<Host>, JsonDeserializer<Ho
 
     @Override
     public Host deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        MetaprojectFactory factory = Manager.getFactory();
+        PolicyFactory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
         URI address = null;
         try {

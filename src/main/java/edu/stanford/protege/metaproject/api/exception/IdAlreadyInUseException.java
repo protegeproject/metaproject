@@ -2,9 +2,10 @@ package edu.stanford.protege.metaproject.api.exception;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
-public class IdAlreadyInUseException extends MetaprojectException {
+public class IdAlreadyInUseException extends ConfigurationException {
     private static final long serialVersionUID = -765203158316832832L;
 
     public IdAlreadyInUseException() {

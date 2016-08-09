@@ -20,12 +20,12 @@ public interface ProjectOptions {
     Map<String,Set<String>> getOptions();
 
     /**
-     * Get the value, in the form of a set of strings, for the given property key
+     * Get the values for the given property key
      *
      * @param key   Property key
      * @return Set of strings
      */
-    Set<String> getOption(String key);
+    Set<String> getValues(String key);
 
     /**
      * Get the single string value for the given property key. This method should be used when the key is mapped to a set with
@@ -35,6 +35,6 @@ public interface ProjectOptions {
      * @param key   Property key
      * @return String
      */
-    String getSingletonOption(String key);
+    String getValue(String key);
 
 }

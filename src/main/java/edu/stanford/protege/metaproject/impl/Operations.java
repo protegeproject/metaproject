@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.Manager;
-import edu.stanford.protege.metaproject.api.MetaprojectFactory;
+import edu.stanford.protege.metaproject.api.PolicyFactory;
 import edu.stanford.protege.metaproject.api.Operation;
 import edu.stanford.protege.metaproject.api.OperationId;
 import edu.stanford.protege.metaproject.api.OperationType;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class Operations {
-    private static MetaprojectFactory factory = Manager.getFactory();
+    private static PolicyFactory factory = Manager.getFactory();
     private static Set<Operation> defaultOperations = new HashSet<>();
 
     /*

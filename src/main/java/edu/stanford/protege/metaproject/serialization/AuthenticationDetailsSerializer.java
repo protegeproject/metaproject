@@ -24,7 +24,7 @@ public class AuthenticationDetailsSerializer implements JsonSerializer<Authentic
 
     @Override
     public AuthenticationDetails deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        MetaprojectFactory factory = Manager.getFactory();
+        PolicyFactory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
         UserId userId = factory.getUserId(obj.getAsJsonPrimitive(USER_ID).getAsString());
         Salt salt = factory.getSalt(obj.getAsJsonPrimitive(SALT).getAsString());

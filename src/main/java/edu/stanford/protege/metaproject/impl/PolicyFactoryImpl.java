@@ -11,14 +11,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
-public final class MetaprojectFactoryImpl implements MetaprojectFactory {
+public final class PolicyFactoryImpl implements PolicyFactory {
 
     /**
      * No-args constructor
      */
-    public MetaprojectFactoryImpl() { }
+    public PolicyFactoryImpl() { }
 
     @Override
     public Project getProject(ProjectId projectId, Name name, Description description, File file, UserId ownerId, Optional<ProjectOptions> options) {
@@ -188,119 +189,12 @@ public final class MetaprojectFactoryImpl implements MetaprojectFactory {
 
     @Override
     public PasswordHasher getPasswordHasher() {
-        return getPasswordHasher(MetaprojectUtils.getHashByteSize(), MetaprojectUtils.getKeyStretchingIterations());
+        return getPasswordHasher(ConfigurationUtils.getHashByteSize(), ConfigurationUtils.getKeyStretchingIterations());
     }
 
     @Override
     public PasswordHasher getPasswordHasher(int hashByteSize, int nrIterations) {
         return new Pbkdf2PasswordHasher(hashByteSize, nrIterations);
-    }
-
-    @Override
-    public UserRegistry getUserRegistry() {
-        Set<User> users = new HashSet<>();
-        users.add(MetaprojectUtils.getRootUser());
-        users.add(MetaprojectUtils.getGuestUser());
-        return getUserRegistry(users);
-    }
-
-    @Override
-    public UserRegistry getUserRegistry(Set<User> users) {
-        checkNotNull(users, "Set of users must not be null");
-        return new UserRegistryImpl(users);
-    }
-
-    @Override
-    public ProjectRegistry getProjectRegistry() {
-        return getProjectRegistry(new HashSet<>());
-    }
-
-    @Override
-    public ProjectRegistry getProjectRegistry(Set<Project> projects) {
-        checkNotNull(projects, "Set of projects must not be null");
-        Set<Project> projectSet = new HashSet<>(projects);
-        projectSet.add(MetaprojectUtils.getUniversalProject());
-        return new ProjectRegistryImpl(projectSet);
-    }
-
-    @Override
-    public OperationRegistry getOperationRegistry() {
-        return getOperationRegistry(Operations.getDefaultOperations());
-    }
-
-    @Override
-    public OperationRegistry getOperationRegistry(Set<Operation> operations) {
-        checkNotNull(operations, "Set of operations must not be null");
-        return new OperationRegistryImpl(operations);
-    }
-
-    @Override
-    public RoleRegistry getRoleRegistry() {
-        Set<Role> roles = new HashSet<>();
-        roles.add(MetaprojectUtils.getAdminRole());
-        roles.add(MetaprojectUtils.getGuestRole());
-        roles.add(MetaprojectUtils.getProjectManagerRole());
-        return getRoleRegistry(roles);
-    }
-
-    @Override
-    public RoleRegistry getRoleRegistry(Set<Role> roles) {
-        checkNotNull(roles, "Set of roles must not be null");
-        return new RoleRegistryImpl(roles);
-    }
-
-    @Override
-    public AuthenticationRegistry getAuthenticationRegistry() {
-        Set<AuthenticationDetails> authDetails = new HashSet<>();
-        authDetails.add(MetaprojectUtils.getRootUserCredentials());
-        authDetails.add(MetaprojectUtils.getGuestUserCredentials());
-        return getAuthenticationRegistry(authDetails);
-    }
-
-    @Override
-    public AuthenticationRegistry getAuthenticationRegistry(Set<AuthenticationDetails> authenticationDetails) {
-        checkNotNull(authenticationDetails, "Set of authentication details must not be null");
-        return new AuthenticationRegistryImpl(authenticationDetails);
-    }
-
-    @Override
-    public Policy getPolicy() {
-        Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap = new HashMap<>();
-
-        // admin user
-        Set<RoleId> adminRoles = new HashSet<>();
-        adminRoles.add(MetaprojectUtils.getAdminRole().getId());
-
-        Map<ProjectId, Set<RoleId>> adminAssignments = new HashMap<>();
-        adminAssignments.put(MetaprojectUtils.getUniversalProjectId(), adminRoles);
-        userRoleMap.put(MetaprojectUtils.getRootUser().getId(), adminAssignments);
-
-        // guest user
-        Set<RoleId> guestRoles = new HashSet<>();
-        guestRoles.add(MetaprojectUtils.getGuestRole().getId());
-
-        Map<ProjectId, Set<RoleId>> guestAssignments = new HashMap<>();
-        guestAssignments.put(MetaprojectUtils.getUniversalProjectId(), guestRoles);
-        userRoleMap.put(MetaprojectUtils.getGuestUser().getId(), guestAssignments);
-
-        return getPolicy(userRoleMap);
-    }
-
-    @Override
-    public Policy getPolicy(Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap) {
-        checkNotNull(userRoleMap, "User-role map must not be null");
-        return new PolicyImpl(userRoleMap);
-    }
-
-    @Override
-    public MetaprojectAgent getMetaprojectAgent(Policy policy, RoleRegistry roleRegistry, OperationRegistry operationRegistry,
-                                                UserRegistry userRegistry, ProjectRegistry projectRegistry) {
-        checkNotNull(policy, "Policy must not be null");
-        checkNotNull(roleRegistry, "Role registry must not be null");
-        checkNotNull(operationRegistry, "Operation registry must not be null");
-        checkNotNull(userRegistry, "User registry must not be null");
-        checkNotNull(projectRegistry, "Project registry must not be null");
-        return new MetaprojectAgentImpl(policy, roleRegistry, operationRegistry, userRegistry, projectRegistry);
     }
 
     @Override

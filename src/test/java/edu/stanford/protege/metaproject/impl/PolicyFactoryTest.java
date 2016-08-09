@@ -11,12 +11,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public class MetaprojectFactoryTest {
-    private MetaprojectFactory gen;
+public class PolicyFactoryTest {
+    private PolicyFactory gen;
 
     @Before
     public void setUp() {
-        gen = new MetaprojectFactoryImpl();
+        gen = new PolicyFactoryImpl();
     }
 
     @Test

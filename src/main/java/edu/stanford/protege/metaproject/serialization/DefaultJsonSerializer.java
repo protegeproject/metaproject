@@ -16,7 +16,8 @@ import java.io.Reader;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public final class DefaultJsonSerializer implements Serializer<Gson> {
     private Gson gson;
@@ -44,16 +45,7 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
 
                     // configurations
                     .registerTypeAdapter(ServerConfiguration.class, new ServerConfigurationSerializer())
-                    .registerTypeAdapter(Metaproject.class, new MetaprojectSerializer())
                     .registerTypeAdapter(Host.class, new HostSerializer())
-
-                    // access control object managers
-                    .registerTypeAdapter(Policy.class, new PolicySerializer())
-                    .registerTypeAdapter(OperationRegistry.class, new OperationRegistrySerializer())
-                    .registerTypeAdapter(ProjectRegistry.class, new ProjectRegistrySerializer())
-                    .registerTypeAdapter(RoleRegistry.class, new RoleRegistrySerializer())
-                    .registerTypeAdapter(UserRegistry.class, new UserRegistrySerializer())
-                    .registerTypeAdapter(AuthenticationRegistry.class, new AuthenticationRegistrySerializer())
 
                     // other objects
                     .registerTypeHierarchyAdapter(TextProperty.class, new PropertySerializer())
@@ -69,7 +61,7 @@ public final class DefaultJsonSerializer implements Serializer<Gson> {
     }
 
     @Override
-    public <T> T parse(Reader reader, Class<T> cls) throws FileNotFoundException, ObjectConversionException {
+    public <T> T parse(Reader reader, Class<T> cls) throws ObjectConversionException {
         Gson gson = getInstance();
         T obj;
         try {

@@ -2,9 +2,10 @@ package edu.stanford.protege.metaproject.api.exception;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
-public class UnknownProjectIdException extends UnknownMetaprojectObjectIdException {
+public class UnknownProjectIdException extends UnknownPolicyObjectIdException {
     private static final long serialVersionUID = -1164559865154277077L;
 
     public UnknownProjectIdException() {

@@ -17,7 +17,7 @@ public class RoleSerializer implements JsonDeserializer<Role> {
 
     @Override
     public Role deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-        MetaprojectFactory factory = Manager.getFactory();
+        PolicyFactory factory = Manager.getFactory();
         JsonObject obj = jsonElement.getAsJsonObject();
         RoleId operationId = factory.getRoleId(obj.getAsJsonPrimitive("id").getAsString());
         Name operationName = factory.getName(obj.getAsJsonPrimitive("name").getAsString());

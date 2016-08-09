@@ -1,25 +1,70 @@
 //package edu.stanford.protege.metaproject.impl;
 //
+//import edu.stanford.protege.metaproject.Manager;
 //import edu.stanford.protege.metaproject.Utils;
 //import edu.stanford.protege.metaproject.api.*;
 //import edu.stanford.protege.metaproject.api.exception.EmailAddressAlreadyInUseException;
 //import edu.stanford.protege.metaproject.api.exception.IdAlreadyInUseException;
 //import edu.stanford.protege.metaproject.api.exception.UnknownPolicyObjectIdException;
+//import edu.stanford.protege.metaproject.serialization.DefaultJsonSerializer;
 //import org.junit.Before;
 //import org.junit.Test;
 //
 //import java.util.HashSet;
 //import java.util.Set;
 //
-//import static org.hamcrest.CoreMatchers.*;
 //import static org.hamcrest.MatcherAssert.assertThat;
+//import static org.hamcrest.CoreMatchers.*;
 //
 ///**
 // * @author Rafael Gonçalves <br>
 // * Stanford Center for Biomedical Informatics Research
 // */
-//public class UserRegistryTest {
-//    private static final String toStringHead = UserRegistry.class.getSimpleName();
+//public class ConfigurationManagerTest {
+//    private Serializer s = new DefaultJsonSerializer();
+//    private PolicyFactory factory = Manager.getFactory();
+//    private ConfigurationManager manager, otherManager, diffManager;
+//    private ServerConfiguration config;
+//
+//    @Before
+//    public void setUp() throws Exception {
+//        manager = new ConfigurationManagerImpl(factory, s);
+//        otherManager = Manager.getConfigurationManager();
+//    }
+//
+//    @Test
+//    public void testNotNull() {
+//        assertThat(manager, is(not(equalTo(null))));
+//        assertThat(otherManager, is(not(equalTo(null))));
+//    }
+//
+//    @Test
+//    public void testLoadServerConfiguration() throws Exception {
+//
+//    }
+//
+//    @Test
+//    public void testLoadClientConfiguration() throws Exception {
+//
+//    }
+//
+//    @Test
+//    public void testGetServerConfiguration() throws Exception {
+//        ServerConfiguration configuration = Utils.getConfiguration();
+//
+//    }
+//
+//    @Test
+//    public void testGetClientConfiguration() throws Exception {
+//
+//    }
+//
+//
+//
+//
+//
+//    /* users */
+//
 //    private static final User user1 = Utils.getUser(), user2 = Utils.getUser(), user3 = Utils.getUser();
 //    private static final Set<User> userSet = Utils.getUserSet(user1, user2, user3);
 //
@@ -33,13 +78,8 @@
 //    }
 //
 //    @Test
-//    public void testNotNull() {
-//        assertThat(userRegistry, is(not(equalTo(null))));
-//    }
-//
-//    @Test
 //    public void testGetUsers() {
-//        assertThat(userRegistry.getEntries(), is(userSet));
+//        assertThat(seruserRegistry.getEntries(), is(userSet));
 //    }
 //
 //    @Test
@@ -93,30 +133,5 @@
 //        Set<User> userSet = new HashSet<>();
 //        userSet.add(user1);
 //        assertThat(userRegistry.getEntries(user1.getEmailAddress()), is(userSet));
-//    }
-//
-//    @Test
-//    public void testEqualToSelf() {
-//        assertThat(userRegistry, is(userRegistry));
-//    }
-//
-//    @Test
-//    public void testEquals() {
-//        assertThat(userRegistry, is(otherUserRegistry));
-//    }
-//
-//    @Test
-//    public void testNotEquals() {
-//        assertThat(userRegistry, is(not(diffUserRegistry)));
-//    }
-//
-//    @Test
-//    public void testHashcode() {
-//        assertThat(userRegistry.hashCode(), is(otherUserRegistry.hashCode()));
-//    }
-//
-//    @Test
-//    public void testToString() {
-//        assertThat(userRegistry.toString(), startsWith(toStringHead));
 //    }
 //}

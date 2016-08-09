@@ -5,8 +5,7 @@ import edu.stanford.protege.metaproject.api.*;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -14,8 +13,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public final class MetaprojectUtils {
-    private final static MetaprojectFactory f = Manager.getFactory();
+public final class ConfigurationUtils {
+    private final static PolicyFactory f = Manager.getFactory();
 
     private final static int
             OPTIONAL_PORT = 5200,
@@ -45,8 +44,6 @@ public final class MetaprojectUtils {
             UNIVERSAL_PROJECT_ID = "all-projects",
             UNIVERSAL_PROJECT_NAME = "All Projects",
             UNIVERSAL_PROJECT_DESCRIPTION = "A project that represents all projects, i.e., global rights";
-
-
 
 
     /**
@@ -151,7 +148,7 @@ public final class MetaprojectUtils {
      * @return Authentication details
      */
     public static AuthenticationDetails getRootUserCredentials() {
-        return getAuthenticationDetails(MetaprojectUtils.getRootUser().getId(), f.getPlainPassword(ROOT_USER_PASSWORD));
+        return getAuthenticationDetails(ConfigurationUtils.getRootUser().getId(), f.getPlainPassword(ROOT_USER_PASSWORD));
     }
 
     /**
@@ -160,7 +157,7 @@ public final class MetaprojectUtils {
      * @return Authentication details
      */
     public static AuthenticationDetails getGuestUserCredentials() {
-        return getAuthenticationDetails(MetaprojectUtils.getGuestUser().getId(), f.getPlainPassword(GUEST_USER_PASSWORD));
+        return getAuthenticationDetails(ConfigurationUtils.getGuestUser().getId(), f.getPlainPassword(GUEST_USER_PASSWORD));
     }
 
     private static AuthenticationDetails getAuthenticationDetails(UserId userId, PlainPassword password) {
@@ -187,5 +184,89 @@ public final class MetaprojectUtils {
      */
     public static int getKeyStretchingIterations() {
         return KEY_ITERATIONS;
+    }
+
+    /**
+     * Get the default set of users
+     *
+     * @return Set of users
+     */
+    public static Set<User> getDefaultUsers() {
+        Set<User> users = new HashSet<>();
+        users.add(getRootUser());
+        users.add(getGuestUser());
+        return users;
+    }
+
+    /**
+     * Get the default set of projects
+     *
+     * @return Set of projects
+     */
+    public static Set<Project> getDefaultProjects() {
+        Set<Project> projects = new HashSet<>();
+        projects.add(getUniversalProject());
+        return projects;
+    }
+
+    /**
+     * Get the default set of roles
+     *
+     * @return Set of roles
+     */
+    public static Set<Role> getDefaultRoles() {
+        Set<Role> roles = new HashSet<>();
+        roles.add(getAdminRole());
+        roles.add(getGuestRole());
+        roles.add(getProjectManagerRole());
+        return roles;
+    }
+
+    /**
+     * Get the default set of operations
+     *
+     * @return Set of operations
+     */
+    public static Set<Operation> getDefaultOperations() {
+        return new HashSet<>(Operations.getDefaultOperations());
+    }
+
+    /**
+     * Get the default set of authentication details
+     *
+     * @return Set of authentication details
+     */
+    public static Set<AuthenticationDetails> getDefaultAuthenticationDetails() {
+        Set<AuthenticationDetails> authDetails = new HashSet<>();
+        authDetails.add(getRootUserCredentials());
+        authDetails.add(getGuestUserCredentials());
+        return authDetails;
+    }
+
+    /**
+     * Get the default policy map
+     *
+     * @return Policy map of user identifiers to maps of projects to role identifiers
+     */
+    public static Map<UserId, Map<ProjectId, Set<RoleId>>> getDefaultPolicy() {
+        Map<UserId, Map<ProjectId, Set<RoleId>>> userRoleMap = new HashMap<>();
+
+        // admin user
+        Set<RoleId> adminRoles = new HashSet<>();
+        adminRoles.add(ConfigurationUtils.getAdminRole().getId());
+
+        Map<ProjectId, Set<RoleId>> adminAssignments = new HashMap<>();
+        adminAssignments.put(ConfigurationUtils.getUniversalProjectId(), adminRoles);
+        userRoleMap.put(ConfigurationUtils.getRootUser().getId(), adminAssignments);
+
+        // guest user
+        Set<RoleId> guestRoles = new HashSet<>();
+        guestRoles.add(ConfigurationUtils.getGuestRole().getId());
+
+        Map<ProjectId, Set<RoleId>> guestAssignments = new HashMap<>();
+        guestAssignments.put(ConfigurationUtils.getUniversalProjectId(), guestRoles);
+        userRoleMap.put(ConfigurationUtils.getGuestUser().getId(), guestAssignments);
+
+        return userRoleMap;
     }
 }

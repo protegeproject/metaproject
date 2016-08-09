@@ -15,7 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Stanford Center for Biomedical Informatics Research
  */
 public final class ProjectOptionsImpl implements ProjectOptions, Serializable {
-    private static final long serialVersionUID = -4019008663618078530L;
+    private static final long serialVersionUID = -6359928913309575418L;
     private final Map<String,Set<String>> options;
 
     /**
@@ -33,12 +33,12 @@ public final class ProjectOptionsImpl implements ProjectOptions, Serializable {
     }
 
     @Override
-    public Set<String> getOption(String key) {
+    public Set<String> getValues(String key) {
         return options.get(key);
     }
 
     @Override
-    public String getSingletonOption(String key) {
+    public String getValue(String key) {
         return options.get(key).iterator().next();
     }
 

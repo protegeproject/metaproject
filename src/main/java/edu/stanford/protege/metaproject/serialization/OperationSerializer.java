@@ -15,7 +15,7 @@ public class OperationSerializer implements JsonDeserializer<Operation> {
 
     @Override
     public Operation deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        MetaprojectFactory factory = Manager.getFactory();
+        PolicyFactory factory = Manager.getFactory();
         JsonObject obj = element.getAsJsonObject();
         OperationId operationId = factory.getOperationId(obj.getAsJsonPrimitive(ID).getAsString());
         Name operationName = factory.getName(obj.getAsJsonPrimitive(NAME).getAsString());

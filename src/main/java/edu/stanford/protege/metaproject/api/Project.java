@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Rafael Gonçalves <br>
  * Stanford Center for Biomedical Informatics Research
  */
-public interface Project extends MetaprojectObject<ProjectId>, HasDescription, Comparable<Project> {
+public interface Project extends PolicyObject<ProjectId>, HasDescription, Comparable<Project> {
 
     /**
      * Get the project file

@@ -7,9 +7,17 @@ import java.io.File;
  * of the server (where project files are located), the authentication registry, and optional additional configuration properties.
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
-public interface ServerConfiguration extends HasModifiableProperties {
+public interface ServerConfiguration extends ConfigurationBrowser, HasProperties {
+
+    /**
+     * Get the server configuration manager that manages this configuration
+     *
+     * @return ConfigurationManager
+     */
+    ConfigurationManager getConfigurationManager();
 
     /**
      * Get the server host
@@ -24,33 +32,5 @@ public interface ServerConfiguration extends HasModifiableProperties {
      * @return Server root directory
      */
     File getServerRoot();
-
-    /**
-     * Get the manager of the access control policy in effect on the server
-     *
-     * @return Metaproject
-     */
-    Metaproject getMetaproject();
-
-    /**
-     * Get the user authentication manager
-     *
-     * @return Authentication manager
-     */
-    AuthenticationRegistry getAuthenticationRegistry();
-
-    /**
-     * Set the server host
-     *
-     * @param host  Server host
-     */
-    void setHost(Host host);
-
-    /**
-     * Set the server root directory
-     *
-     * @param root  Server root directory
-     */
-    void setServerRoot(File root);
 
 }
