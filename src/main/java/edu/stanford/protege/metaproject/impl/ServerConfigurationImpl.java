@@ -126,21 +126,18 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<RoleId> getRoleIds(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws ProjectNotInPolicyException {
+    public synchronized Set<RoleId> getRoleIds(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) {
         Map<ProjectId,Set<RoleId>> assignments = getUserRoleMap(userId);
-        if(globalPermissions.equals(GlobalPermissions.EXCLUDED)) {
-            checkProjectIsInPolicy(userId, projectId);
-            return new HashSet<>(assignments.get(projectId));
+        Set<RoleId> roles = new HashSet<>();
+        if(assignments.containsKey(projectId)) {
+            roles.addAll(assignments.get(projectId));
         } else {
-            Set<RoleId> roles = new HashSet<>();
-            if(assignments.containsKey(projectId)) {
-                roles.addAll(assignments.get(projectId));
-            }
-            if(assignments.containsKey(ConfigurationUtils.getUniversalProjectId())) {
-                roles.addAll(assignments.get(ConfigurationUtils.getUniversalProjectId()));
-            }
-            return roles;
+            logger.debug("User with identifier " + userId.get() + " has no role assignments to project with identifier " + projectId.get());
         }
+        if(globalPermissions.equals(GlobalPermissions.INCLUDED) && assignments.containsKey(ConfigurationUtils.getUniversalProjectId())) {
+            roles.addAll(assignments.get(ConfigurationUtils.getUniversalProjectId()));
+        }
+        return roles;
     }
 
     @Override
@@ -171,7 +168,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
                     return true;
                 }
             }
-        } catch (UnknownRoleIdException | ProjectNotInPolicyException e) {
+        } catch (UnknownRoleIdException e) {
             return false;
         }
         return false;
@@ -228,21 +225,6 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
             }
         }
         return false;
-    }
-
-    /**
-     * Verify whether given project identifier(s) are registered in the access control policy for the specified user
-     *
-     * @param userId User identifier
-     * @throws ProjectNotInPolicyException  Project with given identifier not found in the access control policy
-     */
-    private synchronized void checkProjectIsInPolicy(UserId userId, ProjectId... projects) throws ProjectNotInPolicyException {
-        Map<ProjectId, Set<RoleId>> roles = getPolicyMap().get(userId);
-        for (ProjectId project : projects) {
-            if (!roles.containsKey(project)) {
-                throw new ProjectNotInPolicyException();
-            }
-        }
     }
 
 
@@ -320,9 +302,13 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     public ImmutableSet<Project> getProjects() {
         return projects;
     }
+
     @Override
     public synchronized Project getProject(ProjectId projectId) throws UnknownProjectIdException {
         checkNotNull(projectId);
+        if(projectId.equals(ConfigurationUtils.getUniversalProjectId())) {
+            return ConfigurationUtils.getUniversalProject();
+        }
         Set<Project> projects = getProjects();
         Project project = null;
         for(Project p : projects) {
@@ -351,7 +337,8 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         Set<ProjectId> projectIds = getProjectIds(userId);
         for (ProjectId projectId : projectIds) {
             try {
-                projects.add(getProject(projectId));
+                Project p = getProject(projectId);
+                projects.add(p);
             } catch (UnknownProjectIdException e) {
                 logger.debug("The project with identifier '" + projectId.get() + "' is stated in the access control policy " +
                         "but there is no project with that identifier in the project registry.");
@@ -409,7 +396,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<Role> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws ProjectNotInPolicyException {
+    public synchronized Set<Role> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) {
         Set<RoleId> roleIds = getRoleIds(userId, projectId, globalPermissions);
         return getRoles(roleIds);
     }
@@ -477,7 +464,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<Operation> getOperations(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws ProjectNotInPolicyException {
+    public synchronized Set<Operation> getOperations(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) {
         Set<Role> roles = getRoles(userId, projectId, globalPermissions);
         return getOperations(roles);
     }
@@ -563,8 +550,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized boolean hasValidCredentials(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException {
-        SaltedPasswordDigest correctHash = getAuthenticationDetails(userId).getPassword();
+    public synchronized boolean hasValidCredentials(UserId userId, SaltedPasswordDigest password) {
+        SaltedPasswordDigest correctHash;
+        try {
+            correctHash = getAuthenticationDetails(userId).getPassword();
+        } catch (UserNotRegisteredException e) {
+            logger.debug("User identifier " + userId.get() + " does not correspond to a registered user");
+            return false;
+        }
         return slowEquals(password.getPassword().getBytes(), correctHash.getPassword().getBytes());
     }
 

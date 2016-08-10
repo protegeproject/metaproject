@@ -5,7 +5,7 @@ package edu.stanford.protege.metaproject.api.exception;
  * Center for Biomedical Informatics Research <br>
  * Stanford University
  */
-public class ServerConfigurationNotLoadedException extends ConfigurationException {
+public class ServerConfigurationNotLoadedException extends RuntimeException {
     private static final long serialVersionUID = 7837200857652435514L;
 
     public ServerConfigurationNotLoadedException() {

@@ -177,9 +177,8 @@ public interface ConfigurationBrowser {
      * @param projectId Project identifier
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of roles
-     * @throws ProjectNotInPolicyException  Project with given identifier not found in the access control policy
      */
-    Set<Role> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws ProjectNotInPolicyException;
+    Set<Role> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions);
 
     /**
      * Get the set of role identifiers that a given user has assigned within the specified project
@@ -188,9 +187,8 @@ public interface ConfigurationBrowser {
      * @param projectId Project identifier
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of role identifiers
-     * @throws ProjectNotInPolicyException  Project with given identifier not found in the access control policy
      */
-    Set<RoleId> getRoleIds(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws ProjectNotInPolicyException;
+    Set<RoleId> getRoleIds(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions);
 
     /**
      * Get the set of role identifiers that a given user has assigned
@@ -253,9 +251,8 @@ public interface ConfigurationBrowser {
      * @param projectId Project identifier
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of operations
-     * @throws ProjectNotInPolicyException  Project with given identifier not found in the access control policy
      */
-    Set<Operation> getOperations(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) throws ProjectNotInPolicyException;
+    Set<Operation> getOperations(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions);
 
     /**
      * Get the set of operations allowed by the given role set
