@@ -148,7 +148,10 @@
                         <Export-Package>
                             edu.stanford.protege.metaproject.*,
                             org.apache.commons.codec.*,
-                            com.google.gson.*
+                            com.google.gson.*,
+                            com.google.common.*,
+                            com.google.thirdparty.*,
+                            sun.misc
                         </Export-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>
                     </instructions>
