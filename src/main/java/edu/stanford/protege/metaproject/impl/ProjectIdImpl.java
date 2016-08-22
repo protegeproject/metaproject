@@ -6,28 +6,34 @@ import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.ProjectId;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class ProjectIdImpl implements ProjectId, Serializable {
     private static final long serialVersionUID = 3419677289045594606L;
-    private final String id;
+    @Nonnull private final String id;
 
     /**
      * Constructor
      *
      * @param id    Identifier
      */
-    public ProjectIdImpl(String id) {
+    public ProjectIdImpl(@Nonnull String id) {
         this.id = checkNotNull(id);
     }
 
     @Override
+    @Nonnull
     public String get() {
         return id;
     }

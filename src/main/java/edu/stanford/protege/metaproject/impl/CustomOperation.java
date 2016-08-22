@@ -5,12 +5,18 @@ import com.google.common.base.Objects;
 import com.google.gson.annotations.SerializedName;
 import edu.stanford.protege.metaproject.api.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class CustomOperation extends OperationAbst implements Serializable {
     private static final long serialVersionUID = -2476008890382106204L;
 
@@ -26,7 +32,7 @@ public final class CustomOperation extends OperationAbst implements Serializable
      * @param type Operation type
      * @param scope Operation scope
      */
-    public CustomOperation(OperationId id, Name name, Description description, OperationType type, Scope scope) {
+    public CustomOperation(@Nonnull OperationId id, @Nonnull Name name, @Nonnull Description description, @Nonnull OperationType type, @Nonnull Scope scope) {
         super(id, name, description, type, scope);
     }
 
@@ -44,7 +50,7 @@ public final class CustomOperation extends OperationAbst implements Serializable
             return false;
         }
         Operation that = (Operation) o;
-        return system == that.isSystemOperation() &&
+        return !that.isSystemOperation() &&
                 Objects.equal(id, that.getId()) &&
                 Objects.equal(name, that.getName()) &&
                 Objects.equal(description, that.getDescription()) &&

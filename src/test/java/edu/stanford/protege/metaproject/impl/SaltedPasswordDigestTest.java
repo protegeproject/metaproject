@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.PasswordHasher;
 import edu.stanford.protege.metaproject.api.PlainPassword;
 import edu.stanford.protege.metaproject.api.Salt;
@@ -19,13 +19,14 @@ import static org.mockito.Mockito.when;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SaltedPasswordDigestTest {
     private static final String toStringHead = SaltedPasswordDigest.class.getSimpleName();
 
-    private static final PasswordHasher passwordHasher = Utils.getPasswordHasher();
+    private static final PasswordHasher passwordHasher = TestUtils.getPasswordHasher();
 
     @Mock private Salt salt, diffSalt;
     @Mock private PlainPassword plain, diffPlain;

@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
-import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.PolicyFactory;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
@@ -13,7 +13,8 @@ import java.util.Optional;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class HostSerializer implements JsonSerializer<Host>, JsonDeserializer<Host> {
     private final String SERVER_URI = "uri", SECONDARY_PORT = "secondaryPort";
@@ -30,7 +31,7 @@ public class HostSerializer implements JsonSerializer<Host>, JsonDeserializer<Ho
 
     @Override
     public Host deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        PolicyFactory factory = Manager.getFactory();
+        PolicyFactory factory = ConfigurationManager.getFactory();
         JsonObject obj = element.getAsJsonObject();
         URI address = null;
         try {

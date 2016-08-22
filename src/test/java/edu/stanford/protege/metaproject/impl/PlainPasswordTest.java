@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.PlainPassword;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class PlainPasswordTest {
     private static final String
@@ -22,9 +23,9 @@ public class PlainPasswordTest {
 
     @Before
     public void setUp() {
-        password = Utils.getPlainPassword(passwordStr);
-        otherPassword = Utils.getPlainPassword(passwordStr);
-        diffPassword = Utils.getPlainPassword(diffPasswordStr);
+        password = TestUtils.getPlainPassword(passwordStr);
+        otherPassword = TestUtils.getPlainPassword(passwordStr);
+        diffPassword = TestUtils.getPlainPassword(diffPasswordStr);
     }
 
     @Test

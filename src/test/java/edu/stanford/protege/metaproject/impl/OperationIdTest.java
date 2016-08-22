@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.OperationId;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class OperationIdTest {
     private static final String
@@ -22,9 +23,9 @@ public class OperationIdTest {
 
     @Before
     public void setUp() {
-        operationId = Utils.getOperationId(operationIdStr);
-        otherOperationId = Utils.getOperationId(operationIdStr);
-        diffOperationId = Utils.getOperationId(diffIdStr);
+        operationId = TestUtils.getOperationId(operationIdStr);
+        otherOperationId = TestUtils.getOperationId(operationIdStr);
+        diffOperationId = TestUtils.getOperationId(diffIdStr);
     }
 
     @Test

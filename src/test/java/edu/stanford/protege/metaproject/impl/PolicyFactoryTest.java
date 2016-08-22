@@ -9,10 +9,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class PolicyFactoryTest {
     private PolicyFactory gen;
+
+    // TODO missing tests
 
     @Before
     public void setUp() {

@@ -2,10 +2,13 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.*;
 import org.apache.commons.codec.binary.Hex;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -17,8 +20,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A password hash generator based on PBKDF2 (Password-Based Key Derivation Function 2)
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class Pbkdf2PasswordHasher implements PasswordHasher {
     private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
     private final int hashByteSize, nrIterations;
@@ -35,10 +41,11 @@ public final class Pbkdf2PasswordHasher implements PasswordHasher {
     }
 
     @Override
-    public SaltedPasswordDigest hash(PlainPassword password, Salt salt) {
+    @Nonnull
+    public SaltedPasswordDigest hash(@Nonnull PlainPassword password, @Nonnull Salt salt) {
         byte[] saltBytes = salt.getBytes();
         byte[] hash = hash(password.getPassword(), saltBytes, nrIterations, hashByteSize);
-        return Manager.getFactory().getSaltedPasswordDigest(Hex.encodeHexString(hash), salt);
+        return ConfigurationManager.getFactory().getSaltedPasswordDigest(Hex.encodeHexString(hash), salt);
     }
 
     private byte[] hash(String password, byte[] salt, int iterations, int bytes) {
@@ -65,6 +72,14 @@ public final class Pbkdf2PasswordHasher implements PasswordHasher {
         PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, bytes * 8);
         SecretKeyFactory skf = SecretKeyFactory.getInstance(ALGORITHM);
         return skf.generateSecret(spec).getEncoded();
+    }
+
+    public int getHashByteSize() {
+        return hashByteSize;
+    }
+
+    public int getNumberOfIterations() {
+        return nrIterations;
     }
 
     @Override

@@ -1,10 +1,13 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * A representation of an operation consisting of a unique identifier and a natural language description
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface Operation extends PolicyObject<OperationId>, HasDescription, Comparable<Operation> {
 
@@ -13,6 +16,7 @@ public interface Operation extends PolicyObject<OperationId>, HasDescription, Co
      *
      * @return Operation type
      */
+    @Nonnull
     OperationType getType();
 
     /**
@@ -20,6 +24,7 @@ public interface Operation extends PolicyObject<OperationId>, HasDescription, Co
      *
      * @return Scope of operation
      */
+    @Nonnull
     Scope getScope();
 
     /**
@@ -30,6 +35,6 @@ public interface Operation extends PolicyObject<OperationId>, HasDescription, Co
     boolean isSystemOperation();
 
     enum Scope {
-        METAPROJECT, SERVER, ONTOLOGY, GUI
+        POLICY, SERVER, ONTOLOGY, GUI
     }
 }

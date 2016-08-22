@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,7 +26,8 @@ public interface PolicyFactory {
      * @param options   Project options
      * @return New Project instance
      */
-    Project getProject(ProjectId projectId, Name name, Description description, File file, UserId ownerId, Optional<ProjectOptions> options);
+    @Nonnull
+    Project getProject(@Nonnull ProjectId projectId, @Nonnull Name name, @Nonnull Description description, @Nonnull File file, @Nonnull UserId ownerId, @Nonnull Optional<ProjectOptions> options);
 
     /**
      * Create a new role
@@ -36,7 +38,8 @@ public interface PolicyFactory {
      * @param operations    Set of operations
      * @return New role instance
      */
-    Role getRole(RoleId roleId, Name name, Description description, Set<OperationId> operations);
+    @Nonnull
+    Role getRole(@Nonnull RoleId roleId, @Nonnull Name name, @Nonnull Description description, @Nonnull Set<OperationId> operations);
 
     /**
      * Create a new custom operation
@@ -48,7 +51,8 @@ public interface PolicyFactory {
      * @param scope Operation scope
      * @return New operation instance
      */
-    Operation getCustomOperation(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope);
+    @Nonnull
+    Operation getCustomOperation(@Nonnull OperationId operationId, @Nonnull Name name, @Nonnull Description description, @Nonnull OperationType operationType, @Nonnull Operation.Scope scope);
 
     /**
      * Create a new system operation
@@ -60,7 +64,8 @@ public interface PolicyFactory {
      * @param scope Operation scope
      * @return New operation instance
      */
-    Operation getSystemOperation(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope);
+    @Nonnull
+    Operation getSystemOperation(@Nonnull OperationId operationId, @Nonnull Name name, @Nonnull Description description, @Nonnull OperationType operationType, @Nonnull Operation.Scope scope);
 
     /**
      * Create a user with the given user identifier, name and email address
@@ -70,7 +75,8 @@ public interface PolicyFactory {
      * @param emailAddress  User email address
      * @return A user instance
      */
-    User getUser(UserId userId, Name userName, EmailAddress emailAddress);
+    @Nonnull
+    User getUser(@Nonnull UserId userId, @Nonnull Name userName, @Nonnull EmailAddress emailAddress);
 
     /**
      * Create an instance of authentication details
@@ -79,7 +85,8 @@ public interface PolicyFactory {
      * @param password  Salted password digest
      * @return Authentication details
      */
-    AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password);
+    @Nonnull
+    AuthenticationDetails getAuthenticationDetails(@Nonnull UserId userId, @Nonnull SaltedPasswordDigest password);
 
     /**
      * Create an instance of crypto salt
@@ -87,7 +94,8 @@ public interface PolicyFactory {
      * @param salt  Salt string
      * @return Salt instance
      */
-    Salt getSalt(String salt);
+    @Nonnull
+    Salt getSalt(@Nonnull String salt);
 
     /**
      * Create an instance of plain password
@@ -95,7 +103,8 @@ public interface PolicyFactory {
      * @param password  Password string
      * @return Plain password
      */
-    PlainPassword getPlainPassword(String password);
+    @Nonnull
+    PlainPassword getPlainPassword(@Nonnull String password);
 
     /**
      * Create an instance of salted password given a string that represents the hash of a password, and the salt used to hash it
@@ -104,7 +113,8 @@ public interface PolicyFactory {
      * @param salt  Salt
      * @return Salted password digest
      */
-    SaltedPasswordDigest getSaltedPasswordDigest(String password, Salt salt);
+    @Nonnull
+    SaltedPasswordDigest getSaltedPasswordDigest(@Nonnull String password, @Nonnull Salt salt);
 
     /**
      * Create a name for an access control object
@@ -112,7 +122,8 @@ public interface PolicyFactory {
      * @param name  Name
      * @return Name instance
      */
-    Name getName(String name);
+    @Nonnull
+    Name getName(@Nonnull String name);
 
     /**
      * Create a description for an access control object
@@ -120,7 +131,8 @@ public interface PolicyFactory {
      * @param description   Description
      * @return Description instance
      */
-    Description getDescription(String description);
+    @Nonnull
+    Description getDescription(@Nonnull String description);
 
     /**
      * Create an email address name for an access control object
@@ -128,7 +140,8 @@ public interface PolicyFactory {
      * @param emailAddress  Email address
      * @return Email address instance
      */
-    EmailAddress getEmailAddress(String emailAddress);
+    @Nonnull
+    EmailAddress getEmailAddress(@Nonnull String emailAddress);
 
     /**
      * Create a new identifier for a role
@@ -136,7 +149,8 @@ public interface PolicyFactory {
      * @param roleId    Role identifier
      * @return Role identifier instance
      */
-    RoleId getRoleId(String roleId);
+    @Nonnull
+    RoleId getRoleId(@Nonnull String roleId);
 
     /**
      * Create a new identifier for a user
@@ -144,7 +158,8 @@ public interface PolicyFactory {
      * @param userId    User identifier
      * @return User identifier instance
      */
-    UserId getUserId(String userId);
+    @Nonnull
+    UserId getUserId(@Nonnull String userId);
 
     /**
      * Create a new identifier for a project
@@ -152,7 +167,8 @@ public interface PolicyFactory {
      * @param projectId Project identifier
      * @return Project identifier instance
      */
-    ProjectId getProjectId(String projectId);
+    @Nonnull
+    ProjectId getProjectId(@Nonnull String projectId);
 
     /**
      * Create a new identifier for an operation
@@ -160,13 +176,15 @@ public interface PolicyFactory {
      * @param operationId   Operation identifier
      * @return Operation identifier instance
      */
-    OperationId getOperationId(String operationId);
+    @Nonnull
+    OperationId getOperationId(@Nonnull String operationId);
 
     /**
      * Get a user ID that is a randomly generated UUID
      *
      * @return New user UUID
      */
+    @Nonnull
     UserId getUserUuid();
 
     /**
@@ -174,6 +192,7 @@ public interface PolicyFactory {
      *
      * @return New role UUID
      */
+    @Nonnull
     RoleId getRoleUuid();
 
     /**
@@ -181,6 +200,7 @@ public interface PolicyFactory {
      *
      * @return New project ID that is a randomly generated UUID
      */
+    @Nonnull
     ProjectId getProjectUuid();
 
     /**
@@ -188,6 +208,7 @@ public interface PolicyFactory {
      *
      * @return New operation UUID
      */
+    @Nonnull
     OperationId getOperationUuid();
 
     /**
@@ -196,7 +217,8 @@ public interface PolicyFactory {
      * @param portNr    Port number
      * @return Port instance
      */
-    Port getPort(Integer portNr);
+    @Nonnull
+    Port getPort(@Nonnull Integer portNr);
 
     /**
      * Create an instance of a Host
@@ -205,7 +227,8 @@ public interface PolicyFactory {
      * @param secondaryPort  Optional secondary port
      * @return Host instance
      */
-    Host getHost(URI address, Optional<Port> secondaryPort);
+    @Nonnull
+    Host getHost(@Nonnull URI address, @Nonnull Optional<Port> secondaryPort);
 
     /**
      * Get a URI based on the given string
@@ -214,13 +237,15 @@ public interface PolicyFactory {
      * @return URI
      * @throws URISyntaxException   URI syntax exception
      */
-    URI getUri(String uri) throws URISyntaxException;
+    @Nonnull
+    URI getUri(@Nonnull String uri) throws URISyntaxException;
 
     /**
      * Create an instance of a salt generator
      *
      * @return Salt generator
      */
+    @Nonnull
     SaltGenerator getSaltGenerator();
 
     /**
@@ -228,6 +253,7 @@ public interface PolicyFactory {
      *
      * @return Password hasher
      */
+    @Nonnull
     PasswordHasher getPasswordHasher();
 
     /**
@@ -238,6 +264,7 @@ public interface PolicyFactory {
      * @param nrIterations  Number of key-stretching iterations
      * @return Password hasher
      */
+    @Nonnull
     PasswordHasher getPasswordHasher(int hashByteSize, int nrIterations);
 
     /**
@@ -246,7 +273,8 @@ public interface PolicyFactory {
      * @param user    User
      * @return Authentication token
      */
-    AuthToken getAuthorizedUserToken(User user);
+    @Nonnull
+    AuthToken getAuthorizedUserToken(@Nonnull User user);
 
     /**
      * Get an authentication token that reflects an unsuccessful authentication attempt
@@ -254,7 +282,8 @@ public interface PolicyFactory {
      * @param user    User
      * @return Authentication token
      */
-    AuthToken getUnauthorizedUserToken(User user);
+    @Nonnull
+    AuthToken getUnauthorizedUserToken(@Nonnull User user);
 
     /**
      * Create an instance of project options
@@ -262,6 +291,7 @@ public interface PolicyFactory {
      * @param options  Options map
      * @return Project options
      */
-    ProjectOptions getProjectOptions(Map<String,Set<String>> options);
+    @Nonnull
+    ProjectOptions getProjectOptions(@Nonnull Map<String,Set<String>> options);
 
 }

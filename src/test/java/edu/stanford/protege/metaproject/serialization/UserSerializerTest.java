@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.EmailAddress;
 import edu.stanford.protege.metaproject.api.Name;
 import edu.stanford.protege.metaproject.api.User;
@@ -14,16 +14,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class UserSerializerTest {
     private static final String
             userIdStr = "testUserId1",
             diffIdStr = "testUserId2";
 
-    private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(diffIdStr);
-    private static final Name userName = Utils.getName();
-    private static final EmailAddress userEmail = Utils.getEmailAddress();
+    private static final UserId userId = TestUtils.getUserId(userIdStr), diffUserId = TestUtils.getUserId(diffIdStr);
+    private static final Name userName = TestUtils.getName();
+    private static final EmailAddress userEmail = TestUtils.getEmailAddress();
 
     private String jsonUser, jsonOtherUser, jsonDiffUser;
     private User user, otherUser, diffUser;
@@ -31,11 +32,11 @@ public class UserSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultJsonSerializer().getInstance();
+        gson = new DefaultJsonSerializer().getGson();
 
-        user = Utils.getUser(userId, userName, userEmail);
-        otherUser = Utils.getUser(userId, userName, userEmail);
-        diffUser = Utils.getUser(diffUserId, userName, userEmail);
+        user = TestUtils.getUser(userId, userName, userEmail);
+        otherUser = TestUtils.getUser(userId, userName, userEmail);
+        diffUser = TestUtils.getUser(diffUserId, userName, userEmail);
 
         jsonUser = gson.toJson(user);
         jsonOtherUser = gson.toJson(otherUser);

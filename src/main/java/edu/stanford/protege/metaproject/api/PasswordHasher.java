@@ -1,10 +1,13 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * A representation of a salt-based password hashing function
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface PasswordHasher {
 
@@ -15,6 +18,7 @@ public interface PasswordHasher {
      * @param salt  Salt
      * @return Salted hash of the password
      */
-    SaltedPasswordDigest hash(PlainPassword password, Salt salt);
+    @Nonnull
+    SaltedPasswordDigest hash(@Nonnull PlainPassword password, @Nonnull Salt salt);
 
 }

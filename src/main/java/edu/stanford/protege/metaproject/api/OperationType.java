@@ -4,7 +4,8 @@ package edu.stanford.protege.metaproject.api;
  * Types of operations supported are the usual read, write and execute
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public enum OperationType {
     READ, WRITE, EXECUTE;

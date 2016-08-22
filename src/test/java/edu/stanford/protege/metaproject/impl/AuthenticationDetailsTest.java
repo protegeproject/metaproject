@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.AuthenticationDetails;
 import edu.stanford.protege.metaproject.api.Salt;
 import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
@@ -17,7 +17,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AuthenticationDetailsTest {
@@ -31,9 +32,9 @@ public class AuthenticationDetailsTest {
 
     @Before
     public void setUp() {
-        userDetails = Utils.getAuthenticationDetails(userId, password);
-        otherUserDetails = Utils.getAuthenticationDetails(userId, password);
-        diffUserDetails = Utils.getAuthenticationDetails(diffUserId, password);
+        userDetails = TestUtils.getAuthenticationDetails(userId, password);
+        otherUserDetails = TestUtils.getAuthenticationDetails(userId, password);
+        diffUserDetails = TestUtils.getAuthenticationDetails(diffUserId, password);
 
         when(userId.get()).thenReturn("user1");
         when(diffUserId.get()).thenReturn("user2");

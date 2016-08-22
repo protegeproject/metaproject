@@ -1,10 +1,11 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 /**
- * A representation of a server configuration, composed of host information, the metaproject access control policy, the root directory
- * of the server (where project files are located), the authentication registry, and optional additional configuration properties.
+ * A representation of a server configuration, composed of host information, the access control policy, the root directory of the
+ * server (where project files are located), the authentication registry, and optional additional configuration properties.
  *
  * @author Rafael Gonçalves <br>
  * Center for Biomedical Informatics Research <br>
@@ -13,17 +14,11 @@ import java.io.File;
 public interface ServerConfiguration extends ConfigurationBrowser, HasProperties {
 
     /**
-     * Get the server configuration manager that manages this configuration
-     *
-     * @return ConfigurationManager
-     */
-    ConfigurationManager getConfigurationManager();
-
-    /**
      * Get the server host
      *
      * @return Server host
      */
+    @Nonnull
     Host getHost();
 
     /**
@@ -31,6 +26,7 @@ public interface ServerConfiguration extends ConfigurationBrowser, HasProperties
      *
      * @return Server root directory
      */
+    @Nonnull
     File getServerRoot();
 
 }

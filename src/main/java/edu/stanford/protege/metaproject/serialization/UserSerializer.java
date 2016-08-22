@@ -8,7 +8,8 @@ import java.lang.reflect.Type;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class UserSerializer implements JsonDeserializer<User> {
 

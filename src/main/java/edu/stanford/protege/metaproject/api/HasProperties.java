@@ -2,9 +2,13 @@ package edu.stanford.protege.metaproject.api;
 
 import com.google.common.collect.ImmutableMap;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface HasProperties {
 
@@ -13,6 +17,7 @@ public interface HasProperties {
      *
      * @return Map of string properties
      */
+    @Nonnull
     ImmutableMap<String,String> getProperties();
 
     /**
@@ -21,6 +26,7 @@ public interface HasProperties {
      * @param key   Property key
      * @return Property value
      */
-    String getProperty(String key);
+    @Nullable
+    String getProperty(@Nonnull String key);
 
 }

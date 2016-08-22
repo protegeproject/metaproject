@@ -9,6 +9,10 @@ import edu.stanford.protege.metaproject.api.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -24,24 +28,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Center for Biomedical Informatics Research <br>
  * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class ServerConfigurationImpl implements ServerConfiguration, Serializable {
-    private static final long serialVersionUID = 7907697651569583698L;
+    private static final long serialVersionUID = -8439017057476248949L;
     private static final Logger logger = LoggerFactory.getLogger(ServerConfigurationImpl.class.getName());
-    private final ConfigurationManager configManager;
-    private final ImmutableMap<UserId, Map<ProjectId, Set<RoleId>>> policyMap;
-    private final ImmutableSet<User> users;
-    private final ImmutableSet<Project> projects;
-    private final ImmutableSet<Role> roles;
-    private final ImmutableSet<Operation> operations;
-    private final ImmutableSet<AuthenticationDetails> authDetails;
-    private final ImmutableMap<String,String> properties;
-    private final Host host;
-    private final File root;
+    @Nonnull private final ImmutableMap<UserId, Map<ProjectId, Set<RoleId>>> policyMap;
+    @Nonnull private final ImmutableSet<User> users;
+    @Nonnull private final ImmutableSet<Project> projects;
+    @Nonnull private final ImmutableSet<Role> roles;
+    @Nonnull private final ImmutableSet<Operation> operations;
+    @Nonnull private final ImmutableSet<AuthenticationDetails> authDetails;
+    @Nonnull private final ImmutableMap<String,String> properties;
+    @Nonnull private final Host host;
+    @Nonnull private final File root;
 
     /**
-     * Package-private constructor; use {@link ServerConfigurationBuilder}
+     * Package-private constructor; use {@link ConfigurationBuilder}
      *
-     * @param configManager Configuration manager
      * @param host    Host
      * @param root  Root directory of the server
      * @param policyMap    Policy map
@@ -52,50 +56,41 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
      * @param authDetails   Set of user authentication details
      * @param properties   Map of custom configuration properties
      */
-    ServerConfigurationImpl(ConfigurationManager configManager, Host host, File root, Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap, Set<User> users,
-                            Set<Project> projects, Set<Role> roles, Set<Operation> operations, Set<AuthenticationDetails> authDetails, Map<String,String> properties) {
-        this.configManager = checkNotNull(configManager);
+    ServerConfigurationImpl(@Nonnull Host host, @Nonnull File root, @Nonnull Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap,
+                            @Nonnull Set<User> users, @Nonnull Set<Project> projects, @Nonnull Set<Role> roles, @Nonnull Set<Operation> operations,
+                            @Nonnull Set<AuthenticationDetails> authDetails, @Nonnull Map<String,String> properties) {
         this.host = checkNotNull(host);
         this.root = checkNotNull(root);
-        ImmutableMap<UserId, Map<ProjectId, Set<RoleId>>> policyMapCopy =
-                new ImmutableMap.Builder<UserId, Map<ProjectId, Set<RoleId>>>().putAll(checkNotNull(policyMap)).build();
-        ImmutableSet<User> usersCopy = new ImmutableSet.Builder<User>().addAll(checkNotNull(users)).build();
-        ImmutableSet<Project> projectsCopy = new ImmutableSet.Builder<Project>().addAll(checkNotNull(projects)).build();
-        ImmutableSet<Role> rolesCopy = new ImmutableSet.Builder<Role>().addAll(checkNotNull(roles)).build();
-        ImmutableSet<Operation> operationsCopy = new ImmutableSet.Builder<Operation>().addAll(checkNotNull(operations)).build();
-        ImmutableSet<AuthenticationDetails> authDetailsCopy = new ImmutableSet.Builder<AuthenticationDetails>().addAll(checkNotNull(authDetails)).build();
-        ImmutableMap<String,String> propertiesCopy = new ImmutableMap.Builder<String,String>().putAll(checkNotNull(properties)).build();
-        this.policyMap = checkNotNull(policyMapCopy);
-        this.users = checkNotNull(usersCopy);
-        this.projects = checkNotNull(projectsCopy);
-        this.roles = checkNotNull(rolesCopy);
-        this.operations = checkNotNull(operationsCopy);
-        this.authDetails = checkNotNull(authDetailsCopy);
-        this.properties = checkNotNull(propertiesCopy);
+        this.policyMap = ImmutableMap.copyOf(checkNotNull(policyMap));
+        this.users = ImmutableSet.copyOf(checkNotNull(users));
+        this.projects = ImmutableSet.copyOf(checkNotNull(projects));
+        this.roles = ImmutableSet.copyOf(checkNotNull(roles));
+        this.operations = ImmutableSet.copyOf(checkNotNull(operations));
+        this.authDetails = ImmutableSet.copyOf(checkNotNull(authDetails));
+        this.properties = ImmutableMap.copyOf(checkNotNull(properties));
     }
 
     @Override
-    public ConfigurationManager getConfigurationManager() {
-        return configManager;
-    }
-
-    @Override
+    @Nonnull
     public Host getHost() {
         return host;
     }
 
     @Override
+    @Nonnull
     public File getServerRoot() {
         return root;
     }
 
     @Override
+    @Nonnull
     public ImmutableMap<String,String> getProperties() {
         return properties;
     }
 
     @Override
-    public String getProperty(String key) {
+    @Nullable
+    public String getProperty(@Nonnull String key) {
         return properties.get(key);
     }
 
@@ -104,12 +99,13 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
      /* access control policy */
 
     @Override
+    @Nonnull
     public ImmutableMap<UserId, Map<ProjectId, Set<RoleId>>> getPolicyMap() {
         return policyMap;
     }
 
     @Override
-    public synchronized boolean hasRole(UserId userId, ProjectId projectId, RoleId roleId) {
+    public boolean hasRole(@Nonnull UserId userId, @Nonnull ProjectId projectId, @Nonnull RoleId roleId) {
         Map<UserId,Map<ProjectId,Set<RoleId>>> policyMap = getPolicyMap();
         if (policyMap.containsKey(userId)) {
             Map<ProjectId, Set<RoleId>> assignments = getUserRoleMap(userId);
@@ -126,7 +122,8 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<RoleId> getRoleIds(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) {
+    @Nonnull
+    public Set<RoleId> getRoleIds(@Nonnull UserId userId, @Nonnull ProjectId projectId, @Nonnull GlobalPermissions globalPermissions) {
         Map<ProjectId,Set<RoleId>> assignments = getUserRoleMap(userId);
         Set<RoleId> roles = new HashSet<>();
         if(assignments.containsKey(projectId)) {
@@ -141,7 +138,8 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<RoleId> getRoleIds(UserId userId, GlobalPermissions globalPermissions) {
+    @Nonnull
+    public Set<RoleId> getRoleIds(@Nonnull UserId userId, @Nonnull GlobalPermissions globalPermissions) {
         Map<ProjectId,Set<RoleId>> map = getUserRoleMap(userId);
         Set<RoleId> roles = new HashSet<>();
         for(ProjectId p : map.keySet()) {
@@ -154,12 +152,13 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public Set<ProjectId> getProjectIds(UserId userId) {
-        return getUserRoleMap(userId).keySet();
+    @Nonnull
+    public Set<ProjectId> getProjectIds(@Nonnull UserId userId) {
+        return new HashSet<>(getUserRoleMap(userId).keySet());
     }
 
     @Override
-    public synchronized boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId) {
+    public boolean isOperationAllowed(@Nonnull OperationId operationId, @Nonnull ProjectId projectId, @Nonnull UserId userId) {
         try {
             Set<RoleId> roles = new HashSet<>(getRoleIds(userId, projectId, GlobalPermissions.INCLUDED));
             for (RoleId role : roles) {
@@ -175,7 +174,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized boolean isOperationAllowed(OperationId operationId, UserId userId) {
+    public boolean isOperationAllowed(@Nonnull OperationId operationId, @Nonnull UserId userId) {
         try {
             Set<RoleId> roles = getRoleIds(userId, GlobalPermissions.INCLUDED);
             for (RoleId role : roles) {
@@ -191,7 +190,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized boolean hasRole(UserId userId, ProjectId projectId) {
+    public boolean hasRole(@Nonnull UserId userId, @Nonnull ProjectId projectId) {
         Map<UserId,Map<ProjectId,Set<RoleId>>> policyMap = getPolicyMap();
         for (UserId user : policyMap.keySet()) {
             if (user.equals(userId)) {
@@ -206,19 +205,25 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public Map<ProjectId, Set<RoleId>> getUserRoleMap(UserId userId) {
-        return new HashMap<>(getPolicyMap().get(userId));
+    @Nonnull
+    public Map<ProjectId, Set<RoleId>> getUserRoleMap(@Nonnull UserId userId) {
+        Map<ProjectId, Set<RoleId>> map = new HashMap<>();
+        if(getPolicyMap().get(userId) != null) {
+            return getPolicyMap().get(userId);
+        }
+        return map;
     }
 
     @Override
-    public synchronized Set<UserId> getUserIds(ProjectId projectId) {
+    @Nonnull
+    public Set<UserId> getUserIds(@Nonnull ProjectId projectId) {
         Map<UserId,Map<ProjectId,Set<RoleId>>> policyMap = getPolicyMap();
         return policyMap.keySet().stream().filter(userId ->
                 policyMap.get(userId).keySet().contains(projectId)).collect(Collectors.toSet());
     }
 
     @Override
-    public synchronized boolean hasRole(UserId id) {
+    public boolean hasRole(@Nonnull UserId id) {
         for (UserId userId : getPolicyMap().keySet()) {
             if (userId.equals(id)) {
                 return true;
@@ -232,12 +237,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     /* users */
 
     @Override
+    @Nonnull
     public ImmutableSet<User> getUsers() {
         return users;
     }
 
     @Override
-    public synchronized User getUser(UserId userId) throws UnknownUserIdException {
+    @Nonnull
+    public User getUser(@Nonnull UserId userId) throws UnknownUserIdException {
         checkNotNull(userId);
         Set<User> users = getUsers();
         User user = null;
@@ -255,25 +262,27 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<User> getUsers(Name userName) {
+    @Nonnull
+    public Set<User> getUsers(@Nonnull Name userName) {
         checkNotNull(userName);
         return getUsers().stream().filter(user -> user.getName().get().equals(userName.get())).collect(Collectors.toSet());
     }
 
     @Override
-    public synchronized Set<User> getUsers(EmailAddress emailAddress) {
+    @Nonnull
+    public Set<User> getUsers(@Nonnull EmailAddress emailAddress) {
         checkNotNull(emailAddress);
         return getUsers().stream().filter(user -> user.getEmailAddress().equals(emailAddress)).collect(Collectors.toSet());
     }
 
     @Override
-    public boolean containsUser(User user) {
+    public boolean containsUser(@Nonnull User user) {
         checkNotNull(user);
         return getUsers().contains(user);
     }
 
     @Override
-    public boolean containsUser(UserId userId) {
+    public boolean containsUser(@Nonnull UserId userId) {
         checkNotNull(userId);
         try {
             return containsUser(getUser(userId));
@@ -284,7 +293,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized boolean isEmailAddressInUse(EmailAddress address) {
+    public boolean isEmailAddressInUse(@Nonnull EmailAddress address) {
         checkNotNull(address);
         for(User u : getUsers()) {
             if(u.getEmailAddress().equals(address)) {
@@ -299,12 +308,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     /* projects */
 
     @Override
+    @Nonnull
     public ImmutableSet<Project> getProjects() {
         return projects;
     }
 
     @Override
-    public synchronized Project getProject(ProjectId projectId) throws UnknownProjectIdException {
+    @Nonnull
+    public Project getProject(@Nonnull ProjectId projectId) throws UnknownProjectIdException {
         checkNotNull(projectId);
         if(projectId.equals(ConfigurationUtils.getUniversalProjectId())) {
             return ConfigurationUtils.getUniversalProject();
@@ -325,14 +336,16 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<Project> getProjects(Name projectName) {
+    @Nonnull
+    public Set<Project> getProjects(@Nonnull Name projectName) {
         checkNotNull(projectName);
         return getProjects().stream().filter(project -> project.getName().equals(projectName) &&
                 !project.getId().equals(ConfigurationUtils.getUniversalProjectId())).collect(Collectors.toSet());
     }
 
     @Override
-    public synchronized Set<Project> getProjects(UserId userId) {
+    @Nonnull
+    public Set<Project> getProjects(@Nonnull UserId userId) {
         Set<Project> projects = new HashSet<>();
         Set<ProjectId> projectIds = getProjectIds(userId);
         for (ProjectId projectId : projectIds) {
@@ -348,13 +361,13 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public boolean containsProject(Project project) {
+    public boolean containsProject(@Nonnull Project project) {
         checkNotNull(project);
         return getProjects().contains(project);
     }
 
     @Override
-    public boolean containsProject(ProjectId projectId) {
+    public boolean containsProject(@Nonnull ProjectId projectId) {
         checkNotNull(projectId);
         try {
             return containsProject(getProject(projectId));
@@ -369,12 +382,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     /* roles */
 
     @Override
+    @Nonnull
     public ImmutableSet<Role> getRoles() {
         return roles;
     }
 
     @Override
-    public synchronized Role getRole(RoleId roleId) throws UnknownRoleIdException {
+    @Nonnull
+    public Role getRole(@Nonnull RoleId roleId) throws UnknownRoleIdException {
         checkNotNull(roleId);
         Role role = null;
         for(Role r : roles) {
@@ -390,18 +405,20 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<Role> getRoles(UserId userId, GlobalPermissions globalPermissions) {
+    @Nonnull
+    public Set<Role> getRoles(@Nonnull UserId userId, @Nonnull GlobalPermissions globalPermissions) {
         Set<RoleId> roleIds = getRoleIds(userId, globalPermissions);
         return getRoles(roleIds);
     }
 
     @Override
-    public synchronized Set<Role> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) {
+    @Nonnull
+    public Set<Role> getRoles(@Nonnull UserId userId, @Nonnull ProjectId projectId, @Nonnull GlobalPermissions globalPermissions) {
         Set<RoleId> roleIds = getRoleIds(userId, projectId, globalPermissions);
         return getRoles(roleIds);
     }
 
-    private synchronized Set<Role> getRoles(Set<RoleId> roleIds) {
+    private Set<Role> getRoles(@Nonnull Set<RoleId> roleIds) {
         Set<Role> roles = new HashSet<>();
         for (RoleId roleId : roleIds) {
             try {
@@ -415,13 +432,13 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public boolean containsRole(Role role) {
+    public boolean containsRole(@Nonnull Role role) {
         checkNotNull(role);
         return getRoles().contains(role);
     }
 
     @Override
-    public boolean containsRole(RoleId roleId) {
+    public boolean containsRole(@Nonnull RoleId roleId) {
         checkNotNull(roleId);
         try {
             return containsRole(getRole(roleId));
@@ -436,12 +453,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     /* operations */
 
     @Override
+    @Nonnull
     public ImmutableSet<Operation> getOperations() {
         return operations;
     }
 
     @Override
-    public synchronized Operation getOperation(OperationId operationId) throws UnknownOperationIdException {
+    @Nonnull
+    public Operation getOperation(@Nonnull OperationId operationId) throws UnknownOperationIdException {
         checkNotNull(operationId);
         Set<Operation> operations = getOperations();
         Operation operation = null;
@@ -458,19 +477,22 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<Operation> getOperations(UserId userId, GlobalPermissions globalPermissions) {
+    @Nonnull
+    public Set<Operation> getOperations(@Nonnull UserId userId, @Nonnull GlobalPermissions globalPermissions) {
         Set<Role> roles = getRoles(userId, globalPermissions);
         return getOperations(roles);
     }
 
     @Override
-    public synchronized Set<Operation> getOperations(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions) {
+    @Nonnull
+    public Set<Operation> getOperations(@Nonnull UserId userId, @Nonnull ProjectId projectId, @Nonnull GlobalPermissions globalPermissions) {
         Set<Role> roles = getRoles(userId, projectId, globalPermissions);
         return getOperations(roles);
     }
 
     @Override
-    public synchronized Set<Operation> getOperations(Set<Role> roles) {
+    @Nonnull
+    public Set<Operation> getOperations(@Nonnull Set<Role> roles) {
         Set<Operation> operations = new HashSet<>();
         for (Role role : roles) {
             operations.addAll(getOperations(role));
@@ -479,7 +501,8 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized Set<Operation> getOperations(Role role) {
+    @Nonnull
+    public Set<Operation> getOperations(@Nonnull Role role) {
         Set<Operation> operations = new HashSet<>();
         for (OperationId opId : role.getOperations()) {
             try {
@@ -493,13 +516,13 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public boolean containsOperation(Operation operation) {
+    public boolean containsOperation(@Nonnull Operation operation) {
         checkNotNull(operation);
         return getOperations().contains(operation);
     }
 
     @Override
-    public boolean containsOperation(OperationId operationId) {
+    public boolean containsOperation(@Nonnull OperationId operationId) {
         checkNotNull(operationId);
         try {
             return containsOperation(getOperation(operationId));
@@ -514,12 +537,14 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     /* authentication */
 
     @Override
+    @Nonnull
     public ImmutableSet<AuthenticationDetails> getAuthenticationDetails() {
         return authDetails;
     }
 
     @Override
-    public AuthenticationDetails getAuthenticationDetails(UserId userId) throws UserNotRegisteredException {
+    @Nonnull
+    public AuthenticationDetails getAuthenticationDetails(@Nonnull UserId userId) throws UserNotRegisteredException {
         AuthenticationDetails details = null;
         for(AuthenticationDetails userDetails : getAuthenticationDetails()) {
             if (userDetails.getUserId().equals(userId)) {
@@ -535,12 +560,13 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public Salt getSalt(UserId userId) throws UserNotRegisteredException {
+    @Nonnull
+    public Salt getSalt(@Nonnull UserId userId) throws UserNotRegisteredException {
         return getAuthenticationDetails(userId).getPassword().getSalt();
     }
 
     @Override
-    public boolean isRegistered(UserId userId) {
+    public boolean isRegistered(@Nonnull UserId userId) {
         for(AuthenticationDetails userDetails : getAuthenticationDetails()) {
             if(userDetails.getUserId().equals(userId)) {
                 return true;
@@ -550,7 +576,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     }
 
     @Override
-    public synchronized boolean hasValidCredentials(UserId userId, SaltedPasswordDigest password) {
+    public boolean hasValidCredentials(@Nonnull UserId userId, @Nonnull SaltedPasswordDigest password) {
         SaltedPasswordDigest correctHash;
         try {
             correctHash = getAuthenticationDetails(userId).getPassword();
@@ -569,7 +595,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
      * @param b Second byte array
      * @return true if both byte arrays are the same, false otherwise
      */
-    private synchronized boolean slowEquals(byte[] a, byte[] b) {
+    private boolean slowEquals(byte[] a, byte[] b) {
         int diff = a.length ^ b.length;
         for(int i = 0; i < a.length && i < b.length; i++) {
             diff |= a[i] ^ b[i];
@@ -586,8 +612,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
             return false;
         }
         ServerConfiguration that = (ServerConfiguration) o;
-        return Objects.equal(configManager, that.getConfigurationManager()) &&
-                Objects.equal(policyMap, that.getPolicyMap()) &&
+        return Objects.equal(policyMap, that.getPolicyMap()) &&
                 Objects.equal(roles, that.getRoles()) &&
                 Objects.equal(operations, that.getOperations()) &&
                 Objects.equal(users, that.getUsers()) &&
@@ -600,7 +625,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(configManager, policyMap, roles, operations, users, projects, authDetails, properties, host, root);
+        return Objects.hashCode(policyMap, roles, operations, users, projects, authDetails, properties, host, root);
     }
 
     @Override

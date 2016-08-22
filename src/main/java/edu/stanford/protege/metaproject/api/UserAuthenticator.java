@@ -1,10 +1,13 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * A user authenticator that verifies whether the given username and password are valid.
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface UserAuthenticator {
 
@@ -16,8 +19,8 @@ public interface UserAuthenticator {
      * @param userId    User identifier
      * @param password  Password
      * @return Authorisation token that represents the state of user credential verification
-     * @throws Exception    Generic exception
      */
-    AuthToken hasValidCredentials(UserId userId, PlainPassword password) throws Exception;
+    @Nonnull
+    AuthToken hasValidCredentials(@Nonnull UserId userId, @Nonnull PlainPassword password);
 
 }

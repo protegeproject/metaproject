@@ -6,28 +6,34 @@ import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.RoleId;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class RoleIdImpl implements RoleId, Serializable {
     private static final long serialVersionUID = -8626557415093579469L;
-    private final String id;
+    @Nonnull private final String id;
 
     /**
      * Constructor
      *
      * @param id    Identifier
      */
-    public RoleIdImpl(String id) {
+    public RoleIdImpl(@Nonnull String id) {
         this.id = checkNotNull(id);
     }
 
     @Override
+    @Nonnull
     public String get() {
         return id;
     }

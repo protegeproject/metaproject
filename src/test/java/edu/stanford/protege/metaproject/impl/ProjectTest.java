@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class ProjectTest {
     private static final String
@@ -25,20 +26,20 @@ public class ProjectTest {
             projectDescriptionStr = "test project description",
             toStringHead = Project.class.getSimpleName();
 
-    private static final ProjectId projectId = Utils.getProjectId(projectIdStr), diffProjectId = Utils.getProjectId(otherIdStr);
-    private static final Name projectName = Utils.getName(projectNameStr), diffProjectName = Utils.getName(otherProjectNameStr);
-    private static final Description projectDescription = Utils.getDescription(projectDescriptionStr);
-    private static final File projectFile = Utils.getFile("/Users/test/folder/project.owl");
-    private static final UserId ownerId = Utils.getUserId("owner");
+    private static final ProjectId projectId = TestUtils.getProjectId(projectIdStr), diffProjectId = TestUtils.getProjectId(otherIdStr);
+    private static final Name projectName = TestUtils.getName(projectNameStr), diffProjectName = TestUtils.getName(otherProjectNameStr);
+    private static final Description projectDescription = TestUtils.getDescription(projectDescriptionStr);
+    private static final File projectFile = TestUtils.getFile("/Users/test/folder/project.owl");
+    private static final UserId ownerId = TestUtils.getUserId("owner");
     @Mock private ProjectOptions projectOptions;
 
     private Project project, otherProject, diffProject;
 
     @Before
     public void setUp() {
-        project = Utils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
-        otherProject = Utils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
-        diffProject = Utils.getProject(diffProjectId, diffProjectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
+        project = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
+        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
+        diffProject = TestUtils.getProject(diffProjectId, diffProjectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
     }
 
     @Test

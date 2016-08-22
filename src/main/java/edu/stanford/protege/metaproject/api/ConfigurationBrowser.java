@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.exception.*;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,13 +24,15 @@ public interface ConfigurationBrowser {
      * @return User instance
      * @throws UnknownUserIdException   User identifier does not exist in the configuration
      */
-    User getUser(UserId userId) throws UnknownUserIdException;
+    @Nonnull
+    User getUser(@Nonnull UserId userId) throws UnknownUserIdException;
 
     /**
      * Get the set of user in the configuration
      *
      * @return  Set of users
      */
+    @Nonnull
     ImmutableSet<User> getUsers();
 
     /**
@@ -38,7 +41,8 @@ public interface ConfigurationBrowser {
      * @param userName  User name instance
      * @return Set of users with given name
      */
-    Set<User> getUsers(Name userName);
+    @Nonnull
+    Set<User> getUsers(@Nonnull Name userName);
 
     /**
      * Get the user(s) registered with the specified email address
@@ -46,7 +50,8 @@ public interface ConfigurationBrowser {
      * @param emailAddress  Email address
      * @return Set of users
      */
-    Set<User> getUsers(EmailAddress emailAddress);
+    @Nonnull
+    Set<User> getUsers(@Nonnull EmailAddress emailAddress);
 
     /**
      * Get the set of user identifiers that have some role in the specified project
@@ -54,7 +59,8 @@ public interface ConfigurationBrowser {
      * @param projectId    Project identifier
      * @return Set of user identifiers
      */
-    Set<UserId> getUserIds(ProjectId projectId);
+    @Nonnull
+    Set<UserId> getUserIds(@Nonnull ProjectId projectId);
 
     /**
      * Check whether the configuration contains the given user
@@ -62,7 +68,7 @@ public interface ConfigurationBrowser {
      * @param user  User
      * @return true if configuration contains user, false otherwise
      */
-    boolean containsUser(User user);
+    boolean containsUser(@Nonnull User user);
 
     /**
      * Check whether the configuration contains a user with the given user identifier
@@ -70,7 +76,7 @@ public interface ConfigurationBrowser {
      * @param userId    User identifier
      * @return true if configuration contains user, false otherwise
      */
-    boolean containsUser(UserId userId);
+    boolean containsUser(@Nonnull UserId userId);
 
     /**
      * Verify whether the email address of the given user is already being used by another user
@@ -78,7 +84,7 @@ public interface ConfigurationBrowser {
      * @param address   User address
      * @return true if email address is used by some other user, false otherwise
      */
-    boolean isEmailAddressInUse(EmailAddress address);
+    boolean isEmailAddressInUse(@Nonnull EmailAddress address);
 
 
 
@@ -91,13 +97,15 @@ public interface ConfigurationBrowser {
      * @return Project
      * @throws UnknownProjectIdException    Project identifier does not exist in the configuration
      */
-    Project getProject(ProjectId projectId) throws UnknownProjectIdException;
+    @Nonnull
+    Project getProject(@Nonnull ProjectId projectId) throws UnknownProjectIdException;
 
     /**
      * Get the set of projects in the configuration
      *
      * @return Set of projects
      */
+    @Nonnull
     ImmutableSet<Project> getProjects();
 
     /**
@@ -106,7 +114,8 @@ public interface ConfigurationBrowser {
      * @param projectName   Project name
      * @return Set of projects
      */
-    Set<Project> getProjects(Name projectName);
+    @Nonnull
+    Set<Project> getProjects(@Nonnull Name projectName);
 
     /**
      * Get the set of projects that the user with the given identifier has some role assignments
@@ -114,7 +123,8 @@ public interface ConfigurationBrowser {
      * @param userId    User identifier
      * @return Set of projects
      */
-    Set<Project> getProjects(UserId userId);
+    @Nonnull
+    Set<Project> getProjects(@Nonnull UserId userId);
 
     /**
      * Get the set of project identifiers that the given user is assigned to
@@ -122,7 +132,8 @@ public interface ConfigurationBrowser {
      * @param userId    User identifier
      * @return Set of project identifiers the user works on
      */
-    Set<ProjectId> getProjectIds(UserId userId);
+    @Nonnull
+    Set<ProjectId> getProjectIds(@Nonnull UserId userId);
 
     /**
      * Check whether the configuration contains the given project
@@ -130,7 +141,7 @@ public interface ConfigurationBrowser {
      * @param project   Project
      * @return true if configuration contains project, false otherwise
      */
-    boolean containsProject(Project project);
+    boolean containsProject(@Nonnull Project project);
 
     /**
      * Check whether the configuration contains a project with the given identifier
@@ -138,7 +149,7 @@ public interface ConfigurationBrowser {
      * @param projectId Project identifier
      * @return true if configuration contains project, false otherwise
      */
-    boolean containsProject(ProjectId projectId);
+    boolean containsProject(@Nonnull ProjectId projectId);
 
 
 
@@ -151,13 +162,15 @@ public interface ConfigurationBrowser {
      * @return Role instance
      * @throws UnknownRoleIdException   Role identifier does not exist in the configuration
      */
-    Role getRole(RoleId roleId) throws UnknownRoleIdException;
+    @Nonnull
+    Role getRole(@Nonnull RoleId roleId) throws UnknownRoleIdException;
 
     /**
      * Get the set of roles in the configuration
      *
      * @return Set of roles
      */
+    @Nonnull
     ImmutableSet<Role> getRoles();
 
     /**
@@ -167,7 +180,8 @@ public interface ConfigurationBrowser {
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of roles
      */
-    Set<Role> getRoles(UserId userId, GlobalPermissions globalPermissions);
+    @Nonnull
+    Set<Role> getRoles(@Nonnull UserId userId, @Nonnull GlobalPermissions globalPermissions);
 
     /**
      * Get the set roles for the user with the given user identifier within the given project, considering global permissions depending on the
@@ -178,7 +192,8 @@ public interface ConfigurationBrowser {
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of roles
      */
-    Set<Role> getRoles(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions);
+    @Nonnull
+    Set<Role> getRoles(@Nonnull UserId userId, @Nonnull ProjectId projectId, @Nonnull GlobalPermissions globalPermissions);
 
     /**
      * Get the set of role identifiers that a given user has assigned within the specified project
@@ -188,7 +203,8 @@ public interface ConfigurationBrowser {
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of role identifiers
      */
-    Set<RoleId> getRoleIds(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions);
+    @Nonnull
+    Set<RoleId> getRoleIds(@Nonnull UserId userId, @Nonnull ProjectId projectId, @Nonnull GlobalPermissions globalPermissions);
 
     /**
      * Get the set of role identifiers that a given user has assigned
@@ -197,7 +213,8 @@ public interface ConfigurationBrowser {
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of role identifiers
      */
-    Set<RoleId> getRoleIds(UserId userId, GlobalPermissions globalPermissions);
+    @Nonnull
+    Set<RoleId> getRoleIds(@Nonnull UserId userId, @Nonnull GlobalPermissions globalPermissions);
 
     /**
      * Check whether the configuration contains the given role
@@ -205,7 +222,7 @@ public interface ConfigurationBrowser {
      * @param role  Role
      * @return true if configuration contains role, false otherwise
      */
-    boolean containsRole(Role role);
+    boolean containsRole(@Nonnull Role role);
 
     /**
      * Check whether the configuration contains a role with the given role identifier
@@ -213,7 +230,7 @@ public interface ConfigurationBrowser {
      * @param roleId    Role identifier
      * @return true if configuration contains role, false otherwise
      */
-    boolean containsRole(RoleId roleId);
+    boolean containsRole(@Nonnull RoleId roleId);
 
 
 
@@ -226,13 +243,15 @@ public interface ConfigurationBrowser {
      * @return Operation instance
      * @throws UnknownOperationIdException  Operation identifier does not exist in the configuration
      */
-    Operation getOperation(OperationId operationId) throws UnknownOperationIdException;
+    @Nonnull
+    Operation getOperation(@Nonnull OperationId operationId) throws UnknownOperationIdException;
 
     /**
      * Get the set of operations in the configuration
      *
      * @return Set of operations
      */
+    @Nonnull
     ImmutableSet<Operation> getOperations();
 
     /**
@@ -242,7 +261,8 @@ public interface ConfigurationBrowser {
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of operations
      */
-    Set<Operation> getOperations(UserId userId, GlobalPermissions globalPermissions);
+    @Nonnull
+    Set<Operation> getOperations(@Nonnull UserId userId, @Nonnull GlobalPermissions globalPermissions);
 
     /**
      * Get the set of operations that the user with the given identifier can perform in the project with the given identifier
@@ -252,7 +272,8 @@ public interface ConfigurationBrowser {
      * @param globalPermissions Whether global permissions should be taken into account
      * @return Set of operations
      */
-    Set<Operation> getOperations(UserId userId, ProjectId projectId, GlobalPermissions globalPermissions);
+    @Nonnull
+    Set<Operation> getOperations(@Nonnull UserId userId, @Nonnull ProjectId projectId, @Nonnull GlobalPermissions globalPermissions);
 
     /**
      * Get the set of operations allowed by the given role set
@@ -260,7 +281,8 @@ public interface ConfigurationBrowser {
      * @param roles Set of roles
      * @return Set of operations
      */
-    Set<Operation> getOperations(Set<Role> roles);
+    @Nonnull
+    Set<Operation> getOperations(@Nonnull Set<Role> roles);
 
     /**
      * Get the set of operations allowed by the given role
@@ -268,7 +290,8 @@ public interface ConfigurationBrowser {
      * @param role  Role
      * @return Set of operations
      */
-    Set<Operation> getOperations(Role role);
+    @Nonnull
+    Set<Operation> getOperations(@Nonnull Role role);
 
     /**
      * Check whether the configuration contains the given operation
@@ -276,7 +299,7 @@ public interface ConfigurationBrowser {
      * @param operation Operation
      * @return true if configuration contains operation, false otherwise
      */
-    boolean containsOperation(Operation operation);
+    boolean containsOperation(@Nonnull Operation operation);
 
     /**
      * Check whether the configuration contains an operation with the specified identifier
@@ -284,7 +307,7 @@ public interface ConfigurationBrowser {
      * @param operationId   Operation identifier
      * @return true if configuration contains operation, false otherwise
      */
-    boolean containsOperation(OperationId operationId);
+    boolean containsOperation(@Nonnull OperationId operationId);
 
 
     /* authentication */
@@ -294,6 +317,7 @@ public interface ConfigurationBrowser {
      *
      * @return Set of user authentication details
      */
+    @Nonnull
     ImmutableSet<AuthenticationDetails> getAuthenticationDetails();
 
     /**
@@ -303,7 +327,8 @@ public interface ConfigurationBrowser {
      * @return Authentication details
      * @throws UserNotRegisteredException   User is not registered
      */
-    AuthenticationDetails getAuthenticationDetails(UserId userId) throws UserNotRegisteredException;
+    @Nonnull
+    AuthenticationDetails getAuthenticationDetails(@Nonnull UserId userId) throws UserNotRegisteredException;
 
     /**
      * Get the cryptographic salt used for hashing the given user's password
@@ -312,7 +337,8 @@ public interface ConfigurationBrowser {
      * @return Salt
      * @throws UserNotRegisteredException   User is not registered
      */
-    Salt getSalt(UserId userId) throws UserNotRegisteredException;
+    @Nonnull
+    Salt getSalt(@Nonnull UserId userId) throws UserNotRegisteredException;
 
     /**
      * Verify whether the user with the given identifier exists in the registry
@@ -320,7 +346,7 @@ public interface ConfigurationBrowser {
      * @param userId    User identifier
      * @return true if the identifier corresponds to an existing, registered user, false otherwise
      */
-    boolean isRegistered(UserId userId);
+    boolean isRegistered(@Nonnull UserId userId);
 
     /**
      * Verify whether the given user-password pair is a valid (registered) one
@@ -328,9 +354,8 @@ public interface ConfigurationBrowser {
      * @param userId    User identifier
      * @param password  Password
      * @return true if user and password are valid w.r.t. the authentication details, false otherwise
-     * @throws UserNotRegisteredException   User is not registered
      */
-    boolean hasValidCredentials(UserId userId, SaltedPasswordDigest password) throws UserNotRegisteredException;
+    boolean hasValidCredentials(@Nonnull UserId userId, @Nonnull SaltedPasswordDigest password);
 
 
 
@@ -344,7 +369,7 @@ public interface ConfigurationBrowser {
      * @param userId  User identifier
      * @return true if user is allowed to carry out the specified operation within the project, false otherwise
      */
-    boolean isOperationAllowed(OperationId operationId, ProjectId projectId, UserId userId);
+    boolean isOperationAllowed(@Nonnull OperationId operationId, @Nonnull ProjectId projectId, @Nonnull UserId userId);
 
     /**
      * Check whether the specified operation is allowed for the given user
@@ -353,7 +378,7 @@ public interface ConfigurationBrowser {
      * @param userId  User identifier
      * @return true if user is allowed to carry out the specified operation, false otherwise
      */
-    boolean isOperationAllowed(OperationId operationId, UserId userId);
+    boolean isOperationAllowed(@Nonnull OperationId operationId, @Nonnull UserId userId);
 
     /**
      * Check if a given user has the specified role
@@ -363,7 +388,7 @@ public interface ConfigurationBrowser {
      * @param projectId  Project identifier
      * @return true if user has specified role, false otherwise
      */
-    boolean hasRole(UserId userId, ProjectId projectId, RoleId roleId);
+    boolean hasRole(@Nonnull UserId userId, @Nonnull ProjectId projectId, @Nonnull RoleId roleId);
 
     /**
      * Check whether the policy manager contains any role assignments for
@@ -373,7 +398,7 @@ public interface ConfigurationBrowser {
      * @param projectId Project identifier
      * @return true if user has role assignments in the specified project
      */
-    boolean hasRole(UserId userId, ProjectId projectId);
+    boolean hasRole(@Nonnull UserId userId, @Nonnull ProjectId projectId);
 
     /**
      * Check whether the policy contains role assignments for the user with the given identifier in some project
@@ -381,13 +406,14 @@ public interface ConfigurationBrowser {
      * @param userId    User identifier
      * @return true if policy has role assignments for the user with the specified identifier, false otherwise
      */
-    boolean hasRole(UserId userId);
+    boolean hasRole(@Nonnull UserId userId);
 
     /**
      * Get a map of user identifiers to their project-roles assignments
      *
      * @return Map of users to their project-role mappings
      */
+    @Nonnull
     ImmutableMap<UserId,Map<ProjectId,Set<RoleId>>> getPolicyMap();
 
     /**
@@ -396,6 +422,7 @@ public interface ConfigurationBrowser {
      * @param userId    User identifier
      * @return Map of projects to roles
      */
-    Map<ProjectId, Set<RoleId>> getUserRoleMap(UserId userId);
+    @Nonnull
+    Map<ProjectId, Set<RoleId>> getUserRoleMap(@Nonnull UserId userId);
 
 }

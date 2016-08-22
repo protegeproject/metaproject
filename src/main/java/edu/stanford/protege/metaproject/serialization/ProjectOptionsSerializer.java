@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.ProjectOptions;
 
 import java.lang.reflect.Type;
@@ -11,7 +11,8 @@ import java.util.Set;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class ProjectOptionsSerializer implements JsonSerializer<ProjectOptions>, JsonDeserializer<ProjectOptions> {
 
@@ -23,6 +24,6 @@ public class ProjectOptionsSerializer implements JsonSerializer<ProjectOptions>,
     @Override
     public ProjectOptions deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         Map<String,Set<String>> options = context.deserialize(element, new TypeToken<Map<String,Set<String>>>(){}.getType());
-        return Manager.getFactory().getProjectOptions(options);
+        return ConfigurationManager.getFactory().getProjectOptions(options);
     }
 }

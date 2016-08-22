@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.Port;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class PortTest {
     private static final String toStringHead = Port.class.getSimpleName();
@@ -22,9 +23,9 @@ public class PortTest {
 
     @Before
     public void setUp() {
-        port = Utils.getPort(portNr);
-        otherPort = Utils.getPort(portNr);
-        diffPort = Utils.getPort(diffPortNr);
+        port = TestUtils.getPort(portNr);
+        otherPort = TestUtils.getPort(portNr);
+        diffPort = TestUtils.getPort(diffPortNr);
     }
 
     @Test

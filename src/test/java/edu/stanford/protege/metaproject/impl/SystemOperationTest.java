@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class SystemOperationTest {
     private static final String
@@ -21,18 +22,18 @@ public class SystemOperationTest {
             operationDescriptionStr = "test operation description",
             toStringHead = SystemOperation.class.getSimpleName();
 
-    private static final OperationId operationId = Utils.getOperationId(operationIdStr), diffOperationId = Utils.getOperationId(otherIdStr);
-    private static final Name operationName = Utils.getName(operationNameStr), diffOperationName = Utils.getName(otherOperationNameStr);
-    private static final Description operationDescription = Utils.getDescription(operationDescriptionStr);
+    private static final OperationId operationId = TestUtils.getOperationId(operationIdStr), diffOperationId = TestUtils.getOperationId(otherIdStr);
+    private static final Name operationName = TestUtils.getName(operationNameStr), diffOperationName = TestUtils.getName(otherOperationNameStr);
+    private static final Description operationDescription = TestUtils.getDescription(operationDescriptionStr);
     private static final OperationType operationType = OperationType.WRITE;
-    private final static Operation.Scope scope = Operation.Scope.METAPROJECT;
+    private final static Operation.Scope scope = Operation.Scope.POLICY;
     private Operation operation, otherOperation, diffOperation;
 
     @Before
     public void setUp() {
-        operation = Utils.getSystemOperation(operationId, operationName, operationDescription, operationType, scope);
-        otherOperation = Utils.getSystemOperation(operationId, operationName, operationDescription, operationType, scope);
-        diffOperation = Utils.getSystemOperation(diffOperationId, diffOperationName, operationDescription, operationType, scope);
+        operation = TestUtils.getSystemOperation(operationId, operationName, operationDescription, operationType, scope);
+        otherOperation = TestUtils.getSystemOperation(operationId, operationName, operationDescription, operationType, scope);
+        diffOperation = TestUtils.getSystemOperation(diffOperationId, diffOperationName, operationDescription, operationType, scope);
     }
 
     @Test

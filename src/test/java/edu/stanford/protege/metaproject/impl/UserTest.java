@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.EmailAddress;
 import edu.stanford.protege.metaproject.api.Name;
 import edu.stanford.protege.metaproject.api.User;
@@ -13,7 +13,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class UserTest {
     private static final String
@@ -24,17 +25,17 @@ public class UserTest {
             userEmailStr = "test@EmailAddress",
             toStringHead = User.class.getSimpleName();
 
-    private static final UserId userId = Utils.getUserId(userIdStr), diffUserId = Utils.getUserId(otherIdStr);
-    private static final Name userName = Utils.getName(userNameStr), diffUserName = Utils.getName(otherUserNameStr);
-    private static final EmailAddress userEmail = Utils.getEmailAddress(userEmailStr);
+    private static final UserId userId = TestUtils.getUserId(userIdStr), diffUserId = TestUtils.getUserId(otherIdStr);
+    private static final Name userName = TestUtils.getName(userNameStr), diffUserName = TestUtils.getName(otherUserNameStr);
+    private static final EmailAddress userEmail = TestUtils.getEmailAddress(userEmailStr);
 
     private User user, otherUser, diffUser;
 
     @Before
     public void setUp() {
-        user = Utils.getUser(userId, userName, userEmail);
-        otherUser = Utils.getUser(userId, userName, userEmail);
-        diffUser = Utils.getUser(diffUserId, diffUserName, userEmail);
+        user = TestUtils.getUser(userId, userName, userEmail);
+        otherUser = TestUtils.getUser(userId, userName, userEmail);
+        diffUser = TestUtils.getUser(diffUserId, diffUserName, userEmail);
     }
 
     @Test

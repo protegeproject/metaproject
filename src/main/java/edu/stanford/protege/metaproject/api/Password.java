@@ -1,8 +1,11 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface Password {
 
@@ -11,6 +14,7 @@ public interface Password {
      *
      * @return Password string
      */
+    @Nonnull
     String getPassword();
 
 }

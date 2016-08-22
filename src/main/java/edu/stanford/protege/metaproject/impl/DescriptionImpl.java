@@ -6,28 +6,34 @@ import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.Description;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class DescriptionImpl implements Description, Serializable {
     private static final long serialVersionUID = -3951323580770065998L;
-    private final String description;
+    @Nonnull private final String description;
 
     /**
      * Constructor
      *
      * @param description    Description
      */
-    public DescriptionImpl(String description) {
+    public DescriptionImpl(@Nonnull String description) {
         this.description = checkNotNull(description);
     }
 
     @Override
+    @Nonnull
     public String get() {
         return description;
     }

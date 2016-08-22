@@ -1,10 +1,13 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * A representation of salt data
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface Salt {
 
@@ -13,6 +16,7 @@ public interface Salt {
      *
      * @return Byte array
      */
+    @Nonnull
     byte[] getBytes();
 
     /**
@@ -20,6 +24,7 @@ public interface Salt {
      *
      * @return Salt string
      */
+    @Nonnull
     String getString();
 
 }

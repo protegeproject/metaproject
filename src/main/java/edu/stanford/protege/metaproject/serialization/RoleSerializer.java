@@ -2,7 +2,7 @@ package edu.stanford.protege.metaproject.serialization;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
-import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.impl.OperationIdImpl;
 
@@ -11,13 +11,14 @@ import java.util.Set;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class RoleSerializer implements JsonDeserializer<Role> {
 
     @Override
     public Role deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-        PolicyFactory factory = Manager.getFactory();
+        PolicyFactory factory = ConfigurationManager.getFactory();
         JsonObject obj = jsonElement.getAsJsonObject();
         RoleId operationId = factory.getRoleId(obj.getAsJsonPrimitive("id").getAsString());
         Name operationName = factory.getName(obj.getAsJsonPrimitive("name").getAsString());

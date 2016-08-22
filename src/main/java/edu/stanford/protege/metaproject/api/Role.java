@@ -1,13 +1,16 @@
 package edu.stanford.protege.metaproject.api;
 
-import java.util.Set;
+import com.google.common.collect.ImmutableSet;
+
+import javax.annotation.Nonnull;
 
 /**
  * A role defines a set of allowed operations. It essentially represents a permission set
  * that can be reused for different users in different projects.
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface Role extends PolicyObject<RoleId>, HasDescription, Comparable<Role> {
 
@@ -16,6 +19,7 @@ public interface Role extends PolicyObject<RoleId>, HasDescription, Comparable<R
      *
      * @return Set of operations identifiers
      */
-    Set<OperationId> getOperations();
+    @Nonnull
+    ImmutableSet<OperationId> getOperations();
 
 }

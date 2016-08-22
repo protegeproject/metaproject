@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.UserId;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class UserIdTest {
     private static final String
@@ -22,9 +23,9 @@ public class UserIdTest {
 
     @Before
     public void setUp() {
-        userId = Utils.getUserId(userIdStr);
-        otherUserId = Utils.getUserId(userIdStr);
-        diffUserId = Utils.getUserId(diffIdStr);
+        userId = TestUtils.getUserId(userIdStr);
+        otherUserId = TestUtils.getUserId(userIdStr);
+        diffUserId = TestUtils.getUserId(diffIdStr);
     }
 
     @Test

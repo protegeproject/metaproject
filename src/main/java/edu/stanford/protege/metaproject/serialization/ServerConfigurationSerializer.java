@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.impl.ProjectIdImpl;
 import edu.stanford.protege.metaproject.impl.RoleIdImpl;
-import edu.stanford.protege.metaproject.impl.ServerConfigurationBuilder;
+import edu.stanford.protege.metaproject.impl.ConfigurationBuilder;
 import edu.stanford.protege.metaproject.impl.UserIdImpl;
 
 import java.io.File;
@@ -65,7 +65,7 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
         Set<AuthenticationDetails> authDetails = context.deserialize(obj.getAsJsonArray(AUTHENTICATION),
                 new TypeToken<Set<AuthenticationDetails>>(){}.getType());
         Map<String,String> map = context.deserialize(obj.get(PROPERTIES), Map.class);
-        return new ServerConfigurationBuilder()
+        return new ConfigurationBuilder()
                 .setHost(host)
                 .setServerRoot(root)
                 .setPolicyMap(policy)
@@ -74,7 +74,7 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
                 .setRoles(roles)
                 .setOperations(operations)
                 .setAuthenticationDetails(authDetails)
-                .setPropertyMap(map)
+                .setProperties(map)
                 .createServerConfiguration();
     }
 }

@@ -1,14 +1,15 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
-import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.*;
 
 import java.lang.reflect.Type;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class AuthenticationDetailsSerializer implements JsonSerializer<AuthenticationDetails>, JsonDeserializer<AuthenticationDetails> {
     private final String USER_ID = "userId", SALT = "salt", PASSWORD = "password";
@@ -24,7 +25,7 @@ public class AuthenticationDetailsSerializer implements JsonSerializer<Authentic
 
     @Override
     public AuthenticationDetails deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        PolicyFactory factory = Manager.getFactory();
+        PolicyFactory factory = ConfigurationManager.getFactory();
         JsonObject obj = element.getAsJsonObject();
         UserId userId = factory.getUserId(obj.getAsJsonPrimitive(USER_ID).getAsString());
         Salt salt = factory.getSalt(obj.getAsJsonPrimitive(SALT).getAsString());

@@ -1,10 +1,13 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * A representation of a salted password digest, consisting of the password and the salt used to hash it
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface SaltedPasswordDigest extends Password {
 
@@ -13,6 +16,7 @@ public interface SaltedPasswordDigest extends Password {
      *
      * @return Salt used in hashing function
      */
+    @Nonnull
     Salt getSalt();
 
 }

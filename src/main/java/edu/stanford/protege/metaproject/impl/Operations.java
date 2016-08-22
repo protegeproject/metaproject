@@ -1,11 +1,13 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.PolicyFactory;
 import edu.stanford.protege.metaproject.api.Operation;
 import edu.stanford.protege.metaproject.api.OperationId;
 import edu.stanford.protege.metaproject.api.OperationType;
 
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,10 +15,13 @@ import java.util.stream.Collectors;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class Operations {
-    private static PolicyFactory factory = Manager.getFactory();
+    private static PolicyFactory factory = ConfigurationManager.getFactory();
     private static Set<Operation> defaultOperations = new HashSet<>();
 
     /*
@@ -26,77 +31,77 @@ public final class Operations {
     // Add user
     public static final Operation ADD_USER = factory.getSystemOperation(
             factory.getOperationId("add-user"), factory.getName("Add user"),
-            factory.getDescription("Add a user to the user registry"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Add a user to the user registry"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Remove user
     public static final Operation REMOVE_USER = factory.getSystemOperation(
             factory.getOperationId("remove-user"), factory.getName("Remove user"),
-            factory.getDescription("Remove a user from the user registry"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Remove a user from the user registry"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Modify user
     public static final Operation MODIFY_USER = factory.getSystemOperation(
             factory.getOperationId("modify-user"), factory.getName("Modify user"),
-            factory.getDescription("Modify user details (name and email address)"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Modify user details (name and email address)"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Add project
     public static final Operation ADD_PROJECT = factory.getSystemOperation(
             factory.getOperationId("add-project"), factory.getName("Add project"),
-            factory.getDescription("Add a project to the project registry"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Add a project to the project registry"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Remove project
     public static final Operation REMOVE_PROJECT = factory.getSystemOperation(
             factory.getOperationId("remove-project"), factory.getName("Remove project"),
-            factory.getDescription("Remove a project from the project registry"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Remove a project from the project registry"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Modify project
     public static final Operation MODIFY_PROJECT = factory.getSystemOperation(
             factory.getOperationId("modify-project"), factory.getName("Modify project"),
-            factory.getDescription("Modify project details and options"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Modify project details and options"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // View project
     public static final Operation OPEN_PROJECT = factory.getSystemOperation(
             factory.getOperationId("open-project"), factory.getName("Open project"),
-            factory.getDescription("Open a project in the project registry"), OperationType.READ, Operation.Scope.METAPROJECT);
+            factory.getDescription("Open a project in the project registry"), OperationType.READ, Operation.Scope.POLICY);
 
     // Add role
     public static final Operation ADD_ROLE = factory.getSystemOperation(
             factory.getOperationId("add-role"), factory.getName("Add role"),
-            factory.getDescription("Add a role to the role registry"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Add a role to the role registry"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Remove role
     public static final Operation REMOVE_ROLE = factory.getSystemOperation(
             factory.getOperationId("remove-role"), factory.getName("Remove role"),
-            factory.getDescription("Remove a role from the role registry"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Remove a role from the role registry"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Modify role
     public static final Operation MODIFY_ROLE = factory.getSystemOperation(
             factory.getOperationId("modify-role"), factory.getName("Modify role"),
-            factory.getDescription("Modify role details and associated operations"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Modify role details and associated operations"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Add operation
     public static final Operation ADD_OPERATION = factory.getSystemOperation(
             factory.getOperationId("add-operation"), factory.getName("Add operation"),
-            factory.getDescription("Add an operation to the operation registry"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Add an operation to the operation registry"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Remove operation
     public static final Operation REMOVE_OPERATION = factory.getSystemOperation(
             factory.getOperationId("remove-operation"), factory.getName("Remove operation"),
-            factory.getDescription("Remove an operation from the operation registry"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Remove an operation from the operation registry"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Modify operation
     public static final Operation MODIFY_OPERATION = factory.getSystemOperation(
             factory.getOperationId("modify-operation"), factory.getName("Modify operation"),
-            factory.getDescription("Modify operation details"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Modify operation details"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Assign role
     public static final Operation ASSIGN_ROLE = factory.getSystemOperation(
             factory.getOperationId("assign-role"), factory.getName("Assign role"),
-            factory.getDescription("Assign a role to a user within a project"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Assign a role to a user within a project"), OperationType.WRITE, Operation.Scope.POLICY);
 
     // Retract role
     public static final Operation RETRACT_ROLE = factory.getSystemOperation(
             factory.getOperationId("retract-role"), factory.getName("Retract role"),
-            factory.getDescription("Retract a role from a user"), OperationType.WRITE, Operation.Scope.METAPROJECT);
+            factory.getDescription("Retract a role from a user"), OperationType.WRITE, Operation.Scope.POLICY);
 
 
     /*
@@ -305,7 +310,7 @@ public final class Operations {
      * @return Set of operations
      */
     public static Set<Operation> getMetaprojectOperations() {
-        return defaultOperations.stream().filter(op -> op.getScope().equals(Operation.Scope.METAPROJECT)).collect(Collectors.toSet());
+        return defaultOperations.stream().filter(op -> op.getScope().equals(Operation.Scope.POLICY)).collect(Collectors.toSet());
     }
 
     /**

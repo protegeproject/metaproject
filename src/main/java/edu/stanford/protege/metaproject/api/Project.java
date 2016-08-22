@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.Optional;
 
@@ -9,7 +10,8 @@ import java.util.Optional;
  * also have some options associated with it.
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface Project extends PolicyObject<ProjectId>, HasDescription, Comparable<Project> {
 
@@ -18,6 +20,7 @@ public interface Project extends PolicyObject<ProjectId>, HasDescription, Compar
      *
      * @return Project file
      */
+    @Nonnull
     File getFile();
 
     /**
@@ -25,6 +28,7 @@ public interface Project extends PolicyObject<ProjectId>, HasDescription, Compar
      *
      * @return Project owner user
      */
+    @Nonnull
     UserId getOwner();
 
     /**
@@ -32,6 +36,7 @@ public interface Project extends PolicyObject<ProjectId>, HasDescription, Compar
      *
      * @return Project options
      */
+    @Nonnull
     Optional<ProjectOptions> getOptions();
 
 }

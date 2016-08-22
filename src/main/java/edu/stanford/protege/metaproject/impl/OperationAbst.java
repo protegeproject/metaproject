@@ -10,14 +10,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public abstract class OperationAbst implements Operation, Serializable {
-    protected final OperationId id;
-    protected final Name name;
-    protected final Description description;
-    protected final OperationType type;
-    protected final Scope scope;
+    @Nonnull protected final OperationId id;
+    @Nonnull protected final Name name;
+    @Nonnull protected final Description description;
+    @Nonnull protected final OperationType type;
+    @Nonnull protected final Scope scope;
 
     /**
      * Constructor
@@ -28,7 +29,7 @@ public abstract class OperationAbst implements Operation, Serializable {
      * @param type Operation type
      * @param scope Operation scope
      */
-    public OperationAbst(OperationId id, Name name, Description description, OperationType type, Scope scope) {
+    public OperationAbst(@Nonnull OperationId id, @Nonnull Name name, @Nonnull Description description, @Nonnull OperationType type, @Nonnull Scope scope) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
@@ -37,26 +38,31 @@ public abstract class OperationAbst implements Operation, Serializable {
     }
 
     @Override
+    @Nonnull
     public OperationId getId() {
         return id;
     }
 
     @Override
+    @Nonnull
     public Name getName() {
         return name;
     }
 
     @Override
+    @Nonnull
     public Description getDescription() {
         return description;
     }
 
     @Override
+    @Nonnull
     public OperationType getType() {
         return type;
     }
 
     @Override
+    @Nonnull
     public Scope getScope() {
         return scope;
     }
