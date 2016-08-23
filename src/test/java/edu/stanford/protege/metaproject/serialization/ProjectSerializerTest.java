@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,16 +14,17 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class ProjectSerializerTest {
     private static final String projectIdStr = "testProjectId1", diffIdStr = "testProjectId2";
-    private static final ProjectId projectId = Utils.getProjectId(projectIdStr), diffProjectId = Utils.getProjectId(diffIdStr);
-    private static final Name projectName = Utils.getName();
-    private static final Description projectDescription = Utils.getDescription();
-    private static final File projectFile = Utils.getFile();
-    private static final UserId owner = Utils.getUserId();
-    private static final ProjectOptions projectOptions = Utils.getProjectOptions();
+    private static final ProjectId projectId = TestUtils.getProjectId(projectIdStr), diffProjectId = TestUtils.getProjectId(diffIdStr);
+    private static final Name projectName = TestUtils.getName();
+    private static final Description projectDescription = TestUtils.getDescription();
+    private static final File projectFile = TestUtils.getFile();
+    private static final UserId owner = TestUtils.getUserId();
+    private static final ProjectOptions projectOptions = TestUtils.getProjectOptions();
 
     private String jsonProject, jsonOtherProject, jsonDiffProject;
     private Project project, otherProject, diffProject;
@@ -31,13 +32,13 @@ public class ProjectSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultJsonSerializer().getInstance();
+        gson = new DefaultJsonSerializer().getGson();
 
-        project = Utils.getProject(projectId, projectName, projectDescription, projectFile, owner,
+        project = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, owner,
                 Optional.of(projectOptions));
-        otherProject = Utils.getProject(projectId, projectName, projectDescription, projectFile, owner,
+        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, owner,
                 Optional.of(projectOptions));
-        diffProject = Utils.getProject(diffProjectId, projectName, projectDescription, projectFile, owner,
+        diffProject = TestUtils.getProject(diffProjectId, projectName, projectDescription, projectFile, owner,
                 Optional.of(projectOptions));
 
         jsonProject = gson.toJson(project, Project.class);

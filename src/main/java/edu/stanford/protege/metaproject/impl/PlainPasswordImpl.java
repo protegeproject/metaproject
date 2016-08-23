@@ -4,33 +4,35 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.PlainPassword;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class PlainPasswordImpl implements PlainPassword, Serializable {
     private static final long serialVersionUID = 3575663606583395411L;
-    private final String plainPassword;
+    @Nonnull private final String plainPassword;
 
     /**
      * Constructor
      *
      * @param plainPassword    Password string
      */
-    public PlainPasswordImpl(String plainPassword) {
+    public PlainPasswordImpl(@Nonnull String plainPassword) {
         this.plainPassword = checkNotNull(plainPassword);
     }
-
-    /**
-     * Get the salted password bytes
-     *
-     * @return Salted password bytes array
-     */
+    
     @Override
+    @Nonnull
     public String getPassword() {
         return plainPassword;
     }

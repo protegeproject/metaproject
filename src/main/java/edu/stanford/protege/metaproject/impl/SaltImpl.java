@@ -4,37 +4,43 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.Salt;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A representation of salt data
- *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class SaltImpl implements Salt, Serializable {
     private static final long serialVersionUID = -4946418544284738194L;
-    private final String salt;
+    @Nonnull private final String salt;
 
     /**
      * Constructor
      *
      * @param salt Salt string
      */
-    public SaltImpl(String salt) {
+    public SaltImpl(@Nonnull String salt) {
         this.salt = checkNotNull(salt);
     }
 
     @Override
+    @Nonnull
     public byte[] getBytes() {
         byte[] saltBytes = salt.getBytes();
         return Arrays.copyOf(saltBytes, saltBytes.length);
     }
 
     @Override
+    @Nonnull
     public String getString() {
         return salt;
     }

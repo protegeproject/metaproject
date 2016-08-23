@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.Description;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class DescriptionTest {
     private static final String
@@ -22,9 +23,9 @@ public class DescriptionTest {
 
     @Before
     public void setUp() {
-        description = Utils.getDescription(descriptionStr);
-        otherDescription = Utils.getDescription(descriptionStr);
-        diffDescription = Utils.getDescription(diffDescriptionStr);
+        description = TestUtils.getDescription(descriptionStr);
+        otherDescription = TestUtils.getDescription(descriptionStr);
+        diffDescription = TestUtils.getDescription(diffDescriptionStr);
     }
 
     @Test

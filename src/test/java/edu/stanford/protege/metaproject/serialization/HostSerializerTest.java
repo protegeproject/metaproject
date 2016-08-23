@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
 import org.junit.Before;
@@ -15,11 +15,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class HostSerializerTest {
-    private static final URI hostAddress = Utils.getUri("rmi://testHostId1"), diffHostAddress = Utils.getUri("rmi://testHostId2");
-    private static final Optional<Port> optionalPort = Optional.of(Utils.getPort(5100));
+    private static final URI hostAddress = TestUtils.getUri("rmi://testHostId1"), diffHostAddress = TestUtils.getUri("rmi://testHostId2");
+    private static final Optional<Port> optionalPort = Optional.of(TestUtils.getPort(5100));
 
     private String jsonHost, jsonOtherHost, jsonDiffHost;
     private Host host, otherHost, diffHost;
@@ -27,11 +28,11 @@ public class HostSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultJsonSerializer().getInstance();
+        gson = new DefaultJsonSerializer().getGson();
 
-        host = Utils.getHost(hostAddress, optionalPort);
-        otherHost = Utils.getHost(hostAddress, optionalPort);
-        diffHost = Utils.getHost(diffHostAddress, optionalPort);
+        host = TestUtils.getHost(hostAddress, optionalPort);
+        otherHost = TestUtils.getHost(hostAddress, optionalPort);
+        diffHost = TestUtils.getHost(diffHostAddress, optionalPort);
 
         jsonHost = gson.toJson(host);
         jsonOtherHost = gson.toJson(otherHost);

@@ -7,6 +7,8 @@ import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -14,14 +16,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class RoleImpl implements Role, Serializable {
-    private static final long serialVersionUID = 5032132538086137230L;
-    private final RoleId id;
-    private final Name name;
-    private final Description description;
-    private final ImmutableSet<OperationId> operations;
+    private static final long serialVersionUID = -1651603573909818594L;
+    @Nonnull private final RoleId id;
+    @Nonnull private final Name name;
+    @Nonnull private final Description description;
+    @Nonnull private final ImmutableSet<OperationId> operations;
 
     /**
      * Constructor
@@ -31,32 +36,34 @@ public final class RoleImpl implements Role, Serializable {
      * @param description   Role description
      * @param operations    Set of operations that can be performed on the given projects
      */
-    public RoleImpl(RoleId id, Name name, Description description, Set<OperationId> operations) {
+    public RoleImpl(@Nonnull RoleId id, @Nonnull Name name, @Nonnull Description description, @Nonnull Set<OperationId> operations) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
-
-        ImmutableSet<OperationId> operationsCopy = new ImmutableSet.Builder<OperationId>().addAll(checkNotNull(operations)).build();
-        this.operations = checkNotNull(operationsCopy);
+        this.operations = ImmutableSet.copyOf(checkNotNull(operations));
     }
 
     @Override
+    @Nonnull
     public RoleId getId() {
         return id;
     }
 
     @Override
+    @Nonnull
     public Name getName() {
         return name;
     }
 
     @Override
+    @Nonnull
     public Description getDescription() {
         return description;
     }
 
     @Override
-    public Set<OperationId> getOperations() {
+    @Nonnull
+    public ImmutableSet<OperationId> getOperations() {
         return operations;
     }
 

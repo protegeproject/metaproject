@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.Salt;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class SaltTest {
     private static final String
@@ -22,9 +23,9 @@ public class SaltTest {
 
     @Before
     public void setUp() {
-        salt = Utils.getSalt(saltStr);
-        otherSalt = Utils.getSalt(saltStr);
-        diffSalt = Utils.getSalt(diffSaltStr);
+        salt = TestUtils.getSalt(saltStr);
+        otherSalt = TestUtils.getSalt(saltStr);
+        diffSalt = TestUtils.getSalt(diffSaltStr);
     }
 
     @Test

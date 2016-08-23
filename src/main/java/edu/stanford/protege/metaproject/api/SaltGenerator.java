@@ -1,10 +1,13 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * A representation of a generator of cryptographic salt
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface SaltGenerator {
 
@@ -13,6 +16,7 @@ public interface SaltGenerator {
      *
      * @return Salt
      */
+    @Nonnull
     Salt generate();
 
     /**
@@ -21,6 +25,7 @@ public interface SaltGenerator {
      * @param nrBytes   Byte length
      * @return Salt
      */
+    @Nonnull
     Salt generate(int nrBytes);
 
     /**

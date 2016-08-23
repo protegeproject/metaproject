@@ -1,8 +1,9 @@
 package edu.stanford.protege.metaproject;
 
 import edu.stanford.protege.metaproject.api.*;
+import edu.stanford.protege.metaproject.impl.ConfigurationBuilder;
+import edu.stanford.protege.metaproject.impl.ConfigurationUtils;
 import edu.stanford.protege.metaproject.impl.ProjectOptionsImpl;
-import edu.stanford.protege.metaproject.impl.ServerConfigurationBuilder;
 
 import java.io.File;
 import java.net.URI;
@@ -16,12 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Center for Biomedical Informatics Research <br>
  * Stanford University
  */
-public class Utils {
-    private static final int DEFAULT_SET_SIZE = 3;
+public class TestUtils {
+    private static final int DEFAULT_SET_SIZE = 5;
     private static final OperationType DEFAULT_OPERATION_TYPE = OperationType.WRITE;
     private static final Random random = new Random();
     private static final String rootDir = "target/server-distribution/server/root", uri = "http://localhost:8008";
-    private static PolicyFactory f = Manager.getFactory();
+    private static PolicyFactory f = ConfigurationManager.getFactory();
     
     /*   policy object identifiers   */
 
@@ -85,7 +86,7 @@ public class Utils {
     }
 
     public static String newUUID() {
-        return UUID.randomUUID().toString();
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 
 
@@ -96,7 +97,7 @@ public class Utils {
     }
 
     public static SaltedPasswordDigest getSaltedPassword(String password, Salt salt) {
-        return Utils.getPasswordHasher().hash(getPlainPassword(password), salt);
+        return TestUtils.getPasswordHasher().hash(getPlainPassword(password), salt);
     }
 
     public static PlainPassword getPlainPassword() {
@@ -119,6 +120,10 @@ public class Utils {
         return getAuthenticationDetails(getUserId(), getSaltedPassword());
     }
 
+    public static AuthenticationDetails getAuthenticationDetails(UserId userId) {
+        return getAuthenticationDetails(userId, getSaltedPassword());
+    }
+
     public static AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
         return f.getAuthenticationDetails(userId, password);
     }
@@ -139,15 +144,14 @@ public class Utils {
     /*   policy and server/client configurations   */
 
     public static ServerConfiguration getServerConfiguration() {
-        return getServerConfiguration(Manager.getConfigurationManager(), Utils.getHost(), Utils.getFile(), Utils.getPolicyMap(), Utils.getUserSet(),
-                Utils.getProjectSet(), Utils.getRoleSet(), Utils.getOperationSet(), Utils.getAuthenticationDetailsSet(), Utils.getPropertyMap());
+        return getServerConfiguration(TestUtils.getHost(), TestUtils.getFile(), TestUtils.getPolicyMap(), TestUtils.getUserSet(),
+                TestUtils.getProjectSet(), TestUtils.getRoleSet(), TestUtils.getOperationSet(), TestUtils.getAuthenticationDetailsSet(), TestUtils.getPropertyMap());
     }
 
     public static ServerConfiguration getServerConfiguration(
-            ConfigurationManager configManager, Host host, File root, Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap, Set<User> users,
+            Host host, File root, Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap, Set<User> users,
             Set<Project> projects, Set<Role> roles, Set<Operation> operations, Set<AuthenticationDetails> authDetails, Map<String,String> properties) {
-        return new ServerConfigurationBuilder()
-                .setConfigurationManager(configManager)
+        return new ConfigurationBuilder()
                 .setHost(host)
                 .setServerRoot(root)
                 .setPolicyMap(policyMap)
@@ -156,12 +160,12 @@ public class Utils {
                 .setRoles(roles)
                 .setOperations(operations)
                 .setAuthenticationDetails(authDetails)
-                .setPropertyMap(properties)
+                .setProperties(properties)
                 .createServerConfiguration();
     }
 
     public static Host getHost() {
-        return getHost(Utils.getUri(), Optional.of(getPort(random.nextInt())));
+        return getHost(TestUtils.getUri(), Optional.of(getPort(random.nextInt())));
     }
 
     public static Host getHost(URI address, Optional<Port> optionalPort) {
@@ -198,11 +202,40 @@ public class Utils {
         Map<UserId, Map<ProjectId,Set<RoleId>>> map = new HashMap<>();
         for(int i = 0; i < DEFAULT_SET_SIZE; i++) {
             Map<ProjectId,Set<RoleId>> assignments = new HashMap<>();
-            assignments.put(Utils.getProjectId(), Utils.getRoleIdSet());
-            assignments.put(Utils.getProjectId(), Utils.getRoleIdSet());
-            map.put(Utils.getUserId(), assignments);
+            assignments.put(TestUtils.getProjectId(), TestUtils.getRoleIdSet());
+            assignments.put(TestUtils.getProjectId(), TestUtils.getRoleIdSet());
+            map.put(TestUtils.getUserId(), assignments);
         }
         return map;
+    }
+
+    public static Map<UserId,Map<ProjectId, Set<RoleId>>> getPolicyMap(Set<User> users, Set<Project> projects, Set<Role> roles) {
+        Map<UserId, Map<ProjectId,Set<RoleId>>> policy = new HashMap<>();
+        for(User user : users) {
+            Map<ProjectId,Set<RoleId>> roleMap = new HashMap<>();
+            for(Project project : projects) {
+                Set<RoleId> roleSet = new HashSet<>();
+                roleSet.add(getRandomRole(roles).getId());
+                roleSet.add(getRandomRole(roles).getId());
+                roleMap.put(project.getId(), roleSet);
+            }
+            roleMap.put(ConfigurationUtils.getUniversalProjectId(), Collections.singleton(ConfigurationUtils.getAdminRole().getId()));
+            policy.put(user.getId(), roleMap);
+        }
+        return policy;
+    }
+
+    private static Role getRandomRole(Set<Role> roles) {
+        Random rand = new Random();
+        List<Role> roleList = new ArrayList<>(roles);
+        Role role = null;
+        while(role == null) {
+            Role r = roleList.get(rand.nextInt(roles.size()));
+            if(!ConfigurationUtils.getDefaultRoles().contains(r)) {
+                role = r;
+            }
+        }
+        return role;
     }
 
     public static Map<String,String> getPropertyMap() {
@@ -231,6 +264,10 @@ public class Utils {
         return f.getSystemOperation(id, operationName, description, type, scope);
     }
 
+    public static Operation getCustomOperation() {
+        return getCustomOperation(getOperationId(), getName(), getDescription(), DEFAULT_OPERATION_TYPE, Operation.Scope.ONTOLOGY);
+    }
+
     public static Operation getCustomOperation(OperationId id, Name operationName, Description description, OperationType type, Operation.Scope scope) {
         return f.getCustomOperation(id, operationName, description, type, scope);
     }
@@ -239,9 +276,11 @@ public class Utils {
         return getRole(getRoleId(), getName(), getDescription(), getOperationIdSet(DEFAULT_SET_SIZE));
     }
 
-    public static Role getRole(OperationId operation) {
+    public static Role getRole(OperationId... operation) {
         Set<OperationId> operations = new HashSet<>();
-        operations.add(operation);
+        for(OperationId operationId : operation) {
+            operations.add(operationId);
+        }
         return getRole(getRoleId(), getName(), getDescription(), operations);
     }
 
@@ -282,6 +321,15 @@ public class Utils {
         return getRoleSet(DEFAULT_SET_SIZE);
     }
 
+    public static Set<Role> getRoleSet(Set<Operation> operations) {
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.addAll(ConfigurationUtils.getDefaultRoles());
+        for(Operation op : operations) {
+            roleSet.add(getRole(op.getId()));
+        }
+        return roleSet;
+    }
+
     public static Set<Role> getRoleSet(int size) {
         Set<Role> roles = new HashSet<>();
         for(int i = 0; i < size; i++) {
@@ -302,6 +350,7 @@ public class Utils {
 
     public static Set<Operation> getOperationSet(int size) {
         Set<Operation> operations = new HashSet<>();
+        operations.addAll(ConfigurationUtils.getDefaultOperations());
         for(int i = 0; i < size; i++) {
             operations.add(getSystemOperation());
         }
@@ -424,6 +473,14 @@ public class Utils {
 
     public static Set<AuthenticationDetails> getAuthenticationDetailsSet() {
         return getAuthenticationDetailsSet(DEFAULT_SET_SIZE);
+    }
+
+    public static Set<AuthenticationDetails> getAuthenticationDetailsSet(Set<User> users) {
+        Set<AuthenticationDetails> auth = new HashSet<>();
+        for(User user : users) {
+            auth.add(getAuthenticationDetails(user.getId()));
+        }
+        return auth;
     }
 
     public static Set<AuthenticationDetails> getAuthenticationDetailsSet(int size) {

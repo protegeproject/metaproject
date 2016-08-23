@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
 import org.junit.Before;
@@ -17,22 +17,23 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 @RunWith(MockitoJUnitRunner.class)
 public class HostTest {
     private static final String toStringHead = Host.class.getSimpleName();
 
     @Mock private Port port, diffPort;
-    private URI hostAddress = Utils.getUri(), diffHostAddress = Utils.getUri();
-    private Port optionalPort = Utils.getPort(5100);
+    private URI hostAddress = TestUtils.getUri(), diffHostAddress = TestUtils.getUri();
+    private Port optionalPort = TestUtils.getPort(5100);
     private Host host, otherHost, diffHost;
 
     @Before
     public void setUp() {
-        host = Utils.getHost(hostAddress, Optional.of(optionalPort));
-        otherHost = Utils.getHost(hostAddress, Optional.of(optionalPort));
-        diffHost = Utils.getHost(diffHostAddress, Optional.of(optionalPort));
+        host = TestUtils.getHost(hostAddress, Optional.of(optionalPort));
+        otherHost = TestUtils.getHost(hostAddress, Optional.of(optionalPort));
+        diffHost = TestUtils.getHost(diffHostAddress, Optional.of(optionalPort));
     }
 
     @Test

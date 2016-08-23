@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.*;
 import edu.stanford.protege.metaproject.impl.NameImpl;
 import org.junit.Before;
@@ -12,7 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class PropertySerializerTest {
     private static final String propStr = "testString1", diffPropStr = "testString2";
@@ -22,11 +23,11 @@ public class PropertySerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultJsonSerializer().getInstance();
+        gson = new DefaultJsonSerializer().getGson();
 
-        prop = Utils.getName(propStr);
-        otherProp = Utils.getName(propStr);
-        diffProp = Utils.getName(diffPropStr);
+        prop = TestUtils.getName(propStr);
+        otherProp = TestUtils.getName(propStr);
+        diffProp = TestUtils.getName(diffPropStr);
 
         jsonProp = gson.toJson(prop);
         jsonOtherProp = gson.toJson(otherProp);

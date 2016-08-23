@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.AuthenticationDetails;
 import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
 import edu.stanford.protege.metaproject.api.UserId;
@@ -13,11 +13,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class AuthenticationDetailsSerializerTest {
-    private static final UserId userId = Utils.getUserId(), diffUserId = Utils.getUserId();
-    private static final SaltedPasswordDigest password = Utils.getSaltedPassword(), diffPassword = Utils.getSaltedPassword();
+    private static final UserId userId = TestUtils.getUserId(), diffUserId = TestUtils.getUserId();
+    private static final SaltedPasswordDigest password = TestUtils.getSaltedPassword(), diffPassword = TestUtils.getSaltedPassword();
 
     private String jsonAuthenticationDetails, jsonOtherAuthenticationDetails, jsonDiffAuthenticationDetails;
     private AuthenticationDetails authenticationDetails, otherAuthenticationDetails, diffAuthenticationDetails;
@@ -25,11 +26,11 @@ public class AuthenticationDetailsSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultJsonSerializer().getInstance();
+        gson = new DefaultJsonSerializer().getGson();
 
-        authenticationDetails = Utils.getAuthenticationDetails(userId, password);
-        otherAuthenticationDetails = Utils.getAuthenticationDetails(userId, password);
-        diffAuthenticationDetails = Utils.getAuthenticationDetails(diffUserId, diffPassword);
+        authenticationDetails = TestUtils.getAuthenticationDetails(userId, password);
+        otherAuthenticationDetails = TestUtils.getAuthenticationDetails(userId, password);
+        diffAuthenticationDetails = TestUtils.getAuthenticationDetails(diffUserId, diffPassword);
 
         jsonAuthenticationDetails = gson.toJson(authenticationDetails);
         jsonOtherAuthenticationDetails = gson.toJson(otherAuthenticationDetails);

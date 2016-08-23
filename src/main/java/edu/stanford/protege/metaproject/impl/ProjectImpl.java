@@ -6,6 +6,9 @@ import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.*;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Optional;
@@ -14,16 +17,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class ProjectImpl implements Project, Serializable {
     private static final long serialVersionUID = 4575272908702931683L;
-    private final ProjectId id;
-    private final Name name;
-    private final Description description;
-    private final File file;
-    private final UserId owner;
-    private final ProjectOptions options;
+    @Nonnull private final ProjectId id;
+    @Nonnull private final Name name;
+    @Nonnull private final Description description;
+    @Nonnull private final File file;
+    @Nonnull private final UserId owner;
+    @Nullable private final ProjectOptions options;
 
     /**
      * Constructor
@@ -35,7 +41,7 @@ public final class ProjectImpl implements Project, Serializable {
      * @param owner Owner of the project
      * @param options   Project options
      */
-    public ProjectImpl(ProjectId id, Name name, Description description, File file, UserId owner, Optional<ProjectOptions> options) {
+    public ProjectImpl(@Nonnull ProjectId id, @Nonnull Name name, @Nonnull Description description, @Nonnull File file, @Nonnull UserId owner, @Nonnull Optional<ProjectOptions> options) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
@@ -45,30 +51,37 @@ public final class ProjectImpl implements Project, Serializable {
     }
 
     @Override
+    @Nonnull
     public ProjectId getId() {
         return id;
     }
 
     @Override
+    @Nonnull
     public Name getName() {
         return name;
     }
 
     @Override
+    @Nonnull
     public Description getDescription() {
         return description;
     }
 
+    @Override
+    @Nonnull
     public File getFile() {
         return file;
     }
 
     @Override
+    @Nonnull
     public UserId getOwner() {
         return owner;
     }
 
     @Override
+    @Nonnull
     public Optional<ProjectOptions> getOptions() {
         return Optional.ofNullable(options);
     }

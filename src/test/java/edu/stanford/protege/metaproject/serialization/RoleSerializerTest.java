@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.Gson;
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,14 +13,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class RoleSerializerTest {
     private static final String roleIdStr = "testRoleId1", diffIdStr = "testRoleId2";
-    private static final RoleId roleId = Utils.getRoleId(roleIdStr), diffRoleId = Utils.getRoleId(diffIdStr);
-    private static final Name roleName = Utils.getName();
-    private static final Description roleDescription = Utils.getDescription();
-    private static final Set<OperationId> operations = Utils.getOperationIdSet(3);
+    private static final RoleId roleId = TestUtils.getRoleId(roleIdStr), diffRoleId = TestUtils.getRoleId(diffIdStr);
+    private static final Name roleName = TestUtils.getName();
+    private static final Description roleDescription = TestUtils.getDescription();
+    private static final Set<OperationId> operations = TestUtils.getOperationIdSet(3);
 
     private String jsonRole, jsonOtherRole, jsonDiffRole;
     private Role role, otherRole, diffRole;
@@ -28,11 +29,11 @@ public class RoleSerializerTest {
 
     @Before
     public void setUp() {
-        gson = new DefaultJsonSerializer().getInstance();
+        gson = new DefaultJsonSerializer().getGson();
 
-        role = Utils.getRole(roleId, roleName, roleDescription, operations);
-        otherRole = Utils.getRole(roleId, roleName, roleDescription, operations);
-        diffRole = Utils.getRole(diffRoleId, roleName, roleDescription, operations);
+        role = TestUtils.getRole(roleId, roleName, roleDescription, operations);
+        otherRole = TestUtils.getRole(roleId, roleName, roleDescription, operations);
+        diffRole = TestUtils.getRole(diffRoleId, roleName, roleDescription, operations);
 
         jsonRole = gson.toJson(role);
         jsonOtherRole = gson.toJson(otherRole);

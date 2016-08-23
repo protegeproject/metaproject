@@ -1,6 +1,10 @@
 package edu.stanford.protege.metaproject.api;
 
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Set;
 
 /**
@@ -8,7 +12,8 @@ import java.util.Set;
  * are expected to be represented as strings that correspond to their IRIs.
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface ProjectOptions {
 
@@ -17,15 +22,17 @@ public interface ProjectOptions {
      *
      * @return Map of strings to sets of strings
      */
-    Map<String,Set<String>> getOptions();
+    @Nonnull
+    ImmutableMap<String,Set<String>> getOptions();
 
     /**
-     * Get the values for the given property key
+     * Get the values for the given property key. If there are no values, an empty set is returned
      *
      * @param key   Property key
      * @return Set of strings
      */
-    Set<String> getValues(String key);
+    @Nonnull
+    ImmutableSet<String> getValues(@Nonnull String key);
 
     /**
      * Get the single string value for the given property key. This method should be used when the key is mapped to a set with
@@ -35,6 +42,7 @@ public interface ProjectOptions {
      * @param key   Property key
      * @return String
      */
-    String getValue(String key);
+    @Nullable
+    String getValue(@Nonnull String key);
 
 }

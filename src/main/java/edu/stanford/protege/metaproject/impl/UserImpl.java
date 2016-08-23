@@ -9,19 +9,24 @@ import edu.stanford.protege.metaproject.api.User;
 import edu.stanford.protege.metaproject.api.UserId;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class UserImpl implements User, Serializable {
     private static final long serialVersionUID = -514737206401105074L;
-    private final UserId id;
-    private final Name name;
-    private final EmailAddress emailAddress;
+    @Nonnull private final UserId id;
+    @Nonnull private final Name name;
+    @Nonnull private final EmailAddress emailAddress;
 
     /**
      * Constructor
@@ -30,23 +35,26 @@ public final class UserImpl implements User, Serializable {
      * @param name  User display name
      * @param emailAddress  Email address
      */
-    public UserImpl(UserId id, Name name, EmailAddress emailAddress) {
+    public UserImpl(@Nonnull UserId id, @Nonnull Name name, @Nonnull EmailAddress emailAddress) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.emailAddress = checkNotNull(emailAddress);
     }
 
     @Override
+    @Nonnull
     public UserId getId() {
         return id;
     }
 
     @Override
+    @Nonnull
     public Name getName() {
         return name;
     }
 
     @Override
+    @Nonnull
     public EmailAddress getEmailAddress() {
         return emailAddress;
     }

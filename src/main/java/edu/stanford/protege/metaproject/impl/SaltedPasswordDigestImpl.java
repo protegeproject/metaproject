@@ -5,18 +5,24 @@ import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.Salt;
 import edu.stanford.protege.metaproject.api.SaltedPasswordDigest;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class SaltedPasswordDigestImpl implements SaltedPasswordDigest, Serializable {
     private static final long serialVersionUID = 2576657046695803549L;
-    private final String password;
-    private final Salt salt;
+    @Nonnull private final String password;
+    @Nonnull private final Salt salt;
 
     /**
      * Constructor for salted passwords
@@ -24,17 +30,19 @@ public final class SaltedPasswordDigestImpl implements SaltedPasswordDigest, Ser
      * @param password Password
      * @param salt     Salt
      */
-    public SaltedPasswordDigestImpl(String password, Salt salt) {
+    public SaltedPasswordDigestImpl(@Nonnull String password, @Nonnull Salt salt) {
         this.password = checkNotNull(password);
         this.salt = checkNotNull(salt);
     }
 
     @Override
+    @Nonnull
     public String getPassword() {
         return password;
     }
 
     @Override
+    @Nonnull
     public Salt getSalt() {
         return salt;
     }

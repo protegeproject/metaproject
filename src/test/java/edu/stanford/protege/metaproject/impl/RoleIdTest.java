@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.RoleId;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class RoleIdTest {
     private static final String
@@ -22,9 +23,9 @@ public class RoleIdTest {
 
     @Before
     public void setUp() {
-        roleId = Utils.getRoleId(roleIdStr);
-        otherRoleId = Utils.getRoleId(roleIdStr);
-        diffRoleId = Utils.getRoleId(diffIdStr);
+        roleId = TestUtils.getRoleId(roleIdStr);
+        otherRoleId = TestUtils.getRoleId(roleIdStr);
+        diffRoleId = TestUtils.getRoleId(diffIdStr);
     }
 
     @Test

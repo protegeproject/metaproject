@@ -1,8 +1,10 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.*;
 
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -11,10 +13,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class ConfigurationUtils {
-    private final static PolicyFactory f = Manager.getFactory();
+    private final static PolicyFactory f = ConfigurationManager.getFactory();
 
     private final static int
             OPTIONAL_PORT = 5200,
@@ -31,13 +36,13 @@ public final class ConfigurationUtils {
             GUEST_USER_ID = "guest",
             GUEST_USER_NAME = "Guest User",
             GUEST_USER_PASSWORD = "guestpwd",
-            ADMIN_ROLE_ID = "mp-admin",
+            ADMIN_ROLE_ID = "admin",
             ADMIN_ROLE_NAME = "Administrator",
             ADMIN_ROLE_DESCRIPTION = "A user with this role is allowed to do any operation on the server",
-            GUEST_ROLE_ID = "mp-guest",
+            GUEST_ROLE_ID = "guest",
             GUEST_ROLE_NAME = "Guest",
             GUEST_ROLE_DESCRIPTION = "A user with this role is allowed to do any read operation on the server",
-            PROJECT_MANAGER_ROLE_ID = "mp-project-manager",
+            PROJECT_MANAGER_ROLE_ID = "project-manager",
             PROJECT_MANAGER_ROLE_NAME = "Project Manager",
             PROJECT_MANAGER_ROLE_DESCRIPTION = "A user with this role is allowed to create, remove, modify and open a project, " +
                     "as well as to perform any ontology operations",

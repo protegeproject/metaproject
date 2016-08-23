@@ -2,6 +2,7 @@ package edu.stanford.protege.metaproject.api;
 
 import edu.stanford.protege.metaproject.api.exception.ObjectConversionException;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Reader;
@@ -11,16 +12,10 @@ import java.io.Reader;
  * analogously, write out some string-representation of the specified Java object.
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
-public interface Serializer<S> {
-
-    /**
-     * Get the instance of the serializer
-     *
-     * @return Serializer instance
-     */
-    S getInstance();
+public interface Serializer {
 
     /**
      * Process the stream in the given reader and return the desired Java class instance
@@ -31,7 +26,8 @@ public interface Serializer<S> {
      * @return Instance of the specified class
      * @throws ObjectConversionException   JSON object could not be converted to a Java object
      */
-    <T> T parse(Reader reader, Class<T> cls) throws ObjectConversionException;
+    @Nonnull
+    <T> T parse(@Nonnull Reader reader, @Nonnull Class<T> cls) throws ObjectConversionException;
 
     /**
      * Parse a given file and return the desired Java class instance
@@ -43,7 +39,8 @@ public interface Serializer<S> {
      * @throws FileNotFoundException    Specified file was not found
      * @throws ObjectConversionException   JSON object could not be converted to a Java object
      */
-    <T> T parse(File f, Class<T> cls) throws FileNotFoundException, ObjectConversionException;
+    @Nonnull
+    <T> T parse(@Nonnull File f, @Nonnull Class<T> cls) throws FileNotFoundException, ObjectConversionException;
 
     /**
      * Write into a string a representation of the given object
@@ -52,6 +49,7 @@ public interface Serializer<S> {
      * @param cls   Class
      * @return String representation of specified object
      */
-    String write(Object obj, Class cls);
+    @Nonnull
+    String write(@Nonnull Object obj, @Nonnull Class cls);
 
 }

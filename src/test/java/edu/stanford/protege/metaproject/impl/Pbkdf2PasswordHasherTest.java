@@ -1,9 +1,8 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 
 import edu.stanford.protege.metaproject.api.*;
-import edu.stanford.protege.metaproject.impl.Pbkdf2PasswordHasher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,13 +15,14 @@ import static org.mockito.Mockito.when;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 @RunWith(MockitoJUnitRunner.class)
 public class Pbkdf2PasswordHasherTest {
     private static final String toStringHead = Pbkdf2PasswordHasher.class.getSimpleName();
     private static final int hashByteSize = 16, nrIterations = 1500;
-    private static final SaltGenerator saltGenerator = Utils.getSaltGenerator();
+    private static final SaltGenerator saltGenerator = TestUtils.getSaltGenerator();
 
     @Mock private PlainPassword testPassword;
 
@@ -30,9 +30,9 @@ public class Pbkdf2PasswordHasherTest {
 
     @Before
     public void setUp() {
-        passwordHasher = Utils.getPasswordHasher(hashByteSize, nrIterations);
-        otherPasswordHasher = Utils.getPasswordHasher(hashByteSize, nrIterations);
-        diffPasswordHasher = Utils.getPasswordHasher();
+        passwordHasher = TestUtils.getPasswordHasher(hashByteSize, nrIterations);
+        otherPasswordHasher = TestUtils.getPasswordHasher(hashByteSize, nrIterations);
+        diffPasswordHasher = TestUtils.getPasswordHasher();
 
         when(testPassword.getPassword()).thenReturn("testPassword");
     }

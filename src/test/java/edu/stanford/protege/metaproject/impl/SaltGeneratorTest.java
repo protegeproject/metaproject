@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.api.SaltGenerator;
-import edu.stanford.protege.metaproject.impl.SaltGeneratorImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +9,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class SaltGeneratorTest {
     private SaltGenerator saltGenerator, otherSaltGenerator, diffSalt;

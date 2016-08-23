@@ -2,6 +2,9 @@ package edu.stanford.protege.metaproject.impl;
 
 import edu.stanford.protege.metaproject.api.*;
 
+import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,6 +17,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Center for Biomedical Informatics Research <br>
  * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class PolicyFactoryImpl implements PolicyFactory {
 
     /**
@@ -21,8 +26,9 @@ public final class PolicyFactoryImpl implements PolicyFactory {
      */
     public PolicyFactoryImpl() { }
 
+    @Nonnull
     @Override
-    public Project getProject(ProjectId projectId, Name name, Description description, File file, UserId ownerId, Optional<ProjectOptions> options) {
+    public Project getProject(@Nonnull ProjectId projectId, @Nonnull Name name, @Nonnull Description description, @Nonnull File file, @Nonnull UserId ownerId, @Nonnull Optional<ProjectOptions> options) {
         checkNotNull(projectId, "Project identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
         checkNotNull(description, "Description cannot be null");
@@ -32,8 +38,9 @@ public final class PolicyFactoryImpl implements PolicyFactory {
         return new ProjectImpl(projectId, name, description, file, ownerId, options);
     }
 
+    @Nonnull
     @Override
-    public Role getRole(RoleId roleId, Name name, Description description, Set<OperationId> operations) {
+    public Role getRole(@Nonnull RoleId roleId, @Nonnull Name name, @Nonnull Description description, @Nonnull Set<OperationId> operations) {
         checkNotNull(roleId, "Role identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
         checkNotNull(description, "Description cannot be null");
@@ -41,14 +48,16 @@ public final class PolicyFactoryImpl implements PolicyFactory {
         return new RoleImpl(roleId, name, description, operations);
     }
 
+    @Nonnull
     @Override
-    public Operation getCustomOperation(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope) {
+    public Operation getCustomOperation(@Nonnull OperationId operationId, @Nonnull Name name, @Nonnull Description description, @Nonnull OperationType operationType, @Nonnull Operation.Scope scope) {
         checkOperationArguments(operationId, name, description, operationType, scope);
         return new CustomOperation(operationId, name, description, operationType, scope);
     }
 
+    @Nonnull
     @Override
-    public Operation getSystemOperation(OperationId operationId, Name name, Description description, OperationType operationType, Operation.Scope scope) {
+    public Operation getSystemOperation(@Nonnull OperationId operationId, @Nonnull Name name, @Nonnull Description description, @Nonnull OperationType operationType, @Nonnull Operation.Scope scope) {
         checkOperationArguments(operationId, name, description, operationType, scope);
         return new SystemOperation(operationId, name, description, operationType, scope);
     }
@@ -61,97 +70,113 @@ public final class PolicyFactoryImpl implements PolicyFactory {
         checkNotNull(scope, "Operation scope cannot be null");
     }
 
+    @Nonnull
     @Override
-    public User getUser(UserId userId, Name name, EmailAddress emailAddress) {
+    public User getUser(@Nonnull UserId userId, @Nonnull Name name, @Nonnull EmailAddress emailAddress) {
         checkNotNull(userId, "User identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
         checkNotNull(emailAddress, "Email address cannot be null");
         return new UserImpl(userId, name, emailAddress);
     }
 
+    @Nonnull
     @Override
-    public AuthenticationDetails getAuthenticationDetails(UserId userId, SaltedPasswordDigest password) {
+    public AuthenticationDetails getAuthenticationDetails(@Nonnull UserId userId, @Nonnull SaltedPasswordDigest password) {
         checkNotNull(userId, "User identifier cannot be null");
         checkNotNull(password, "Password cannot be null");
         return new AuthenticationDetailsImpl(userId, password);
     }
 
+    @Nonnull
     @Override
-    public Salt getSalt(String salt) {
+    public Salt getSalt(@Nonnull String salt) {
         checkNotNull(salt, "Salt must not be null");
         return new SaltImpl(salt);
     }
 
+    @Nonnull
     @Override
-    public PlainPassword getPlainPassword(String password) {
+    public PlainPassword getPlainPassword(@Nonnull String password) {
         checkNotNull(password, "Password must not be null");
         return new PlainPasswordImpl(password);
     }
 
+    @Nonnull
     @Override
-    public SaltedPasswordDigest getSaltedPasswordDigest(String password, Salt salt) {
+    public SaltedPasswordDigest getSaltedPasswordDigest(@Nonnull String password, @Nonnull Salt salt) {
         checkNotNull(password, "Password must not be null");
         checkNotNull(salt, "Salt must not be null");
         return new SaltedPasswordDigestImpl(password, salt);
     }
 
+    @Nonnull
     @Override
-    public Name getName(String name) {
+    public Name getName(@Nonnull String name) {
         checkNotNull(name, "Name cannot be null");
         return new NameImpl(name);
     }
 
+    @Nonnull
     @Override
-    public Description getDescription(String description) {
+    public Description getDescription(@Nonnull String description) {
         checkNotNull(description, "Description cannot be null");
         return new DescriptionImpl(description);
     }
 
+    @Nonnull
     @Override
-    public EmailAddress getEmailAddress(String emailAddress) {
+    public EmailAddress getEmailAddress(@Nonnull String emailAddress) {
         checkNotNull(emailAddress, "Email address cannot be null");
         return new EmailAddressImpl(emailAddress);
     }
 
+    @Nonnull
     @Override
-    public RoleId getRoleId(String roleId) {
+    public RoleId getRoleId(@Nonnull String roleId) {
         checkNotNull(roleId, "Role identifier cannot be null");
         return new RoleIdImpl(roleId);
     }
 
+    @Nonnull
     @Override
-    public UserId getUserId(String userId) {
+    public UserId getUserId(@Nonnull String userId) {
         checkNotNull(userId, "User identifier cannot be null");
         return new UserIdImpl(userId);
     }
 
+    @Nonnull
     @Override
-    public ProjectId getProjectId(String projectId) {
+    public ProjectId getProjectId(@Nonnull String projectId) {
         checkNotNull(projectId, "Project identifier cannot be null");
         return new ProjectIdImpl(projectId);
     }
 
+    @Nonnull
     @Override
-    public OperationId getOperationId(String operationId) {
+    public OperationId getOperationId(@Nonnull String operationId) {
         checkNotNull(operationId, "Operation identifier cannot be null");
         return new OperationIdImpl(operationId);
     }
 
+    @Nonnull
     @Override
     public UserId getUserUuid() {
         return new UserIdImpl(getNewUuid());
     }
 
+    @Nonnull
     @Override
     public RoleId getRoleUuid() {
         return new RoleIdImpl(getNewUuid());
     }
 
+    @Nonnull
     @Override
     public ProjectId getProjectUuid() {
         return new ProjectIdImpl(getNewUuid());
     }
 
+    @Nonnull
     @Override
     public OperationId getOperationUuid() {
         return new OperationIdImpl(getNewUuid());
@@ -161,14 +186,16 @@ public final class PolicyFactoryImpl implements PolicyFactory {
         return UUID.randomUUID().toString();
     }
 
+    @Nonnull
     @Override
-    public Port getPort(Integer portNr) {
+    public Port getPort(@Nonnull Integer portNr) {
         checkNotNull(portNr, "Port number must not be null");
         return new PortImpl(portNr);
     }
 
+    @Nonnull
     @Override
-    public Host getHost(URI address, Optional<Port> secondaryPort) {
+    public Host getHost(@Nonnull URI address, @Nonnull Optional<Port> secondaryPort) {
         checkNotNull(address, "Host URI must not be null");
         if(secondaryPort.isPresent()) {
             checkNotNull(secondaryPort.get(), "Secondary port must not be null");
@@ -176,41 +203,48 @@ public final class PolicyFactoryImpl implements PolicyFactory {
         return new HostImpl(address, secondaryPort);
     }
 
+    @Nonnull
     @Override
-    public URI getUri(String uri) throws URISyntaxException {
+    public URI getUri(@Nonnull String uri) throws URISyntaxException {
         URI newUri = new URI(uri);
         return checkNotNull(newUri);
     }
 
+    @Nonnull
     @Override
     public SaltGenerator getSaltGenerator() {
         return new SaltGeneratorImpl();
     }
 
+    @Nonnull
     @Override
     public PasswordHasher getPasswordHasher() {
         return getPasswordHasher(ConfigurationUtils.getHashByteSize(), ConfigurationUtils.getKeyStretchingIterations());
     }
 
+    @Nonnull
     @Override
     public PasswordHasher getPasswordHasher(int hashByteSize, int nrIterations) {
         return new Pbkdf2PasswordHasher(hashByteSize, nrIterations);
     }
 
+    @Nonnull
     @Override
-    public AuthToken getAuthorizedUserToken(User user) {
+    public AuthToken getAuthorizedUserToken(@Nonnull User user) {
         checkNotNull(user, "User must not be null");
         return new AuthorizedUserToken(user);
     }
 
+    @Nonnull
     @Override
-    public AuthToken getUnauthorizedUserToken(User user) {
+    public AuthToken getUnauthorizedUserToken(@Nonnull User user) {
         checkNotNull(user, "User must not be null");
         return new UnauthorizedUserToken(user);
     }
 
+    @Nonnull
     @Override
-    public ProjectOptions getProjectOptions(Map<String,Set<String>> options) {
+    public ProjectOptions getProjectOptions(@Nonnull Map<String,Set<String>> options) {
         checkNotNull(options, "Options map must not be null");
         return new ProjectOptionsImpl(options);
     }

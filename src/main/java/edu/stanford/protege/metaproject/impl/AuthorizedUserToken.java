@@ -7,28 +7,34 @@ import edu.stanford.protege.metaproject.api.AuthToken;
 import edu.stanford.protege.metaproject.api.User;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class AuthorizedUserToken implements AuthToken, Serializable {
     private static final long serialVersionUID = -7528862656544274939L;
-    private final User user;
+    @Nonnull private final User user;
 
     /**
      * Constructor
      *
      * @param user    User identifier
      */
-    public AuthorizedUserToken(User user) {
+    public AuthorizedUserToken(@Nonnull User user) {
         this.user = checkNotNull(user);
     }
 
     @Override
+    @Nonnull
     public User getUser() {
         return user;
     }

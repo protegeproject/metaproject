@@ -1,7 +1,7 @@
 package edu.stanford.protege.metaproject.serialization;
 
 import com.google.gson.*;
-import edu.stanford.protege.metaproject.Manager;
+import edu.stanford.protege.metaproject.ConfigurationManager;
 import edu.stanford.protege.metaproject.api.*;
 
 import java.io.File;
@@ -10,7 +10,8 @@ import java.util.Optional;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class ProjectSerializer implements JsonDeserializer<Project>, JsonSerializer<Project> {
     private final String ID = "id", NAME = "name", DESCRIPTION = "description", FILE = "file", OWNER = "owner", OPTIONS = "options";
@@ -31,7 +32,7 @@ public class ProjectSerializer implements JsonDeserializer<Project>, JsonSeriali
 
     @Override
     public Project deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
-        PolicyFactory factory = Manager.getFactory();
+        PolicyFactory factory = ConfigurationManager.getFactory();
         JsonObject obj = element.getAsJsonObject();
         ProjectId projectId = factory.getProjectId(obj.getAsJsonPrimitive(ID).getAsString());
         Name projectName = factory.getName(obj.getAsJsonPrimitive(NAME).getAsString());

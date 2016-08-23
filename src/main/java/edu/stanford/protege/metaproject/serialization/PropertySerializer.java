@@ -9,7 +9,8 @@ import java.lang.reflect.Type;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class PropertySerializer<E extends Property> implements JsonSerializer<Property>, JsonDeserializer<E> {
 

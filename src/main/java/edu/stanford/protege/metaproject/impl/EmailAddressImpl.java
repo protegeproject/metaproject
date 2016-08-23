@@ -6,28 +6,34 @@ import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.EmailAddress;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class EmailAddressImpl implements EmailAddress, Serializable {
     private static final long serialVersionUID = 4240354589977877664L;
-    private final String email;
+    @Nonnull private final String email;
 
     /**
      * Constructor
      *
      * @param email    Email address
      */
-    public EmailAddressImpl(String email) {
+    public EmailAddressImpl(@Nonnull String email) {
         this.email = checkNotNull(email);
     }
 
     @Override
+    @Nonnull
     public String get() {
         return email;
     }

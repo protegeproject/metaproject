@@ -1,5 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
+import javax.annotation.Nonnull;
 import java.net.URI;
 import java.util.Optional;
 
@@ -7,7 +8,8 @@ import java.util.Optional;
  * A representation of host information, consisting of a URI and a secondary (optional) port
  *
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public interface Host {
 
@@ -16,6 +18,7 @@ public interface Host {
      *
      * @return URI of host
      */
+    @Nonnull
     URI getUri();
 
     /**
@@ -23,6 +26,7 @@ public interface Host {
      *
      * @return Optional secondary port
      */
+    @Nonnull
     Optional<Port> getSecondaryPort();
 
 }

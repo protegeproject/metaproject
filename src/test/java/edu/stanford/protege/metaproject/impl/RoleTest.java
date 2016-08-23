@@ -1,6 +1,6 @@
 package edu.stanford.protege.metaproject.impl;
 
-import edu.stanford.protege.metaproject.Utils;
+import edu.stanford.protege.metaproject.TestUtils;
 import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
 public class RoleTest {
     private static final String
@@ -23,18 +24,18 @@ public class RoleTest {
             roleDescriptionStr = "test role description",
             toStringHead = Role.class.getSimpleName();
 
-    private static final RoleId roleId = Utils.getRoleId(roleIdStr), diffRoleId = Utils.getRoleId(otherIdStr);
-    private static final Name roleName = Utils.getName(roleNameStr), otherRoleName = Utils.getName(otherRoleNameStr);
-    private static final Description roleDescription = Utils.getDescription(roleDescriptionStr);
-    private static final Set<OperationId> operations = Utils.getOperationIdSet("testOperationId1", "testOperationId2");
+    private static final RoleId roleId = TestUtils.getRoleId(roleIdStr), diffRoleId = TestUtils.getRoleId(otherIdStr);
+    private static final Name roleName = TestUtils.getName(roleNameStr), otherRoleName = TestUtils.getName(otherRoleNameStr);
+    private static final Description roleDescription = TestUtils.getDescription(roleDescriptionStr);
+    private static final Set<OperationId> operations = TestUtils.getOperationIdSet("testOperationId1", "testOperationId2");
 
     private Role role, otherRole, diffRole;
 
     @Before
     public void setUp() {
-        role = Utils.getRole(roleId, roleName, roleDescription, operations);
-        otherRole = Utils.getRole(roleId, roleName, roleDescription, operations);
-        diffRole = Utils.getRole(diffRoleId, otherRoleName, roleDescription, operations);
+        role = TestUtils.getRole(roleId, roleName, roleDescription, operations);
+        otherRole = TestUtils.getRole(roleId, roleName, roleDescription, operations);
+        diffRole = TestUtils.getRole(diffRoleId, otherRoleName, roleDescription, operations);
     }
 
     @Test

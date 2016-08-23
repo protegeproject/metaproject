@@ -5,6 +5,10 @@ import com.google.common.base.Objects;
 import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Optional;
@@ -13,12 +17,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class HostImpl implements Host, Serializable {
     private static final long serialVersionUID = -1110049103826593951L;
-    private final URI uri;
-    private final Port secondaryPort;
+    @Nonnull private final URI uri;
+    @Nullable private final Port secondaryPort;
 
     /**
      * Constructor
@@ -26,17 +33,19 @@ public final class HostImpl implements Host, Serializable {
      * @param uri   Host uri
      * @param secondaryPort Secondary port
      */
-    public HostImpl(URI uri, Optional<Port> secondaryPort) {
+    public HostImpl(@Nonnull URI uri, @Nonnull Optional<Port> secondaryPort) {
         this.uri = checkNotNull(uri);
         this.secondaryPort = (secondaryPort.isPresent() ? checkNotNull(secondaryPort.get()) : null);
     }
 
     @Override
+    @Nonnull
     public Optional<Port> getSecondaryPort() {
         return Optional.ofNullable(secondaryPort);
     }
 
     @Override
+    @Nonnull
     public URI getUri() {
         return uri;
     }

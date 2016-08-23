@@ -2,8 +2,16 @@ package edu.stanford.protege.metaproject.impl;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import edu.stanford.protege.metaproject.api.ProjectOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.concurrent.Immutable;
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
@@ -12,33 +20,48 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Rafael Gonçalves <br>
- * Stanford Center for Biomedical Informatics Research
+ * Center for Biomedical Informatics Research <br>
+ * Stanford University
  */
+@Immutable
+@ThreadSafe
 public final class ProjectOptionsImpl implements ProjectOptions, Serializable {
-    private static final long serialVersionUID = -6359928913309575418L;
-    private final Map<String,Set<String>> options;
+    private static final Logger logger = LoggerFactory.getLogger(ProjectOptionsImpl.class.getName());
+    private static final long serialVersionUID = -6551389683971976515L;
+    @Nonnull private final ImmutableMap<String,Set<String>> options;
 
     /**
      * Constructor
      *
      * @param options   Project options map
      */
-    public ProjectOptionsImpl(Map<String,Set<String>> options) {
-        this.options = checkNotNull(options);
+    public ProjectOptionsImpl(@Nonnull Map<String,Set<String>> options) {
+        this.options = ImmutableMap.copyOf(checkNotNull(options));
     }
 
     @Override
-    public Map<String,Set<String>> getOptions() {
+    @Nonnull
+    public ImmutableMap<String,Set<String>> getOptions() {
         return options;
     }
 
     @Override
-    public Set<String> getValues(String key) {
-        return options.get(key);
+    @Nonnull
+    public ImmutableSet<String> getValues(@Nonnull String key) {
+        if(options.get(key) == null) {
+            logger.info("There are no values for the project option: " + key);
+            return ImmutableSet.of();
+        }
+        return ImmutableSet.copyOf(options.get(key));
     }
 
     @Override
-    public String getValue(String key) {
+    @Nullable
+    public String getValue(@Nonnull String key) {
+        if(options.get(key) == null) {
+            logger.info("There are no values for the project option: " + key);
+            return null;
+        }
         return options.get(key).iterator().next();
     }
 
