@@ -329,7 +329,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(projectName);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                        factory.getProject(project.getId(), projectName, project.getDescription(), project.getFile(), project.getOwner(), project.getOptions())));
+                factory.getProject(project.getId(), projectName, project.getDescription(), project.getFile(), project.getOwner(), project.getOptions())));
         return this;
     }
 
@@ -768,7 +768,7 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder registerUser(UserId userId, SaltedPasswordDigest password) throws IdAlreadyInUseException {
         checkNotNull(userId);
         checkNotNull(password);
-        if(containsUser(userId)) {
+        if(isRegistered(userId)) {
             throw new IdAlreadyInUseException("The specified user is already registered with the authentication manager. Recover or change the password.");
         }
         authDetails.add(factory.getAuthenticationDetails(userId, password));
@@ -802,9 +802,9 @@ public class ConfigurationBuilder {
         return this;
     }
 
-    private boolean containsUser(UserId userId) {
-        for(User user : users) {
-            if(user.getId().equals(userId)) {
+    private boolean isRegistered(UserId userId) {
+        for(AuthenticationDetails details : authDetails) {
+            if(details.getUserId().equals(userId)) {
                 return true;
             }
         }
