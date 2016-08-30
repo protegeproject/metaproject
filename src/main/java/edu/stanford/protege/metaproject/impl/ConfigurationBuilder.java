@@ -209,6 +209,8 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeUser(User user) {
         checkNotNull(user);
         users.remove(user);
+        removePolicy(user.getId());
+        unregisterUser(user.getId());
         return this;
     }
 
@@ -296,6 +298,7 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeProject(Project project) {
         checkNotNull(project);
         projects.remove(project);
+        removePolicy(project.getId());
         return this;
     }
 
@@ -430,6 +433,7 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeRole(Role role) {
         checkNotNull(role);
         roles.remove(role);
+        removePolicy(role.getId());
         return this;
     }
 
@@ -557,6 +561,11 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeOperation(Operation operation) {
         checkNotNull(operation);
         operations.remove(operation);
+        for(Role r : roles) {
+            if(r.getOperations().contains(operation.getId())) {
+                removeOperationFromRole(r.getId(), operation.getId());
+            }
+        }
         return this;
     }
 
