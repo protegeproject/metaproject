@@ -23,9 +23,7 @@ public class HostSerializer implements JsonSerializer<Host>, JsonDeserializer<Ho
     public JsonElement serialize(Host host, Type type, JsonSerializationContext context) {
         JsonObject obj = new JsonObject();
         obj.add(SERVER_URI, context.serialize(host.getUri()));
-        if(host.getSecondaryPort().isPresent()) {
-            obj.add(SECONDARY_PORT, context.serialize(host.getSecondaryPort().get()));
-        }
+        host.getSecondaryPort().ifPresent(e -> obj.add(SECONDARY_PORT, context.serialize(e)));
         return obj;
     }
 

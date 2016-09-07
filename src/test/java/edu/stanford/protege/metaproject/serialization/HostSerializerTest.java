@@ -34,9 +34,9 @@ public class HostSerializerTest {
         otherHost = TestUtils.getHost(hostAddress, optionalPort);
         diffHost = TestUtils.getHost(diffHostAddress, optionalPort);
 
-        jsonHost = gson.toJson(host);
-        jsonOtherHost = gson.toJson(otherHost);
-        jsonDiffHost = gson.toJson(diffHost);
+        jsonHost = gson.toJson(host, Host.class);
+        jsonOtherHost = gson.toJson(otherHost, Host.class);
+        jsonDiffHost = gson.toJson(diffHost, Host.class);
     }
 
     @Test
