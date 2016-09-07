@@ -6,7 +6,6 @@ import edu.stanford.protege.metaproject.api.Host;
 import edu.stanford.protege.metaproject.api.Port;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.Serializable;
@@ -23,9 +22,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Immutable
 @ThreadSafe
 public final class HostImpl implements Host, Serializable {
-    private static final long serialVersionUID = -1110049103826593951L;
+    private static final long serialVersionUID = -7653583714132431492L;
     @Nonnull private final URI uri;
-    @Nullable private final Port secondaryPort;
+    @Nonnull private final Optional<Port> secondaryPort;
 
     /**
      * Constructor
@@ -35,13 +34,13 @@ public final class HostImpl implements Host, Serializable {
      */
     public HostImpl(@Nonnull URI uri, @Nonnull Optional<Port> secondaryPort) {
         this.uri = checkNotNull(uri);
-        this.secondaryPort = (secondaryPort.isPresent() ? checkNotNull(secondaryPort.get()) : null);
+        this.secondaryPort = checkNotNull(secondaryPort);
     }
 
     @Override
     @Nonnull
     public Optional<Port> getSecondaryPort() {
-        return Optional.ofNullable(secondaryPort);
+        return secondaryPort;
     }
 
     @Override
@@ -68,7 +67,7 @@ public final class HostImpl implements Host, Serializable {
         }
         Host host = (Host) o;
         return Objects.equal(uri, host.getUri()) &&
-                Objects.equal(Optional.ofNullable(secondaryPort), host.getSecondaryPort());
+                Objects.equal(secondaryPort, host.getSecondaryPort());
     }
 
     @Override

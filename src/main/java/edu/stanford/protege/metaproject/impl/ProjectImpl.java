@@ -6,7 +6,6 @@ import com.google.common.collect.ComparisonChain;
 import edu.stanford.protege.metaproject.api.*;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.File;
@@ -23,13 +22,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Immutable
 @ThreadSafe
 public final class ProjectImpl implements Project, Serializable {
-    private static final long serialVersionUID = 4575272908702931683L;
+    private static final long serialVersionUID = 4971559561739409152L;
     @Nonnull private final ProjectId id;
     @Nonnull private final Name name;
     @Nonnull private final Description description;
     @Nonnull private final File file;
     @Nonnull private final UserId owner;
-    @Nullable private final ProjectOptions options;
+    @Nonnull private final Optional<ProjectOptions> options;
 
     /**
      * Constructor
@@ -47,7 +46,7 @@ public final class ProjectImpl implements Project, Serializable {
         this.description = checkNotNull(description);
         this.file = checkNotNull(file);
         this.owner = checkNotNull(owner);
-        this.options = (options.isPresent() ? checkNotNull(options.get()) : null);
+        this.options = checkNotNull(options);
     }
 
     @Override
@@ -83,7 +82,7 @@ public final class ProjectImpl implements Project, Serializable {
     @Override
     @Nonnull
     public Optional<ProjectOptions> getOptions() {
-        return Optional.ofNullable(options);
+        return options;
     }
 
     @Override
@@ -120,7 +119,7 @@ public final class ProjectImpl implements Project, Serializable {
                 Objects.equal(description, that.getDescription()) &&
                 Objects.equal(file, that.getFile()) &&
                 Objects.equal(owner, that.getOwner()) &&
-                Objects.equal(Optional.ofNullable(options), that.getOptions());
+                Objects.equal(options, that.getOptions());
     }
 
     @Override
