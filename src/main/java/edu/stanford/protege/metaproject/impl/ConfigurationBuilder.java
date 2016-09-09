@@ -332,7 +332,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(projectName);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(project.getId(), projectName, project.getDescription(), project.getFile(), project.getOwner(), project.getOptions())));
+                factory.getProject(project.getId(), projectName, project.getDescription(), project.getOwner(), project.getFilePath(), project.getOptions())));
         return this;
     }
 
@@ -347,7 +347,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(projectDescription);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(project.getId(), project.getName(), projectDescription, project.getFile(), project.getOwner(), project.getOptions())));
+                factory.getProject(project.getId(), project.getName(), projectDescription, project.getOwner(), project.getFilePath(), project.getOptions())));
         return this;
     }
 
@@ -362,7 +362,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(userId);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(project.getId(), project.getName(), project.getDescription(), project.getFile(), userId, project.getOptions())));
+                factory.getProject(project.getId(), project.getName(), project.getDescription(), userId, project.getFilePath(), project.getOptions())));
         return this;
     }
 
@@ -370,14 +370,14 @@ public class ConfigurationBuilder {
      * Change the file location of the specified project
      *
      * @param projectId Project identifier
-     * @param file   Project file
+     * @param filePath   Project file path
      * @return ServerConfigurationBuilder
      */
-    public ConfigurationBuilder setProjectFile(ProjectId projectId, File file) {
+    public ConfigurationBuilder setProjectFilePath(ProjectId projectId, String filePath) {
         checkNotNull(projectId);
-        checkNotNull(file);
+        checkNotNull(filePath);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(project.getId(), project.getName(), project.getDescription(), file, project.getOwner(), project.getOptions())));
+                factory.getProject(project.getId(), project.getName(), project.getDescription(), project.getOwner(), Optional.of(filePath), project.getOptions())));
         return this;
     }
 
@@ -392,7 +392,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(projectOptions);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(projectId, project.getName(), project.getDescription(), project.getFile(), project.getOwner(), Optional.of(projectOptions))));
+                factory.getProject(projectId, project.getName(), project.getDescription(), project.getOwner(), project.getFilePath(), Optional.of(projectOptions))));
         return this;
     }
 

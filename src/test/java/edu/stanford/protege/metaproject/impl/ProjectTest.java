@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.io.File;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -29,7 +28,7 @@ public class ProjectTest {
     private static final ProjectId projectId = TestUtils.getProjectId(projectIdStr), diffProjectId = TestUtils.getProjectId(otherIdStr);
     private static final Name projectName = TestUtils.getName(projectNameStr), diffProjectName = TestUtils.getName(otherProjectNameStr);
     private static final Description projectDescription = TestUtils.getDescription(projectDescriptionStr);
-    private static final File projectFile = TestUtils.getFile("/Users/test/folder/project.owl");
+    private static final String projectFilePath = "/Users/test/folder/project.owl";
     private static final UserId ownerId = TestUtils.getUserId("owner");
     @Mock private ProjectOptions projectOptions;
 
@@ -37,9 +36,9 @@ public class ProjectTest {
 
     @Before
     public void setUp() {
-        project = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
-        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
-        diffProject = TestUtils.getProject(diffProjectId, diffProjectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
+        project = TestUtils.getProject(projectId, projectName, projectDescription, ownerId, Optional.of(projectFilePath), Optional.ofNullable(projectOptions));
+        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, ownerId, Optional.of(projectFilePath), Optional.ofNullable(projectOptions));
+        diffProject = TestUtils.getProject(diffProjectId, diffProjectName, projectDescription, ownerId, Optional.of(projectFilePath), Optional.ofNullable(projectOptions));
     }
 
     @Test
@@ -63,13 +62,18 @@ public class ProjectTest {
     }
 
     @Test
-    public void testGetFile() {
-        assertThat(project.getFile(), is(projectFile));
+    public void testGetFilePath() {
+        assertThat(project.getFilePath(), is(Optional.of(projectFilePath)));
     }
 
     @Test
     public void testGetOwner() {
         assertThat(project.getOwner(), is(ownerId));
+    }
+
+    @Test
+    public void testGetOptions() {
+        assertThat(project.getOptions(), is(Optional.ofNullable(projectOptions)));
     }
 
     @Test

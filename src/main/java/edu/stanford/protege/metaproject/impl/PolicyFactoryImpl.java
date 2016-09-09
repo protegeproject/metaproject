@@ -5,10 +5,12 @@ import edu.stanford.protege.metaproject.api.*;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -28,14 +30,14 @@ public final class PolicyFactoryImpl implements PolicyFactory {
 
     @Nonnull
     @Override
-    public Project getProject(@Nonnull ProjectId projectId, @Nonnull Name name, @Nonnull Description description, @Nonnull File file, @Nonnull UserId ownerId, @Nonnull Optional<ProjectOptions> options) {
+    public Project getProject(@Nonnull ProjectId projectId, @Nonnull Name name, @Nonnull Description description, @Nonnull UserId ownerId, @Nonnull Optional<String> filePath, @Nonnull Optional<ProjectOptions> options) {
         checkNotNull(projectId, "Project identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
         checkNotNull(description, "Description cannot be null");
-        checkNotNull(file, "File cannot be null");
+        checkNotNull(filePath, "Project file path cannot be null");
         checkNotNull(ownerId, "Owner user identifier cannot be null");
         checkNotNull(options, "Project options cannot be null");
-        return new ProjectImpl(projectId, name, description, file, ownerId, options);
+        return new ProjectImpl(projectId, name, description, ownerId, filePath, options);
     }
 
     @Nonnull
@@ -197,9 +199,7 @@ public final class PolicyFactoryImpl implements PolicyFactory {
     @Override
     public Host getHost(@Nonnull URI address, @Nonnull Optional<Port> secondaryPort) {
         checkNotNull(address, "Host URI must not be null");
-        if(secondaryPort.isPresent()) {
-            checkNotNull(secondaryPort.get(), "Secondary port must not be null");
-        }
+        checkNotNull(secondaryPort, "Secondary port must not be null");
         return new HostImpl(address, secondaryPort);
     }
 

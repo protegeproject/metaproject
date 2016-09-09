@@ -8,7 +8,6 @@ import edu.stanford.protege.metaproject.api.*;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 import javax.annotation.concurrent.ThreadSafe;
-import java.io.File;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -22,12 +21,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Immutable
 @ThreadSafe
 public final class ProjectImpl implements Project, Serializable {
-    private static final long serialVersionUID = 4971559561739409152L;
+    private static final long serialVersionUID = -2849746766544935723L;
     @Nonnull private final ProjectId id;
     @Nonnull private final Name name;
     @Nonnull private final Description description;
-    @Nonnull private final File file;
     @Nonnull private final UserId owner;
+    @Nonnull private final Optional<String> filePath;
     @Nonnull private final Optional<ProjectOptions> options;
 
     /**
@@ -36,15 +35,15 @@ public final class ProjectImpl implements Project, Serializable {
      * @param id Project identifier
      * @param name   Project name
      * @param description    Project description
-     * @param file  Project file
+     * @param filePath  Project file path
      * @param owner Owner of the project
      * @param options   Project options
      */
-    public ProjectImpl(@Nonnull ProjectId id, @Nonnull Name name, @Nonnull Description description, @Nonnull File file, @Nonnull UserId owner, @Nonnull Optional<ProjectOptions> options) {
+    public ProjectImpl(@Nonnull ProjectId id, @Nonnull Name name, @Nonnull Description description, @Nonnull UserId owner, @Nonnull Optional<String> filePath, @Nonnull Optional<ProjectOptions> options) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
-        this.file = checkNotNull(file);
+        this.filePath = checkNotNull(filePath);
         this.owner = checkNotNull(owner);
         this.options = checkNotNull(options);
     }
@@ -69,14 +68,14 @@ public final class ProjectImpl implements Project, Serializable {
 
     @Override
     @Nonnull
-    public File getFile() {
-        return file;
+    public UserId getOwner() {
+        return owner;
     }
 
     @Override
     @Nonnull
-    public UserId getOwner() {
-        return owner;
+    public Optional<String> getFilePath() {
+        return filePath;
     }
 
     @Override
@@ -117,14 +116,14 @@ public final class ProjectImpl implements Project, Serializable {
         return Objects.equal(id, that.getId()) &&
                 Objects.equal(name, that.getName()) &&
                 Objects.equal(description, that.getDescription()) &&
-                Objects.equal(file, that.getFile()) &&
+                Objects.equal(filePath, that.getFilePath()) &&
                 Objects.equal(owner, that.getOwner()) &&
                 Objects.equal(options, that.getOptions());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, name, description, file, owner, options);
+        return Objects.hashCode(id, name, description, filePath, owner, options);
     }
 
     @Override
@@ -133,7 +132,7 @@ public final class ProjectImpl implements Project, Serializable {
                 .add("id", id)
                 .add("name", name)
                 .add("description", description)
-                .add("file", file)
+                .add("filePath", filePath)
                 .add("owner", owner)
                 .add("options", options)
                 .toString();

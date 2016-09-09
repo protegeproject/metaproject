@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
 import javax.annotation.Nonnull;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -21,13 +20,13 @@ public interface PolicyFactory {
      * @param projectId Project identifier
      * @param name  Project name
      * @param description   Project description
-     * @param file   Project file
+     * @param filePath   Project file path
      * @param ownerId   Project owner user identifier
      * @param options   Project options
      * @return New Project instance
      */
     @Nonnull
-    Project getProject(@Nonnull ProjectId projectId, @Nonnull Name name, @Nonnull Description description, @Nonnull File file, @Nonnull UserId ownerId, @Nonnull Optional<ProjectOptions> options);
+    Project getProject(@Nonnull ProjectId projectId, @Nonnull Name name, @Nonnull Description description, @Nonnull UserId ownerId, @Nonnull Optional<String> filePath, @Nonnull Optional<ProjectOptions> options);
 
     /**
      * Create a new role

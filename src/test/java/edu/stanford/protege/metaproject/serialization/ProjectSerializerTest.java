@@ -6,7 +6,6 @@ import edu.stanford.protege.metaproject.api.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -22,7 +21,7 @@ public class ProjectSerializerTest {
     private static final ProjectId projectId = TestUtils.getProjectId(projectIdStr), diffProjectId = TestUtils.getProjectId(diffIdStr);
     private static final Name projectName = TestUtils.getName();
     private static final Description projectDescription = TestUtils.getDescription();
-    private static final File projectFile = TestUtils.getFile();
+    private static final String projectFilePath = TestUtils.getFilePath();
     private static final UserId owner = TestUtils.getUserId();
     private static final ProjectOptions projectOptions = TestUtils.getProjectOptions();
 
@@ -34,12 +33,9 @@ public class ProjectSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getGson();
 
-        project = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, owner,
-                Optional.of(projectOptions));
-        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, owner,
-                Optional.of(projectOptions));
-        diffProject = TestUtils.getProject(diffProjectId, projectName, projectDescription, projectFile, owner,
-                Optional.of(projectOptions));
+        project = TestUtils.getProject(projectId, projectName, projectDescription, owner, Optional.of(projectFilePath), Optional.of(projectOptions));
+        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, owner, Optional.of(projectFilePath), Optional.of(projectOptions));
+        diffProject = TestUtils.getProject(diffProjectId, projectName, projectDescription, owner, Optional.of(projectFilePath), Optional.of(projectOptions));
 
         jsonProject = gson.toJson(project, Project.class);
         jsonOtherProject = gson.toJson(otherProject, Project.class);
@@ -100,7 +96,7 @@ public class ProjectSerializerTest {
 
     @Test
     public void testGetAddress() {
-        assertThat(gson.fromJson(jsonProject, Project.class).getFile(), is(projectFile));
+        assertThat(gson.fromJson(jsonProject, Project.class).getFilePath(), is(Optional.of(projectFilePath)));
     }
 
     @Test

@@ -172,12 +172,12 @@ public class TestUtils {
         return f.getHost(address, optionalPort);
     }
 
-    public static File getFile() {
-        return getFile(rootDir + "/" + newUUID() + ".history");
+    public static String getFilePath() {
+        return rootDir + "/" + newUUID() + ".history";
     }
 
-    public static File getFile(String path) {
-        return new File(path);
+    public static File getFile() {
+        return new File(rootDir + "/" + newUUID() + ".history");
     }
 
     public static Port getPort(int port) {
@@ -249,11 +249,11 @@ public class TestUtils {
     /*   access control policy objects   */
 
     public static Project getProject() {
-        return getProject(getProjectId(), getName(), getDescription(), getFile(), getUserId(), Optional.of(getProjectOptions()));
+        return getProject(getProjectId(), getName(), getDescription(), getUserId(), Optional.of(getFilePath()), Optional.of(getProjectOptions()));
     }
 
-    public static Project getProject(ProjectId id, Name name, Description description, File file, UserId owner, Optional<ProjectOptions> projectOptions) {
-        return f.getProject(id, name, description, file, owner, projectOptions);
+    public static Project getProject(ProjectId id, Name name, Description description, UserId owner, Optional<String> filePath, Optional<ProjectOptions> projectOptions) {
+        return f.getProject(id, name, description, owner, filePath, projectOptions);
     }
 
     public static Operation getSystemOperation() {

@@ -184,8 +184,8 @@ public class ConfigurationBuilderTest {
         ServerConfiguration config = new ConfigurationBuilder().addProject(project).createServerConfiguration();
         assertThat(config.containsProject(project), is(true));
 
-        Project projectAlt = factory.getProject(project.getId(), project.getName(), project.getDescription(), project.getFile(),
-                factory.getUserId("newOwner"), project.getOptions());
+        Project projectAlt = factory.getProject(project.getId(), project.getName(), project.getDescription(), factory.getUserId("newOwner"),
+                project.getFilePath(), project.getOptions());
         ServerConfiguration configAlt = new ConfigurationBuilder(config).setProject(project.getId(), projectAlt).createServerConfiguration();
         assertThat(configAlt.containsProject(project), is(false));
         assertThat(configAlt.containsProject(projectAlt), is(true));
@@ -226,14 +226,14 @@ public class ConfigurationBuilderTest {
     }
 
     @Test
-    public void testSetProjectFile() throws Exception {
+    public void testSetProjectFilePath() throws Exception {
         Project project = TestUtils.getProject();
         ServerConfiguration config = new ConfigurationBuilder().addProject(project).createServerConfiguration();
         assertThat(config.containsProject(project), is(true));
-        File file = new File("testFile");
-        ServerConfiguration configAlt = new ConfigurationBuilder(config).setProjectFile(project.getId(), file).createServerConfiguration();
+        String filePath = "/root/data/testFile.history";
+        ServerConfiguration configAlt = new ConfigurationBuilder(config).setProjectFilePath(project.getId(), filePath).createServerConfiguration();
         assertThat(configAlt.containsProject(project), is(false));
-        assertThat(configAlt.getProject(project.getId()).getFile(), is(file));
+        assertThat(configAlt.getProject(project.getId()).getFilePath(), is(Optional.of(filePath)));
     }
 
     @Test

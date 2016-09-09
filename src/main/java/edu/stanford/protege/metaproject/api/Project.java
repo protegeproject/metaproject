@@ -1,7 +1,6 @@
 package edu.stanford.protege.metaproject.api;
 
 import javax.annotation.Nonnull;
-import java.io.File;
 import java.util.Optional;
 
 /**
@@ -16,20 +15,20 @@ import java.util.Optional;
 public interface Project extends PolicyObject<ProjectId>, HasDescription, Comparable<Project> {
 
     /**
-     * Get the project file
-     *
-     * @return Project file
-     */
-    @Nonnull
-    File getFile();
-
-    /**
      * Get the owner user of the project
      *
      * @return Project owner user
      */
     @Nonnull
     UserId getOwner();
+
+    /**
+     * Get the project file path
+     *
+     * @return Project file path
+     */
+    @Nonnull
+    Optional<String> getFilePath();
 
     /**
      * Get the options for this project
