@@ -561,10 +561,14 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeOperation(Operation operation) {
         checkNotNull(operation);
         operations.remove(operation);
+        Set<RoleId> roleIds = new HashSet<>();
         for(Role r : roles) {
             if(r.getOperations().contains(operation.getId())) {
-                removeOperationFromRole(r.getId(), operation.getId());
+                roleIds.add(r.getId());
             }
+        }
+        for(RoleId roleId : roleIds) {
+            removeOperationFromRole(roleId, operation.getId());
         }
         return this;
     }

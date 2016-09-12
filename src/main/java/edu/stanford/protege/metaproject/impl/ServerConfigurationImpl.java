@@ -128,8 +128,6 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
         Set<RoleId> roles = new HashSet<>();
         if(assignments.containsKey(projectId)) {
             roles.addAll(assignments.get(projectId));
-        } else {
-            logger.debug("User with identifier " + userId.get() + " has no role assignments to project with identifier " + projectId.get());
         }
         if(globalPermissions.equals(GlobalPermissions.INCLUDED) && assignments.containsKey(ConfigurationUtils.getUniversalProjectId())) {
             roles.addAll(assignments.get(ConfigurationUtils.getUniversalProjectId()));
