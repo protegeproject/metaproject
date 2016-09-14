@@ -209,8 +209,6 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeUser(User user) {
         checkNotNull(user);
         users.remove(user);
-        removePolicy(user.getId());
-        unregisterUser(user.getId());
         return this;
     }
 
@@ -298,7 +296,6 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeProject(Project project) {
         checkNotNull(project);
         projects.remove(project);
-        removePolicy(project.getId());
         return this;
     }
 
@@ -433,7 +430,6 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeRole(Role role) {
         checkNotNull(role);
         roles.remove(role);
-        removePolicy(role.getId());
         return this;
     }
 
@@ -561,15 +557,6 @@ public class ConfigurationBuilder {
     public ConfigurationBuilder removeOperation(Operation operation) {
         checkNotNull(operation);
         operations.remove(operation);
-        Set<RoleId> roleIds = new HashSet<>();
-        for(Role r : roles) {
-            if(r.getOperations().contains(operation.getId())) {
-                roleIds.add(r.getId());
-            }
-        }
-        for(RoleId roleId : roleIds) {
-            removeOperationFromRole(roleId, operation.getId());
-        }
         return this;
     }
 
@@ -764,6 +751,25 @@ public class ConfigurationBuilder {
             toUpdate.put(userId, roleAssignments);
         }
         policyMap.putAll(toUpdate);
+        return this;
+    }
+
+    /**
+     * Remove the given operation from all the roles in the policy
+     *
+     * @param operationId   Operation identifier
+     * @return ServerConfigurationBuilder
+     */
+    public ConfigurationBuilder removePolicy(OperationId operationId) {
+        Set<RoleId> roleIds = new HashSet<>();
+        for(Role r : roles) {
+            if(r.getOperations().contains(operationId)) {
+                roleIds.add(r.getId());
+            }
+        }
+        for(RoleId roleId : roleIds) {
+            removeOperationFromRole(roleId, operationId);
+        }
         return this;
     }
 
