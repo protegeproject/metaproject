@@ -58,7 +58,7 @@ public final class DescriptionImpl implements Description, Serializable {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("description", description)
+                .addValue(description)
                 .toString();
     }
 

@@ -58,7 +58,7 @@ public final class EmailAddressImpl implements EmailAddress, Serializable {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("email", email)
+                .addValue(email)
                 .toString();
     }
 

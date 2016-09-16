@@ -58,7 +58,7 @@ public final class UserIdImpl implements UserId, Serializable {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
+                .addValue(id)
                 .toString();
     }
 

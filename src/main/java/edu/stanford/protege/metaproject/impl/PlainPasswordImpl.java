@@ -57,7 +57,7 @@ public final class PlainPasswordImpl implements PlainPassword, Serializable {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("plainPassword", "******")
+                .addValue(plainPassword)
                 .toString();
     }
 }

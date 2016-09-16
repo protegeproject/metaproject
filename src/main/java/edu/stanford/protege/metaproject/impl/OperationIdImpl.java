@@ -58,7 +58,7 @@ public final class OperationIdImpl implements OperationId, Serializable {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
+                .addValue(id)
                 .toString();
     }
 

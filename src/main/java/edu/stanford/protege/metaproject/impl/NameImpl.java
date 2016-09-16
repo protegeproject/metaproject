@@ -58,7 +58,7 @@ public final class NameImpl implements Name, Serializable {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("name", name)
+                .addValue(name)
                 .toString();
     }
 

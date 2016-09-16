@@ -65,7 +65,7 @@ public final class SaltImpl implements Salt, Serializable {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("salt", salt)
+                .addValue(salt)
                 .toString();
     }
 }
