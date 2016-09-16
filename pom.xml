@@ -15,6 +15,10 @@
     <version>1.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
+    <name>Metaproject API</name>
+    <description>An API for building Protégé client-server configurations</description>
+    <url>https://github.com/protegeproject/metaproject</url>
+
     <organization>
         <name>Stanford Center for Biomedical Informatics Research</name>
         <url>http://bmir.stanford.edu/</url>
@@ -34,6 +38,11 @@
         <url>https://github.com/protegeproject/metaproject</url>
         <tag>HEAD</tag>
     </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/protegeproject/metaproject/issues</url>
+    </issueManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -142,7 +151,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-SymbolicName>edu.stanford.protege.metaproject;singleton:=true</Bundle-SymbolicName>
+                        <Bundle-SymbolicName>${project.artifactId};singleton:=true</Bundle-SymbolicName>
                         <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>
