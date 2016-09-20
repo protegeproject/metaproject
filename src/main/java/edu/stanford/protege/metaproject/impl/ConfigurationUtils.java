@@ -22,12 +22,12 @@ public final class ConfigurationUtils {
     private final static PolicyFactory f = ConfigurationManager.getFactory();
 
     private final static int
-            OPTIONAL_PORT = 5200,
+            OPTIONAL_PORT = 8081,
             HASH_BYTE_SIZE = 24,
             KEY_ITERATIONS = 20000;
 
     private final static String
-            SERVER_URI = "rmi://localhost:5100",
+            SERVER_URI = "http://localhost:8080",
             SERVER_ROOT = "root/data",
             SYSTEM_USER_ID = "system",
             ROOT_USER_ID = "root",
