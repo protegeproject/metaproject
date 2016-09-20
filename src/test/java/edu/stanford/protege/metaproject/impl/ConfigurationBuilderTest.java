@@ -167,6 +167,7 @@ public class ConfigurationBuilderTest {
         Project project = TestUtils.getProject();
         ServerConfiguration config = new ConfigurationBuilder().addProject(project).createServerConfiguration();
         assertThat(config.containsProject(project), is(true));
+        assertThat(config.hasRole(project.getOwner(), project.getId(), ConfigurationUtils.getProjectManagerRole().getId()), is(true));
     }
 
     @Test

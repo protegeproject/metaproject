@@ -284,7 +284,7 @@ public class ConfigurationBuilder {
             throw new IdAlreadyInUseException("The specified project identifier is already used by another project");
         }
         projects.add(project);
-        return this;
+        return addPolicy(project.getOwner(), project.getId(), ConfigurationUtils.getProjectManagerRole().getId());
     }
 
     /**

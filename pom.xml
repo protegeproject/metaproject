@@ -24,6 +24,13 @@
         <url>http://bmir.stanford.edu/</url>
     </organization>
 
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License</name>
+            <url>http://www.gnu.org/copyleft/lesser.html</url>
+        </license>
+    </licenses>
+
     <developers>
         <developer>
             <id>rsgoncalves</id>
