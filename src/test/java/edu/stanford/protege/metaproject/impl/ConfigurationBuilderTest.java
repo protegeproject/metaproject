@@ -184,7 +184,7 @@ public class ConfigurationBuilderTest {
         ServerConfiguration config = new ConfigurationBuilder().addProject(project).createServerConfiguration();
         assertThat(config.containsProject(project), is(true));
 
-        Project projectAlt = factory.getProject(project.getId(), project.getName(), project.getDescription(), project.getFile(),
+        Project projectAlt = factory.getProject(project.getId(), project.getName(), project.getDescription(),
                 factory.getUserId("newOwner"), project.getOptions());
         ServerConfiguration configAlt = new ConfigurationBuilder(config).setProject(project.getId(), projectAlt).createServerConfiguration();
         assertThat(configAlt.containsProject(project), is(false));
@@ -225,16 +225,7 @@ public class ConfigurationBuilderTest {
         assertThat(configAlt.getProject(project.getId()).getOwner(), is(userId));
     }
 
-    @Test
-    public void testSetProjectFile() throws Exception {
-        Project project = TestUtils.getProject();
-        ServerConfiguration config = new ConfigurationBuilder().addProject(project).createServerConfiguration();
-        assertThat(config.containsProject(project), is(true));
-        File file = new File("testFile");
-        ServerConfiguration configAlt = new ConfigurationBuilder(config).setProjectFile(project.getId(), file).createServerConfiguration();
-        assertThat(configAlt.containsProject(project), is(false));
-        assertThat(configAlt.getProject(project.getId()).getFile(), is(file));
-    }
+   
 
     @Test
     public void testSetProjectOptions() throws Exception {

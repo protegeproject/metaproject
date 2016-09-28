@@ -34,11 +34,11 @@ public class ProjectSerializerTest {
     public void setUp() {
         gson = new DefaultJsonSerializer().getGson();
 
-        project = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, owner,
+        project = TestUtils.getProject(projectId, projectName, projectDescription, owner,
                 Optional.of(projectOptions));
-        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, owner,
+        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, owner,
                 Optional.of(projectOptions));
-        diffProject = TestUtils.getProject(diffProjectId, projectName, projectDescription, projectFile, owner,
+        diffProject = TestUtils.getProject(diffProjectId, projectName, projectDescription, owner,
                 Optional.of(projectOptions));
 
         jsonProject = gson.toJson(project, Project.class);
@@ -98,10 +98,7 @@ public class ProjectSerializerTest {
         assertThat(gson.fromJson(jsonProject, Project.class).getDescription(), is(projectDescription));
     }
 
-    @Test
-    public void testGetAddress() {
-        assertThat(gson.fromJson(jsonProject, Project.class).getFile(), is(projectFile));
-    }
+    
 
     @Test
     public void testGetOwner() {

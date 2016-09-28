@@ -28,14 +28,13 @@ public final class PolicyFactoryImpl implements PolicyFactory {
 
     @Nonnull
     @Override
-    public Project getProject(@Nonnull ProjectId projectId, @Nonnull Name name, @Nonnull Description description, @Nonnull File file, @Nonnull UserId ownerId, @Nonnull Optional<ProjectOptions> options) {
+    public Project getProject(@Nonnull ProjectId projectId, @Nonnull Name name, @Nonnull Description description, @Nonnull UserId ownerId, @Nonnull Optional<ProjectOptions> options) {
         checkNotNull(projectId, "Project identifier cannot be null");
         checkNotNull(name, "Name cannot be null");
         checkNotNull(description, "Description cannot be null");
-        checkNotNull(file, "File cannot be null");
         checkNotNull(ownerId, "Owner user identifier cannot be null");
         checkNotNull(options, "Project options cannot be null");
-        return new ProjectImpl(projectId, name, description, file, ownerId, options);
+        return new ProjectImpl(projectId, name, description, ownerId, options);
     }
 
     @Nonnull

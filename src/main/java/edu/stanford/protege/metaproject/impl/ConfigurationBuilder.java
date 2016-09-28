@@ -329,7 +329,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(projectName);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(project.getId(), projectName, project.getDescription(), project.getFile(), project.getOwner(), project.getOptions())));
+                factory.getProject(project.getId(), projectName, project.getDescription(), project.getOwner(), project.getOptions())));
         return this;
     }
 
@@ -344,7 +344,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(projectDescription);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(project.getId(), project.getName(), projectDescription, project.getFile(), project.getOwner(), project.getOptions())));
+                factory.getProject(project.getId(), project.getName(), projectDescription, project.getOwner(), project.getOptions())));
         return this;
     }
 
@@ -359,7 +359,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(userId);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(project.getId(), project.getName(), project.getDescription(), project.getFile(), userId, project.getOptions())));
+                factory.getProject(project.getId(), project.getName(), project.getDescription(), userId, project.getOptions())));
         return this;
     }
 
@@ -374,7 +374,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(file);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(project.getId(), project.getName(), project.getDescription(), file, project.getOwner(), project.getOptions())));
+                factory.getProject(project.getId(), project.getName(), project.getDescription(), project.getOwner(), project.getOptions())));
         return this;
     }
 
@@ -389,7 +389,7 @@ public class ConfigurationBuilder {
         checkNotNull(projectId);
         checkNotNull(projectOptions);
         getProject(projectId).ifPresent(project -> setProject(projectId,
-                factory.getProject(projectId, project.getName(), project.getDescription(), project.getFile(), project.getOwner(), Optional.of(projectOptions))));
+                factory.getProject(projectId, project.getName(), project.getDescription(), project.getOwner(), Optional.of(projectOptions))));
         return this;
     }
 

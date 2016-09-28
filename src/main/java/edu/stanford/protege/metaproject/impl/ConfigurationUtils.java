@@ -135,7 +135,7 @@ public final class ConfigurationUtils {
      */
     public static Project getUniversalProject() {
         return f.getProject(getUniversalProjectId(), f.getName(UNIVERSAL_PROJECT_NAME), f.getDescription(UNIVERSAL_PROJECT_DESCRIPTION),
-                new File(""), f.getUserId(SYSTEM_USER_ID), Optional.empty());
+                f.getUserId(SYSTEM_USER_ID), Optional.empty());
     }
 
     /**
