@@ -149,7 +149,7 @@ public class TestUtils {
     }
 
     public static ServerConfiguration getServerConfiguration(
-            Host host, File root, Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap, Set<User> users,
+            Host host, String root, Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap, Set<User> users,
             Set<Project> projects, Set<Role> roles, Set<Operation> operations, Set<AuthenticationDetails> authDetails, Map<String,String> properties) {
         return new ConfigurationBuilder()
                 .setHost(host)
@@ -172,8 +172,8 @@ public class TestUtils {
         return f.getHost(address, optionalPort);
     }
 
-    public static File getFile() {
-        return getFile(rootDir + "/" + newUUID() + ".history");
+    public static String getFile() {
+        return rootDir + "/" + newUUID() + ".history";
     }
 
     public static File getFile(String path) {

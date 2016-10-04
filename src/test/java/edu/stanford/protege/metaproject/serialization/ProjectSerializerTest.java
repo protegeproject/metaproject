@@ -22,7 +22,7 @@ public class ProjectSerializerTest {
     private static final ProjectId projectId = TestUtils.getProjectId(projectIdStr), diffProjectId = TestUtils.getProjectId(diffIdStr);
     private static final Name projectName = TestUtils.getName();
     private static final Description projectDescription = TestUtils.getDescription();
-    private static final File projectFile = TestUtils.getFile();
+    private static final String projectFile = TestUtils.getFile();
     private static final UserId owner = TestUtils.getUserId();
     private static final ProjectOptions projectOptions = TestUtils.getProjectOptions();
 

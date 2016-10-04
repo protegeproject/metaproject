@@ -22,7 +22,7 @@ public class ServerConfigurationTest {
     private static final String toStringHead = ServerConfiguration.class.getSimpleName();
     private final PolicyFactory factory = ConfigurationManager.getFactory();
     private final Host host = TestUtils.getHost();
-    private final File root = TestUtils.getFile();
+    private final String root = TestUtils.getFile();
     private final Set<User> users = TestUtils.getUserSet();
     private final Set<Project> projects = TestUtils.getProjectSet();
     private final Set<Operation> operations = TestUtils.getOperationSet();

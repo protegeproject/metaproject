@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ConfigurationBuilder {
     private static final Logger logger = LoggerFactory.getLogger(ConfigurationBuilder.class.getName());
     private Host host = ConfigurationUtils.getServerHost();
-    private File root = ConfigurationUtils.getServerRoot();
+    private String root = ConfigurationUtils.getServerRoot();
     private Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap = ConfigurationUtils.getDefaultPolicy();
     private Set<Role> roles = ConfigurationUtils.getDefaultRoles();
     private Set<Operation> operations = ConfigurationUtils.getDefaultOperations();
@@ -70,7 +70,7 @@ public class ConfigurationBuilder {
      * @param root  Root directory of the server
      * @return ServerConfigurationBuilder
      */
-    public ConfigurationBuilder setServerRoot(File root) {
+    public ConfigurationBuilder setServerRoot(String root) {
         this.root = root;
         return this;
     }

@@ -41,7 +41,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
     @Nonnull private final ImmutableSet<AuthenticationDetails> authDetails;
     @Nonnull private final ImmutableMap<String,String> properties;
     @Nonnull private final Host host;
-    @Nonnull private final File root;
+    @Nonnull private final String root;
 
     /**
      * Package-private constructor; use {@link ConfigurationBuilder}
@@ -56,7 +56,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
      * @param authDetails   Set of user authentication details
      * @param properties   Map of custom configuration properties
      */
-    ServerConfigurationImpl(@Nonnull Host host, @Nonnull File root, @Nonnull Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap,
+    ServerConfigurationImpl(@Nonnull Host host, @Nonnull String root, @Nonnull Map<UserId, Map<ProjectId, Set<RoleId>>> policyMap,
                             @Nonnull Set<User> users, @Nonnull Set<Project> projects, @Nonnull Set<Role> roles, @Nonnull Set<Operation> operations,
                             @Nonnull Set<AuthenticationDetails> authDetails, @Nonnull Map<String,String> properties) {
         this.host = checkNotNull(host);
@@ -78,7 +78,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration, Seria
 
     @Override
     @Nonnull
-    public File getServerRoot() {
+    public String getServerRoot() {
         return root;
     }
 

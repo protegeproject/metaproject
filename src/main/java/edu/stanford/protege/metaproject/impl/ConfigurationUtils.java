@@ -71,8 +71,8 @@ public final class ConfigurationUtils {
      *
      * @return Server root file
      */
-    public static File getServerRoot() {
-        return new File(SERVER_ROOT);
+    public static String getServerRoot() {
+        return SERVER_ROOT;
     }
 
     /**

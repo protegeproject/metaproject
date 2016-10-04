@@ -27,6 +27,6 @@ public interface ServerConfiguration extends ConfigurationBrowser, HasProperties
      * @return Server root directory
      */
     @Nonnull
-    File getServerRoot();
+    String getServerRoot();
 
 }

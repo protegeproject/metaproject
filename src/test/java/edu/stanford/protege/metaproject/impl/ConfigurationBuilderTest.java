@@ -37,7 +37,7 @@ public class ConfigurationBuilderTest {
 
     @Test
     public void testSetServerRoot() throws Exception {
-        File root = new File("test");
+        String root = "test";
         ServerConfiguration config = new ConfigurationBuilder().setServerRoot(root).createServerConfiguration();
         assertThat(config.getServerRoot(), is(root));
     }
