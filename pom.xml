@@ -71,7 +71,7 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-            <version>2.0.1</version>
+            <version>3.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -146,12 +146,8 @@
                         <Bundle-Vendor>The Protege Development Team</Bundle-Vendor>
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>
-                            edu.stanford.protege.metaproject.*,
-                            org.apache.commons.codec.*,
-                            com.google.gson.*,
-                            com.google.common.*,
-                            com.google.thirdparty.*,
-                            sun.misc
+                        	com.google.gson.*,
+                            edu.stanford.protege.metaproject.*                            
                         </Export-Package>
                         <Include-Resource>{maven-resources}</Include-Resource>
                     </instructions>
