@@ -17,5 +17,7 @@ public final class ServerStatus implements Serializable {
 		this.pausingUser = pausingUser;
 	}
 
-
+	public boolean paused() {
+		return pausingUser.isPresent();
+	}
 }
