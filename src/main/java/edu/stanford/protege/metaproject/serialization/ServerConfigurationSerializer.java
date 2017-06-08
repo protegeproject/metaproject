@@ -25,7 +25,7 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
     public JsonElement serialize(ServerConfiguration config, Type type, JsonSerializationContext context) {
         JsonObject obj = new JsonObject();
         obj.add(HOST, context.serialize(config.getHost(), Host.class));
-        obj.add(ROOT, context.serialize(config.getServerRoot().getPath()));
+        obj.add(ROOT, context.serialize(config.getServerRoot()));
         obj.add(POLICY, context.serialize(config.getPolicyMap()));
 
         List<User> users = new ArrayList<>(config.getUsers());
@@ -55,7 +55,7 @@ public class ServerConfigurationSerializer implements JsonSerializer<ServerConfi
     public ServerConfiguration deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject obj = element.getAsJsonObject();
         Host host = context.deserialize(obj.get(HOST), Host.class);
-        File root = new File(obj.getAsJsonPrimitive(ROOT).getAsString());
+        String root = obj.getAsJsonPrimitive(ROOT).getAsString();
         Map<UserId, Map<ProjectId, Set<RoleId>>> policy = context.deserialize(obj.getAsJsonObject(POLICY),
                 new TypeToken<Map<UserIdImpl,Map<ProjectIdImpl,Set<RoleIdImpl>>>>() {}.getType());
         Set<User> users = context.deserialize(obj.getAsJsonArray(USERS), new TypeToken<Set<User>>(){}.getType());

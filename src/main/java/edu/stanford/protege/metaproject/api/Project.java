@@ -16,14 +16,6 @@ import java.util.Optional;
 public interface Project extends PolicyObject<ProjectId>, HasDescription, Comparable<Project> {
 
     /**
-     * Get the project file
-     *
-     * @return Project file
-     */
-    @Nonnull
-    File getFile();
-
-    /**
      * Get the owner user of the project
      *
      * @return Project owner user

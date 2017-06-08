@@ -19,3 +19,7 @@ build/
 src/main/java/test/*
 
 *.uml
+
+# OSX
+.DS_Store
+bin

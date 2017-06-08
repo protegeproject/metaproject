@@ -29,7 +29,6 @@ public class ProjectTest {
     private static final ProjectId projectId = TestUtils.getProjectId(projectIdStr), diffProjectId = TestUtils.getProjectId(otherIdStr);
     private static final Name projectName = TestUtils.getName(projectNameStr), diffProjectName = TestUtils.getName(otherProjectNameStr);
     private static final Description projectDescription = TestUtils.getDescription(projectDescriptionStr);
-    private static final File projectFile = TestUtils.getFile("/Users/test/folder/project.owl");
     private static final UserId ownerId = TestUtils.getUserId("owner");
     @Mock private ProjectOptions projectOptions;
 
@@ -37,9 +36,9 @@ public class ProjectTest {
 
     @Before
     public void setUp() {
-        project = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
-        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
-        diffProject = TestUtils.getProject(diffProjectId, diffProjectName, projectDescription, projectFile, ownerId, Optional.ofNullable(projectOptions));
+        project = TestUtils.getProject(projectId, projectName, projectDescription, ownerId, Optional.ofNullable(projectOptions));
+        otherProject = TestUtils.getProject(projectId, projectName, projectDescription, ownerId, Optional.ofNullable(projectOptions));
+        diffProject = TestUtils.getProject(diffProjectId, diffProjectName, projectDescription, ownerId, Optional.ofNullable(projectOptions));
     }
 
     @Test
@@ -62,10 +61,7 @@ public class ProjectTest {
         assertThat(project.getDescription().get(), is(projectDescriptionStr));
     }
 
-    @Test
-    public void testGetFile() {
-        assertThat(project.getFile(), is(projectFile));
-    }
+    
 
     @Test
     public void testGetOwner() {

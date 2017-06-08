@@ -71,8 +71,8 @@ public final class ConfigurationUtils {
      *
      * @return Server root file
      */
-    public static File getServerRoot() {
-        return new File(SERVER_ROOT);
+    public static String getServerRoot() {
+        return SERVER_ROOT;
     }
 
     /**
@@ -135,7 +135,7 @@ public final class ConfigurationUtils {
      */
     public static Project getUniversalProject() {
         return f.getProject(getUniversalProjectId(), f.getName(UNIVERSAL_PROJECT_NAME), f.getDescription(UNIVERSAL_PROJECT_DESCRIPTION),
-                new File(""), f.getUserId(SYSTEM_USER_ID), Optional.empty());
+                f.getUserId(SYSTEM_USER_ID), Optional.empty());
     }
 
     /**

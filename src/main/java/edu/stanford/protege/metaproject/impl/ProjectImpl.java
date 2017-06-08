@@ -26,7 +26,6 @@ public final class ProjectImpl implements Project, Serializable {
     @Nonnull private final ProjectId id;
     @Nonnull private final Name name;
     @Nonnull private final Description description;
-    @Nonnull private final File file;
     @Nonnull private final UserId owner;
     @Nonnull private final Optional<ProjectOptions> options;
 
@@ -36,15 +35,13 @@ public final class ProjectImpl implements Project, Serializable {
      * @param id Project identifier
      * @param name   Project name
      * @param description    Project description
-     * @param file  Project file
      * @param owner Owner of the project
      * @param options   Project options
      */
-    public ProjectImpl(@Nonnull ProjectId id, @Nonnull Name name, @Nonnull Description description, @Nonnull File file, @Nonnull UserId owner, @Nonnull Optional<ProjectOptions> options) {
+    public ProjectImpl(@Nonnull ProjectId id, @Nonnull Name name, @Nonnull Description description, @Nonnull UserId owner, @Nonnull Optional<ProjectOptions> options) {
         this.id = checkNotNull(id);
         this.name = checkNotNull(name);
         this.description = checkNotNull(description);
-        this.file = checkNotNull(file);
         this.owner = checkNotNull(owner);
         this.options = checkNotNull(options);
     }
@@ -65,12 +62,6 @@ public final class ProjectImpl implements Project, Serializable {
     @Nonnull
     public Description getDescription() {
         return description;
-    }
-
-    @Override
-    @Nonnull
-    public File getFile() {
-        return file;
     }
 
     @Override
@@ -117,14 +108,14 @@ public final class ProjectImpl implements Project, Serializable {
         return Objects.equal(id, that.getId()) &&
                 Objects.equal(name, that.getName()) &&
                 Objects.equal(description, that.getDescription()) &&
-                Objects.equal(file, that.getFile()) &&
+                //Objects.equal(file, that.getFile()) &&
                 Objects.equal(owner, that.getOwner()) &&
                 Objects.equal(options, that.getOptions());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, name, description, file, owner, options);
+        return Objects.hashCode(id, name, description, owner, options);
     }
 
     @Override
@@ -133,7 +124,6 @@ public final class ProjectImpl implements Project, Serializable {
                 .add("id", id)
                 .add("name", name)
                 .add("description", description)
-                .add("file", file)
                 .add("owner", owner)
                 .add("options", options)
                 .toString();
